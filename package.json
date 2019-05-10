@@ -1,0 +1,41 @@
+{
+  "name": "ore-three-ts",
+  "version": "0.0.1",
+  "description": "Three.js wrapper.",
+  "main": "build/ore-three.js",
+  "scripts": {
+    "dev": "webpack-dev-server --watch-content-base --config webpack-dev.config.js",
+    "build": "webpack --config webpack-build.config.js",
+    "build-types": "tsc --emitDeclarationOnly"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ukonpower/ore-three-ts.git"
+  },
+  "keywords": [
+    "threejs",
+    "webgl"
+  ],
+  "types": "./types/index.d.ts",
+  "files": [
+    "build",
+    "src",
+    "types"
+  ],
+  "author": "ukonpower",
+  "bugs": {
+    "url": "https://github.com/ukonpower/ore-three-ts/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "ts-loader": "^6.0.0",
+    "ts-shader-loader": "^1.0.5",
+    "typescript": "^3.4.5",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.3.1"
+  },
+  "dependencies": {
+    "three": "^0.104.0"
+  }
+}
