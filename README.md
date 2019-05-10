@@ -93,4 +93,14 @@ this.fish = new ORE.Fish(this.renderer,1000,10);
 this.scene.add(this.fish.obj);
 ```
 
+and update fish
+
+```javascript
+animate(){
+    if(this.fish){
+        this.fish.update(this.time);
+    }
+}
+```
+
 
