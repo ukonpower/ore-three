@@ -8,7 +8,8 @@ export declare class Fish extends ORE.BaseObject {
     obj: THREE.Mesh;
     private comTexs;
     private uni;
-    constructor(renderer: THREE.WebGLRenderer, num: number, length: number);
+    private fragment;
+    constructor(renderer: THREE.WebGLRenderer, num: number, length: number, customComputeShader?: string);
     initComputeRenderer(): boolean;
     initPosition(tex: any): void;
     createTrails(): void;

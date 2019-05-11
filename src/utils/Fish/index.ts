@@ -2,7 +2,6 @@ import * as ORE from '../..';
 
 import comShaderPosition from './shaders/computePosition.glsl';
 import comShaderVelocity from './shaders/computeVelocity.glsl';
-
 import vert from './shaders/fish.vs';
 
 import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
@@ -17,13 +16,15 @@ export class Fish extends ORE.BaseObject{
     public obj: THREE.Mesh;
     private comTexs: any;
     private uni: any;
+    private fragment :string;
 
-    constructor(renderer :THREE.WebGLRenderer, num : number, length :number) {
+    constructor(renderer :THREE.WebGLRenderer, num : number, length :number,customComputeShader: string = null) {
         super();
         this.renderer = renderer;
         this.computeRenderer;
         this.num = num;
         this.length = length;
+        this.fragment = customComputeShader != null ? customComputeShader : comShaderVelocity;
         
         this.comTexs = {
             position: {
@@ -57,13 +58,14 @@ export class Fish extends ORE.BaseObject{
         this.initPosition(initPositionTex);
 
         this.comTexs.position.texture = this.computeRenderer.addVariable("texturePosition", comShaderPosition, initPositionTex);
-        this.comTexs.velocity.texture = this.computeRenderer.addVariable("textureVelocity", comShaderVelocity, initVelocityTex);
+        this.comTexs.velocity.texture = this.computeRenderer.addVariable("textureVelocity", this.fragment, initVelocityTex);
 
         this.computeRenderer.setVariableDependencies(this.comTexs.position.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture]);
         this.comTexs.position.uniforms = this.comTexs.position.texture.material.uniforms;
 
         this.computeRenderer.setVariableDependencies(this.comTexs.velocity.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture]);
         this.comTexs.velocity.uniforms = this.comTexs.velocity.texture.material.uniforms;
+
         this.comTexs.velocity.uniforms.time = {
             value: 0
         };
@@ -73,12 +75,7 @@ export class Fish extends ORE.BaseObject{
         this.comTexs.velocity.uniforms.avoidPos = {
             value: new THREE.Vector3(0, 0, 0)
         };
-        this.comTexs.velocity.uniforms.avoidScale = {
-            value: 0
-        };
-        this.comTexs.velocity.uniforms.camY = {
-            value: 0
-        };
+
         this.computeRenderer.init();
 
         return true;

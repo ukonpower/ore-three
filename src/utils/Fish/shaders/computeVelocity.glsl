@@ -1,8 +1,5 @@
 uniform float time;
 uniform float seed;
-uniform vec3 avoidPos;
-uniform float avoidScale;
-uniform float camY;
 
 @import ../../../shader/chunks/noise4D;
 
@@ -21,9 +18,9 @@ void main() {
       snoise( vec4( scale * pos.xyz, 1.259 * seed * 10.0 + 0.4 * time ) )
     ) * 0.05;
 
-    vec3 gpos = pos - vec3(0.0,camY,0.0);
+    vec3 gpos = pos - vec3(0.0,0.0,0.0);
     vel += -(gpos)* length(gpos) * 0.005;
-    vel += (pos - avoidPos) * max(0.0,(1.0 - (distance(pos,avoidPos) - avoidScale)));
+
     vel.xyz *= 0.9 + abs(sin(uv.y * 9.0)) * 0.05;
 
     gl_FragColor = vec4( vel.xyz, 1.0 );
