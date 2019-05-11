@@ -19,7 +19,7 @@ export class Controller {
         });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(retina ? window.devicePixelRatio : 1);
-
+        
         window.addEventListener('orientationchange', this.onOrientationDevice.bind(this));
         window.addEventListener('resize', this.onWindowResize.bind(this));
 
