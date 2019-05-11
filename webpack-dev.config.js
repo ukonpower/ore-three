@@ -1,5 +1,4 @@
 const path = require('path');
-console.log(path.resolve(__dirname,"/glsl-chunks/"));
 
 module.exports = {
 	mode: 'development',
