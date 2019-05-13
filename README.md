@@ -26,7 +26,7 @@ import * as ORE from 'ore-three-ts';
 
 ### Create Controller
 
-```javascript:main.js
+```javascript
 import * as ORE from 'ore-three-ts';
 import MainScene from './MainScene';
 
