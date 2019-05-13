@@ -36,9 +36,9 @@ export class BaseScene {
         this.camera.updateProjectionMatrix();
     }
 
-    public onTouchStart(cursor: Cursor) { }
+    public onTouchStart(e: MouseEvent) { }
 
-    public onTouchMove(cursor: Cursor) { }
+    public onTouchMove(e: MouseEvent) { }
 
-    public onTouchEnd(cursor: Cursor) { }
+    public onTouchEnd(e: MouseEvent) { }
 }
