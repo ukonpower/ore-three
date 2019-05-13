@@ -1,5 +1,5 @@
 export declare class BaseObject {
-    obj: THREE.Mesh;
+    obj: THREE.Object3D;
     constructor();
     createMesh(): void;
     update(time: any): void;

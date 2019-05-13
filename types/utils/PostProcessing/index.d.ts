@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 declare interface PPParam {
-    fragment: string;
+    fragmentShader: string;
     uniforms: any;
 }
 export declare class PostProcessing {

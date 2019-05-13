@@ -5,7 +5,6 @@ export declare class Fish extends ORE.BaseObject {
     private computeRenderer;
     private num;
     private length;
-    obj: THREE.Mesh;
     private comTexs;
     private uni;
     private fragment;

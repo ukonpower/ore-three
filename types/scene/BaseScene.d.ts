@@ -12,7 +12,7 @@ export declare class BaseScene {
     tick(): void;
     animate(): void;
     onResize(width: number, height: number): void;
-    onTouchStart(cursor: Cursor): void;
-    onTouchMove(cursor: Cursor): void;
-    onTouchEnd(cursor: Cursor): void;
+    onTouchStart(e: MouseEvent): void;
+    onTouchMove(e: MouseEvent): void;
+    onTouchEnd(e: MouseEvent): void;
 }
