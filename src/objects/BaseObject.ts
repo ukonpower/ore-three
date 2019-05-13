@@ -1,5 +1,5 @@
 export class BaseObject{
-	public obj:THREE.Mesh;
+	public obj:THREE.Object3D;
 
     constructor(){
         this.obj;

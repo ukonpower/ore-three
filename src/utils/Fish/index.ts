@@ -13,7 +13,6 @@ export class Fish extends ORE.BaseObject{
     private computeRenderer: any;
     private num:number;
     private length: number;
-    public obj: THREE.Mesh;
     private comTexs: any;
     private uni: any;
     private fragment :string;
