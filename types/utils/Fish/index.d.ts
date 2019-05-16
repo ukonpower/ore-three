@@ -1,6 +1,5 @@
-import * as ORE from '../..';
 import * as THREE from 'three';
-export declare class Fish extends ORE.BaseObject {
+export declare class Fish extends THREE.Object3D {
     private renderer;
     private computeRenderer;
     private num;

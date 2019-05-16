@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export class TransformAnimator {
+export class ObjectMover {
 	private objPos: THREE.Vector3;
 	private objRot: THREE.Euler;
 

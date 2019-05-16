@@ -8,7 +8,7 @@ import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
 
 import * as THREE from 'three';
 
-export class Fish extends ORE.BaseObject{
+export class Fish extends THREE.Object3D{
     private renderer: THREE.WebGLRenderer;
     private computeRenderer: any;
     private num:number;
@@ -179,9 +179,11 @@ export class Fish extends ORE.BaseObject{
             flatShading: true,
         });
 
-        this.obj = new THREE.Mesh(geo, mat);
-        this.obj.matrixAutoUpdate = false;
-        this.obj.updateMatrix();
+        let obj = new THREE.Mesh(geo, mat);
+        obj.matrixAutoUpdate = false;
+        obj.updateMatrix();
+
+        this.add(obj);
     }
 
     update(time) {

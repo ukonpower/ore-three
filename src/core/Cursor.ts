@@ -2,16 +2,14 @@ export class Cursor {
     public onTouchStart: Function;
     public onTouchMove: Function;
     public onTouchEnd: Function;
+    public onWheel: Function;
 
     private _x: number;
     private _y: number;
     private _touchDown: boolean;
-    private _deltaX: number;
-    private _deltaY: number;
-
-    public scrollVel: number = 0.0;
-
-
+    public deltaX: number;
+    public deltaY: number;
+    
     constructor() {
         let userAgent = navigator.userAgent;
         if (userAgent.indexOf('iPhone') >= 0 || userAgent.indexOf('iPad') >= 0 || userAgent.indexOf('Android') >= 0) {
@@ -23,13 +21,8 @@ export class Cursor {
             window.addEventListener('mousemove', this._TouchMove.bind(this));
             window.addEventListener('mouseup', this._TouchEnd.bind(this));
             window.addEventListener('dragend', this._TouchEnd.bind(this));
+            window.addEventListener('wheel',this.wheel.bind(this),{ passive: false });
         }
-
-        window.addEventListener('wheel',this.onScroll.bind(this),{ passive: false });
-
-        this.onTouchStart;
-        this.onTouchMove;
-        this.onTouchEnd;
 
         this._x = -1;
         this._y = -1;
@@ -38,8 +31,8 @@ export class Cursor {
     }
 
     set x(x) {
-        if (this._x == -1) this._deltaX = 0;
-        else this._deltaX = x - this._x
+        if (this._x == -1) this.deltaX = 0;
+        else this.deltaX = x - this._x;
         this._x = x;
     }
     get x() {
@@ -47,25 +40,14 @@ export class Cursor {
     }
 
     set y(y) {
-        if (this._y == -1) this._deltaY = 0;
-        else this._deltaY = y - this._y
+        if (this._y == -1) this.deltaY = 0;
+        else this.deltaY = y - this._y;
         this._y = y;
     }
 
     get y() {
         return this._y;
     }
-
-    get deltaX() {
-        if (this._deltaX != null) return this._deltaX;
-        else return 0;
-    }
-
-    get deltaY() {
-        if (this._deltaY != null) return this._deltaY;
-        else return 0;
-    }
-
     private _TouchStart(event) {
         if (!event.touches) {
             if (event.button != 0) return;
@@ -106,15 +88,15 @@ export class Cursor {
             if (this.onTouchEnd) {
                 this.onTouchEnd(event);
             }
+
+            this.deltaX = 0;
+            this.deltaY = 0;
         }
     }
-
-    private onScroll(e){
-        this.scrollVel -= e.deltaY * 0.008;
-        e.preventDefault();
-    }
-
-    public update(){
-        this.scrollVel *= 0.89;
+    
+    private wheel(e){
+        if(this.onWheel){
+            this.onWheel(e);
+        }
     }
 }

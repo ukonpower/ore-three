@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Cursor } from '../controller/Cursor';
+import { Cursor } from '../core/Cursor';
 export declare class BaseScene {
     name: string;
     renderer: THREE.WebGLRenderer;
@@ -7,6 +7,7 @@ export declare class BaseScene {
     clock: THREE.Clock;
     camera: THREE.PerspectiveCamera;
     time: number;
+    deltaTime: number;
     cursor: Cursor;
     constructor(renderer: any);
     tick(): void;
@@ -15,4 +16,5 @@ export declare class BaseScene {
     onTouchStart(e: MouseEvent): void;
     onTouchMove(e: MouseEvent): void;
     onTouchEnd(e: MouseEvent): void;
+    onWheel(e: WheelEvent): void;
 }

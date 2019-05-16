@@ -3,17 +3,15 @@ import * as THREE from 'three';
 
 import vert from './shaders/background.vs';
 
-export class Background extends ORE.BaseObject{
+export class Background extends THREE.Object3D{
     private uni: { [uniform: string]: THREE.IUniform };
     private frag: string;
-    private test: number;
     
     constructor(fragmentShader:string,uniforms:any){
         super();
         this.frag = fragmentShader;
         this.uni = uniforms;    
         this.createMesh();
-        this.test = 10;
     }
 
     createMesh(){
@@ -49,6 +47,6 @@ export class Background extends ORE.BaseObject{
             vertexShader: vert,
             transparent:true,
         });
-        this.obj = new THREE.Mesh(geo,mat);
+        this.add(new THREE.Mesh(geo,mat));
     }
 }

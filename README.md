@@ -90,7 +90,7 @@ export default class MainScene extends ORE.BaseScene {
 if you want add GPU fish...
 ```javascript
 this.fish = new ORE.Fish(this.renderer,1000,10);
-this.scene.add(this.fish.obj);
+this.scene.add(this.fish);
 ```
 
 and update fish

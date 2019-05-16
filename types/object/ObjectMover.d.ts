@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-export declare class TransformAnimator {
+export declare class ObjectMover {
     private objPos;
     private objRot;
     private basePos;

@@ -1,8 +1,10 @@
-export { Controller } from './controller/Controller';
+export { Controller } from './core/Controller';
 export { BaseScene } from './scene/BaseScene';
-export { BaseObject } from './objects/BaseObject';
-export { Cursor } from './controller/Cursor';
+export { Cursor } from './core/Cursor';
+export { PageScroller } from './core/PageScroller';
+export { ObjectMover } from './object/ObjectMover';
+export { ObjectMouseRotator } from './object/ObjectMouseRotator';
 export { Fish } from './utils/Fish';
 export { Background } from './utils/Background';
 export { PostProcessing } from './utils/PostProcessing';
-export { TransformAnimator } from './objects/TransformAnimator';
+export { DomGLSL } from './utils/DomGLSL';

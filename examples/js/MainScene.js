@@ -39,4 +39,7 @@ export default class MainScene extends ORE.BaseScene {
 
 	onTouchEnd(e) {
 	}
+
+	onWheel(e){
+	}
 }

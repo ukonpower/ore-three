@@ -3,7 +3,7 @@ import { Cursor } from './Cursor';
 import * as ORE from '../scene/BaseScene';
 
 export class Controller {
-    private canvas;
+    private canvas: HTMLCanvasElement;
     private currentScene: ORE.BaseScene;
     public renderer: THREE.WebGLRenderer;
     
@@ -17,6 +17,7 @@ export class Controller {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas
         });
+        
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(retina ? window.devicePixelRatio : 1);
         

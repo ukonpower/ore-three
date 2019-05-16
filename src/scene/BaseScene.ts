@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Cursor } from '../controller/Cursor';
+import { Cursor } from '../core/Cursor';
 
 export class BaseScene {
     public name: string
@@ -7,7 +7,8 @@ export class BaseScene {
     public scene: THREE.Scene;
     public clock: THREE.Clock;
     public camera: THREE.PerspectiveCamera;
-    public time: number;
+    public time: number = 0;
+    public deltaTime: number = 0;
     public cursor: Cursor;
 
     constructor(renderer) {
@@ -16,16 +17,18 @@ export class BaseScene {
         this.scene = new THREE.Scene();
         this.clock = new THREE.Clock();
         this.camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 1000);
-        this.time = 0;
+
 
         this.cursor = new Cursor();
         this.cursor.onTouchStart = this.onTouchStart.bind(this);
         this.cursor.onTouchMove = this.onTouchMove.bind(this);
         this.cursor.onTouchEnd = this.onTouchEnd.bind(this);
+        this.cursor.onWheel = this.onWheel.bind(this);
     }
 
     public tick() {
-        this.time += this.clock.getDelta();
+        this.deltaTime = this.clock.getDelta();
+        this.time += this.deltaTime;
         this.animate();
     }
 
@@ -41,4 +44,6 @@ export class BaseScene {
     public onTouchMove(e: MouseEvent) { }
 
     public onTouchEnd(e: MouseEvent) { }
+
+    public onWheel(e: WheelEvent) { }
 }
