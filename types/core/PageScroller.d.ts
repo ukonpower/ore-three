@@ -13,7 +13,7 @@ export declare class PageScroller {
     constructor(element: HTMLElement);
     resize(): void;
     moveto(target: HTMLElement, duration?: number, callback?: Function): void;
-    addScrollVelocity(v: number): void;
-    update(deltaTime: number): void;
+    setScrollVelocity(velocity: number): void;
+    update(deltaTime?: number): void;
     private sigmoid;
 }

@@ -6,6 +6,7 @@ body,html{
 	background-color: #000;
 	width: 100%;
 	height: 100%;
+	overflow:hidden;
 }
 
 #canvas{
@@ -14,7 +15,17 @@ body,html{
 	height: 100%;
 }
 
+.wrapper{
+	position: absolute;
+	background-color: #fff;
+	opacity: 0.5;
+	width: 100%;
+	height: 5000px;
+}
 .test{
+	background: #000;
+	position: absolute;
+	top: 1000px;
 	width: 100px;
 	height: 100px;
 }

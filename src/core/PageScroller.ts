@@ -20,11 +20,8 @@ export class PageScroller {
 	}
 
 	constructor(element: HTMLElement) {
-		
 		this.element = element;
 		this.rect = this.element.getBoundingClientRect();
-
-		console.log(this.element);
 	}
 
 	public resize() {
@@ -52,18 +49,18 @@ export class PageScroller {
 		}
 	}
 
-	public addScrollVelocity(v: number) {
+	public setScrollVelocity(velocity: number) {
 		this.isAutoMoving = false;
-		this.scrollVel += v;
+		this.scrollVel = -velocity;
 	}
 
-	public update(deltaTime: number) {
+	public update(deltaTime: number = null) {
 		if (!this.isAutoMoving) {
-			this.scrollVel *= 0.9;
 			this._pageOffset += this.scrollVel;
 			this._pageOffset = Math.max(Math.min(0.0, this.pageOffset), -this.rect.height + window.innerHeight);
+			this.scrollVel *= 0.95;
 		} else {
-			this.x += deltaTime / this.duration;
+			this.x += (deltaTime ? deltaTime : 0.016) / this.duration;
 			let ended = false;
 			
 			if (this.x >= 1.0) {
