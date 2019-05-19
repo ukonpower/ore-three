@@ -1,17 +1,18 @@
 import * as THREE from 'three';
 import ppVert from './shaders/post-processing.vs';
 
-declare interface PPParam {
+export declare interface PPParam {
     fragmentShader: string,
-    uniforms: any
+    uniforms?: any
 }
 
-declare interface EffectMaterials {
+export declare interface EffectMaterials {
     material: THREE.ShaderMaterial,
     uniforms: any
 }
 
 export class PostProcessing {
+
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
     private camera: THREE.Camera;
@@ -19,11 +20,18 @@ export class PostProcessing {
 
     private readBuffer: THREE.WebGLRenderTarget;
     private writeBuffer: THREE.WebGLRenderTarget;
+    public resultBuffer: THREE.WebGLRenderTarget;
+    public resolution: THREE.Vector2;
 
     private effectMaterials: [EffectMaterials];
 
     constructor(renderer: THREE.WebGLRenderer, parameter: [PPParam]) {
+
         this.renderer = renderer;
+
+        this.resolution = new THREE.Vector2();
+        this.renderer.getSize(this.resolution);
+        this.resolution.multiplyScalar(this.renderer.getPixelRatio());
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -31,51 +39,119 @@ export class PostProcessing {
         this.scene.add(this.screenMesh);
 
         this.initRenderTargets();
+        
+        parameter.forEach((param) => {
 
-        parameter.forEach((param, i) => {
+            if (!param.uniforms) param.uniforms = {};
+
+            param.uniforms.backbuffer = { value: null };
+            param.uniforms.resolution = { value: this.resolution };
+
             let mat = new THREE.ShaderMaterial({
+
                 uniforms: param.uniforms,
                 vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
                 fragmentShader: param.fragmentShader,
+
             })
-            param.uniforms.backbuffer = { vlaue: null };
+
             let effectMaterial = { material: mat, uniforms: param.uniforms }
+
             if (!this.effectMaterials) {
+
                 this.effectMaterials = [effectMaterial];
+
+            }else{
+
+                this.effectMaterials.push(effectMaterial);
+            
             }
-            this.effectMaterials.push(effectMaterial);
         });
+
     }
 
     private initRenderTargets() {
-        let size: THREE.Vector2 = new THREE.Vector2();
-        this.renderer.getSize(size);
-        size.multiplyScalar(this.renderer.getPixelRatio());
-        this.readBuffer = new THREE.WebGLRenderTarget(size.x, size.y);
-        this.writeBuffer = new THREE.WebGLRenderTarget(size.x, size.y);
+        
+        this.readBuffer = this.createRenderTarget();
+        this.writeBuffer = this.createRenderTarget();
+
+    }
+
+    public createRenderTarget(){
+
+        return new THREE.WebGLRenderTarget(this.resolution.x,this.resolution.y);
+
     }
 
     private swapBuffers() {
-        let tmp = this.readBuffer;
-        this.readBuffer = this.writeBuffer;
-        this.writeBuffer = tmp;
+
+        let tmp = this.writeBuffer;
+        this.writeBuffer = this.readBuffer;
+        this.readBuffer = tmp;
+
     }
 
-    render(scene: THREE.Scene, camera: THREE.Camera) {
-        this.renderer.setRenderTarget(this.readBuffer);
-        this.renderer.render(scene, camera);
-        this.effectMaterials.forEach((mat, i) => {
-            this.screenMesh.material = mat.material;
-            mat.uniforms["backbuffer"].value = this.readBuffer.texture;
+    public render(offScreenRendering: boolean);
 
-            if (i < this.effectMaterials.length - 1) {
+    public render(srcTexture?: THREE.Texture, offScreenRendering?: boolean);
+
+    public render(scene: THREE.Scene, camera: THREE.Camera, offScreenRendering?: boolean);
+
+    public render(scene_srcTexture_offScreen: any = false, camera_offScreenRendering: any = false, offScreenRendering: boolean = false) {
+
+        let isOffscreen = false;
+
+        if (scene_srcTexture_offScreen.type == 'Scene') {
+            
+            this.renderer.setRenderTarget(this.readBuffer);
+            this.renderer.render(scene_srcTexture_offScreen, camera_offScreenRendering);
+
+            isOffscreen = offScreenRendering;
+
+        } else {
+
+            if( typeof(scene_srcTexture_offScreen) == 'boolean'){
+
+                isOffscreen = scene_srcTexture_offScreen;
+
+            }else{
+
+                this.effectMaterials[0].uniforms.backbuffer.value = scene_srcTexture_offScreen;
+
+                isOffscreen = camera_offScreenRendering;
+  
+            }
+
+        }
+        
+        this.effectMaterials.forEach((mat, i) => {
+            
+            this.screenMesh.material = mat.material;            
+            
+            if (i < this.effectMaterials.length - 1 || isOffscreen) {
+                
                 this.renderer.setRenderTarget(this.writeBuffer);
+
             } else {
+                
                 this.renderer.setRenderTarget(null);
+
             }
 
             this.renderer.render(this.scene, this.camera);
+
             this.swapBuffers();
+
+            mat.uniforms["backbuffer"].value = this.readBuffer.texture;
+
         })
+
+        this.resultBuffer = isOffscreen ? this.readBuffer : null;
+    }
+
+    public getResultTexture(): THREE.Texture {
+
+        return this.resultBuffer ? this.resultBuffer.texture : null;
+
     }
 }
