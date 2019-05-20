@@ -13,5 +13,5 @@ export declare class DomGLSL extends THREE.Object3D {
     private windowSize;
     constructor(parameter: DomGLSLParam);
     createMesh(): void;
-    domUpdate(): void;
+    updateDom(): void;
 }

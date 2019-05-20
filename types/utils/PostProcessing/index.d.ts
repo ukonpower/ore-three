@@ -1,6 +1,10 @@
 import * as THREE from 'three';
-declare interface PPParam {
+export declare interface PPParam {
     fragmentShader: string;
+    uniforms?: any;
+}
+export declare interface EffectMaterials {
+    material: THREE.ShaderMaterial;
     uniforms: any;
 }
 export declare class PostProcessing {
@@ -10,10 +14,15 @@ export declare class PostProcessing {
     private screenMesh;
     private readBuffer;
     private writeBuffer;
+    resultBuffer: THREE.WebGLRenderTarget;
+    resolution: THREE.Vector2;
     private effectMaterials;
-    constructor(renderer: THREE.WebGLRenderer, parameter: [PPParam]);
+    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[]);
     private initRenderTargets;
+    createRenderTarget(): THREE.WebGLRenderTarget;
     private swapBuffers;
-    render(scene: THREE.Scene, camera: THREE.Camera): void;
+    render(offScreenRendering: boolean): any;
+    render(srcTexture?: THREE.Texture, offScreenRendering?: boolean): any;
+    render(scene: THREE.Scene, camera: THREE.Camera, offScreenRendering?: boolean): any;
+    getResultTexture(): THREE.Texture;
 }
-export {};
