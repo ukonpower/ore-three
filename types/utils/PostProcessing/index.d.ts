@@ -25,4 +25,5 @@ export declare class PostProcessing {
     render(srcTexture?: THREE.Texture, offScreenRendering?: boolean): any;
     render(scene: THREE.Scene, camera: THREE.Camera, offScreenRendering?: boolean): any;
     getResultTexture(): THREE.Texture;
+    resize(width: number, height: number): void;
 }
