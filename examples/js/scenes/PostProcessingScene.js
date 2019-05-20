@@ -1,15 +1,17 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class BloomFilterScene extends ORE.BaseScene {
+import pp1 from './glsl/pp1.fs';
+import pp2 from './glsl/pp2.fs';
+
+export default class PostProcessScene extends ORE.BaseScene {
 
 	constructor(renderer) {
 
 		super(renderer);
-		this.name = "BloomFilterScene";
+		this.name = "PostProcessScene";
 		this.renderer.debug.checkShaderErrors = true;
 		this.init();
-
 	}
 
 	init() {
@@ -21,7 +23,7 @@ export default class BloomFilterScene extends ORE.BaseScene {
 			color:new THREE.Color(0xffffff),
 			roughness: 0.2
 		});
-		
+
 		boXMat.flatShading = true;
 		
 		this.box = new THREE.Mesh(boxGeo, boXMat);
@@ -36,18 +38,42 @@ export default class BloomFilterScene extends ORE.BaseScene {
 		this.aLight = new THREE.AmbientLight();
 		this.aLight.intensity = 0.5;
 		this.scene.add(this.aLight);
+		
+		this.ppParam = [
+			{
+				fragmentShader: pp1,
+				uniforms:{
+					time:{
+						value: 0
+					}
+				}
+			},
+			{
+				fragmentShader: pp2,
+				uniforms:{
+					time:{
+						value: 0
+					}
+				}
+			}
+		]
 
-		this.bloom = new ORE.BloomFilter(this.renderer);
+		this.pp = new ORE.PostProcessing(this.renderer,this.ppParam);
 	}
 
 	animate() {
 		this.box.rotateY(0.01);
-		this.box.rotateX(0.01);
-		this.bloom.render(this.scene,this.camera);
+		this.box.rotateX(0.015);
+		this.ppParam[0].uniforms.time.value = this.time;
+		this.ppParam[1].uniforms.time.value = this.time;
+		
+		
+		this.pp.render(this.scene,this.camera);
 	}
 
 	onResize(width, height) {
 		super.onResize(width, height);
+		this.pp.resize(width,height);
 	}
 
 	onTouchStart(e) {}
