@@ -41,8 +41,8 @@ export class Controller {
     }
 
     private onWindowResize() {
-        var width = window.innerWidth;
-        var height = window.innerHeight;
+        let width = window.innerWidth;
+        let height = window.innerHeight;
         this.renderer.setSize(width, height);
 
         if (this.currentScene) {

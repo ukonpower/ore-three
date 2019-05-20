@@ -159,4 +159,8 @@ export class PostProcessing {
         return this.resultBuffer ? this.resultBuffer.texture : null;
 
     }
+
+    public resize(width: number,height: number){
+        this.readBuffer.setSize(width,height);
+    }
 }
