@@ -15,17 +15,11 @@ body,html{
 	height: 100%;
 }
 
-.wrapper{
-	position: absolute;
-	background-color: #fff;
-	opacity: 0.5;
-	width: 100%;
-	height: 5000px;
-}
-.test{
+.dom-glsl{
 	background: #000;
 	position: absolute;
-	top: 1000px;
-	width: 100px;
-	height: 100px;
+	width: 500px;
+	height: 500px;
+	left: 50%;top: 50%;
+	transform: translate3D(-50%,-50%,0)
 }

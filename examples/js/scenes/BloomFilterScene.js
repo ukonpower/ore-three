@@ -1,9 +1,7 @@
-import * as ORE from '../../src/';
+import * as ORE from '../../../src/';
 import * as THREE from 'three';
-import pp1 from './glsl/pp1.fs';
-import pp2 from './glsl/pp2.fs';
 
-export default class PostProcessScene extends ORE.BaseScene {
+export default class BloomFilterScene extends ORE.BaseScene {
 
 	constructor(renderer) {
 
@@ -18,7 +16,6 @@ export default class PostProcessScene extends ORE.BaseScene {
 		this.camera.lookAt(0, 0, 0);
 
 		var boxGeo = new THREE.SphereGeometry(0.8, 30, 20);
-		// var boxGeo = new THREE.BoxGeometry(1,1,1);
 		var boXMat = new THREE.MeshStandardMaterial({
 			color:new THREE.Color(0xffffff),
 			roughness: 0.2

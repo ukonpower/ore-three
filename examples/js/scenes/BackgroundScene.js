@@ -1,10 +1,12 @@
-import * as ORE from '../../src/';
+import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class MainScene extends ORE.BaseScene {
+import frag from './glsl/sample.fs';
+
+export default class BackgroundScene extends ORE.BaseScene {
 	constructor(renderer) {
 		super(renderer);
-		this.name = "MainScene";
+		this.name = "BackgroundScene";
 		this.init();
 	}
 
@@ -17,18 +19,32 @@ export default class MainScene extends ORE.BaseScene {
 		this.box = new THREE.Mesh(boxGeo, boXMat);
 		this.scene.add(this.box);
 
-		this.light = new THREE.DirectionalLight();
-		this.light.position.y = 10;
-		this.scene.add(this.light);
+		this.uniforms = {
+			time: { 
+				value: 0
+			},
+			resolution: {
+				value: new THREE.Vector2(window.innerWidth,window.innerHeight)
+
+			}
+		}
+
+		this.background = new ORE.Background(frag,this.uniforms);
+
+		this.scene.add(this.background);
 	}
 
 	animate() {
 		this.box.rotateY(0.01);
+
+		this.uniforms.time.value = this.time;
+
 		this.renderer.render(this.scene, this.camera);
 	}
 
 	onResize(width, height) {
 		super.onResize(width, height);
+		this.uniforms.resolution.value = new THREE.Vector2(window.innerWidth,window.innerHeight)
 	}
 
 	onTouchStart(e) {

@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import OREScene from './PostProcessScene';
+import OREScene from './scenes/BackgroundScene';
 
 class APP{
 	constructor(){
