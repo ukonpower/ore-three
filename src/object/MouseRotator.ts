@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export class ObjectMouseRotator {
+export class MouseRotator {
 	private target: THREE.Object3D;
 	private scrollVel: THREE.Vector2;
 

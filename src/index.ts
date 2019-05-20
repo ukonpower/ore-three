@@ -3,8 +3,8 @@ export { BaseScene } from './scene/BaseScene';
 export { Cursor } from './core/Cursor';
 export { PageScroller } from './core/PageScroller';
 
-export { ObjectMover } from './object/ObjectMover';
-export { ObjectMouseRotator } from './object/ObjectMouseRotator';
+export { TransformAnimator } from './object/TransformAnimator';
+export { MouseRotator } from './object/MouseRotator';
 
 export { Fish } from './utils/Fish';
 export { Background } from './utils/Background';

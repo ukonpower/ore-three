@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export class ObjectMover {
+export class TransformAnimator {
 	private objPos: THREE.Vector3;
 	private objRot: THREE.Euler;
 
@@ -15,10 +15,10 @@ export class ObjectMover {
 	private x: number = 0;
 	private duration: number = 1.0;
 
-	private deltaTime: number = 0.016;
-
 	private isMoving: boolean = false;
 	private onFinish: Function;
+
+	public force: boolean = false;
 
 	constructor(obj: THREE.Object3D) {
 
@@ -35,9 +35,11 @@ export class ObjectMover {
 
 	}
 
-	public move(position: THREE.Vector3 = null, rotation: THREE.Euler = null, duration: number = 1.0,callback: Function) {
-		if(this.isMoving){
-			return;
+	public move(position: THREE.Vector3 = null, rotation: THREE.Euler = null, duration: number = 1.0,callback?: Function): boolean {
+		console.log(this.isMoving);
+		
+		if(this.isMoving && !this.force){
+			return false;
 		}
 		
 		if (!position) {
@@ -63,20 +65,22 @@ export class ObjectMover {
 		this.distanceRot = new THREE.Vector3().subVectors(this.goalRot,this.baseRot);
 
 		this.x = 0;
+		this.isMoving = true;
+
+		return true;
 	}
 
-	public update() {
+	public update(deltaTime?: number) {
 
 		let end = false;
 
 		if (this.isMoving) {
 
-			this.x += this.deltaTime / this.duration; 
+			this.x += (deltaTime ? deltaTime : 0.016) / this.duration; 
 
 			if(this.x > 1.0){
 
 				this.x = 1.0;
-				this.isMoving = false;
 				end = true; 
 
 			} 
@@ -89,9 +93,12 @@ export class ObjectMover {
 			if(end){
 
 				this.x = 0.0;
+				this.isMoving = false;
 
+
+				console.log("moved");
 				if(this.onFinish){
-
+					
 					this.onFinish();
 
 				}
@@ -101,6 +108,7 @@ export class ObjectMover {
 
 	private sigmoid(a, x) {
 
+		
 		var e1 = Math.exp(-a * (2 * x - 1));
 		var e2 = Math.exp(-a);
 		return (1 + (1 - e1) / (1 + e1) * (1 + e2) / (1 - e2)) / 2;
