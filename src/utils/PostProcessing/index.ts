@@ -25,7 +25,7 @@ export class PostProcessing {
 
     private effectMaterials: [EffectMaterials];
 
-    constructor(renderer: THREE.WebGLRenderer, parameter: [PPParam]) {
+    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[]) {
 
         this.renderer = renderer;
 
@@ -100,6 +100,7 @@ export class PostProcessing {
     public render(scene_srcTexture_offScreen: any = false, camera_offScreenRendering: any = false, offScreenRendering: boolean = false) {
 
         let isOffscreen = false;
+        let skipSetBackBuffer = false;
 
         if (scene_srcTexture_offScreen.type == 'Scene') {
             
@@ -117,7 +118,7 @@ export class PostProcessing {
             }else{
 
                 this.effectMaterials[0].uniforms.backbuffer.value = scene_srcTexture_offScreen;
-
+                skipSetBackBuffer = true;
                 isOffscreen = camera_offScreenRendering;
   
             }
@@ -126,7 +127,13 @@ export class PostProcessing {
         
         this.effectMaterials.forEach((mat, i) => {
             
-            this.screenMesh.material = mat.material;            
+            this.screenMesh.material = mat.material;          
+            
+            if(!skipSetBackBuffer || i > 0){
+
+                mat.uniforms["backbuffer"].value = this.readBuffer.texture;
+            
+            }
             
             if (i < this.effectMaterials.length - 1 || isOffscreen) {
                 
@@ -141,8 +148,6 @@ export class PostProcessing {
             this.renderer.render(this.scene, this.camera);
 
             this.swapBuffers();
-
-            mat.uniforms["backbuffer"].value = this.readBuffer.texture;
 
         })
 
