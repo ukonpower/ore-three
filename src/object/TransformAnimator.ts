@@ -12,10 +12,10 @@ export class TransformAnimator {
 	private goalRot: THREE.Vector3;
 	private distanceRot: THREE.Vector3;
 
-	private x: number = 0;
-	private duration: number = 1.0;
+	public x: number = 0;
+	public duration: number = 1.0;
 
-	private isMoving: boolean = false;
+	public isMoving: boolean = false;
 	private onFinish: Function;
 
 	public force: boolean = false;

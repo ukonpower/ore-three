@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
 export class MouseRotator {
-	private target: THREE.Object3D;
-	private scrollVel: THREE.Vector2;
+	public target: THREE.Object3D;
+	public scrollVel: THREE.Vector2;
 
 	constructor(objs: THREE.Object3D) {
 		this.target = objs;
