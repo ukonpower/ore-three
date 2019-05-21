@@ -1,6 +1,6 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
-import frag from './glsl/sample.fs'
+import frag from './glsl/dom-glsl.fs'
 
 export default class DomGLSLScene extends ORE.BaseScene {
 	constructor(renderer) {
