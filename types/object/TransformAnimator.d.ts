@@ -8,9 +8,9 @@ export declare class TransformAnimator {
     private baseRot;
     private goalRot;
     private distanceRot;
-    private x;
-    private duration;
-    private isMoving;
+    x: number;
+    duration: number;
+    isMoving: boolean;
     private onFinish;
     force: boolean;
     constructor(obj: THREE.Object3D);
