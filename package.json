@@ -1,6 +1,6 @@
 {
   "name": "ore-three-ts",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Three.js utils.",
   "main": "build/ore-three.js",
   "scripts": {
