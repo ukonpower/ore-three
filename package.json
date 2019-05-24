@@ -1,7 +1,7 @@
 {
   "name": "ore-three-ts",
-  "version": "0.0.6",
-  "description": "Three.js wrapper.",
+  "version": "0.0.7",
+  "description": "Three.js utils.",
   "main": "build/ore-three.js",
   "scripts": {
     "dev": "webpack-dev-server --watch-content-base --config webpack-dev.config.js",
