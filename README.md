@@ -3,16 +3,8 @@
 
 ## Usage
 
-### Get Library
-#### link script
-Download the [library](https://raw.githubusercontent.com/ukonpower/ore-three-ts/master/build/ore-three.js) and include in your HTML.
-
-```html
-<script src="ore-three.js"></script>
-```
-
-#### npm
-or you can get the library from [npm](https://www.npmjs.com/package/ore-three-ts).
+### install
+You can get the library from [npm](https://www.npmjs.com/package/ore-three-ts).
 
 ```bash
 $ npm install ore-three-ts
