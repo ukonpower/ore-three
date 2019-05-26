@@ -8,7 +8,7 @@ export class Controller {
     private currentScene: ORE.BaseScene;
     public renderer: THREE.WebGLRenderer;
 
-    constructor(canvas, retina: boolean, ) {
+    constructor(canvas, retina: boolean, isAlpha: boolean) {
         console.log("%c- Welcome to Ore-Three " + VERSION + " -",'padding: 5px 10px ;background-color: black; color: white;font-size:11px');
         console.log("%c↓↓ THANKS TO THIS POWERFULL ENGINE!!",'padding: 2px 2px ;background-color: black; color: white; font-size:5px');
 
@@ -16,7 +16,8 @@ export class Controller {
         this.canvas = canvas;
 
         this.renderer = new THREE.WebGLRenderer({
-            canvas: this.canvas
+            canvas: this.canvas,
+            alpha: isAlpha
         });
 
         this.renderer.debug.checkShaderErrors = true;
