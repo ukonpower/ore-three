@@ -36,8 +36,7 @@ export class TransformAnimator {
 	}
 
 	public move(position: THREE.Vector3 = null, rotation: THREE.Euler = null, duration: number = 1.0,callback?: Function): boolean {
-		console.log(this.isMoving);
-		
+
 		if(this.isMoving && !this.force){
 			return false;
 		}
@@ -95,8 +94,6 @@ export class TransformAnimator {
 				this.x = 0.0;
 				this.isMoving = false;
 
-
-				console.log("moved");
 				if(this.onFinish){
 					
 					this.onFinish();
