@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import OREScene from './scenes/MainScene';
+import OREScene from './scenes/FishScene';
 
 class APP{
 	constructor(){
@@ -11,7 +11,7 @@ class APP{
 			alpha: false
 		});
 
-        this.oreScene = new OREScene(this.controller.renderer);
+		this.oreScene = new OREScene(this.controller.renderer);
         this.controller.setScene(this.oreScene);
 	}
 }
