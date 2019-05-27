@@ -44,7 +44,14 @@ export class PageScroller {
 			this.isAutoMoving = true;
 			this.duration = duration;
 
-			this.scrollDistance = (targetOffset + this.pageOffset) - this.pageOffset;
+			if (targetOffset <= this.pageOffset) {
+				this.scrollDistance = (targetOffset + this.pageOffset) - this.pageOffset;
+			} else if (targetOffset > 0) {
+				this.scrollDistance = (targetOffset - this.pageOffset) + this.pageOffset;
+			} else {
+				this.scrollDistance = -this.pageOffset;
+			}
+
 			this.onAutoMoved = callback;
 		}
 	}
