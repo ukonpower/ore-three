@@ -1,7 +1,7 @@
 uniform float time;
 uniform float seed;
 
-$noise4D;
+$noise4D
 
 void main() {
     if(gl_FragCoord.x >= 1.0) return;    
