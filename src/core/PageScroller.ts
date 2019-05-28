@@ -36,28 +36,31 @@ export class PageScroller {
 
 		if (!this.isAutoMoving) {			
 			let targetRect = target.getBoundingClientRect();
-			let targetOffset = -targetRect.top;
+			let targetOffset = targetRect.top;
 			this.baseOffset = this.pageOffset;
 
 			this.x = 0;
 			this.scrollVel = 0;
 			this.isAutoMoving = true;
 			this.duration = duration;
-
-			this.scrollDistance = (targetOffset + this.pageOffset) - this.pageOffset;
+			
+			this.scrollDistance = Math.max(targetOffset,-(this.rect.height - (this.pageOffset + window.innerHeight)));
 			this.onAutoMoved = callback;
 		}
 	}
 
 	public setScrollVelocity(velocity: number) {
 		this.isAutoMoving = false;
-		this.scrollVel = -velocity;
+		this.scrollVel = velocity;
 	}
 
 	public update(deltaTime: number = null) {
+		console.log(this.pageOffset);
+		
+		
 		if (!this.isAutoMoving) {
 			this._pageOffset += this.scrollVel;
-			this._pageOffset = Math.max(Math.min(0.0, this.pageOffset), -this.rect.height + window.innerHeight);
+			this._pageOffset = Math.min(Math.max(0.0, this.pageOffset), this.rect.height - window.innerHeight);
 			this.scrollVel *= 0.95;
 		} else {
 			this.x += (deltaTime ? deltaTime : 0.016) / this.duration;
@@ -79,7 +82,7 @@ export class PageScroller {
 				this.onAutoMoved = null;
 			}
 		}
-		this.element.style.transform = 'translate3d(0,' + this._pageOffset + 'px,0)';
+		this.element.style.transform = 'translate3d(0,' + -this._pageOffset + 'px,0)';
 	}
 
 	private sigmoid(a, x) {
