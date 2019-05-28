@@ -14,7 +14,6 @@ export class Controller {
     private currentScene: ORE.BaseScene;
     public renderer: THREE.WebGLRenderer;
 
-    // constructor(canvas, retina: boolean, ) {
     constructor(parameter: OreControllerParam) {
         console.log("%c- Welcome to Ore-Three " + VERSION + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px');
         console.log("%c↓↓ THANKS TO THIS POWERFULL ENGINE!!", 'padding: 2px 2px ;background-color: black; color: white; font-size:5px');
@@ -29,7 +28,7 @@ export class Controller {
 
         this.renderer.debug.checkShaderErrors = true;
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(option.retina ? window.devicePixelRatio : 1);
+        this.renderer.setPixelRatio(parameter.retina ? window.devicePixelRatio : 1);
 
         window.addEventListener('orientationchange', this.onOrientationDevice.bind(this));
         window.addEventListener('resize', this.onWindowResize.bind(this));
