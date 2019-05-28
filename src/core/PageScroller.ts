@@ -55,8 +55,6 @@ export class PageScroller {
 	}
 
 	public update(deltaTime: number = null) {
-		console.log(this.pageOffset);
-		
 		
 		if (!this.isAutoMoving) {
 			this._pageOffset += this.scrollVel;
