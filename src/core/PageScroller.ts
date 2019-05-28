@@ -44,7 +44,7 @@ export class PageScroller {
 			this.isAutoMoving = true;
 			this.duration = duration;
 			
-			this.scrollDistance = Math.max(targetOffset,-(this.rect.height - (this.pageOffset + window.innerHeight)));
+			this.scrollDistance = Math.min(targetOffset,(this.rect.height - (this.pageOffset + window.innerHeight)));
 			this.onAutoMoved = callback;
 		}
 	}
