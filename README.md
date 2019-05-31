@@ -25,9 +25,19 @@ import MainScene from './MainScene';
 class APP{
     constructor(){
         this.canvas = document.querySelector("#canvas");
-        
-        //create controller(canvas,retina: bool)
-        this.controller = new ORE.Controller(this.canvas,false);
+
+		/**
+		 *  create controller
+		 *  @param {Object} obj -
+		 *  @property {HTMLElement} canvas - canvasDOM
+		 *  @property {Bool} retina - retina
+		 *  @property {Bool} alpha - alpha
+		 */
+        this.controller = new ORE.Controller({
+			canvas: this.canvas,
+			retina: false,
+			alpha: false,
+		});
         
         //crete scene
         this.oreScene = new MainScene(this.controller.renderer);
