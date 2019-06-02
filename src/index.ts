@@ -6,6 +6,8 @@ export { PageScroller } from './core/PageScroller';
 export { TransformAnimator } from './object/TransformAnimator';
 export { MouseRotator } from './object/MouseRotator';
 
+export { AudioPlayer } from './audio/AudioPlayer';
+
 export { Fish } from './utils/Fish';
 export { Background } from './utils/Background';
 export { PostProcessing } from './utils/PostProcessing';
