@@ -10,7 +10,7 @@ export class AudioPlayer {
 
 	public audio: THREE.Audio;
 	public listener: THREE.AudioListener;
-	private analyser: THREE.AudioAnalyser;
+	public analyser: THREE.AudioAnalyser;
 	private bufferSize: number;
 	private onLoad: Function;
 	private isLoaded: boolean = false;
