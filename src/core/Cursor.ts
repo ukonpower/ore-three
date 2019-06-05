@@ -49,54 +49,87 @@ export class Cursor {
         return this._y;
     }
     private _TouchStart(event) {
+
         if (!event.touches) {
-            if (event.button != 0) return;
-            this.x = event.pageX;
-            this.y = event.pageY;
+
+            if (event.button == 0){
+
+                this.x = event.pageX;
+                this.y = event.pageY;
+
+            }
+
         } else {
+
             this.x = event.touches[0].clientX + window.pageXOffset;
             this.y = event.touches[0].clientY + window.pageYOffset;
+
         }
+
         this._touchDown = true;
 
         if (this.onTouchStart) {
+
             this.onTouchStart(event);
+
         }
     }
 
     private _TouchMove(event) {
+
         if (this._touchDown) {
+            
             if (!event.touches) {
+
                 this.x = event.pageX;
                 this.y = event.pageY;
+
             } else {
+
                 this.x = event.touches[0].clientX + window.pageXOffset;
                 this.y = event.touches[0].clientY + window.pageYOffset;
+
             }
+
             if (this.onTouchMove) {
+                
                 this.onTouchMove(event);
+
             }
+
         }
+
     }
 
     private _TouchEnd() {
+        
         if (this._touchDown) {
+
             this._touchDown = false;
             this._x = -1;
             this._y = -1;
 
             if (this.onTouchEnd) {
+
                 this.onTouchEnd(event);
+
             }
 
             this.deltaX = 0;
             this.deltaY = 0;
+
         }
+
     }
     
     private wheel(e){
+
         if(this.onWheel){
+
             this.onWheel(e);
+
         }
+
     }
+
 }
