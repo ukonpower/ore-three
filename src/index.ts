@@ -5,6 +5,7 @@ export { PageScroller } from './core/PageScroller';
 
 export { TransformAnimator } from './object/TransformAnimator';
 export { MouseRotator } from './object/MouseRotator';
+export { MouseVertexRotator } from './object/MouseVertexRotator';
 
 export { AudioPlayer } from './audio/AudioPlayer';
 
