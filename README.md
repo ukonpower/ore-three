@@ -3,6 +3,11 @@
 
 ## Usage
 
+Check ore-three example scenes!!
+
+[examples](https://github.com/ukonpower/ore-three-ts/tree/master/examples/js)
+
+
 ### install
 You can get the library from [npm](https://www.npmjs.com/package/ore-three-ts).
 

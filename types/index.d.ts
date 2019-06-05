@@ -4,6 +4,7 @@ export { Cursor } from './core/Cursor';
 export { PageScroller } from './core/PageScroller';
 export { TransformAnimator } from './object/TransformAnimator';
 export { MouseRotator } from './object/MouseRotator';
+export { MouseVertexRotator } from './object/MouseVertexRotator';
 export { AudioPlayer } from './audio/AudioPlayer';
 export { Fish } from './utils/Fish';
 export { Background } from './utils/Background';

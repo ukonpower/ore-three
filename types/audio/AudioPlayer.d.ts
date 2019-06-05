@@ -7,14 +7,19 @@ export declare interface AudioPlayerParam {
 export declare class AudioPlayer {
     audio: THREE.Audio;
     listener: THREE.AudioListener;
-    private analyser;
+    analyser: THREE.AudioAnalyser;
     private bufferSize;
     private onLoad;
     private isLoaded;
-    private soundData;
+    soundData: THREE.DataTexture;
+    volume: number;
+    private uniforms;
+    readonly isPlaying: boolean;
     constructor(parameter: AudioPlayerParam);
     load(src: any): void;
     play(): void;
     pause(): void;
-    registerUniforms(uniforms: any[]): void;
+    registerUniforms(uniform: any): void;
+    private setUniformData;
+    update(): void;
 }
