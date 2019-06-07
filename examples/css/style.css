@@ -16,10 +16,27 @@ body,html{
 }
 
 .dom-glsl{
-	background: #000;
 	position: absolute;
 	width: 500px;
 	height: 500px;
 	left: 50%;top: 50%;
 	transform: translate3D(-50%,-50%,0)
+}
+
+.wrapper{
+	position: absolute;
+	top: 0;left: 0;
+	width: 100%;
+	height: 2500px;
+}
+
+.target{
+	position: absolute;
+	top: 1000px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	height: 200px;
+	background-color: #FFF;
+
 }
