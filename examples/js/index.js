@@ -12,7 +12,7 @@ class APP {
 			alpha: false,
 
 		} );
-
+	
 		this.controller.setScene( OREScene );
 
 	}

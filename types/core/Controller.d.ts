@@ -1,17 +1,19 @@
 import * as THREE from 'three';
 import * as ORE from '../scene/BaseScene';
-export declare interface OreControllerParam {
-    canvas: HTMLCanvasElement;
+export declare interface OreControllerParam extends THREE.WebGLCapabilitiesParameters {
     retina?: boolean;
-    alpha?: boolean;
 }
 export declare class Controller {
-    private canvas;
     private currentScene;
     renderer: THREE.WebGLRenderer;
+    /**
+    * parameter extends THREE.WebGLRendererParameters.
+    * and it has retina option.
+    */
     constructor(parameter: OreControllerParam);
     private animate;
-    setScene(scene: ORE.BaseScene): void;
+    setScene(scene: ORE.BaseScene): any;
+    setScene(scene: typeof ORE.BaseScene): any;
     private onWindowResize;
     private onOrientationDevice;
 }

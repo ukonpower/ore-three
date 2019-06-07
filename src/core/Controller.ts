@@ -49,9 +49,21 @@ export class Controller {
 
     }
 
-    public setScene<Scene>( scene: typeof ORE.BaseScene ){
+    public setScene( scene: ORE.BaseScene );
+    
+    public setScene( scene: typeof ORE.BaseScene );
 
-        this.currentScene = new scene( this.renderer );
+    public setScene( scene: any) {
+
+        if( typeof scene == "object" ){
+            
+            this.currentScene = scene;
+
+        }else if( typeof scene == "function" ) {
+
+            this.currentScene = new scene( this.renderer );
+
+        }
 
     }
 

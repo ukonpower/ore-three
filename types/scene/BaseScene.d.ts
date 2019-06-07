@@ -4,8 +4,8 @@ export declare class BaseScene {
     name: string;
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
-    clock: THREE.Clock;
     camera: THREE.PerspectiveCamera;
+    clock: THREE.Clock;
     time: number;
     deltaTime: number;
     cursor: Cursor;

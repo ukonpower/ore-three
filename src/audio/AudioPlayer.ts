@@ -20,7 +20,7 @@ export class AudioPlayer {
 
 	get isPlaying(){
 		
-		if(this.audio){
+		if( this.audio ){
 
 			return this.audio.isPlaying;
 
@@ -32,27 +32,27 @@ export class AudioPlayer {
 
 	}
 
-	constructor(parameter:AudioPlayerParam) {
+	constructor( parameter: AudioPlayerParam ) {
 
 		this.listener = parameter.listener ? parameter.listener : new THREE.AudioListener();
 
-		this.audio = new THREE.Audio(this.listener);
+		this.audio = new THREE.Audio( this.listener );
 
 		this.bufferSize = parameter.bufferSize ? parameter.bufferSize : 128;
 
 		this.uniforms = [];
 
-		if(parameter.src){
+		if( parameter.src ){
 
-			this.load(parameter.src);
+			this.load( parameter.src );
 			
 		}
 		
 	}
 
-	public load(src){
+	public load( src ){
 
-		if(this.audio.buffer){
+		if( this.audio.buffer ){
 
 			this.audio.stop();
 
@@ -64,22 +64,22 @@ export class AudioPlayer {
 
 		this.onLoad = null;
 
-		loader.load(src,
+		loader.load( src,
 
-			(buffer: THREE.AudioBuffer) => {
+			( buffer: THREE.AudioBuffer ) => {
 
-				this.audio.setBuffer(buffer);
-				this.audio.setLoop(true);
-				this.audio.setVolume(0.5);
+				this.audio.setBuffer( buffer );
+				this.audio.setLoop( true );
+				this.audio.setVolume( 0.5 );
 
-				this.analyser = new THREE.AudioAnalyser(this.audio, this.bufferSize);
-				this.soundData = new THREE.DataTexture(this.analyser.data,this.bufferSize / 2,1,THREE.LuminanceFormat);
+				this.analyser = new THREE.AudioAnalyser( this.audio, this.bufferSize );
+				this.soundData = new THREE.DataTexture( this.analyser.data,this.bufferSize / 2,1,THREE.LuminanceFormat );
 				this.soundData.needsUpdate = true;
 				this.isLoaded = true;
 
-				this.setUniformData(this.uniforms);
+				this.setUniformData( this.uniforms );
 
-				if (this.onLoad) {
+				if ( this.onLoad) {
 
 					this.onLoad();
 
