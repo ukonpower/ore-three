@@ -1,15 +1,15 @@
 # ore-three
-[three.js](https://github.com/mrdoob/three.js) utils.
+[three.js]( https://github.com/mrdoob/three.js ) utils.
 
 ## Usage
 
 Check ore-three example scenes!!
 
-[examples](https://github.com/ukonpower/ore-three-ts/tree/master/examples/js)
+[examples]( https://github.com/ukonpower/ore-three-ts/tree/master/examples/js )
 
 
 ### install
-You can get the library from [npm](https://www.npmjs.com/package/ore-three-ts).
+You can get the library from [npm]( https://www.npmjs.com/package/ore-three-ts ).
 
 ```bash
 $ npm install ore-three-ts
@@ -24,36 +24,31 @@ import * as ORE from 'ore-three-ts';
 ### Create Controller
 
 ```javascript
-import * as ORE from 'ore-three-ts';
-import MainScene from './MainScene';
+import * as ORE from '../../src/';
+import OREScene from './scenes/MainScene';
 
-class APP{
-    constructor(){
-        this.canvas = document.querySelector("#canvas");
+class APP {
 
-		/**
-		 *  create controller
-		 *  @param {Object} obj -
-		 *  @property {HTMLElement} canvas - canvasDOM
-		 *  @property {Bool} retina - retina
-		 *  @property {Bool} alpha - alpha
-		 */
-        this.controller = new ORE.Controller({
-			canvas: this.canvas,
-			retina: false,
-			alpha: false,
-		});
+    constructor() {
         
-        //crete scene
-        this.oreScene = new MainScene(this.controller.renderer);
-        
-        //set scene
-        this.controller.setScene(this.oreScene);
+        this.controller = new ORE.Controller( {
+
+            canvas: document.querySelector(  "#canvas"  ),
+            retina: false,
+
+        } );
+
+        this.controller.setScene(  OREScene  );
+
     }
+
 }
-window.addEventListener('load',()=>{
-    let app = new APP();
-})
+
+window.addEventListener( 'load', ()=>{
+
+	let app = new APP();
+
+} );
 ```
 
 ### Create Scene
@@ -63,50 +58,66 @@ import * as ORE from 'ore-three-ts';
 import * as THREE from 'three';
 
 export default class MainScene extends ORE.BaseScene {
-    constructor(renderer) {
-        super(renderer);
+    
+    constructor( renderer ) {
+        
+        super( renderer );
+    
         this.init();
+    
     }
 
     init() {
-        this.camera.position.set(0,1.5,3);
-        this.camera.lookAt(0,0,0);
 
-        var boxGeo = new THREE.BoxGeometry(1,1,1);
+        this.camera.position.set( 0,1.5,3 );
+        this.camera.lookAt( 0,0,0 );
+
+        var boxGeo = new THREE.BoxGeometry( 1,1,1 );
         var boXMat = new THREE.MeshNormalMaterial();
-        this.box = new THREE.Mesh(boxGeo,boXMat);
-        this.scene.add(this.box);
+        this.box = new THREE.Mesh( boxGeo,boXMat );
+        this.scene.add( this.box );
 
         this.light = new THREE.DirectionalLight();
         this.light.position.y = 10;
-        this.scene.add(this.light);
+        this.scene.add( this.light );
+    
     }
 
     animate() {
-        this.box.rotateY(0.02);
-        this.renderer.render(this.scene,this.camera);
+        
+        this.box.rotateY( 0.02 );
+    
+        this.renderer.render( this.scene,this.camera );
+    
     }
 
-    onResize(width,height){
-        super.onResize(width,height);
+    onResize( width,height ){
+    
+        super.onResize( width,height );
+    
     }
+
 }
 ```
 
 ### Use utility
 if you want add GPU fish...
 ```javascript
-this.fish = new ORE.Fish(this.renderer,1000,10);
-this.scene.add(this.fish);
+this.fish = new ORE.Fish( this.renderer,1000,10 );
+this.scene.add( this.fish );
 ```
 
 and update fish
 
 ```javascript
-animate(){
-    if(this.fish){
-        this.fish.update(this.time);
+animate() {
+    
+    if( this.fish ) {
+    
+        this.fish.update(  this.time  );
+    
     }
+    
 }
 ```
 
