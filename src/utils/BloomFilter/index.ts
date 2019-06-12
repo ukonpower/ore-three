@@ -1,98 +1,141 @@
 import * as THREE from 'three';
-import pp1 from './glsl/pp1.fs'
-import pp2 from './glsl/pp2.fs'
+import bright from './glsl/bright.fs'
+import blur from './glsl/blur.fs'
+import bloom from './glsl/bloom.fs'
 import { PostProcessing } from '../PostProcessing';
 
 export class BloomFilter {
 
-	public gaussVar: any;
-	public sceneTex: any;
 	public scene: THREE.Scene;
 	public camera: THREE.Camera
-	private pp1: PostProcessing;
-	private pp2: PostProcessing;
+
+	//postprocessings
+	private _brightPP: PostProcessing;
+	private _blurPP: PostProcessing;
+	private _bloomPP: PostProcessing;
 
 	private renderer: THREE.WebGLRenderer;
 	
 	private sceneRenderTarget: THREE.WebGLRenderTarget;
 
-	constructor( renderer ) {
-	
+	//uniforms
+	public sceneTex: any;
+	private resolution: any;
+
+	private _brightUni: any;
+	private _blurUni1: any;
+ 	private _blurUni2: any;
+	private _bloomUni: any;
+
+	//parameters
+	public renderCount: number = 5;
+	public threshold: number = 0.9
+	public brightness: number = 0.9;
+
+	constructor(renderer) {
+
 		this.renderer = renderer;
-	
+
 		this.init();
-	
+
 	}
 
 	private init() {
-	
-		var boxGeo = new THREE.SphereGeometry( 0.8, 30, 20 );
-	
-		var boXMat = new THREE.MeshStandardMaterial( {
-			color: new THREE.Color( 0xffffff ),
-			roughness: 0.2
-		} )
 
-		boXMat.flatShading = true;
-		
-		this.gaussVar = {
-			value: 500
-		}
-		
 		this.sceneTex = {
 			value: null
 		}
 
-		let pp1Param = [{
-			fragmentShader: pp1,
-			uniforms: {
-				threshold: {
-					value: 0.8
-				}
-			}
+		this.resolution = {
+			value: new THREE.Vector2()
+		}
+
+		this.resize();
+
+		//uniforms
+		this._brightUni = {
+			threshold: { value: this.threshold }
+		}
+
+		this._blurUni1 = {
+			direction: {
+				value: true,
+			},
+			resolution: this.resolution
+		}
+
+		this._blurUni2 = {
+			direction: {
+				value: false,
+			},
+			resolution: this.resolution
+		}
+
+		this._bloomUni = {
+			sceneTex: this.sceneTex,
+			brightness: { value: this.brightness },
+		}
+		
+
+		//postprocess params
+		let brightParam = [{
+			fragmentShader: bright,
+			uniforms: this._brightUni
 		}]
 
-		let pp2Param = [{
-			fragmentShader: pp2,
-			uniforms: {
-				v: {
-					value: false,
-				},
-				gaussVar: this.gaussVar,
-			}
+		let blurParam = [{
+			fragmentShader: blur,
+			uniforms: this._blurUni1
 		},
 		{
-			fragmentShader: pp2,
-			uniforms: {
-				v: {
-					value: true,
-				},
-				gaussVar: this.gaussVar,
-				sceneTex: this.sceneTex
-			}
-		} ]
+			fragmentShader: blur,
+			uniforms: this._blurUni2
+		}]
 
-		this.pp1 = new PostProcessing( this.renderer, pp1Param );
-		this.pp2 = new PostProcessing( this.renderer, pp2Param );
+		let bloomParam = [{
+			fragmentShader: bloom,
+			uniforms: this._bloomUni
+		}]
 
-		this.sceneRenderTarget = this.pp1.createRenderTarget();
-
+		//create post processings
+		this._brightPP = new PostProcessing( this.renderer, brightParam,0.1 );
+		this._blurPP = new PostProcessing( this.renderer, blurParam,0.1) ;
+		this._bloomPP = new PostProcessing( this.renderer, bloomParam );
+		this.sceneRenderTarget = this._bloomPP.createRenderTarget();
 	}
 
-	public render( scene:THREE.Scene,camera:THREE.Camera ) {
+	public render( scene: THREE.Scene, camera: THREE.Camera ) {
 
+		//apply uniforms
+		this._brightUni.threshold.value = this.threshold;
+		this._bloomUni.brightness.value = this.brightness;
+		
+		//render scene
 		this.renderer.setRenderTarget( this.sceneRenderTarget );
 		this.renderer.render( scene, camera );
 
+		this.sceneTex.value = this.sceneRenderTarget;
 
-		this.pp1.render( this.sceneRenderTarget.texture, true );
+		//render birightness part
+		this._brightPP.render( this.sceneRenderTarget.texture, true );
+		let tex = this._brightPP.getResultTexture();
 
-		let pp1result = this.pp1.getResultTexture();
+		//render blur
+		for( let i = 0; i < this.renderCount; i++ ){
 
-		this.sceneTex.value = this.sceneRenderTarget.texture;
+			this._blurPP.render( tex, true );
+			tex = this._blurPP.getResultTexture();
+		
+		}
 
-		this.pp2.render( pp1result, false );
-
+		//composition bloom
+		this._bloomPP.render( tex, false );
 	}
 
+	public resize( width?: number, height?: number ){
+		
+		this.resolution.value.x = ( width ? width : window.innerWidth ) / 20.0;
+		this.resolution.value.y = ( height ? height : window.innerHeight ) / 20.0;
+
+	}
 }

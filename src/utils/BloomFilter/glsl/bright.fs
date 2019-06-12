@@ -6,7 +6,6 @@ uniform float threshold;
 
 void main(){
 	vec3 c = texture2D(backbuffer,vUv).xyz;
-	float h = c.x + c.y + c.z - threshold * 3.0;
-	// h = step(0.0,h);
-	gl_FragColor = vec4(vec3(h * 1.0),1.0);
+	float f = max(0.0,length(c) * 1.2 - length(vec3(threshold)));
+	gl_FragColor = vec4(vec3(c) * f,1.0);
 }
