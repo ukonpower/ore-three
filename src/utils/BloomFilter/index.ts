@@ -114,7 +114,7 @@ export class BloomFilter {
 		this.renderer.setRenderTarget( this.sceneRenderTarget );
 		this.renderer.render( scene, camera );
 
-		this.sceneTex.value = this.sceneRenderTarget;
+		this.sceneTex.value = this.sceneRenderTarget.texture;
 
 		//render birightness part
 		this._brightPP.render( this.sceneRenderTarget.texture, true );
