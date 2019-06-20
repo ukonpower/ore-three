@@ -4,7 +4,7 @@ import * as ORE from '../scene/BaseScene';
 
 const VERSION = require(  "../../package.json"  ).version;
 
-export interface OreControllerParam extends THREE.WebGLRendererParameters{
+export interface ControllerParam extends THREE.WebGLRendererParameters{
     
     retina?: boolean;
 
@@ -19,7 +19,7 @@ export class Controller {
     * parameter extends THREE.WebGLRendererParameters.
     * and it has retina option.
     */
-    constructor(  parameter: OreControllerParam  ) {
+    constructor(  parameter: ControllerParam  ) {
 
         console.log( "%c- Welcome to Ore-Three " + VERSION + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
         console.log( "%c↓↓ THANKS TO THIS POWERFULL ENGINE!!", 'padding: 2px 2px ;background-color: black; color: white; font-size:5px' );

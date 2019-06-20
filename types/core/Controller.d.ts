@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as ORE from '../scene/BaseScene';
-export interface OreControllerParam extends THREE.WebGLRendererParameters {
+export interface ControllerParam extends THREE.WebGLRendererParameters {
     retina?: boolean;
 }
 export declare class Controller {
@@ -10,7 +10,7 @@ export declare class Controller {
     * parameter extends THREE.WebGLRendererParameters.
     * and it has retina option.
     */
-    constructor(parameter: OreControllerParam);
+    constructor(parameter: ControllerParam);
     private animate;
     setScene(scene: ORE.BaseScene): any;
     setScene(scene: typeof ORE.BaseScene): any;
