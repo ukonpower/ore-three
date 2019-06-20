@@ -4,7 +4,7 @@ import comShaderPosition from './shaders/computePosition.glsl';
 import comShaderVelocity from './shaders/computeVelocity.glsl';
 import vert from './shaders/fish.vs';
 
-import GPUComputationRenderer from '../../plugins/GPUComputationRenderer';
+import { GPUComputationRenderer } from '../../plugins/GPUComputationRenderer';
 
 import * as THREE from 'three';
 

@@ -96,4 +96,42 @@
  * @param {int} sizeY Computation problem size is always 2d: sizeX * sizeY elements.
  * @param {WebGLRenderer} renderer The renderer
   */
-export default function GPUComputationRenderer(sizeX: any, sizeY: any, renderer: any): void;
+import * as THREE from 'three';
+export declare interface ComputeVariable {
+    name: string;
+    initialValueTexture: THREE.Texture;
+    material: THREE.ShaderMaterial;
+    dependencies: any;
+    renderTargets: THREE.RenderTarget[];
+    wrapS: THREE.Wrapping;
+    wrapT: THREE.Wrapping;
+    minFilter: THREE.TextureFilter;
+    magFilter: THREE.TextureFilter;
+}
+export declare class GPUComputationRenderer {
+    private variables;
+    private currentTextureIndex;
+    private renderer;
+    private scene;
+    private camera;
+    private mesh;
+    private sizeX;
+    private sizeY;
+    private passThruUniforms;
+    private passThruShader;
+    constructor(sizeX: number, sizeY: number, renderer: THREE.WebGLRenderer);
+    addVariable(variableName: string, computeFragmentShader: string, initialValueTexture: THREE.Texture): ComputeVariable;
+    setVariableDependencies(variable: any, dependencies: any): void;
+    init(): boolean;
+    compute(): void;
+    getCurrentRenderTarget(variable: ComputeVariable): THREE.RenderTarget;
+    getAlternateRenderTarget(variable: ComputeVariable): THREE.RenderTarget;
+    addResolutionDefine(materialShader: THREE.ShaderMaterial): void;
+    createShaderMaterial(computeFragmentShader: string, uniforms?: any): THREE.ShaderMaterial;
+    createRenderTarget(sizeXTexture: number, sizeYTexture: number, wrapS: THREE.Wrapping, wrapT: THREE.Wrapping, minFilter: THREE.TextureFilter, magFilter: THREE.TextureFilter): THREE.WebGLRenderTarget;
+    createTexture(): THREE.DataTexture;
+    renderTexture(input: THREE.RenderTarget, output: THREE.RenderTarget): void;
+    doRenderTarget(material: THREE.ShaderMaterial, output: THREE.RenderTarget): void;
+    private getPassThroughVertexShader;
+    private getPassThroughFragmentShader;
+}
