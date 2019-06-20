@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import OREScene from './scenes/StableFluidsScene';
+import OREScene from './scenes/MainScene';
 
 class APP {
 

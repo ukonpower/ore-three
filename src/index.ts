@@ -16,4 +16,3 @@ export * from './utils/Background';
 export * from './utils/PostProcessing';
 export * from './utils/DomGLSL';
 export * from './utils/BloomFilter';
-export * from './utils/StableFluids';
