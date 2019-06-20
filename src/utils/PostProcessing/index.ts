@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import ppVert from './shaders/post-processing.vs';
 
-export declare interface PPParam {
+export interface PPParam {
     fragmentShader: string,
     uniforms?: any
 }
 
-export declare interface EffectMaterials {
+export interface EffectMaterial {
     material: THREE.ShaderMaterial,
     uniforms: any
 }
@@ -23,7 +23,7 @@ export class PostProcessing {
     public resultBuffer: THREE.WebGLRenderTarget;
     public resolution: THREE.Vector2;
 
-    private effectMaterials: [EffectMaterials];
+    private effectMaterials: [EffectMaterial];
 
     constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: number) {
 

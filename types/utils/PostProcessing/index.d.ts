@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-export declare interface PPParam {
+export interface PPParam {
     fragmentShader: string;
     uniforms?: any;
 }
-export declare interface EffectMaterials {
+export interface EffectMaterial {
     material: THREE.ShaderMaterial;
     uniforms: any;
 }

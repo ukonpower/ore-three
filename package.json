@@ -1,6 +1,6 @@
 {
   "name": "ore-three-ts",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Three.js utils.",
   "main": "build/ore-three.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "threejs",
     "webgl"
   ],
-  "types": "./types/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
     "build",
     "src",

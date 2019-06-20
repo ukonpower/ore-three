@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export declare interface AudioPlayerParam{
+export interface AudioPlayerParam{
 	src?: string;
 	listener?: THREE.AudioListener;
 	bufferSize?: number;

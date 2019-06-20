@@ -1,3 +1,3 @@
-export declare interface Uniforms {
+export interface Uniforms {
     [key: string]: THREE.IUniform;
 }

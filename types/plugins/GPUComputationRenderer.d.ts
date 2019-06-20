@@ -7,7 +7,7 @@
  *
 */
 import * as THREE from 'three';
-export declare interface ComputeRendererVariable {
+export interface ComputeRendererVariable {
     name: string;
     initialValueTexture: THREE.Texture;
     material: THREE.ShaderMaterial;

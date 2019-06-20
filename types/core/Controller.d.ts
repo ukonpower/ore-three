@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as ORE from '../scene/BaseScene';
-export declare interface OreControllerParam extends THREE.WebGLCapabilitiesParameters {
+export interface OreControllerParam extends THREE.WebGLRendererParameters {
     retina?: boolean;
 }
 export declare class Controller {

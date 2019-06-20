@@ -4,7 +4,7 @@ import * as ORE from '../scene/BaseScene';
 
 const VERSION = require(  "../../package.json"  ).version;
 
-export declare interface OreControllerParam extends THREE.WebGLCapabilitiesParameters{
+export interface OreControllerParam extends THREE.WebGLRendererParameters{
     
     retina?: boolean;
 
