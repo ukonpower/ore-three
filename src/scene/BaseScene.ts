@@ -16,6 +16,9 @@ export class BaseScene {
 
     public cursor: Cursor;
 
+    public width: number;
+    public heigth: number;
+
     constructor( renderer ) {
 
         this.renderer = renderer;
@@ -30,6 +33,8 @@ export class BaseScene {
         this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
         this.cursor.onWheel = this.onWheel.bind( this );
     
+        this.onResize( window.innerWidth, window.innerHeight );
+        
     }
 
     public tick() {
@@ -44,6 +49,9 @@ export class BaseScene {
     public animate() { }
 
     public onResize( width: number, height: number ) {
+
+        this.width = width;
+        this.heigth = height
     
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();

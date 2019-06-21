@@ -1,16 +1,28 @@
+import * as THREE from 'three';
+
 export class Cursor {
+
     public onTouchStart: Function;
     public onTouchMove: Function;
     public onTouchEnd: Function;
     public onWheel: Function;
 
-    private _x: number;
-    private _y: number;
     private _touchDown: boolean;
-    public deltaX: number;
-    public deltaY: number;
-    
+
+    public position: THREE.Vector2;
+    public delta: THREE.Vector2;
+
+    public hoverPosition: THREE.Vector2;
+    public hoverDelta: THREE.Vector2;
+
     constructor() {
+
+        this.position = new THREE.Vector2( 0, 0 );
+        this.delta = new THREE.Vector2( 0, 0 );
+
+        this.hoverPosition = new THREE.Vector2( 0, 0 );
+        this.hoverDelta = new THREE.Vector2( 0, 0 );
+
         
         let userAgent = navigator.userAgent;
 
@@ -30,58 +42,48 @@ export class Cursor {
         
         }
 
-        this._x = -1;
-        this._y = -1;
+        this.position.set( -1 , -1 );
 
         this._touchDown = false;
     
     }
 
-    set x( x ) {
-    
-        if ( this._x == -1 ) this.deltaX = 0;
-        else this.deltaX = x - this._x;
-    
-        this._x = x;
-    
-    }
-    
-    get x() {
-    
-        return this._x;
-    
-    }
+    private setPos( x: number, y: number ){
+        
+        if( this._touchDown ){
 
-    set y( y ) {
+            if( this.position.x == -1 || this.position.y == -1 ){
+        
+                this.delta.set( 0, 0 );
+            
+            }else{
+            
+                this.delta.set( x - this.position.x, y - this.position.y )
+            }
     
-        if ( this._y == -1 ) this.deltaY = 0;
-        else this.deltaY = y - this._y;
-    
-        this._y = y;
-    
-    }
+            this.position.set( x, y );
 
-    get y() {
-    
-        return this._y;
+        }
+
+        //calc delta
+        this.hoverDelta.set( x - this.hoverPosition.x, y - this.hoverPosition.y )
+        this.hoverPosition.set( x, y );
     
     }
-    
+     
     private _TouchStart( event ) {
 
         if ( !event.touches ) {
 
             if ( event.button == 0 ){
 
-                this.x = event.pageX;
-                this.y = event.pageY;
+                this.setPos( event.pageX, event.pageY )
 
             }
 
         } else {
 
-            this.x = event.touches[0].clientX + window.pageXOffset;
-            this.y = event.touches[0].clientY + window.pageYOffset;
+            this.position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset )
 
         }
 
@@ -95,26 +97,20 @@ export class Cursor {
     }
 
     private _TouchMove( event ) {
-
-        if ( this._touchDown ) {
             
-            if ( !event.touches ) {
+        if ( !event.touches ) {
 
-                this.x = event.pageX;
-                this.y = event.pageY;
+            this.setPos( event.pageX, event.pageY );
 
-            } else {
+        } else {
+            
+            this.setPos( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
+        
+        }
 
-                this.x = event.touches[0].clientX + window.pageXOffset;
-                this.y = event.touches[0].clientY + window.pageYOffset;
-
-            }
-
-            if ( this.onTouchMove ) {
-                
-                this.onTouchMove( event );
-
-            }
+        if ( this.onTouchMove ) {
+            
+            this.onTouchMove( event );
 
         }
 
@@ -125,8 +121,8 @@ export class Cursor {
         if ( this._touchDown ) {
 
             this._touchDown = false;
-            this._x = -1;
-            this._y = -1;
+            
+            this.position.set( -1, -1 );
 
             if ( this.onTouchEnd ) {
 
@@ -134,14 +130,13 @@ export class Cursor {
 
             }
 
-            this.deltaX = 0;
-            this.deltaY = 0;
+            this.delta.set( 0, 0 );
 
         }
 
     }
     
-    private wheel( e ){
+    private wheel( e: MouseWheelEvent ){
 
         if( this.onWheel ){
 
@@ -149,6 +144,12 @@ export class Cursor {
 
         }
 
+    }
+
+    public update(){
+
+        this.delta.multiplyScalar( 0.9 );
+        this.hoverDelta.multiplyScalar( 0.9 );
     }
 
 }

@@ -9,6 +9,8 @@ export declare class BaseScene {
     time: number;
     deltaTime: number;
     cursor: Cursor;
+    width: number;
+    heigth: number;
     constructor(renderer: any);
     tick(): void;
     animate(): void;
