@@ -4,28 +4,33 @@ uniform sampler2D dataTex;
 vec2 sampleData( sampler2D tex, vec2 uv, vec2 resolution ){
 
 	vec2 offset = vec2( 0.0, 0.0 );
+	float w = 1.0;
 	
-	if( uv.x <= 0.0 ){
+	if( uv.x < 0.0 ){
 
 		offset.x = 1.0;
+		w = -1.0;
 
-	}else if( uv.x >= 1.0 ){
+	}else if( uv.x > 1.0 ){
 
 		offset.x = -1.0;
+		w = -1.0;
 	
 	}
 
-	if( uv.y <= 0.0 ){
+	if( uv.y < 0.0 ){
 
 		offset.y = 1.0;
+		w = -1.0;
 
-	}else if( uv.y >= 1.0 ){
+	}else if( uv.y > 1.0 ){
 		
 		offset.y = -1.0;
+		w = -1.0;
 	
 	}
 
-	return texture2D( tex, uv + offset / resolution ).xy;
+	return w * texture2D( tex, uv + offset / resolution ).xy;
 
 }
 

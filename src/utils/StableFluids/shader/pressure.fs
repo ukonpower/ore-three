@@ -7,21 +7,21 @@ float sampleData( sampler2D tex, vec2 uv, vec2 resolution ){
 
 	vec2 offset = vec2( 0.0, 0.0 );
 	
-	if( uv.x <= 0.0 ){
+	if( uv.x < 0.0 ){
 
 		offset.x = 1.0;
 
-	}else if( uv.x >= 1.0 ){
+	}else if( uv.x > 1.0 ){
 
 		offset.x = -1.0;
 	
 	}
 
-	if( uv.y <= 0.0 ){
+	if( uv.y < 0.0 ){
 
 		offset.y = 1.0;
 
-	}else if( uv.y >= 1.0 ){
+	}else if( uv.y > 1.0 ){
 		
 		offset.y = -1.0;
 	

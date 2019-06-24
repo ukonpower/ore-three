@@ -5,28 +5,33 @@ uniform sampler2D dataTex;
 vec2 sampleVelocity( sampler2D tex, vec2 uv, vec2 resolution ){
 
 	vec2 offset = vec2( 0.0, 0.0 );
+	float w = 1.0;
 	
-	if( uv.x <= 0.0 ){
+	if( uv.x < 0.0 ){
 
 		offset.x = 1.0;
+		w = - 1.0;
 
-	}else if( uv.x >= 1.0 ){
+	}else if( uv.x > 1.0 ){
 
 		offset.x = -1.0;
+		w = - 1.0;
 	
 	}
 
-	if( uv.y <= 0.0 ){
+	if( uv.y < 0.0 ){
 
 		offset.y = 1.0;
+		w = - 1.0;
 
-	}else if( uv.y >= 1.0 ){
+	}else if( uv.y > 1.0 ){
 		
 		offset.y = -1.0;
+		w = - 1.0;
 	
 	}
 
-	return texture2D( tex, uv + offset / resolution ).xy;
+	return w * texture2D( tex, uv + offset / resolution ).xy;
 
 }
 
@@ -34,21 +39,21 @@ float samplePressure( sampler2D tex, vec2 uv, vec2 resolution ){
 
 	vec2 offset = vec2( 0.0, 0.0 );
 	
-	if( uv.x <= 0.0 ){
+	if( uv.x < 0.0 ){
 
 		offset.x = 1.0;
 
-	}else if( uv.x >= 1.0 ){
+	}else if( uv.x > 1.0 ){
 
 		offset.x = -1.0;
 	
 	}
 
-	if( uv.y <= 0.0 ){
+	if( uv.y < 0.0 ){
 
 		offset.y = 1.0;
 
-	}else if( uv.y >= 1.0 ){
+	}else if( uv.y > 1.0 ){
 		
 		offset.y = -1.0;
 	
@@ -76,7 +81,7 @@ vec2 bilerp(sampler2D tex, vec2 p, vec2 resolution) {
 }
 
 void main(){
-  vec2 r = resolution * 1.0;
-  vec2 p = gl_FragCoord.xy - sampleVelocity(dataTex, gl_FragCoord.xy / r, r);
-  gl_FragColor = vec4(bilerp(dataTex, p, r) * attenuation, samplePressure(dataTex, gl_FragCoord.xy / r, r), 0.0);
+	vec2 uv =  gl_FragCoord.xy / resolution;
+	vec2 p = gl_FragCoord.xy - sampleVelocity(dataTex, uv, resolution);
+	gl_FragColor = vec4(bilerp(dataTex, p, resolution) * attenuation, samplePressure(dataTex, uv, resolution), 0.0);
 }
