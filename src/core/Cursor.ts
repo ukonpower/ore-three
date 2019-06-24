@@ -48,6 +48,40 @@ export class Cursor {
     
     }
 
+    public getRelativePosition( elm: HTMLElement, normalize?: boolean, hover?: false){
+
+        let rect: DOMRect = ( elm.getClientRects()[0] ) as DOMRect;
+
+        let pos: THREE.Vector2;
+        
+        if( hover ){
+
+            pos = this.hoverPosition
+
+        }else{
+            
+            if( !this._touchDown ) return null;
+
+            pos = this.position;
+        
+        }
+        
+        let x = pos.x - rect.left;
+        let y = pos.y - rect.top;
+
+        if( normalize ){
+
+            x /= rect.width;
+            y /= rect.height;
+
+        }
+
+        let p = new THREE.Vector2( x, y );
+
+        return p;
+
+    }
+
     private setPos( x: number, y: number ){
         
         if( this._touchDown ){
