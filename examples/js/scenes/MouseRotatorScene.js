@@ -43,7 +43,7 @@ export default class MouseRotatorScene extends ORE.BaseScene {
 
 	onTouchMove( e ) {
 
-		this.rotator.addVelocity( new THREE.Vector2( this.cursor.deltaX, this.cursor.deltaY ) );
+		this.rotator.addVelocity( new THREE.Vector2( this.cursor.delta.x, this.cursor.delta.y ) );
 
 	}
 
