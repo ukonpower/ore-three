@@ -33,7 +33,8 @@ export class BaseScene {
         this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
         this.cursor.onWheel = this.onWheel.bind( this );
     
-        this.onResize( window.innerWidth, window.innerHeight );
+        this.width = window.innerWidth;
+        this.heigth = window.innerHeight;
         
     }
 
