@@ -10,6 +10,7 @@ export declare class Cursor {
     hoverPosition: THREE.Vector2;
     hoverDelta: THREE.Vector2;
     constructor();
+    getRelativePosition(elm: HTMLElement, normalize?: boolean, hover?: false): THREE.Vector2;
     private setPos;
     private _TouchStart;
     private _TouchMove;

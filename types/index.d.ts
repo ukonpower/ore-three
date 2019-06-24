@@ -7,7 +7,6 @@ export * from './object/MouseRotator';
 export * from './object/MouseVertexRotator';
 export * from './audio/AudioPlayer';
 export * from './shaders/shader';
-export * from './plugins/GPUComputationRenderer';
 export * from './utils/Fish';
 export * from './utils/Background';
 export * from './utils/PostProcessing';
