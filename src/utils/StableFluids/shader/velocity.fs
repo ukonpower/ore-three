@@ -1,5 +1,3 @@
-
-uniform float time;
 uniform float viscosity;
 uniform vec2 resolution;
 uniform sampler2D dataTex;

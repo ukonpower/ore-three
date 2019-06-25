@@ -1,6 +1,5 @@
 import *  as THREE from 'three';
 
-import { GPUComputationRenderer, ComputeRendererVariable } from '../../plugins/GPUComputationRenderer';
 import { GPUComputationController, GPUcomputationData, GPUComputationKernel } from '../GPUComputationController';
 
 import comShadePressure from './shader/pressure.fs';
@@ -44,7 +43,6 @@ export class StableFluids{
     private kernels: Kernels;
     private fluidData: GPUcomputationData;
 
-    private time: number = 0;
     private renderer: THREE.WebGLRenderer;
 	
     constructor( renderer :THREE.WebGLRenderer, resolution: THREE.Vector2 ) {
@@ -71,7 +69,6 @@ export class StableFluids{
         this.kernels.velocity.uniforms.dataTex = { value: null };
         this.kernels.velocity.uniforms.viscosity = { value: this.parameter.viscosity };
         this.kernels.velocity.uniforms.screenAspect = { value: this.parameter.screenAspect };
-        this.kernels.velocity.uniforms.time = { value: this.time };
         this.kernels.velocity.uniforms.pointerPos = { value: new THREE.Vector2( 0, 0 ) };
         this.kernels.velocity.uniforms.pointerVec = { value: new THREE.Vector2( 0, 0 ) };
         this.kernels.velocity.uniforms.pointerSize = { value: this.parameter.pointerSize };
@@ -84,9 +81,7 @@ export class StableFluids{
         
     }
 
-    public update( deltaTime: number ) {        
-
-        this.time += deltaTime;
+    public update() {
 
         this.kernels.pressure.uniforms.alpha.value = this.parameter.alpha;
         this.kernels.pressure.uniforms.beta.value = this.parameter.beta;
@@ -109,7 +104,6 @@ export class StableFluids{
 
         //update velocity
         this.kernels.velocity.uniforms.dataTex.value = this.fluidData.buffer.texture;
-        this.kernels.velocity.uniforms.time.value = this.time;
         this.gcConroller.compute( this.kernels.velocity, this.fluidData );
 
         //advect
@@ -128,10 +122,6 @@ export class StableFluids{
     public getTexture(): THREE.Texture {
 
         return this.fluidData.buffer.texture;
-
-    }
-
-    public resize( width: number, height: number ){
 
     }
 
