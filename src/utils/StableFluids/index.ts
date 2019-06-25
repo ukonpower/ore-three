@@ -72,8 +72,8 @@ export class StableFluids{
         this.kernels.velocity.uniforms.viscosity = { value: this.parameter.viscosity };
         this.kernels.velocity.uniforms.screenAspect = { value: this.parameter.screenAspect };
         this.kernels.velocity.uniforms.time = { value: this.time };
-        this.kernels.velocity.uniforms.pointerPos = { value: 0 };
-        this.kernels.velocity.uniforms.pointerVec = { value: 0 };
+        this.kernels.velocity.uniforms.pointerPos = { value: new THREE.Vector2( 0, 0 ) };
+        this.kernels.velocity.uniforms.pointerVec = { value: new THREE.Vector2( 0, 0 ) };
         this.kernels.velocity.uniforms.pointerSize = { value: this.parameter.pointerSize };
 
         this.kernels.advect.uniforms.dataTex = { value: null };
