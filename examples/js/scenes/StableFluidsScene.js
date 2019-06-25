@@ -24,6 +24,7 @@ export default class StableFluidScene extends ORE.BaseScene {
 
 		//create stable fluids
 		this.fluid = new ORE.StableFluids( this.renderer, new THREE.Vector2( 512, 512 ) );
+		this.fluid.parameter.pointerSize = 0.5;
 		
 		//create element
 		this.dom = document.createElement('div');
@@ -64,7 +65,7 @@ export default class StableFluidScene extends ORE.BaseScene {
 			
 		}
 
-		this.fluid.update( this.deltaTime );
+		this.fluid.update();
 
 		//update dom size and position
 		this.domglsl.updateDom();
