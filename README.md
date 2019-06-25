@@ -24,7 +24,7 @@ import * as ORE from 'ore-three-ts';
 ### Create Controller
 
 ```javascript
-import * as ORE from '../../src/';
+import * as ORE from 'ore-three-ts';
 import OREScene from './scenes/MainScene';
 
 class APP {
