@@ -17,7 +17,7 @@ export class BaseScene {
     public cursor: Cursor;
 
     public width: number;
-    public heigth: number;
+    public height: number;
 
     constructor( renderer ) {
 
@@ -34,7 +34,7 @@ export class BaseScene {
         this.cursor.onWheel = this.onWheel.bind( this );
     
         this.width = window.innerWidth;
-        this.heigth = window.innerHeight;
+        this.height = window.innerHeight;
         
     }
 
@@ -52,7 +52,7 @@ export class BaseScene {
     public onResize( width: number, height: number ) {
 
         this.width = width;
-        this.heigth = height
+        this.height = height
     
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
