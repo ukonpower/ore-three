@@ -92,6 +92,7 @@ export class StableFluids{
         this.kernels.pressure.uniforms.beta.value = this.parameter.beta;
         this.kernels.velocity.uniforms.viscosity.value = this.parameter.viscosity;
         this.kernels.velocity.uniforms.screenAspect.value = this.parameter.screenAspect;
+        this.kernels.velocity.uniforms.pointerSize.value = this.parameter.pointerSize;
         this.kernels.advect.uniforms.attenuation.value = this.parameter.attenuation;
 
         //update divergence
