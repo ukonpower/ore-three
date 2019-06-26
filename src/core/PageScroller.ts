@@ -71,7 +71,7 @@ export class PageScroller {
 	
 	}
 
-	public update( deltaTime: number = null ) {
+	public update( deltaTime?: number ) {
 		
 		if ( !this.isAutoMoving ) {
 	
