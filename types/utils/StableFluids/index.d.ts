@@ -14,11 +14,10 @@ export declare class StableFluids {
     private resolution;
     private kernels;
     private fluidData;
-    private time;
     private renderer;
     constructor(renderer: THREE.WebGLRenderer, resolution: THREE.Vector2);
-    update(deltaTime: number): void;
+    update(): void;
     setPointer(position: THREE.Vector2, vector: THREE.Vector2): void;
     getTexture(): THREE.Texture;
-    resize(width: number, height: number): void;
+    dispose(): void;
 }

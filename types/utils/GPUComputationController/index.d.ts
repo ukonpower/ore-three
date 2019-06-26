@@ -13,11 +13,14 @@ export declare class GPUComputationController {
     private scene;
     private camera;
     private mesh;
+    private materials;
     private tempData;
     readonly isSupported: boolean;
     constructor(renderer: THREE.WebGLRenderer, resolution: THREE.Vector2);
-    createData(): GPUcomputationData;
+    createInitializeTexture(): THREE.DataTexture;
+    createData(initializeTexture?: THREE.DataTexture): GPUcomputationData;
     createKernel(shader: string): GPUComputationKernel;
     compute(kernel: GPUComputationKernel, variable: GPUcomputationData): void;
     private swapBuffers;
+    dispose(): void;
 }
