@@ -5,15 +5,23 @@ import * as ORE from '../scene/BaseScene';
 const VERSION = require(  "../../package.json"  ).version;
 
 export interface ControllerParam extends THREE.WebGLRendererParameters{
-    
     retina?: boolean;
+}
 
+export interface GlobalProperties{    
+    renderer: THREE.WebGLRenderer;
+    cursor: Cursor;
 }
 
 export class Controller {
 
-    private currentScene: ORE.BaseScene;
+    public currentScene: ORE.BaseScene;
+
     public renderer: THREE.WebGLRenderer;
+    public cursor: Cursor;
+    public clock: THREE.Clock;
+
+    public gProps: GlobalProperties;
 
     /**
     * parameter extends THREE.WebGLRendererParameters.
@@ -25,43 +33,64 @@ export class Controller {
         console.log( "%c↓↓ THANKS TO THIS POWERFULL ENGINE!!", 'padding: 2px 2px ;background-color: black; color: white; font-size:5px' );
 
         this.renderer = new THREE.WebGLRenderer( parameter );
-        
         this.renderer.debug.checkShaderErrors = true;
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         this.renderer.setPixelRatio( parameter.retina ? window.devicePixelRatio : 1 );
 
+        this.cursor = new Cursor();
+        this.cursor.onTouchStart = this.onTouchStart.bind( this );
+        this.cursor.onTouchMove = this.onTouchMove.bind( this );
+        this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
+        this.cursor.onHover = this.onHover.bind( this );
+        this.cursor.onWheel = this.onWheel.bind( this );
+
+        this.clock = new THREE.Clock();
+
+        this.gProps = {
+            renderer: this.renderer,
+            cursor: this.cursor
+        }
+
         window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
         window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
 
-        this.animate();
+        this.tick();
 
     }
 
-    private animate() {
+    private tick() {
+
+        let deltatime = this.clock.getDelta();
         
-        if ( this.currentScene ) {
+        this.cursor.update();
         
-            this.currentScene.tick();
+        if( this.currentScene ){
+        
+            this.currentScene.tick( deltatime );
         
         }
         
-        requestAnimationFrame( this.animate.bind( this ) );
+        requestAnimationFrame( this.tick.bind( this ) );
+
+    }
+    
+    public bindScene(  scene: ORE.BaseScene ){
+
+        this.currentScene = scene;
+        this.currentScene.onBind( this.gProps );
+        
+        this.onWindowResize();
 
     }
 
-    public setScene( scene: ORE.BaseScene );
-    
-    public setScene( scene: typeof ORE.BaseScene );
+    public unbindScene(){
 
-    public setScene( scene: any) {
-
-        if( typeof scene == "object" ){
+        if( this.currentScene ){
             
-            this.currentScene = scene;
+            this.currentScene.onUnbind();
+            this.currentScene = null;
 
-        }else if( typeof scene == "function" ) {
-
-            this.currentScene = new scene( this.renderer );
+            this.renderer.renderLists.dispose();
 
         }
 
@@ -73,9 +102,8 @@ export class Controller {
         let height = window.innerHeight;
         
         this.renderer.setSize( width, height );
-
         
-        if ( this.currentScene ) {
+        if( this.currentScene ){
         
             this.currentScene.onResize( width, height );
         
@@ -87,6 +115,56 @@ export class Controller {
     
         this.onWindowResize();
     
+    }
+
+    public onTouchStart( e: MouseEvent ) { 
+
+        if( this.currentScene ){
+
+            this.currentScene.onTouchStart( this.cursor, e );
+
+        }
+        
+    }
+
+    public onTouchMove( e: MouseEvent ) {
+
+        if( this.currentScene ){
+
+            this.currentScene.onTouchMove( this.cursor, e );
+
+        }
+
+    }
+
+    public onTouchEnd( e: MouseEvent ) { 
+
+        if( this.currentScene ){
+
+            this.currentScene.onTouchEnd( this.cursor, e );
+
+        }
+
+    }
+
+    public onHover( ) { 
+
+        if( this.currentScene ){
+
+            this.currentScene.onHover( this.cursor );
+
+        }
+
+    }
+
+    public onWheel( e: WheelEvent ) { 
+
+        if( this.currentScene ){
+
+            this.currentScene.onWheel( e );
+
+        }
+
     }
 
 }

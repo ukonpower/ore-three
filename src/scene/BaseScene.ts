@@ -1,53 +1,86 @@
 import * as THREE from 'three';
 import { Cursor } from '../core/Cursor';
+import { GlobalProperties } from '../core/Controller';
 
 export class BaseScene {
 
+    public gProps: GlobalProperties;
+    
     public name: string
-    
-    public renderer: THREE.WebGLRenderer;
-    
+
     public scene: THREE.Scene;
     public camera: THREE.PerspectiveCamera;
     
-    public clock: THREE.Clock;
     public time: number = 0;
-    public deltaTime: number = 0;
-
-    public cursor: Cursor;
 
     public width: number;
     public height: number;
 
-    constructor( renderer ) {
+    constructor() {
+        
+        this.name = "";
 
-        this.renderer = renderer;
-        this.name = name;
         this.scene = new THREE.Scene();
-        this.clock = new THREE.Clock();
         this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
-
-        this.cursor = new Cursor();
-        this.cursor.onTouchStart = this.onTouchStart.bind( this );
-        this.cursor.onTouchMove = this.onTouchMove.bind( this );
-        this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
-        this.cursor.onWheel = this.onWheel.bind( this );
     
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         
     }
 
-    public tick() {
+    public tick( deltaTime: number ) {
     
-        this.deltaTime = this.clock.getDelta();
-        this.time += this.deltaTime;
+        this.time += deltaTime;
     
-        this.animate();
+        this.animate( deltaTime );
     
     }
 
-    public animate() { }
+    public animate( deltaTime: number ) { }
+
+    public onBind( gProps: GlobalProperties ) { 
+
+        this.gProps = gProps;
+
+    }
+
+    public onUnbind() {
+
+        this.removeChildrens( this.scene );
+        
+    }
+
+    private removeChildrens( object: THREE.Object3D ){
+
+        const length = object.children.length;
+
+        for(let i = length - 1; i >= 0; i-- ){
+
+            this.removeChildrens(object.children[i]);
+
+            let geo: THREE.Geometry | THREE.BufferGeometry;
+            let mat: THREE.Material;            
+            
+            if( (object.children[i] as THREE.Mesh).isMesh ){
+
+                geo = (object.children[i] as THREE.Mesh).geometry;
+                mat = ((object.children[i] as THREE.Mesh).material as THREE.Material);
+                
+            }
+
+            object.remove( (object.children[i] ) );
+
+            if( geo ){ 
+                geo.dispose();
+            }
+
+            if( mat ){ 
+                mat.dispose();
+            }
+
+        }
+
+    }
 
     public onResize( width: number, height: number ) {
 
@@ -59,12 +92,14 @@ export class BaseScene {
     
     }
 
-    public onTouchStart( e: MouseEvent ) { }
+    public onTouchStart( cursor: Cursor, event: MouseEvent ) { }
 
-    public onTouchMove( e: MouseEvent ) { }
+    public onTouchMove( cursor: Cursor, event: MouseEvent ) { }
 
-    public onTouchEnd( e: MouseEvent ) { }
+    public onTouchEnd( cursor: Cursor, event: MouseEvent ) { }
 
-    public onWheel( e: WheelEvent ) { }
+    public onHover( cursor: Cursor ) { }
+
+    public onWheel( event: WheelEvent ) { }
 
 }
