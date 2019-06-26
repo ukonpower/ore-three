@@ -1,27 +1,56 @@
 import * as THREE from 'three';
+import { Controller } from './Controller';
 
 export class Cursor {
 
     public onTouchStart: Function;
     public onTouchMove: Function;
     public onTouchEnd: Function;
+    public onHover: Function;
     public onWheel: Function;
 
     private _touchDown: boolean;
 
-    public position: THREE.Vector2;
-    public delta: THREE.Vector2;
+    public _position: THREE.Vector2;
+    public _delta: THREE.Vector2;
 
-    public hoverPosition: THREE.Vector2;
-    public hoverDelta: THREE.Vector2;
+    public _hoverPosition: THREE.Vector2;
+    public _hoverDelta: THREE.Vector2;
+
+    public hoverMode: boolean = false;
+
+    
+    public get position(): THREE.Vector2 {
+
+        return this._touchDown ? this._position : null;
+    
+    }
+
+    public get delta(): THREE.Vector2 { 
+
+        return this._touchDown ? this._delta : null;
+
+    }
+
+    public get hoverPosition(): THREE.Vector2 {
+
+        return this.hoverMode ? this._hoverPosition : null;
+
+    }
+    
+    public get hoverDelta(): THREE.Vector2 {
+
+        return this.hoverMode ? this._hoverDelta : null;
+        
+    }
 
     constructor() {
 
-        this.position = new THREE.Vector2( 0, 0 );
-        this.delta = new THREE.Vector2( 0, 0 );
+        this._position = new THREE.Vector2( 0, 0 );
+        this._delta = new THREE.Vector2( 0, 0 );
 
-        this.hoverPosition = new THREE.Vector2( 0, 0 );
-        this.hoverDelta = new THREE.Vector2( 0, 0 );
+        this._hoverPosition = new THREE.Vector2( 0, 0 );
+        this._hoverDelta = new THREE.Vector2( 0, 0 );
 
         
         let userAgent = navigator.userAgent;
@@ -42,27 +71,27 @@ export class Cursor {
         
         }
 
-        this.position.set( -1 , -1 );
+        this._position.set( -1 , -1 );
 
         this._touchDown = false;
     
     }
 
-    public getRelativePosition( elm: HTMLElement, normalize?: boolean, hover?: false){
+    public getRelativePosition( elm: HTMLElement, normalize?: boolean ){
 
         let rect: DOMRect = ( elm.getClientRects()[0] ) as DOMRect;
 
         let pos: THREE.Vector2;
         
-        if( hover ){
+        if( this.hoverMode ){
 
-            pos = this.hoverPosition
+            pos = this._hoverPosition
 
         }else{
             
             if( !this._touchDown ) return null;
 
-            pos = this.position;
+            pos = this._position;
         
         }
         
@@ -86,27 +115,27 @@ export class Cursor {
         
         if( this._touchDown ){
 
-            if( this.position.x == -1 || this.position.y == -1 ){
+            if( this._position.x == -1 || this._position.y == -1 ){
         
-                this.delta.set( 0, 0 );
+                this._delta.set( 0, 0 );
             
             }else{
             
-                this.delta.set( x - this.position.x, y - this.position.y )
+                this._delta.set( x - this._position.x, y - this._position.y )
             }
     
-            this.position.set( x, y );
+            this._position.set( x, y );
 
         }
 
         //calc delta
-        this.hoverDelta.set( x - this.hoverPosition.x, y - this.hoverPosition.y )
-        this.hoverPosition.set( x, y );
+        this._hoverDelta.set( x - this._hoverPosition.x, y - this._hoverPosition.y )
+        this._hoverPosition.set( x, y );
     
     }
      
     private _TouchStart( event ) {
-
+        
         if ( !event.touches ) {
 
             if ( event.button == 0 ){
@@ -117,7 +146,7 @@ export class Cursor {
 
         } else {
 
-            this.position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset )
+            this._position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset )
 
         }
 
@@ -142,7 +171,7 @@ export class Cursor {
         
         }
 
-        if ( this.onTouchMove ) {
+        if ( this._touchDown && this.onTouchMove ) {
             
             this.onTouchMove( event );
 
@@ -150,13 +179,13 @@ export class Cursor {
 
     }
 
-    private _TouchEnd() {
+    private _TouchEnd( event ) {
         
         if ( this._touchDown ) {
 
             this._touchDown = false;
             
-            this.position.set( -1, -1 );
+            this._position.set( -1, -1 );
 
             if ( this.onTouchEnd ) {
 
@@ -164,7 +193,7 @@ export class Cursor {
 
             }
 
-            this.delta.set( 0, 0 );
+            this._delta.set( 0, 0 );
 
         }
 
@@ -181,9 +210,20 @@ export class Cursor {
     }
 
     public update(){
+        
+        this._delta.multiplyScalar( 0.9 );
+        this._hoverDelta.multiplyScalar( 0.9 );
 
-        this.delta.multiplyScalar( 0.9 );
-        this.hoverDelta.multiplyScalar( 0.9 );
+        if( this.hoverMode ){
+
+            if( this.onHover ){
+
+                this.onHover();
+
+            }
+
+        }
+
     }
 
 }
