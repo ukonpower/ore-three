@@ -125,4 +125,11 @@ export class StableFluids{
 
     }
 
+    public dispose(){
+        
+        this.gcConroller.dispose();
+        this.fluidData.buffer.dispose();
+
+    }
+
 }
