@@ -1,3 +1,6 @@
+uniform sampler2D texturePosition;
+uniform sampler2D textureVelocity;
+uniform vec2 resolution;
 uniform float time;
 uniform float seed;
 

@@ -1,3 +1,7 @@
+uniform sampler2D texturePosition;
+uniform sampler2D textureVelocity;
+uniform vec2 resolution;
+
 void main() {
     if(gl_FragCoord.x <= 1.0){
         vec2 uv = gl_FragCoord.xy / resolution.xy;

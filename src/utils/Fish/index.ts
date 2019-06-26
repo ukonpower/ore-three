@@ -4,17 +4,26 @@ import comShaderPosition from './shaders/computePosition.glsl';
 import comShaderVelocity from './shaders/computeVelocity.glsl';
 import vert from './shaders/fish.vs';
 
-import { GPUComputationRenderer } from '../../plugins/GPUComputationRenderer';
 
 import * as THREE from 'three';
+import { GPUComputationController, GPUComputationKernel, GPUcomputationData } from '../GPUComputationController';
+
+declare interface Kernels{
+    velocity: GPUComputationKernel,
+    position: GPUComputationKernel
+}
 
 export class Fish extends THREE.Object3D{
     
     private renderer: THREE.WebGLRenderer;
-    private computeRenderer: any;
+
+    private gcController: GPUComputationController
+    private kernels: Kernels;
+    private positionData: GPUcomputationData;
+    private velocityData: GPUcomputationData;
+    
     private num:number;
     private length: number;
-    private comTexs: any;
     private uni: any;
     private fragment :string;
 
@@ -23,80 +32,45 @@ export class Fish extends THREE.Object3D{
         super();
 
         this.renderer = renderer;
-        this.computeRenderer;
         this.num = num;
         this.length = length;
         this.fragment = customComputeShader != null ? customComputeShader : comShaderVelocity;
-        
-        this.comTexs = {
-            position: {
-                texture: null,
-                uniforms: null,
-            },
-            velocity: {
-                texture: null,
-                uniforms: null,
-            }
+
+        this.gcController = new GPUComputationController( this.renderer, new THREE.Vector2( this.length, this.num ));
+    
+        //create kernels
+        this.kernels = {
+            position: this.gcController.createKernel( comShaderPosition ),
+            velocity: this.gcController.createKernel( comShaderVelocity )
         }
 
-        if ( this.renderer.extensions.get(  "OES_texture_float"  )  ) {
-        
-            this.initComputeRenderer()
-            this.createTrails();
-        
-        }else{
-        
-            console.log( "No OES_texture_float support for float textures." );
-        
-        }
+        //create initialize texture
+        let initPosTex = this.gcController.createInitializeTexture();
+        this.initPosition( initPosTex );
+
+        //create data
+        this.positionData = this.gcController.createData( initPosTex );
+        this.velocityData = this.gcController.createData();
+        initPosTex.dispose();
+
+        //set uniforms
+        this.kernels.position.uniforms.texturePosition = { value: null };
+        this.kernels.position.uniforms.textureVelocity = { value: null };
+
+        this.kernels.velocity.uniforms.texturePosition = { value: null };
+        this.kernels.velocity.uniforms.textureVelocity = { value: null };
+
+        this.kernels.velocity.uniforms.time = { value: 0 };
+        this.kernels.velocity.uniforms.seed = { value: Math.random() * 100.0 };
+
+        this.createTrails();
+
     }
 
-    initComputeRenderer() {
+    initPosition( tex: THREE.DataTexture ) {
         
-        this.computeRenderer = new GPUComputationRenderer( this.length, this.num, this.renderer );
-
-        if ( this.computeRenderer == null ) {
-        
-            return false;
-        
-        }
-
-        let initPositionTex = this.computeRenderer.createTexture();
-        let initVelocityTex = this.computeRenderer.createTexture();
-
-        this.initPosition( initPositionTex );
-
-        this.comTexs.position.texture = this.computeRenderer.addVariable( "texturePosition", comShaderPosition, initPositionTex );
-        this.comTexs.velocity.texture = this.computeRenderer.addVariable( "textureVelocity", this.fragment, initVelocityTex );
-
-        this.computeRenderer.setVariableDependencies( this.comTexs.position.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture] );
-        this.comTexs.position.uniforms = this.comTexs.position.texture.material.uniforms;
-
-        this.computeRenderer.setVariableDependencies( this.comTexs.velocity.texture, [this.comTexs.position.texture, this.comTexs.velocity.texture] );
-        this.comTexs.velocity.uniforms = this.comTexs.velocity.texture.material.uniforms;
-
-        this.comTexs.velocity.uniforms.time = {
-            value: 0
-        };
-        
-        this.comTexs.velocity.uniforms.seed = {
-            value: Math.random() * 100
-        };
-        
-        this.comTexs.velocity.uniforms.avoidPos = {
-            value: new THREE.Vector3( 0, 0, 0 )
-        };
-
-        this.computeRenderer.init();
-    
-        return true;
-    
-    }
-
-    initPosition( tex ) {
-    
         var texArray = tex.image.data;
-        let range = new THREE.Vector3( 25, 25, 25 );
+        let range = new THREE.Vector3( 10, 10, 10);
     
         for ( var i = 0; i < texArray.length; i += this.length * 4 ) {
     
@@ -105,10 +79,10 @@ export class Fish extends THREE.Object3D{
             let z = Math.random() * range.z - range.z / 2;
     
             for ( let j = 0; j < this.length * 4; j += 4 ) {
-                texArray[i + j + 0] = x - 30;
-                texArray[i + j + 1] = y + 20;
+                texArray[i + j + 0] = x;
+                texArray[i + j + 1] = y;
                 texArray[i + j + 2] = z;
-                texArray[i + j + 3] = 0.0;
+                texArray[i + j + 3] = 1.0;
     
             }
     
@@ -189,7 +163,6 @@ export class Fish extends THREE.Object3D{
         let uvy = new Float32Array( uvYArray );
         geo.addAttribute( 'uvy', new THREE.InstancedBufferAttribute( uvy, 1, false, 1 ) );
 
-
         let customUni = {
             texturePosition: {
                 value: null
@@ -220,23 +193,27 @@ export class Fish extends THREE.Object3D{
 
     update( time ) {
     
-        this.computeRenderer.compute();
-        this.comTexs.velocity.uniforms.time.value = time;
-        this.uni.texturePosition.value = this.computeRenderer.getCurrentRenderTarget( this.comTexs.position.texture ).texture;
-        this.uni.textureVelocity.value = this.computeRenderer.getCurrentRenderTarget( this.comTexs.velocity.texture ).texture;
+        this.kernels.velocity.uniforms.time.value = time;
+        this.kernels.velocity.uniforms.textureVelocity.value = this.velocityData.buffer.texture;
+        this.kernels.velocity.uniforms.texturePosition.value = this.positionData.buffer.texture;
+
+        this.gcController.compute( this.kernels.velocity, this.velocityData );
+
+        this.kernels.position.uniforms.textureVelocity.value = this.velocityData.buffer.texture;
+        this.kernels.position.uniforms.texturePosition.value = this.positionData.buffer.texture;
+
+        this.gcController.compute( this.kernels.position, this.positionData );
+        
+        this.uni.texturePosition.value = this.positionData.buffer.texture;
+        this.uni.textureVelocity.value = this.velocityData.buffer.texture;
     
     }
 
-    setAvoidObje( pos, scale ) {
-    
-        this.comTexs.velocity.uniforms.avoidPos.value = pos;
-        this.comTexs.velocity.uniforms.avoidScale.value = scale;
-    
-    }
+    public dispose(){
 
-    setCamY( pos ) {
-    
-        this.comTexs.velocity.uniforms.camY.value = pos;
-    
+        this.positionData.buffer.dispose();
+        this.velocityData.buffer.dispose();
+        this.gcController.dispose();
+
     }
 }
