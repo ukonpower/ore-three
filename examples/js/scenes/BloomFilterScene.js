@@ -3,16 +3,20 @@ import * as THREE from 'three';
 
 export default class BloomFilterScene extends ORE.BaseScene {
 
-	constructor(renderer) {
+	constructor() {
 
-		super(renderer);
+		super();
+
 		this.name = "BloomFilterScene";
-		this.renderer.debug.checkShaderErrors = true;
-		this.init();
 
 	}
 
-	init() {
+	onBind( gProps ) {
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
+
 		this.camera.position.set(0, 1.5, 3);
 		this.camera.lookAt(0, 0, 0);
 
@@ -43,21 +47,18 @@ export default class BloomFilterScene extends ORE.BaseScene {
 		
 	}
 
-	animate() {
+	animate( deltaTime ) {
+		
 		this.box.rotateY(0.01);
 		this.box.rotateX(0.01);
 		this.bloom.render(this.scene,this.camera);
+
 	}
 
 	onResize(width, height) {
+		
 		super.onResize(width, height);
+
 	}
-
-	onTouchStart(e) {}
-
-	onTouchMove(e) {}
-
-	onTouchEnd(e) {}
-
-	onWheel(e) {}
+	
 }

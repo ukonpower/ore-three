@@ -5,16 +5,19 @@ import frag from './glsl/sample.fs';
 
 export default class BackgroundScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
 
 		this.name = "BackgroundScene";
-		this.init();
 
 	}
 
-	init() {
+	onBind( gProps ) {
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
 
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -43,7 +46,7 @@ export default class BackgroundScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {
 
 		this.box.rotateY( 0.01 );
 
@@ -59,17 +62,5 @@ export default class BackgroundScene extends ORE.BaseScene {
 		this.uniforms.resolution.value = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
 	}
-
-	onTouchStart( e ) {
-	}
-
-	onTouchMove( e ) {
-	}
-
-	onTouchEnd( e ) {
-	}
-
-	onWheel( e ) {
-	}
-
+	
 }

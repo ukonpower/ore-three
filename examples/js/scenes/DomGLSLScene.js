@@ -4,15 +4,19 @@ import frag from './glsl/dom-glsl.fs';
 
 export default class DomGLSLScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
+
 		this.name = "DomGLSLScene";
-		this.init();
-
+		
 	}
 
-	init() {
+	onBind( gProps ) {
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
 
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -36,7 +40,7 @@ export default class DomGLSLScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {
 
 		//update dom size and position
 		this.domglsl.updateDom();
@@ -53,14 +57,5 @@ export default class DomGLSLScene extends ORE.BaseScene {
 		super.onResize( width, height );
 
 	}
-
-	onTouchStart( e ) {
-	}
-
-	onTouchMove( e ) {}
-
-	onTouchEnd( e ) {}
-
-	onWheel( e ) {}
 
 }

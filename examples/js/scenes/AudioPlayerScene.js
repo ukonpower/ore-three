@@ -5,15 +5,19 @@ import vert from './glsl/audioVisualize.vs';
 
 export default class AudioPlayerScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
+
 		this.name = "AudioPlayerScene";
-		this.init();
-
+		
 	}
 
-	init() {
+	onBind( gProps ) {
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
 
 		this.soundNum = 0;
 
@@ -53,7 +57,7 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {		
 
 		this.audioPlayer.update();
 
@@ -67,7 +71,7 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 	}
 
-	onTouchStart( e ) {
+	onTouchStart( cursor, e ) {
 
 		if ( e.button == 0 ) {
 
@@ -100,18 +104,6 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 		}
 
 		e.preventDefault();
-
-
-	}
-
-	onTouchMove( e ) {
-	}
-
-	onTouchEnd( e ) {
-
-	}
-
-	onWheel( e ) {
 
 	}
 

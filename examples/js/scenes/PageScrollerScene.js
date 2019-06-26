@@ -3,16 +3,19 @@ import * as THREE from 'three';
 
 export default class MainScene extends ORE.BaseScene {
 
-	constructor(renderer) {
+	constructor() {
 	
-		super(renderer);
+		super();
 	
-		this.name = "MainScene";
-		this.init();
+		this.name = "PageScrollerScene";
 	
 	}
 
-	init() {
+	onBind( gProps ) {
+		
+		super.onBind( gProps );
+		
+		this.renderer = this.gProps.renderer;
 	
 		this.camera.position.set(0, 1.5, 3);
 		this.camera.lookAt(0, 0, 0);
@@ -29,10 +32,10 @@ export default class MainScene extends ORE.BaseScene {
 	
 	}
 
-	animate() {
+	animate( deltaTime ) {
 	
-		this.scroller.update(this.deltaTime);
-		this.renderer.render(this.scene, this.camera);
+		this.scroller.update( deltaTime );
+		this.renderer.render( this.scene, this.camera );
 	
 	}
 
@@ -42,19 +45,13 @@ export default class MainScene extends ORE.BaseScene {
 	
 	}
 
-	onTouchStart(e) {
+	onTouchStart( cursor, e ) {
 	
 		this.scroller.moveto(this.target);
 	
 	}
 
-	onTouchMove(e) {
-	}
-
-	onTouchEnd(e) {
-	}
-
-	onWheel(e){
+	onWheel( e ){
 		
 		this.scroller.setScrollVelocity(e.deltaY)
 

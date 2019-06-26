@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import OREScene from './scenes/MainScene';
+import MainScene from './scenes/AudioPlayerScene';
 
 class APP {
 
@@ -12,8 +12,8 @@ class APP {
 			alpha: false,
 
 		} );
-	
-		this.controller.setScene( OREScene );
+
+		this.controller.bindScene( new MainScene() );
 
 	}
 

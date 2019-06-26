@@ -3,15 +3,19 @@ import * as THREE from 'three';
 
 export default class MainScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
+		
+		super();
 
-		super( renderer );
 		this.name = "MainScene";
-		this.init();
 
 	}
 
-	init() {
+	onBind( gProps ) {
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
 
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -23,12 +27,12 @@ export default class MainScene extends ORE.BaseScene {
 
 		this.light = new THREE.DirectionalLight();
 		this.light.position.y = 10;
-		this.scene.add( this.light );
+		this.scene.add( this.light );		
 
 	}
 
-	animate() {
-
+	animate( deltaTime ) {
+		
 		this.box.rotateY( 0.01 );
 		this.renderer.render( this.scene, this.camera );
 
@@ -39,17 +43,5 @@ export default class MainScene extends ORE.BaseScene {
 		super.onResize( width, height );
 
 	}
-
-	onTouchStart( e ) {
-	}
-
-	onTouchMove( e ) {
-	}
-
-	onTouchEnd( e ) {
-	}
-
-	onWheel( e ) {
-	}
-
+	
 }

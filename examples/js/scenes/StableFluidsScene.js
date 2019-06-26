@@ -5,20 +5,22 @@ import frag from './glsl/stableFluidsView.fs';
 
 export default class StableFluidScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
 
 		this.name = "StableFluidsScene";
-		
-		this.init();
-
-		this.onResize( this.width, this.height );
 
 	}
 
-	init() {
+	onBind( gProps ) {
 		
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
+
+		this.gProps.cursor.hoverMode = true;
+
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
 
@@ -47,11 +49,34 @@ export default class StableFluidScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {
+
+		this.fluid.update();
+
+		//update dom size and position
+		this.domglsl.updateDom();
+
+		//update uniform
+		this.param.uniforms.time.value = this.time;
+		this.param.uniforms.texture.value = this.fluid.getTexture();
+		
+		this.renderer.render( this.scene, this.camera );
+
+	}
+
+	onResize( width, height ) {
+
+		super.onResize( width, height );
+
+		this.fluid.parameter.screenAspect = 1.0;
+
+	}
+	
+	onHover( cursor ){
 
 		//update fluid
-		let vec = new THREE.Vector2( this.cursor.hoverDelta.x, -this.cursor.hoverDelta.y );
-		let pos = this.cursor.getRelativePosition( this.dom, true, true);
+		let vec = new THREE.Vector2( cursor.hoverDelta.x, -cursor.hoverDelta.y );
+		let pos = cursor.getRelativePosition( this.dom, true, true);
 
 		if( pos ){			
 
@@ -64,35 +89,7 @@ export default class StableFluidScene extends ORE.BaseScene {
 			this.fluid.setPointer( new THREE.Vector2(0,0), vec );
 			
 		}
-
-		this.fluid.update();
-
-		//update dom size and position
-		this.domglsl.updateDom();
-
-		//update uniform
-		this.param.uniforms.time.value = this.time;
-		this.param.uniforms.texture.value = this.fluid.getTexture();
-
-		this.cursor.update();
-		this.renderer.render( this.scene, this.camera );
-
+		
 	}
-
-	onResize( width, height ) {
-
-		super.onResize( width, height );
-
-		this.fluid.parameter.screenAspect = 1.0;
-
-	}
-
-	onTouchStart( e ) {}
-
-	onTouchMove( e ) {}
-
-	onTouchEnd( e ) {}
-
-	onWheel( e ) {}
-
+	
 }

@@ -3,15 +3,19 @@ import * as THREE from 'three';
 
 export default class MouseRotatorScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
+		
 		this.name = "MouseRotatorScene";
-		this.init();
 
 	}
 
-	init() {
+	onBind( gProps ) {
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
 
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -25,7 +29,7 @@ export default class MouseRotatorScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {
 
 		this.rotator.update();
 		this.renderer.render( this.scene, this.camera );
@@ -37,20 +41,11 @@ export default class MouseRotatorScene extends ORE.BaseScene {
 		super.onResize( width, height );
 
 	}
+	
+	onTouchMove( cursor, e ) {
 
-	onTouchStart( e ) {
-	}
-
-	onTouchMove( e ) {
-
-		this.rotator.addVelocity( new THREE.Vector2( this.cursor.delta.x, this.cursor.delta.y ) );
+		this.rotator.addVelocity( new THREE.Vector2( cursor.delta.x, cursor.delta.y ) );
 
 	}
-
-	onTouchEnd( e ) {
-	}
-
-	onWheel( e ) {
-	}
-
+	
 }

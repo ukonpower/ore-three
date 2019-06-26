@@ -3,16 +3,20 @@ import * as THREE from 'three';
 
 export default class TransformAnimatorScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
+
 		this.name = "TransformAnimatorScene";
-		this.init();
 
 	}
 
-	init() {
+	onBind( gProps ) {
 
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
+		
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
 
@@ -41,7 +45,7 @@ export default class TransformAnimatorScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {
 
 		this.transformAnimator.update( this.deltaTime );
 		this.renderer.render( this.scene, this.camera );
@@ -59,6 +63,7 @@ export default class TransformAnimatorScene extends ORE.BaseScene {
 		if ( this.left ) {
 
 			let didStart = this.transformAnimator.move( this.transforms.right.pos, this.transforms.right.rot, 1 );
+			
 			if ( didStart ) {
 
 				this.left = false;
@@ -68,6 +73,7 @@ export default class TransformAnimatorScene extends ORE.BaseScene {
 		} else {
 
 			let didStart = this.transformAnimator.move( this.transforms.left.pos, this.transforms.left.rot, 1 );
+
 			if ( didStart ) {
 
 				this.left = true;
@@ -76,15 +82,6 @@ export default class TransformAnimatorScene extends ORE.BaseScene {
 
 		}
 
-	}
-
-	onTouchMove( e ) {
-	}
-
-	onTouchEnd( e ) {
-	}
-
-	onWheel( e ) {
 	}
 
 }

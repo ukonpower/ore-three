@@ -6,17 +6,20 @@ import pp2 from './glsl/pp2.fs';
 
 export default class PostProcessScene extends ORE.BaseScene {
 
-	constructor( renderer ) {
+	constructor() {
 
-		super( renderer );
+		super();
+
 		this.name = "PostProcessScene";
-		this.renderer.debug.checkShaderErrors = true;
-		this.init();
 
 	}
 
-	init() {
+	onBind( gProps ) {
 
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
+		
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
 
@@ -64,7 +67,7 @@ export default class PostProcessScene extends ORE.BaseScene {
 
 	}
 
-	animate() {
+	animate( deltaTime ) {
 
 		this.box.rotateY( 0.01 );
 		this.box.rotateX( 0.015 );
@@ -82,13 +85,5 @@ export default class PostProcessScene extends ORE.BaseScene {
 		this.pp.resize( width, height );
 
 	}
-
-	onTouchStart( e ) {}
-
-	onTouchMove( e ) {}
-
-	onTouchEnd( e ) {}
-
-	onWheel( e ) {}
 
 }
