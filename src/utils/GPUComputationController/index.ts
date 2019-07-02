@@ -32,7 +32,6 @@ export class GPUComputationController {
         return this.renderer.extensions.get( "OES_texture_float" );
 
     }
-    
 
     constructor( renderer: THREE.WebGLRenderer, resolution: THREE.Vector2 ){
 
@@ -62,9 +61,17 @@ export class GPUComputationController {
 
 	}
 
-    public createData( initializeTexture?: THREE.DataTexture ): GPUcomputationData{
+    public createData(): GPUcomputationData;
+    
+    public createData( initializeTexture: THREE.DataTexture ): GPUcomputationData;
 
-        let buf = new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y, {
+    public createData( textureParam: THREE.WebGLRenderTargetOptions ): GPUcomputationData;
+
+    public createData( initializeTexture: THREE.DataTexture, textureParam: THREE.WebGLRenderTargetOptions ): GPUcomputationData;
+    
+    public createData( initTex_texParam?: any, textureParam? : THREE.WebGLRenderTargetOptions)  {
+
+        let param: THREE.WebGLRenderTargetOptions = {
             wrapS: THREE.ClampToEdgeWrapping,
 			wrapT: THREE.ClampToEdgeWrapping,
 			minFilter: THREE.NearestFilter,
@@ -73,15 +80,55 @@ export class GPUComputationController {
 			type: ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) ? THREE.HalfFloatType : THREE.FloatType,
 			stencilBuffer: false,
 			depthBuffer: false
-        });
+        };
+
+        
+        let initTex: THREE.DataTexture;
+        let customParam: THREE.WebGLRenderTargetOptions;
+
+        if( initTex_texParam ){
+
+            if( initTex_texParam.isDataTexture ){
+
+                initTex = initTex_texParam;
+
+                if( textureParam ){
+
+                    customParam = textureParam;
+
+                }
+
+            }else{
+
+                customParam = initTex_texParam;
+
+            }
+
+        }
+
+        if( customParam ){
+                
+            param.wrapS = param.wrapS || customParam.wrapS;
+            param.wrapT = param.wrapT || customParam.wrapT;
+            param.minFilter = param.minFilter || customParam.minFilter;
+            param.magFilter = param.magFilter || customParam.magFilter;
+            param.format = param.format || customParam.format;
+            param.type = param.type || customParam.type;
+            param.stencilBuffer = param.stencilBuffer || customParam.stencilBuffer;
+            param.depthBuffer = param.depthBuffer || customParam.depthBuffer;
+
+        }
+
+        let buf = new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y, param );
 
         let data = { buffer: buf };
 
-        if( initializeTexture ){
+
+        if( initTex ){
 
             let initKernel = this.createKernel( passThroughFrag );
 
-            initKernel.uniforms.texture = { value: initializeTexture };
+            initKernel.uniforms.texture = { value: initTex };
 
             this.compute( initKernel, data );
 
