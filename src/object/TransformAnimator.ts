@@ -109,6 +109,8 @@ export class TransformAnimator {
 				if( this.onFinish ){
 					
 					this.onFinish();
+
+					this.onFinish = null;
 	
 				}
 	
