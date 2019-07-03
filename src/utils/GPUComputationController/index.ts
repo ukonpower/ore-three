@@ -39,7 +39,10 @@ export class GPUComputationController {
 
         this.resolution = resolution;
 
-        this.tempData = this.createData();
+        this.tempData = this.createData({ 
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.LinearFilter
+        });
 
         this.scene = new THREE.Scene();
 		this.camera = new THREE.Camera();
@@ -74,8 +77,8 @@ export class GPUComputationController {
         let param: THREE.WebGLRenderTargetOptions = {
             wrapS: THREE.ClampToEdgeWrapping,
 			wrapT: THREE.ClampToEdgeWrapping,
-			minFilter: THREE.NearestFilter,
-			magFilter: THREE.NearestFilter,
+			minFilter: THREE.LinearFilter,
+			magFilter: THREE.LinearFilter,
 			format: THREE.RGBAFormat,
 			type: ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) ? THREE.HalfFloatType : THREE.FloatType,
 			stencilBuffer: false,
@@ -105,17 +108,17 @@ export class GPUComputationController {
             }
 
         }
-
+        
         if( customParam ){
                 
-            param.wrapS = param.wrapS || customParam.wrapS;
-            param.wrapT = param.wrapT || customParam.wrapT;
-            param.minFilter = param.minFilter || customParam.minFilter;
-            param.magFilter = param.magFilter || customParam.magFilter;
-            param.format = param.format || customParam.format;
-            param.type = param.type || customParam.type;
-            param.stencilBuffer = param.stencilBuffer || customParam.stencilBuffer;
-            param.depthBuffer = param.depthBuffer || customParam.depthBuffer;
+            param.wrapS = customParam.wrapS || param.wrapS;
+            param.wrapT = customParam.wrapT || param.wrapT;
+            param.minFilter = customParam.minFilter || param.minFilter;
+            param.magFilter = customParam.magFilter || param.magFilter;
+            param.format = customParam.format || param.format;
+            param.type = customParam.type || param.type;
+            param.stencilBuffer = customParam.stencilBuffer || param.stencilBuffer;
+            param.depthBuffer = customParam.depthBuffer || param.depthBuffer;
 
         }
 
