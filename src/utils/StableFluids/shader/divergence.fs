@@ -48,5 +48,5 @@ void main(){
 
   float divergence = ((r.x - l.x) + (b.y - t.y)) * 0.5;
 
-  gl_FragColor = vec4(data.xy, data.z, divergence);
+  gl_FragColor = vec4(data.xyz, divergence);
 }

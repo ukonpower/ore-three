@@ -40,7 +40,7 @@ void main(){
   float b = sampleData(dataTex, (gl_FragCoord.xy + vec2(0.0, 1.0)) / resolution, resolution);
 
   float divergence = data.w;
-  float pressure = (divergence * alpha + (l + r + t + b)) * 0.25 * beta;
+  float pressure = ((l + r + t + b) - divergence) * 0.25;
 
   gl_FragColor = vec4(data.xy, pressure, divergence);
 }
