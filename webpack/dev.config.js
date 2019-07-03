@@ -15,7 +15,7 @@ module.exports = merge(baseConfig,{
 		libraryTarget: "umd"
 	},
 	devServer: {
-		host: '0.0.0.0',
+		host: 'localhost',
 		port: 3000,
 		contentBase: path.resolve(__dirname, '../examples/'),
 		publicPath: '/js',

@@ -18,7 +18,10 @@ export declare class GPUComputationController {
     readonly isSupported: boolean;
     constructor(renderer: THREE.WebGLRenderer, resolution: THREE.Vector2);
     createInitializeTexture(): THREE.DataTexture;
-    createData(initializeTexture?: THREE.DataTexture): GPUcomputationData;
+    createData(): GPUcomputationData;
+    createData(initializeTexture: THREE.DataTexture): GPUcomputationData;
+    createData(textureParam: THREE.WebGLRenderTargetOptions): GPUcomputationData;
+    createData(initializeTexture: THREE.DataTexture, textureParam: THREE.WebGLRenderTargetOptions): GPUcomputationData;
     createKernel(shader: string): GPUComputationKernel;
     compute(kernel: GPUComputationKernel, variable: GPUcomputationData): void;
     private swapBuffers;

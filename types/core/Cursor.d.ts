@@ -5,6 +5,7 @@ export declare class Cursor {
     onTouchEnd: Function;
     onHover: Function;
     onWheel: Function;
+    attenuation: number;
     private _touchDown;
     _position: THREE.Vector2;
     _delta: THREE.Vector2;
