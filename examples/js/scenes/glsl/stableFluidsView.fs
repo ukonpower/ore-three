@@ -5,8 +5,8 @@ void main( void ){
 
 	vec4 tex = texture2D( texture, vUv );
 
-	vec3 c = vec3( length(tex.xy) );
+	vec3 c = tex.xyz;
 	
-	gl_FragColor = vec4( c / 2.0, 1.0) ;
+	gl_FragColor = vec4( c , 1.0) ;
 
 }

@@ -2,6 +2,7 @@ import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
 import frag from './glsl/stableFluidsView.fs';
+import densityFrag from './glsl/stableFluidsDensity.fs';
 
 export default class StableFluidScene extends ORE.BaseScene {
 
@@ -25,8 +26,23 @@ export default class StableFluidScene extends ORE.BaseScene {
 		this.camera.lookAt( 0, 0, 0 );
 
 		//create stable fluids
-		this.fluid = new ORE.StableFluids( this.renderer, new THREE.Vector2( 512, 512 ) );
-		this.fluid.parameter.pointerSize = 0.5;
+		this.fluid = new ORE.StableFluids( this.renderer, new THREE.Vector2( 128, 128 ) );
+		
+
+		//create density
+		this.gcContrller = new ORE.GPUComputationController( this.renderer, new THREE.Vector2( 2048, 2048 ) );
+        this.densityKernel = this.gcContrller.createKernel( densityFrag );
+		this.densityData = this.gcContrller.createData({
+			minFilter: THREE.LinearFilter,
+			magFilter: THREE.LinearFilter
+		});
+
+        this.densityKernel.uniforms.dataTex = { value: null };
+        this.densityKernel.uniforms.densityTex = { value: null };
+        this.densityKernel.uniforms.pointerPos = { value: new THREE.Vector2( -99, -99 ) };
+        this.densityKernel.uniforms.pow = { value: 0 };
+        this.densityKernel.uniforms.screenAspect = { value: 1.0 };
+		this.densityKernel.uniforms.time = { value: 0 };
 		
 		//create element
 		this.dom = document.createElement('div');
@@ -51,14 +67,21 @@ export default class StableFluidScene extends ORE.BaseScene {
 
 	animate( deltaTime ) {
 
+		//update fluids
 		this.fluid.update();
 
-		//update dom size and position
-		this.domglsl.updateDom();
+		//update density
+		this.densityKernel.uniforms.dataTex.value = this.fluid.getTexture();
+		this.densityKernel.uniforms.densityTex.value = this.densityData.buffer.texture;
+		this.densityKernel.uniforms.time.value = this.time;
+		this.gcContrller.compute( this.densityKernel, this.densityData );
 
 		//update uniform
 		this.param.uniforms.time.value = this.time;
-		this.param.uniforms.texture.value = this.fluid.getTexture();
+		this.param.uniforms.texture.value = this.densityData.buffer.texture;
+
+		//update dom size and position
+		this.domglsl.updateDom();
 		
 		this.renderer.render( this.scene, this.camera );
 
@@ -84,12 +107,21 @@ export default class StableFluidScene extends ORE.BaseScene {
 			
 			this.fluid.setPointer( pos, vec );
 
+			this.densityKernel.uniforms.pointerPos.value = pos;
+
 		}else{
 
 			this.fluid.setPointer( new THREE.Vector2(0,0), vec );
 			
 		}
+
+		this.densityKernel.uniforms.pow.value = vec.length() * 0.05;
+
 		
+	}
+
+	onTouchMove( cursor, event ){
+		event.preventDefault();
 	}
 	
 }
