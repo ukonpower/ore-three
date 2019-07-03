@@ -8,6 +8,7 @@ export class Cursor {
     public onTouchEnd: Function;
     public onHover: Function;
     public onWheel: Function;
+    public attenuation: number = 0.9;
 
     private _touchDown: boolean;
 
@@ -22,25 +23,25 @@ export class Cursor {
     
     public get position(): THREE.Vector2 {
 
-        return this._touchDown ? this._position : null;
+        return this._position;
     
     }
 
     public get delta(): THREE.Vector2 { 
 
-        return this._touchDown ? this._delta : null;
+        return this._delta;
 
     }
 
     public get hoverPosition(): THREE.Vector2 {
 
-        return this.hoverMode ? this._hoverPosition : null;
+        return this._hoverPosition;
 
     }
     
     public get hoverDelta(): THREE.Vector2 {
 
-        return this.hoverMode ? this._hoverDelta : null;
+        return this._hoverDelta;
         
     }
 
@@ -71,7 +72,8 @@ export class Cursor {
         
         }
 
-        this._position.set( -1 , -1 );
+        this._position.set( NaN , NaN );
+        this._hoverPosition.set( NaN , NaN );
 
         this._touchDown = false;
     
@@ -115,13 +117,13 @@ export class Cursor {
         
         if( this._touchDown ){
 
-            if( this._position.x == -1 || this._position.y == -1 ){
+            if( Number.isNaN( this._position.x ) || Number.isNaN( this._position.y ) ){
         
                 this._delta.set( 0, 0 );
             
             }else{
             
-                this._delta.set( x - this._position.x, y - this._position.y )
+                this._delta.set( x - this._position.x, y - this._position.y );
             }
     
             this._position.set( x, y );
@@ -129,7 +131,16 @@ export class Cursor {
         }
 
         //calc delta
-        this._hoverDelta.set( x - this._hoverPosition.x, y - this._hoverPosition.y )
+        if( Number.isNaN( this._hoverPosition.x ) || Number.isNaN( this._hoverPosition.y ) ){
+            
+            this._hoverDelta.set( 0, 0 );
+
+        }else{
+
+            this._hoverDelta.set( x - this._hoverPosition.x, y - this._hoverPosition.y );
+
+        }
+        
         this._hoverPosition.set( x, y );
     
     }
@@ -140,13 +151,13 @@ export class Cursor {
 
             if ( event.button == 0 ){
 
-                this.setPos( event.pageX, event.pageY )
+                this.setPos( event.pageX, event.pageY );
 
             }
 
         } else {
 
-            this._position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset )
+            this._position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
 
         }
 
@@ -185,7 +196,7 @@ export class Cursor {
 
             this._touchDown = false;
             
-            this._position.set( -1, -1 );
+            this._position.set( NaN, NaN );
 
             if ( this.onTouchEnd ) {
 
@@ -211,8 +222,8 @@ export class Cursor {
 
     public update(){
         
-        this._delta.multiplyScalar( 0.9 );
-        this._hoverDelta.multiplyScalar( 0.9 );
+        this._delta.multiplyScalar( this.attenuation );
+        this._hoverDelta.multiplyScalar( this.attenuation );
 
         if( this.hoverMode ){
 
