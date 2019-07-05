@@ -12,11 +12,11 @@ export class Cursor {
 
     private _touchDown: boolean;
 
-    public _position: THREE.Vector2;
-    public _delta: THREE.Vector2;
+    private _position: THREE.Vector2;
+    private _delta: THREE.Vector2;
 
-    public _hoverPosition: THREE.Vector2;
-    public _hoverDelta: THREE.Vector2;
+    private _hoverPosition: THREE.Vector2;
+    private _hoverDelta: THREE.Vector2;
 
     public hoverMode: boolean = false;
 
