@@ -1,11 +1,8 @@
 # ore-three
 [three.js]( https://github.com/mrdoob/three.js ) utils.
 
-## Usage
-
-Check ore-three example scenes!!
-
-[examples]( https://github.com/ukonpower/ore-three-ts/tree/master/examples/js )
+[Documentation](https://ukonpower.github.io/ore-three-ts/)
+[Examples]( https://github.com/ukonpower/ore-three-ts/tree/master/examples/js )
 
 
 ### install
