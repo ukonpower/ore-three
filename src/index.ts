@@ -9,6 +9,7 @@ export * from './object/MouseRotator';
 export * from './object/MouseVertexRotator';
 
 export * from './audio/AudioPlayer';
+export * from './audio/MicData';
 
 export * from './shaders/shader';
 
