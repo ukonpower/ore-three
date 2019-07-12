@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import MainScene from './scenes/PageScrollerScene';
+import MainScene from './scenes/AudioPlayerScene';
 
 class APP {
 

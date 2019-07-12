@@ -34,22 +34,29 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 		} );
 
-		this.uni = {
+		let cUni  = {
 			audioVolume: { value: 0 },
 			audioSpectrum: { value: null },
 		};
 
-		let geo = new THREE.PlaneGeometry( 1, 1, 128, 128 );
+		this.uni = THREE.UniformsUtils.merge( [ cUni, THREE.ShaderLib.basic.uniforms ] );
+
+		let geo = new THREE.PlaneGeometry( 1, 0.05, 128, 128 );
 
 		let mat = new THREE.ShaderMaterial( {
 
 			vertexShader: vert,
-			fragmentShader: THREE.ShaderLib.normal.fragmentShader,
+			fragmentShader: THREE.ShaderLib.basic.fragmentShader,
 			uniforms: this.uni,
 			flatShading: true,
 			side: THREE.DoubleSide
 
 		} );
+
+		this.uni.diffuse.value = new THREE.Color( 0xFFFFFF );
+
+		console.log( THREE.ShaderLib.basic.fragmentShader);
+		
 
 		this.plane = new THREE.Mesh( geo, mat );
 		this.plane.rotation.x = ( - Math.PI / 2 );
@@ -66,7 +73,7 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 			this.uni.audioVolume.value = this.audioPlayer.volume;
 			
-			this.uni.audioSpectrum.value = this.audioPlayer.soundData;
+			this.uni.audioSpectrum.value = this.audioPlayer.spectrumData;
 			
 		}
 

@@ -15,7 +15,7 @@ export class AudioPlayer {
 	private onLoad: Function;
 	private isLoaded: boolean = false;
 
-	public soundData: THREE.DataTexture;
+	public spectrumData: THREE.DataTexture;
 	public volume: number;
 	
 	private uniforms: any[];
@@ -71,9 +71,9 @@ export class AudioPlayer {
 				this.audio.setVolume( 0.5 );
 
 				this.analyser = new THREE.AudioAnalyser( this.audio, this.bufferSize );
-				this.soundData = new THREE.DataTexture( this.analyser.data,this.bufferSize / 2,1,THREE.LuminanceFormat );
+				this.spectrumData = new THREE.DataTexture( this.analyser.data,this.bufferSize / 2,1,THREE.LuminanceFormat );
 				
-				this.soundData.needsUpdate = true;
+				this.spectrumData.needsUpdate = true;
 				this.isLoaded = true;
 
 				if ( this.onLoad) {
@@ -135,9 +135,9 @@ export class AudioPlayer {
 			this.analyser.getFrequencyData();
 			this.volume = this.analyser.getAverageFrequency();
 
-			if( this.soundData ){
+			if( this.spectrumData ){
 			
-				this.soundData.needsUpdate = true;
+				this.spectrumData.needsUpdate = true;
 			
 			}
 
