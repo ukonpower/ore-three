@@ -53,10 +53,7 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 		} );
 
-		this.uni.diffuse.value = new THREE.Color( 0xFFFFFF );
-
-		console.log( THREE.ShaderLib.basic.fragmentShader);
-		
+		this.uni.diffuse.value = new THREE.Color( 0xFFFFFF );		
 
 		this.plane = new THREE.Mesh( geo, mat );
 		this.plane.rotation.x = ( - Math.PI / 2 );
