@@ -15,8 +15,6 @@ export class PageScroller {
 
 	private onAutoMoved: Function;
 
-	public velocityAttenuation: number = 0.95;
-
 	public get pageOffset(  ): number {
 	
 		return this._pageOffset;
@@ -79,7 +77,7 @@ export class PageScroller {
 	
 			this._pageOffset += this.scrollVel;
 			this._pageOffset = Math.min( Math.max( 0.0, this.pageOffset ), this.rect.height - window.innerHeight );
-			this.scrollVel *= this.velocityAttenuation;
+			this.scrollVel *= 0.95;
 	
 		} else {
 	
