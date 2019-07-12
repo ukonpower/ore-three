@@ -1,6 +1,6 @@
 {
   "name": "ore-three-ts",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Three.js utils.",
   "main": "build/ore-three.js",
   "scripts": {
@@ -41,6 +41,6 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "three": "^0.105.0"
+    "three": "^0.106.0"
   }
 }

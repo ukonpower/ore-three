@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MouseRotator | ore-three</title>
+	<title>PageScrollerSection | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="mouserotator.html">MouseRotator</a>
+					<a href="pagescrollersection.html">PageScrollerSection</a>
 				</li>
 			</ul>
-			<h1>Class MouseRotator</h1>
+			<h1>Interface PageScrollerSection</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MouseRotator</span>
+						<span class="target">PageScrollerSection</span>
 					</li>
 				</ul>
 			</section>
@@ -79,118 +79,58 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#target" class="tsd-kind-icon">target</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollersection.html#bottom" class="tsd-kind-icon">bottom</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollersection.html#element" class="tsd-kind-icon">element</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollersection.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollersection.html#rect" class="tsd-kind-icon">rect</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Mouse<wbr>Rotator<span class="tsd-signature-symbol">(</span>objs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L6">object/MouseRotator.ts:6</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>objs: <span class="tsd-signature-type">Object3D</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="scrollvel" class="tsd-anchor"></a>
-					<h3>scroll<wbr>Vel</h3>
-					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Vel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector2</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="bottom" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> bottom</h3>
+					<div class="tsd-signature tsd-kind-icon">bottom<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L6">object/MouseRotator.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L13">core/PageScroller.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="target" class="tsd-anchor"></a>
-					<h3>target</h3>
-					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Object3D</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="element" class="tsd-anchor"></a>
+					<h3>element</h3>
+					<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L5">object/MouseRotator.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L11">core/PageScroller.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addvelocity" class="tsd-anchor"></a>
-					<h3>add<wbr>Velocity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Velocity<span class="tsd-signature-symbol">(</span>scrollDelta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L29">object/MouseRotator.ts:29</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>scrollDelta: <span class="tsd-signature-type">Vector2</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="position" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector3</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L14">core/PageScroller.ts:14</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L16">object/MouseRotator.ts:16</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="rect" class="tsd-anchor"></a>
+					<h3>rect</h3>
+					<div class="tsd-signature tsd-kind-icon">rect<span class="tsd-signature-symbol">:</span> <a href="customrect.html" class="tsd-signature-type">CustomRect</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L12">core/PageScroller.ts:12</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -205,112 +145,109 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
+						<a href="../classes/audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="background.html" class="tsd-kind-icon">Background</a>
+						<a href="../classes/background.html" class="tsd-kind-icon">Background</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
+						<a href="../classes/basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
+						<a href="../classes/bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="controller.html" class="tsd-kind-icon">Controller</a>
+						<a href="../classes/controller.html" class="tsd-kind-icon">Controller</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="cursor.html" class="tsd-kind-icon">Cursor</a>
+						<a href="../classes/cursor.html" class="tsd-kind-icon">Cursor</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="domglsl.html" class="tsd-kind-icon">DomGLSL</a>
+						<a href="../classes/domglsl.html" class="tsd-kind-icon">DomGLSL</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="fish.html" class="tsd-kind-icon">Fish</a>
+						<a href="../classes/fish.html" class="tsd-kind-icon">Fish</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
+						<a href="../classes/gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
+						<a href="../classes/micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/mousevertexrotator.html" class="tsd-kind-icon">Mouse<wbr>Vertex<wbr>Rotator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/stablefluids.html" class="tsd-kind-icon">Stable<wbr>Fluids</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/transformanimator.html" class="tsd-kind-icon">Transform<wbr>Animator</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="audioplayerparam.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="customrect.html" class="tsd-kind-icon">Custom<wbr>Rect</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="domglslparam.html" class="tsd-kind-icon">DomGLSLParam</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="kernels.html" class="tsd-kind-icon">Kernels</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="ppparam.html" class="tsd-kind-icon">PPParam</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					<li class="current tsd-kind-interface">
+						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollersection.html#bottom" class="tsd-kind-icon">bottom</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollersection.html#element" class="tsd-kind-icon">element</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#target" class="tsd-kind-icon">target</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollersection.html#position" class="tsd-kind-icon">position</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#update" class="tsd-kind-icon">update</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollersection.html#rect" class="tsd-kind-icon">rect</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="mousevertexrotator.html" class="tsd-kind-icon">Mouse<wbr>Vertex<wbr>Rotator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="stablefluids.html" class="tsd-kind-icon">Stable<wbr>Fluids</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="transformanimator.html" class="tsd-kind-icon">Transform<wbr>Animator</a>
+					<li class=" tsd-kind-interface">
+						<a href="stablefluidsparam.html" class="tsd-kind-icon">Stable<wbr>Fluids<wbr>Param</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/audioplayerparam.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="../interfaces/customrect.html" class="tsd-kind-icon">Custom<wbr>Rect</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/domglslparam.html" class="tsd-kind-icon">DomGLSLParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="../interfaces/kernels.html" class="tsd-kind-icon">Kernels</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/stablefluidsparam.html" class="tsd-kind-icon">Stable<wbr>Fluids<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
+						<a href="uniforms.html" class="tsd-kind-icon">Uniforms</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#version" class="tsd-kind-icon">VERSION</a>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MouseRotator | ore-three</title>
+	<title>MicData | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="mouserotator.html">MouseRotator</a>
+					<a href="micdata.html">MicData</a>
 				</li>
 			</ul>
-			<h1>Class MouseRotator</h1>
+			<h1>Class MicData</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MouseRotator</span>
+						<span class="target">MicData</span>
 					</li>
 				</ul>
 			</section>
@@ -81,21 +81,27 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="micdata.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#target" class="tsd-kind-icon">target</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="micdata.html#analyzer" class="tsd-kind-icon">analyzer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="micdata.html#bufferarray" class="tsd-kind-icon">buffer<wbr>Array</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="micdata.html#buffersize" class="tsd-kind-icon">buffer<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="micdata.html#context" class="tsd-kind-icon">context</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="micdata.html#navigator" class="tsd-kind-icon">navigator</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="micdata.html#spectrumdata" class="tsd-kind-icon">spectrum<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="micdata.html#volume" class="tsd-kind-icon">volume</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="micdata.html#calcvolume" class="tsd-kind-icon">calc<wbr>Volume</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="micdata.html#ongetusermesia" class="tsd-kind-icon">on<wbr>Get<wbr>User<wbr>Mesia</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="micdata.html#onprocess" class="tsd-kind-icon">on<wbr>Process</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,87 +113,163 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Mouse<wbr>Rotator<span class="tsd-signature-symbol">(</span>objs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Mic<wbr>Data<span class="tsd-signature-symbol">(</span>navigator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Navigator</span>, bufferSize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="micdata.html" class="tsd-signature-type">MicData</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L6">object/MouseRotator.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L14">audio/MicData.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>objs: <span class="tsd-signature-type">Object3D</span></h5>
+									<h5>navigator: <span class="tsd-signature-type">Navigator</span></h5>
+								</li>
+								<li>
+									<h5>bufferSize: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="micdata.html" class="tsd-signature-type">MicData</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="scrollvel" class="tsd-anchor"></a>
-					<h3>scroll<wbr>Vel</h3>
-					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Vel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector2</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="analyzer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> analyzer</h3>
+					<div class="tsd-signature tsd-kind-icon">analyzer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AnalyserNode</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L6">object/MouseRotator.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L7">audio/MicData.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="bufferarray" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> buffer<wbr>Array</h3>
+					<div class="tsd-signature tsd-kind-icon">buffer<wbr>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Uint8Array</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L10">audio/MicData.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="buffersize" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> buffer<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">buffer<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L9">audio/MicData.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="context" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> context</h3>
+					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioContext</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L6">audio/MicData.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="navigator" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> navigator</h3>
+					<div class="tsd-signature tsd-kind-icon">navigator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Navigator</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L5">audio/MicData.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="spectrumdata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> spectrum<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">spectrum<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DataTexture</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L12">audio/MicData.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="target" class="tsd-anchor"></a>
-					<h3>target</h3>
-					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Object3D</span></div>
+					<a name="volume" class="tsd-anchor"></a>
+					<h3>volume</h3>
+					<div class="tsd-signature tsd-kind-icon">volume<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L5">object/MouseRotator.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L14">audio/MicData.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addvelocity" class="tsd-anchor"></a>
-					<h3>add<wbr>Velocity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Velocity<span class="tsd-signature-symbol">(</span>scrollDelta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="calcvolume" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> calc<wbr>Volume</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">calc<wbr>Volume<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L29">object/MouseRotator.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L58">audio/MicData.ts:58</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="ongetusermesia" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Get<wbr>User<wbr>Mesia</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Get<wbr>User<wbr>Mesia<span class="tsd-signature-symbol">(</span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MediaStream</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L26">audio/MicData.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>scrollDelta: <span class="tsd-signature-type">Vector2</span></h5>
+									<h5>stream: <span class="tsd-signature-type">MediaStream</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="onprocess" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Process</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Process<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AudioProcessingEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/object/MouseRotator.ts#L16">object/MouseRotator.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/audio/MicData.ts#L48">audio/MicData.ts:48</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>e: <span class="tsd-signature-type">AudioProcessingEvent</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -231,33 +313,51 @@
 					<li class=" tsd-kind-class">
 						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+						<a href="micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="micdata.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#analyzer" class="tsd-kind-icon">analyzer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#bufferarray" class="tsd-kind-icon">buffer<wbr>Array</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#buffersize" class="tsd-kind-icon">buffer<wbr>Size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#context" class="tsd-kind-icon">context</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#navigator" class="tsd-kind-icon">navigator</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#spectrumdata" class="tsd-kind-icon">spectrum<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a>
+								<a href="micdata.html#volume" class="tsd-kind-icon">volume</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#target" class="tsd-kind-icon">target</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#calcvolume" class="tsd-kind-icon">calc<wbr>Volume</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#ongetusermesia" class="tsd-kind-icon">on<wbr>Get<wbr>User<wbr>Mesia</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#update" class="tsd-kind-icon">update</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="micdata.html#onprocess" class="tsd-kind-icon">on<wbr>Process</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="mousevertexrotator.html" class="tsd-kind-icon">Mouse<wbr>Vertex<wbr>Rotator</a>
 					</li>

@@ -6,6 +6,7 @@ export * from './object/TransformAnimator';
 export * from './object/MouseRotator';
 export * from './object/MouseVertexRotator';
 export * from './audio/AudioPlayer';
+export * from './audio/MicData';
 export * from './shaders/shader';
 export * from './utils/Fish';
 export * from './utils/Background';

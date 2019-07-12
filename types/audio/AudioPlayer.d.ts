@@ -11,7 +11,7 @@ export declare class AudioPlayer {
     private bufferSize;
     private onLoad;
     private isLoaded;
-    soundData: THREE.DataTexture;
+    spectrumData: THREE.DataTexture;
     volume: number;
     private uniforms;
     readonly isPlaying: boolean;
@@ -19,7 +19,5 @@ export declare class AudioPlayer {
     load(src: any): void;
     play(): void;
     pause(): void;
-    registerUniforms(uniform: any): void;
-    private setUniformData;
     update(): void;
 }

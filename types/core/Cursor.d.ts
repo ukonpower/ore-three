@@ -7,10 +7,10 @@ export declare class Cursor {
     onWheel: Function;
     attenuation: number;
     private _touchDown;
-    _position: THREE.Vector2;
-    _delta: THREE.Vector2;
-    _hoverPosition: THREE.Vector2;
-    _hoverDelta: THREE.Vector2;
+    private _position;
+    private _delta;
+    private _hoverPosition;
+    private _hoverDelta;
     hoverMode: boolean;
     readonly position: THREE.Vector2;
     readonly delta: THREE.Vector2;

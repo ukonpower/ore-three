@@ -84,7 +84,7 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="pagescroller.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#_pageoffset" class="tsd-kind-icon">_page<wbr>Offset</a></li>
@@ -96,6 +96,9 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#rect" class="tsd-kind-icon">rect</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#scrolldistance" class="tsd-kind-icon">scroll<wbr>Distance</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="pagescroller.html#sections" class="tsd-kind-icon">sections</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="pagescroller.html#threeposition" class="tsd-kind-icon">three<wbr>Position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="pagescroller.html#velocityattenuation" class="tsd-kind-icon">velocity<wbr>Attenuation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#x" class="tsd-kind-icon">x</a></li>
 							</ul>
 						</section>
@@ -109,9 +112,11 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pagescroller.html#moveto" class="tsd-kind-icon">moveto</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pagescroller.html#registersections" class="tsd-kind-icon">register<wbr>Sections</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pagescroller.html#resize" class="tsd-kind-icon">resize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pagescroller.html#setscrollvelocity" class="tsd-kind-icon">set<wbr>Scroll<wbr>Velocity</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#sigmoid" class="tsd-kind-icon">sigmoid</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="pagescroller.html#sortsections" class="tsd-kind-icon">sort<wbr>Sections</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pagescroller.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
@@ -130,7 +135,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L22">core/PageScroller.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L44">core/PageScroller.ts:44</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -144,7 +149,7 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_pageoffset" class="tsd-anchor"></a>
@@ -152,7 +157,7 @@
 					<div class="tsd-signature tsd-kind-icon">_page<wbr>Offset<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L6">core/PageScroller.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L24">core/PageScroller.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -162,7 +167,7 @@
 					<div class="tsd-signature tsd-kind-icon">base<wbr>Offset<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L7">core/PageScroller.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L31">core/PageScroller.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -172,7 +177,7 @@
 					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L13">core/PageScroller.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L30">core/PageScroller.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -182,7 +187,7 @@
 					<div class="tsd-signature tsd-kind-icon">element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L3">core/PageScroller.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L19">core/PageScroller.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -192,7 +197,7 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Auto<wbr>Moving<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L12">core/PageScroller.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L29">core/PageScroller.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -202,7 +207,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Auto<wbr>Moved<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L16">core/PageScroller.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L33">core/PageScroller.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -212,7 +217,7 @@
 					<div class="tsd-signature tsd-kind-icon">rect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ClientRect</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L4">core/PageScroller.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L20">core/PageScroller.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -222,7 +227,7 @@
 					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Distance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L14">core/PageScroller.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L32">core/PageScroller.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -232,7 +237,37 @@
 					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Vel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L9">core/PageScroller.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L23">core/PageScroller.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="sections" class="tsd-anchor"></a>
+					<h3>sections</h3>
+					<div class="tsd-signature tsd-kind-icon">sections<span class="tsd-signature-symbol">:</span> <a href="../interfaces/pagescrollersection.html" class="tsd-signature-type">PageScrollerSection</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L36">core/PageScroller.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="threeposition" class="tsd-anchor"></a>
+					<h3>three<wbr>Position</h3>
+					<div class="tsd-signature tsd-kind-icon">three<wbr>Position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector3</span><span class="tsd-signature-symbol"> =&nbsp;new THREE.Vector3( 0, 0, 0 )</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L38">core/PageScroller.ts:38</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="velocityattenuation" class="tsd-anchor"></a>
+					<h3>velocity<wbr>Attenuation</h3>
+					<div class="tsd-signature tsd-kind-icon">velocity<wbr>Attenuation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.95</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L25">core/PageScroller.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -242,7 +277,7 @@
 					<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L10">core/PageScroller.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L28">core/PageScroller.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -259,7 +294,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L18">core/PageScroller.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L40">core/PageScroller.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -279,7 +314,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L38">core/PageScroller.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L117">core/PageScroller.ts:117</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -299,6 +334,50 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="registersections" class="tsd-anchor"></a>
+					<h3>register<wbr>Sections</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Sections<span class="tsd-signature-symbol">(</span>element<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector3</span>, bottom<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Sections<span class="tsd-signature-symbol">(</span>section<span class="tsd-signature-symbol">: </span><a href="../interfaces/pagescrollersection.html" class="tsd-signature-type">PageScrollerSection</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L71">core/PageScroller.ts:71</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+								</li>
+								<li>
+									<h5>position: <span class="tsd-signature-type">Vector3</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bottom: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L73">core/PageScroller.ts:73</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>section: <a href="../interfaces/pagescrollersection.html" class="tsd-signature-type">PageScrollerSection</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="resize" class="tsd-anchor"></a>
 					<h3>resize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -308,7 +387,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L32">core/PageScroller.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L54">core/PageScroller.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -325,7 +404,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L66">core/PageScroller.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L145">core/PageScroller.ts:145</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -348,7 +427,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L119">core/PageScroller.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L220">core/PageScroller.ts:220</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -364,6 +443,23 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="sortsections" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sort<wbr>Sections</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">sort<wbr>Sections<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L107">core/PageScroller.ts:107</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
@@ -374,7 +470,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d8a151/src/core/PageScroller.ts#L74">core/PageScroller.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f1309c1/src/core/PageScroller.ts#L153">core/PageScroller.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -427,6 +523,9 @@
 						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -467,6 +566,15 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="pagescroller.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="pagescroller.html#sections" class="tsd-kind-icon">sections</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="pagescroller.html#threeposition" class="tsd-kind-icon">three<wbr>Position</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="pagescroller.html#velocityattenuation" class="tsd-kind-icon">velocity<wbr>Attenuation</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="pagescroller.html#x" class="tsd-kind-icon">x</a>
 							</li>
@@ -477,6 +585,9 @@
 								<a href="pagescroller.html#moveto" class="tsd-kind-icon">moveto</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="pagescroller.html#registersections" class="tsd-kind-icon">register<wbr>Sections</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="pagescroller.html#resize" class="tsd-kind-icon">resize</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -484,6 +595,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="pagescroller.html#sigmoid" class="tsd-kind-icon">sigmoid</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="pagescroller.html#sortsections" class="tsd-kind-icon">sort<wbr>Sections</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="pagescroller.html#update" class="tsd-kind-icon">update</a>
@@ -507,6 +621,9 @@
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="../interfaces/customrect.html" class="tsd-kind-icon">Custom<wbr>Rect</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/domglslparam.html" class="tsd-kind-icon">DomGLSLParam</a>
 					</li>
@@ -527,6 +644,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/stablefluidsparam.html" class="tsd-kind-icon">Stable<wbr>Fluids<wbr>Param</a>
