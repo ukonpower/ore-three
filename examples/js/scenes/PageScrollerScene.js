@@ -53,7 +53,7 @@ export default class MainScene extends ORE.BaseScene {
 
 	onWheel( e ){
 		
-		this.scroller.setScrollVelocity(e.deltaY)
+		this.scroller.setScrollVelocity(e.deltaY * 0.1)
 
 	}
 }
