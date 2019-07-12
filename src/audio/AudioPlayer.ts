@@ -14,8 +14,10 @@ export class AudioPlayer {
 	private bufferSize: number;
 	private onLoad: Function;
 	private isLoaded: boolean = false;
+
 	public soundData: THREE.DataTexture;
 	public volume: number;
+	
 	private uniforms: any[];
 
 	get isPlaying(){
@@ -40,8 +42,6 @@ export class AudioPlayer {
 
 		this.bufferSize = parameter.bufferSize ? parameter.bufferSize : 128;
 
-		this.uniforms = [];
-
 		if( parameter.src ){
 
 			this.load( parameter.src );
@@ -62,8 +62,6 @@ export class AudioPlayer {
 
 		this.isLoaded = false;
 
-		this.onLoad = null;
-
 		loader.load( src,
 
 			( buffer: THREE.AudioBuffer ) => {
@@ -74,14 +72,15 @@ export class AudioPlayer {
 
 				this.analyser = new THREE.AudioAnalyser( this.audio, this.bufferSize );
 				this.soundData = new THREE.DataTexture( this.analyser.data,this.bufferSize / 2,1,THREE.LuminanceFormat );
+				
 				this.soundData.needsUpdate = true;
 				this.isLoaded = true;
-
-				this.setUniformData( this.uniforms );
 
 				if ( this.onLoad) {
 
 					this.onLoad();
+
+					this.onLoad = null;
 
 				}
 
@@ -128,35 +127,7 @@ export class AudioPlayer {
 		}
 
 	}
-
-	public registerUniforms(uniform) {
-
-		this.uniforms.push(uniform);
-
-		this.setUniformData([uniform]);
-
-	}
-
-	private setUniformData(uniforms:any[]){
-
-		uniforms.forEach((uni)=>{
-
-			uni.audioSpectrum = {
-
-				value: this.soundData
-
-			},
-
-			uni.audioVolume = {
-
-				value: this.volume
-
-			}
-
-		})
-
-	}
-
+	
 	public update(){
 
 		if(this.analyser){
@@ -164,13 +135,12 @@ export class AudioPlayer {
 			this.analyser.getFrequencyData();
 			this.volume = this.analyser.getAverageFrequency();
 
-			this.uniforms.forEach((uni)=>{
+			if( this.soundData ){
+			
+				this.soundData.needsUpdate = true;
+			
+			}
 
-				uni.audioSpectrum.value.needsUpdate = true;
-				uni.audioVolume.value = this.volume;
-
-			})
-		
 		}
 
 	}

@@ -34,7 +34,10 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 		} );
 
-		this.uni = {};
+		this.uni = {
+			audioVolume: { value: 0 },
+			audioSpectrum: { value: null },
+		};
 
 		let geo = new THREE.PlaneGeometry( 1, 1, 128, 128 );
 
@@ -53,13 +56,19 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 		this.scene.add( this.plane );
 
-		this.audioPlayer.registerUniforms( this.uni );
-
 	}
 
 	animate( deltaTime ) {		
 
 		this.audioPlayer.update();
+		
+		if( this.audioPlayer.isLoaded ){
+
+			this.uni.audioVolume.value = this.audioPlayer.volume;
+			
+			this.uni.audioSpectrum.value = this.audioPlayer.soundData;
+			
+		}
 
 		this.renderer.render( this.scene, this.camera );
 
