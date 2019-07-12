@@ -22,7 +22,7 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 		this.soundNum = 0;
 
 		this.camera.position.set( 0, 1.5, 3 );
-		this.camera.lookAt( 0, 0, 0 );
+		this.camera.lookAt( 0, 0.5, 0 );
 
 		this.light = new THREE.DirectionalLight();
 		this.scene.add( this.light );

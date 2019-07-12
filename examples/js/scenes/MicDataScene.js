@@ -1,7 +1,7 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-import vert from './glsl/micdata.vs';
+import vert from './glsl/audioVisualize.vs';
 
 export default class MicDataScene extends ORE.BaseScene {
 
@@ -24,23 +24,27 @@ export default class MicDataScene extends ORE.BaseScene {
 		this.micData = new ORE.MicData( window.navigator, 256 );
 
 		this.camera.position.set( 0, 1.5, 3 );
-		this.camera.lookAt( 0, 0, 0 );
+		this.camera.lookAt( 0, 0.5, 0 );
 
-		this.uni = {
-			buff: { value: new Uint8Array(256) },
-			volume: { value: 0 },
+		let cUni = {
+			audioSpectrum: { value: this.micData.spectrumData },
+			audioVolume: { value: 0 },
 		};
 
-		let geo = new THREE.PlaneGeometry( 1, 1, 256, 1 );
+		this.uni = THREE.UniformsUtils.merge( [ cUni, THREE.ShaderLib.basic.uniforms ] );
+
+		let geo = new THREE.PlaneGeometry( 2, 0.05, 256, 1 );
 		let mat = new THREE.ShaderMaterial( {
 
 			vertexShader: vert,
-			fragmentShader: THREE.ShaderLib.normal.fragmentShader,
+			fragmentShader: THREE.ShaderLib.basic.fragmentShader,
 			uniforms: this.uni,
 			flatShading: true,
 			side: THREE.DoubleSide
 
 		} );
+
+		this.uni.diffuse.value = new THREE.Color( 0xFFFFFF );
 
 		this.plane = new THREE.Mesh( geo, mat );
 		this.plane.rotation.x = ( - Math.PI / 2 );
@@ -51,9 +55,8 @@ export default class MicDataScene extends ORE.BaseScene {
 
 	animate( deltaTime ) {
 
-		this.uni.buff = this.micData.bufferArray;
-		this.uni.volume = this.micData.volume;
-
+		this.uni.audioSpectrum.value = this.micData.spectrumData;
+		this.uni.audioVolume.value = this.micData.volume;
 		this.renderer.render( this.scene, this.camera );
 
 	}

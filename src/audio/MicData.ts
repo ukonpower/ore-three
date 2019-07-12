@@ -1,11 +1,16 @@
+import * as THREE from 'three';
+
 export class MicData{
 
 	private navigator: Navigator;
 	private context: AudioContext;
 	private analyzer: AnalyserNode;
+
 	private bufferSize: number;
 	private bufferArray: Uint8Array;
 
+	private spectrumData: THREE.DataTexture;
+	
 	public volume: number = 0.0;
 
 	constructor( navigator: Navigator, bufferSize: number ){
@@ -24,6 +29,10 @@ export class MicData{
 		this.analyzer = this.context.createAnalyser();
 		this.analyzer.fftSize = this.bufferSize;
 		this.analyzer.smoothingTimeConstant = 0.8;
+
+		this.bufferArray =  new Uint8Array( this.analyzer.frequencyBinCount );
+		
+		this.spectrumData = new THREE.DataTexture( this.bufferArray, this.bufferSize / 2, 1, THREE.LuminanceFormat );
 		
 		let input = this.context.createMediaStreamSource( stream );
 		let processor = this.context.createScriptProcessor( this.bufferSize , 1, 1 );
@@ -38,8 +47,9 @@ export class MicData{
 
 	private onProcess( e: AudioProcessingEvent ){
 
-		this.bufferArray =  new Uint8Array( this.analyzer.frequencyBinCount );
 		this.analyzer.getByteFrequencyData( this.bufferArray );
+
+		this.spectrumData.needsUpdate = true;		
 
 		this.calcVolume();
 		
@@ -50,6 +60,7 @@ export class MicData{
 		let sum = 0;
 
 		for( let i = 0; i < this.bufferArray.length; i++ ){
+			
 			sum += this.bufferArray[i];
 
 		}

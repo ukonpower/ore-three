@@ -10,7 +10,7 @@ void main(void){
 
 	pos.z += texture2D(audioSpectrum,vec2(uv.x,0.0)).x;
 
-	// pos.z += volume * 0.01;
+	// pos.z += audioVolume * 0.01;
 
 	vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
 	gl_Position = projectionMatrix * mvPosition;
