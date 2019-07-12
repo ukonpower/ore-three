@@ -171,5 +171,6 @@ export class PostProcessing {
 
     public resize(width: number,height: number){
         this.readBuffer.setSize(width,height);
+        this.writeBuffer.setSize(width,height);
     }
 }
