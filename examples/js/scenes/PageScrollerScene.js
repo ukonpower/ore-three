@@ -17,24 +17,48 @@ export default class MainScene extends ORE.BaseScene {
 		
 		this.renderer = this.gProps.renderer;
 	
-		this.camera.position.set(0, 1.5, 3);
-		this.camera.lookAt(0, 0, 0);
+		this.camera.position.set(0, 0, 5);
 
 		let wrapper = document.createElement('div');
 		wrapper.classList.add('wrapper');
 		document.body.appendChild(wrapper);
 
-		this.target = document.createElement('div');
-		this.target.classList.add('target');
-		wrapper.appendChild(this.target);
+		for( let i = 0; i < 6; i++ ){
+
+			let elm = document.createElement('div');
+			elm.classList.add('part' +  (i + 1).toString() );
+
+			wrapper.appendChild( elm );
+
+		}
 
 		this.scroller = new ORE.PageScroller(wrapper);
+
+		for( let i = 0; i < 10; i++ ){
+
+			const boxGeo = new THREE.BoxGeometry( 1,1,1 );
+			const boXMat = new THREE.MeshNormalMaterial();
+			this.box = new THREE.Mesh( boxGeo,boXMat );
+
+			this.box.position.y = -i * 1.5;
+			this.scene.add( this.box );
+
+		}
+
+		//html sections
+		this.scroller.registerSections( document.querySelector( '.part1'), new THREE.Vector3( 0, 0, 10 ));
+		this.scroller.registerSections( document.querySelector( '.part3'), new THREE.Vector3( 0, -8, 10 ));
+		this.scroller.registerSections( document.querySelector( '.part4'), new THREE.Vector3( 0, -8, 10 ));
+		this.scroller.registerSections( document.querySelector( '.part6'), new THREE.Vector3( 0, -13, 10 ), true);
+		
 	
 	}
 
 	animate( deltaTime ) {
 	
 		this.scroller.update( deltaTime );
+
+		this.camera.position.copy( this.scroller.threePosition );
 		this.renderer.render( this.scene, this.camera );
 	
 	}
