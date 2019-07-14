@@ -49,7 +49,7 @@ export class GPUComputationController {
         this.camera.position.z = 1;
         
         this.materials = [];
-        this.mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
+        this.mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ) );
 		this.scene.add( this.mesh );
 
     }
