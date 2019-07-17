@@ -113,7 +113,7 @@ export class Cursor {
 
     }
 
-    private setPos( x: number, y: number ){
+    private setPos( x: number, y: number ){        
         
         if( this._touchDown ){
 
@@ -124,7 +124,7 @@ export class Cursor {
             }else{
             
                 this._delta.set( x - this._position.x, y - this._position.y );
-            }
+            }            
     
             this._position.set( x, y );
 
@@ -146,6 +146,8 @@ export class Cursor {
     }
      
     private _TouchStart( event ) {
+
+        this._touchDown = true;
         
         if ( !event.touches ) {
 
@@ -160,8 +162,6 @@ export class Cursor {
             this._position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
 
         }
-
-        this._touchDown = true;
 
         if ( this.onTouchStart ) {
 

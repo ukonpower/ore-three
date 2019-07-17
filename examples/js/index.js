@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import MainScene from './scenes/TransFormAnimatorScene';
+import MainScene from './scenes/MainScene';
 
 class APP {
 
