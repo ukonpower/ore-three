@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import ppVert from './shaders/post-processing.vs';
 
 export interface PPParam {
     fragmentShader: string,

@@ -10,8 +10,7 @@ export class MicData{
 	private bufferSize: number;
 	private bufferArray: Uint8Array;
 
-	private spectrumData: THREE.DataTexture;
-
+	public spectrumData: THREE.DataTexture;
 	public volume: number = 0.0;
 
 	constructor( navigator: Navigator, bufferSize: number ){
@@ -20,11 +19,11 @@ export class MicData{
 		this.bufferSize = bufferSize;
 
 		this.navigator.mediaDevices.getUserMedia( { audio: true, video: false } )
-			.then( this.onGetUserMesia.bind( this ) );
+			.then( this.onGetUserMedia.bind( this ) );
 
 	}
 
-	private onGetUserMesia( stream: MediaStream ){
+	private onGetUserMedia( stream: MediaStream ){
 
 		this.context = new ((<any>window).AudioContext || (<any>window).webkitAudioContext)();
 		this.analyzer = this.context.createAnalyser();

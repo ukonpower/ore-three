@@ -32,7 +32,7 @@ export class BloomFilter {
 	public renderCount: number = 5;
 	public threshold: number = 0.9
 	public brightness: number = 0.9;
-	public blurRange: number = 5.0;
+	public blurRange: number = 10.0;
 	private blurTextureResolutionRatio: number;
 
 	constructor(renderer: THREE.WebGLRenderer, blurTextureResolutionRatio?: number ) {
