@@ -5,12 +5,13 @@ export class MicData{
 	private navigator: Navigator;
 	private context: AudioContext;
 	private analyzer: AnalyserNode;
+	private processor: ScriptProcessorNode;
 
 	private bufferSize: number;
 	private bufferArray: Uint8Array;
 
 	private spectrumData: THREE.DataTexture;
-	
+
 	public volume: number = 0.0;
 
 	constructor( navigator: Navigator, bufferSize: number ){
@@ -35,13 +36,13 @@ export class MicData{
 		this.spectrumData = new THREE.DataTexture( this.bufferArray, this.bufferSize / 2, 1, THREE.LuminanceFormat );
 		
 		let input = this.context.createMediaStreamSource( stream );
-		let processor = this.context.createScriptProcessor( this.bufferSize , 1, 1 );
+		this.processor = this.context.createScriptProcessor( this.bufferSize , 1, 1 );
 
 		input.connect( this.analyzer );
-		this.analyzer.connect( processor );
-		processor.connect( this.context.destination );
+		this.analyzer.connect( this.processor );
+		this.processor.connect( this.context.destination );
 
-		processor.addEventListener( 'audioprocess', this.onProcess.bind(this) );
+		this.processor.addEventListener( 'audioprocess', this.onProcess.bind(this) );
 
 	}
 
