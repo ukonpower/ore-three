@@ -8,6 +8,7 @@ export declare class BloomFilter {
     private renderer;
     private sceneRenderTarget;
     sceneTex: any;
+    private blurResolution;
     private resolution;
     private _brightUni;
     private _blurUni1;
@@ -16,7 +17,9 @@ export declare class BloomFilter {
     renderCount: number;
     threshold: number;
     brightness: number;
-    constructor(renderer: any);
+    blurRange: number;
+    private blurTextureResolutionRatio;
+    constructor(renderer: THREE.WebGLRenderer, blurTextureResolutionRatio?: number);
     private init;
     render(scene: THREE.Scene, camera: THREE.Camera): void;
     resize(width?: number, height?: number): void;

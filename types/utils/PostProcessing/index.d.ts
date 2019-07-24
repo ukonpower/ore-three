@@ -16,8 +16,9 @@ export declare class PostProcessing {
     private writeBuffer;
     resultBuffer: THREE.WebGLRenderTarget;
     resolution: THREE.Vector2;
+    resolutionRatio: number;
     private effectMaterials;
-    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: number);
+    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number);
     private initRenderTargets;
     createRenderTarget(): THREE.WebGLRenderTarget;
     private swapBuffers;
