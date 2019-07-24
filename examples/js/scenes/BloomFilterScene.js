@@ -20,15 +20,15 @@ export default class BloomFilterScene extends ORE.BaseScene {
 		this.camera.position.set(0, 1.5, 3);
 		this.camera.lookAt(0, 0, 0);
 
-		var boxGeo = new THREE.SphereGeometry(0.8, 30, 20);
-		var boXMat = new THREE.MeshStandardMaterial({
+		var geo = new THREE.SphereGeometry(0.8, 10, 10);
+		var mat = new THREE.MeshStandardMaterial({
 			color:new THREE.Color(0xFFFFFF),
 			roughness: 0.2
 		});
 		
-		boXMat.flatShading = true;
+		mat.flatShading = true;
 		
-		this.box = new THREE.Mesh(boxGeo, boXMat);
+		this.box = new THREE.Mesh(geo, mat);
 		this.scene.add(this.box);
 
 		this.light = new THREE.PointLight();
@@ -41,9 +41,10 @@ export default class BloomFilterScene extends ORE.BaseScene {
 		this.aLight.intensity = 0.5;
 		this.scene.add(this.aLight);
 
-		this.bloom = new ORE.BloomFilter(this.renderer);
-		this.bloom.threshold = 0.8;
+		this.bloom = new ORE.BloomFilter(this.renderer, 0.1);
+		this.bloom.threshold = 0.0;
 		this.bloom.brightness = 0.9;
+		this.bloom.blurRange = 20.0;
 		
 	}
 
@@ -57,6 +58,7 @@ export default class BloomFilterScene extends ORE.BaseScene {
 
 	onResize(width, height) {
 		
+		this.bloom.resize( width, height );
 		super.onResize(width, height);
 
 	}

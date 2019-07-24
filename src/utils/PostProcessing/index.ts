@@ -22,16 +22,18 @@ export class PostProcessing {
     private writeBuffer: THREE.WebGLRenderTarget;
     public resultBuffer: THREE.WebGLRenderTarget;
     public resolution: THREE.Vector2;
+    public resolutionRatio: number;
 
     private effectMaterials: [EffectMaterial];
 
-    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: number) {
+    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number) {
 
         this.renderer = renderer;
+        this.resolutionRatio = resolutionRatio ? resolutionRatio : 1.0;
 
         this.resolution = new THREE.Vector2();
         this.renderer.getSize(this.resolution);
-        this.resolution.multiplyScalar(this.renderer.getPixelRatio() * resolution ? resolution : 1.0);
+        this.resolution.multiplyScalar(this.renderer.getPixelRatio() * (this.resolutionRatio ? this.resolutionRatio : 1.0));
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -170,7 +172,11 @@ export class PostProcessing {
     }
 
     public resize(width: number,height: number){
-        this.readBuffer.setSize(width,height);
-        this.writeBuffer.setSize(width,height);
+
+        this.resolution.set( width, height ).multiplyScalar( this.renderer.getPixelRatio() * this.resolutionRatio );
+        
+        this.readBuffer.setSize( this.resolution.x, this.resolution.y );
+        this.writeBuffer.setSize( this.resolution.x, this.resolution.y );
+
     }
 }
