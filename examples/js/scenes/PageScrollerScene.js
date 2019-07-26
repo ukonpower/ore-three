@@ -46,11 +46,10 @@ export default class MainScene extends ORE.BaseScene {
 		}
 
 		//html sections
-		this.scroller.registerSections( document.querySelector( '.part1'), new THREE.Vector3( 0, 0, 10 ));
-		this.scroller.registerSections( document.querySelector( '.part3'), new THREE.Vector3( 0, -8, 10 ));
-		this.scroller.registerSections( document.querySelector( '.part4'), new THREE.Vector3( 0, -8, 10 ));
-		this.scroller.registerSections( document.querySelector( '.part6'), new THREE.Vector3( 0, -13, 10 ), true);
-		
+		this.scroller.registerSections( "a", document.querySelector( '.part1'), new THREE.Vector3( 0, 0, 10 ));
+		this.scroller.registerSections( "b", document.querySelector( '.part3'), new THREE.Vector3( 0, -8, 10 ));
+		this.scroller.registerSections( "c", document.querySelector( '.part4'), new THREE.Vector3( 0, -8, 10 ));
+		this.scroller.registerSections( "d", document.querySelector( '.part6'), new THREE.Vector3( 0, -13, 10 ), true);
 	
 	}
 

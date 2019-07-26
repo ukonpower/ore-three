@@ -8,10 +8,15 @@ declare interface CustomRect{
 }
 
 export declare interface PageScrollerSection{
+	name: string
 	element: HTMLElement,
 	rect: CustomRect,
 	bottom?: Boolean,
 	position?: THREE.Vector3
+}
+
+export interface ScrollPercentages{
+	[key: string]: number
 }
 
 export class PageScroller {
@@ -34,6 +39,7 @@ export class PageScroller {
 
 	//sections
 	public sections: PageScrollerSection[] = [];
+	public scrollPercentages: ScrollPercentages = {};
 
 	public threePosition: THREE.Vector3 = new THREE.Vector3( 0, 0, 0 );
 
@@ -68,11 +74,13 @@ export class PageScroller {
 	
 	}
 
-	public registerSections( element: HTMLElement, position: THREE.Vector3, bottom?: boolean );
-	
-	public registerSections( section: PageScrollerSection );
+	public registerSections( name: string, element: HTMLElement);
 
-	public registerSections( section_element: any, position?: THREE.Vector3, bottom: boolean = false ){
+	public registerSections( name: string, element: HTMLElement, position?: THREE.Vector3, bottom?: boolean );
+	
+	public registerSections( name: string, section: PageScrollerSection );
+
+	public registerSections( name: string, section_element: any, position?: THREE.Vector3, bottom: boolean = false ){
 
 		if( section_element.element ){
 
@@ -93,10 +101,12 @@ export class PageScroller {
 				element: ( section_element as HTMLElement ),
 				rect: rect,
 				position: position,
-				bottom: bottom
+				bottom: bottom,
+				name: name
 			}
 		
 			this.sections.push( section );
+			this.scrollPercentages[ name ] = 0;
 
 		}
 
@@ -191,26 +201,116 @@ export class PageScroller {
 	
 		}
 		
+		let done = false;
 
-		for( let i = 0; i < this.sections.length - 1; i++ ){
+		for( let i = 0; i < this.sections.length; i++ ){
 
 			let a = this.sections[i];
-			let b = this.sections[i + 1];
+			let aRectPos = a.bottom ? a.rect.bottom : a.rect.top;
 
-			let aPos = a.bottom ? a.rect.bottom : a.rect.top;
-			let bPos = b.bottom ? b.rect.bottom : b.rect.top;
+			if( i == this.sections.length - 1 ){
 
-			if( this.pageOffset + ( a.bottom ? window.innerHeight : 0 ) >= aPos && this.pageOffset + ( b.bottom ? window.innerHeight : 0 ) < bPos ){
+				if( this.pageOffset + ( a.bottom ? window.innerHeight : 0 ) >= aRectPos ){
 
-				let percentage = ( this.pageOffset - aPos ) / ( ( bPos - ( b.bottom ? window.innerHeight : 0 ) ) - aPos );
+					this.scrollPercentages[a.name] = 1;
 
-				this.threePosition = a.position.clone().add( new THREE.Vector3().subVectors( b.position, a.position ).multiplyScalar( percentage ) );
-
+				}
 				
+				break;
+
+			}
+
+			let b = this.sections[i + 1];
+			let bRectPos = b.bottom ? b.rect.bottom : b.rect.top;
+
+
+			if( done ){
+
+				this.scrollPercentages[b.name] = 0;
+				continue;
+
+			}
+
+			this.scrollPercentages[a.name] = 1;
+
+			if( this.pageOffset + ( a.bottom ? window.innerHeight : 0 ) >= aRectPos && this.pageOffset + ( b.bottom ? window.innerHeight : 0 ) <= bRectPos ){
+				
+				let sectionPercentage = ( this.pageOffset - aRectPos ) / ( ( bRectPos - ( b.bottom ? window.innerHeight : 0 ) ) - aRectPos );
+				this.scrollPercentages[ b.name ] = sectionPercentage;
+				let threePosPercentage = sectionPercentage;
+
+				if( !a.position || !b.position ){
+
+					if( !a.position ){
+
+						for(let j = i; j >= 0; j-- ){
+						
+							let sec = this.sections[j];
+		
+							if( sec.position ){
+		
+								a = sec;
+
+								break;
+		
+							}
+
+						}
+
+					}
+
+					if( !b.position ){
+
+						for(let j = i + 2; j < this.sections.length; j++ ){
+						
+							let sec = this.sections[j];
+		
+							if( sec.position ){
+		
+								b = sec;
+
+								break;
+		
+							}
+
+						}
+
+					}
+
+					//calc percentage
+					aRectPos = a.bottom ? a.rect.bottom : a.rect.top;
+					bRectPos = b.bottom ? b.rect.bottom : b.rect.top;
+
+					threePosPercentage = ( this.pageOffset - aRectPos ) / ( ( bRectPos - ( b.bottom ? window.innerHeight : 0 ) ) - aRectPos );
+
+				}
+				
+				let aThreePos = a.position;
+				let bThreePos = b.position;
+
+				aThreePos = aThreePos || bThreePos;
+				bThreePos = bThreePos || aThreePos;
+				
+				if( aThreePos && bThreePos ){
+
+					this.threePosition = aThreePos.clone().add( new THREE.Vector3().subVectors( bThreePos, aThreePos ).multiplyScalar( threePosPercentage ) );
+				
+				}
+
+				done = true;
+
+			}else if( this.pageOffset + ( a.bottom ? window.innerHeight : 0 ) >= aRectPos ){
+				
+				this.scrollPercentages[b.name] = 1.0;
+
+			}else{
+
+				this.scrollPercentages[b.name] = 0.0;
 			}
 			
 		}
 
+		
 		
 	
 		this.element.style.transform = 'translate3d( 0,' + -this._pageOffset + 'px,0 )';
