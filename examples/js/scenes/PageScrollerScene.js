@@ -46,16 +46,19 @@ export default class MainScene extends ORE.BaseScene {
 		}
 
 		//html sections
-		this.scroller.registerSections( "a", document.querySelector( '.part1'), new THREE.Vector3( 0, 0, 10 ));
-		this.scroller.registerSections( "b", document.querySelector( '.part3'), new THREE.Vector3( 0, -8, 10 ));
-		this.scroller.registerSections( "c", document.querySelector( '.part4'), new THREE.Vector3( 0, -8, 10 ));
+		this.scroller.registerSections( "a", document.querySelector( '.part1'), new THREE.Vector3( 0, 0, 10 ), false, false);
+		this.scroller.registerSections( "b", document.querySelector( '.part3'), new THREE.Vector3( 0, -8, 10 ), true, true);
+		this.scroller.registerSections( "c", document.querySelector( '.part4'), new THREE.Vector3( 0, -8, 10 ), false, true);
 		this.scroller.registerSections( "d", document.querySelector( '.part6'), new THREE.Vector3( 0, -13, 10 ), true);
-	
+
 	}
 
 	animate( deltaTime ) {
 	
 		this.scroller.update( deltaTime );
+		
+		console.log( this.scroller.scrollPercentages );
+		
 
 		this.camera.position.copy( this.scroller.threePosition );
 		this.renderer.render( this.scene, this.camera );
@@ -70,8 +73,16 @@ export default class MainScene extends ORE.BaseScene {
 
 	onTouchStart( cursor, e ) {
 	
-		this.scroller.moveto(this.target);
+		// this.scroller.moveto(this.target);
 	
+	}
+
+	onTouchMove( cursor, event ){
+
+		this.scroller.setScrollVelocity( -cursor.delta.y );
+
+		event.preventDefault();
+		
 	}
 
 	onWheel( e ){
