@@ -46,19 +46,69 @@ export default class MainScene extends ORE.BaseScene {
 		}
 
 		//html sections
-		this.scroller.registerSections( "a", document.querySelector( '.part1'), new THREE.Vector3( 0, 0, 10 ), false, false);
-		this.scroller.registerSections( "b", document.querySelector( '.part3'), new THREE.Vector3( 0, -8, 10 ), true, true);
-		this.scroller.registerSections( "c", document.querySelector( '.part4'), new THREE.Vector3( 0, -8, 10 ), false, true);
-		this.scroller.registerSections( "d", document.querySelector( '.part6'), new THREE.Vector3( 0, -13, 10 ), true);
+		this.scroller.registerSections({ 
+			name: "a",
+			element: document.querySelector( '.part1'),
+			threePosition: new THREE.Vector3( 0, 0, 10 ),
+		});
+		
+		this.scroller.registerSections({ 
+			name: "b",
+			element: document.querySelector( '.part3'),
+			threePosition: new THREE.Vector3( 0, -8, 10 ),
+			stop: true,
+			onArrivalDownScroll: () => {
+				
+				console.log( 'arrival section at down scroll');
+				
+			},
+			onArrivalUpScroll: () => {
+				
+				console.log( 'arrival section at up scroll');
+				
+			}
+		});
+		
+		this.scroller.registerSections({ 
+			name: "c",
+			element: document.querySelector( '.part4'),
+			threePosition: new THREE.Vector3( 0, -8, 10 ),
+			stop: true,
+			onStartDownScroll: ( vel ) => {
 
+				console.log( 'start up scroll' );
+
+				if( vel > 20 ){
+
+					console.log( 'move.' );
+				
+					return true;
+
+				}
+
+				return false
+
+			},
+			onStartUpScroll: ( vel ) => {
+
+				console.log( 'start up scroll' );
+				
+				return true;
+
+			}
+		});
+
+		this.scroller.registerSections({ 
+			name: "d",
+			element: document.querySelector( '.part6'),
+			threePosition: new THREE.Vector3( 0, -13, 10 ),
+			bottom: true,
+		});
 	}
 
 	animate( deltaTime ) {
 	
 		this.scroller.update( deltaTime );
-		
-		console.log( this.scroller.scrollPercentages );
-		
 
 		this.camera.position.copy( this.scroller.threePosition );
 		this.renderer.render( this.scene, this.camera );

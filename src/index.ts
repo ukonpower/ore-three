@@ -1,6 +1,6 @@
 export * from './core/Controller';
 export * from './core/Cursor';
-export * from './core/PageScroller';
+export * from './utils/PageScroller';
 
 export * from './scene/BaseScene';
 
