@@ -17,22 +17,22 @@ export default class MainScene extends ORE.BaseScene {
 		
 		this.renderer = this.gProps.renderer;
 	
-		this.camera.position.set(0, 0, 5);
+		this.camera.position.set( 0, 0, 5 );
 
-		let wrapper = document.createElement('div');
-		wrapper.classList.add('wrapper');
+		let wrapper = document.createElement( 'div' );
+		wrapper.classList.add( 'wrapper' );
 		document.body.appendChild(wrapper);
 
 		for( let i = 0; i < 6; i++ ){
 
-			let elm = document.createElement('div');
+			let elm = document.createElement( 'div' );
 			elm.classList.add('part' +  (i + 1).toString() );
-
 			wrapper.appendChild( elm );
 
 		}
 
 		this.scroller = new ORE.PageScroller(wrapper);
+		this.scroller.setEasing( ORE.Easings.sigmoid, 6 );
 
 		for( let i = 0; i < 10; i++ ){
 

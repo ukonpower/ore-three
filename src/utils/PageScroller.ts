@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Easings } from './Easings';
 
 declare interface CustomRect{
 	width: number;
@@ -59,6 +60,9 @@ export class PageScroller {
 	public scrollPercentages: ScrollPercentages = {};
 	private currentSection: number;
 
+	private easing: Function;
+	private easingVariables: number[];
+
 	private scrollLock = false;
 
 	public threePosition: THREE.Vector3 = new THREE.Vector3( 0, 0, 0 );
@@ -80,6 +84,8 @@ export class PageScroller {
 		this.element = element;
 	
 		this.rect = this.element.getBoundingClientRect();
+
+		this.setEasing( Easings.linear );
 	
 	}
 
@@ -268,7 +274,7 @@ export class PageScroller {
 	
 			}
 
-			let w = this.sigmoid( 6, this.x );
+			let w = this.easing( this.x, this.easingVariables );
 
 			this._pageOffset = this.baseOffset + this.scrollDistance * w;
 
@@ -426,7 +432,7 @@ export class PageScroller {
 
 			}
 
-			this.threePosition.copy(aPos.clone().add( new THREE.Vector3().subVectors( bPos, aPos ).multiplyScalar( this.sigmoid( 6 ,sum / num) ) ));
+			this.threePosition.copy(aPos.clone().add( new THREE.Vector3().subVectors( bPos, aPos ).multiplyScalar( this.easing( sum / num , this.easingVariables ) ) ) );
 
 		}else if( aPos ){
 
@@ -487,19 +493,18 @@ export class PageScroller {
 
 	}
 
+	public setEasing( easing: Function, ...variables: number[] ){
+
+		this.easing = easing;
+		this.easingVariables = variables;
+
+	}
+	
+
 	public unLockScroll(){
 
 		this.scrollLock = false;
 
-	}
-
-	private sigmoid( a, x ) {
-	
-		var e1 = Math.exp( -a * ( 2 * x - 1 ) );
-		var e2 = Math.exp( -a );
-	
-		return ( 1 + ( 1 - e1 ) / ( 1 + e1 ) * ( 1 + e2 ) / ( 1 - e2 ) ) / 2;
-	
 	}
 
 }
