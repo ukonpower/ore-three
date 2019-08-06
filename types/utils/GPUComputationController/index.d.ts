@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Uniforms } from '../../shaders/shader';
+import { Uniforms } from '../../';
 export interface GPUComputationKernel {
     material: THREE.RawShaderMaterial;
     uniforms: Uniforms;
@@ -14,7 +14,8 @@ export declare class GPUComputationController {
     private camera;
     private mesh;
     private materials;
-    private tempData;
+    private tempDataLinear;
+    private tempDataNear;
     readonly isSupported: boolean;
     constructor(renderer: THREE.WebGLRenderer, resolution: THREE.Vector2);
     createInitializeTexture(): THREE.DataTexture;
