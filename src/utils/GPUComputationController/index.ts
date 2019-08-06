@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Uniforms } from '../../shaders/shader';
+import { Uniforms } from '../../';
 
 import passThroughVert from './shaders/passThrough.vs';
 import passThroughFrag from './shaders/passThrough.fs';
@@ -24,7 +24,8 @@ export class GPUComputationController {
     private mesh: THREE.Mesh;
     private materials: THREE.ShaderMaterial[];
 
-    private tempData: GPUcomputationData;
+    private tempDataLinear: GPUcomputationData;
+    private tempDataNear: GPUcomputationData;
 
     
     public get isSupported() : boolean {
@@ -39,9 +40,14 @@ export class GPUComputationController {
 
         this.resolution = resolution;
 
-        this.tempData = this.createData({ 
+        this.tempDataLinear = this.createData({ 
             minFilter: THREE.LinearFilter,
             magFilter: THREE.LinearFilter
+        });
+
+        this.tempDataNear = this.createData({ 
+            minFilter: THREE.NearestFilter,
+            magFilter: THREE.NearestFilter
         });
 
         this.scene = new THREE.Scene();
@@ -85,7 +91,6 @@ export class GPUComputationController {
 			depthBuffer: false
         };
 
-        
         let initTex: THREE.DataTexture;
         let customParam: THREE.WebGLRenderTargetOptions;
 
@@ -168,13 +173,25 @@ export class GPUComputationController {
 
     public compute( kernel: GPUComputationKernel, variable: GPUcomputationData ){
 
+        let temp: GPUcomputationData;
+
+        if( variable.buffer.texture.magFilter == THREE.LinearFilter ){
+            
+            temp = this.tempDataLinear;
+
+        }else{
+
+            temp = this.tempDataNear;
+            
+        }
+
         this.mesh.material = kernel.material;
 
-        this.renderer.setRenderTarget( this.tempData.buffer );
+        this.renderer.setRenderTarget( temp.buffer );
 
         this.renderer.render( this.scene, this.camera );
         
-        this.swapBuffers( variable, this.tempData );
+        this.swapBuffers( variable, temp );
 
         this.renderer.setRenderTarget( null );
         
@@ -201,7 +218,7 @@ export class GPUComputationController {
 
         this.scene.remove( this.mesh );
 
-        this.tempData.buffer.dispose();
+        this.tempDataLinear.buffer.dispose();
 
     }
 
