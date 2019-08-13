@@ -1,26 +1,11 @@
-import * as ORE from '../..';
+import * as ORE from '../../'
 import * as THREE from 'three';
 
 import vert from './shaders/background.vs';
 
-export class Background extends THREE.Object3D{
-
-    private uni: { [uniform: string]: THREE.IUniform };
-
-    private frag: string;
+export class Background extends THREE.Mesh{
     
-    constructor( fragmentShader:string,uniforms:any ){
-
-        super();
-
-        this.frag = fragmentShader;
-        this.uni = uniforms;    
-
-        this.createMesh();
-
-    }
-
-    createMesh(){
+    constructor( fragmentShader: string, uniforms: ORE.Uniforms ){
 
         let geo = new THREE.BufferGeometry();
 
@@ -49,14 +34,15 @@ export class Background extends THREE.Object3D{
         geo.setIndex( new THREE.BufferAttribute( indices,1 ) )
         
         let mat = new THREE.ShaderMaterial( {
-            uniforms: this.uni,
-            fragmentShader: this.frag,
+            uniforms: uniforms,
+            fragmentShader: fragmentShader,
             vertexShader: vert,
             transparent:true,
         } );
 
-        this.add( new THREE.Mesh( geo,mat ) );
+        super( geo, mat )
 
+        this.frustumCulled = false;
     }
 
 }
