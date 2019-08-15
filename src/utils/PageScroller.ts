@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Easings } from './Easings';
+import { Easings } from 'ore-three-ts';
 
 declare interface CustomRect{
 	width: number;
@@ -8,29 +8,39 @@ declare interface CustomRect{
 	bottom: number;
 }
 
+declare interface ScrollerEasing{
+	func: Function,
+	variables: number[],
+}
+
+declare interface ScrollerSectionEasings{
+	position?: ScrollerEasing,
+	rotation?: ScrollerEasing
+}
+
 export declare interface PageScrollerSectionParam{
 	name: string
 	element: HTMLElement,
 	bottom?: Boolean,
 	threePosition?: THREE.Vector3,
+	threeRotation?: THREE.Quaternion,
 	stop?: boolean,
 	onStartDownScroll?: Function,
 	onStartUpScroll?: Function,
 	onArrivalDownScroll?: Function,
 	onArrivalUpScroll?: Function,
+	sectionEasings?: ScrollerSectionEasings
 }
 
-export declare interface PageScrollerSection{
-	name: string
-	element: HTMLElement,
-	rect: CustomRect,
-	bottom?: Boolean,
-	threePosition?: THREE.Vector3,
-	stop: boolean,
-	onStartDownScroll?: Function,
-	onStartUpScroll?: Function,
-	onArrivalDownScroll?: Function,
-	onArrivalUpScroll?: Function,
+export declare interface PageScrollerSection extends PageScrollerSectionParam{
+	rect: CustomRect
+}
+
+export declare interface PageScrollerMoveToParam{
+	target: HTMLElement | string,
+	duration?: number,
+	callback?: Function,
+	lock?: boolean
 }
 
 export interface ScrollPercentages{
@@ -43,29 +53,38 @@ export class PageScroller {
 	private rect: ClientRect;
 
 	//manual move
-	private _scrollVel: number = 0;
+	private _velocity: number = 0;
 	private _pageOffset: number = 0;
+	private _pageOffsetMem: number = 0;
 	public velocityAttenuation: number = 0.95;
 
 	//auto move
 	private x: number = 1.0;
-	private isAutoMoving: boolean = false;
 	private duration: number;
 	private baseOffset: number
 	private scrollDistance: number;
-	private onAutoMoved: Function;
+	private onAutoMoveFinished: Function;
+	private isAutoMoving: boolean = false;
+	private autoMovingLock: boolean = false;
 
 	//sections
 	public sections: PageScrollerSection[] = [];
-	public scrollPercentages: ScrollPercentages = {};
+	public sectionScrollPercentages: ScrollPercentages = {};
 	private currentSection: number;
 
-	private easing: Function;
-	private easingVariables: number[];
+	//easing
+	private easingPos: ScrollerEasing;
+	private easingRot: ScrollerEasing;
+	private easingAutoMove: ScrollerEasing;
 
-	private scrollLock = false;
-
+	//three transforms
 	public threePosition: THREE.Vector3 = new THREE.Vector3( 0, 0, 0 );
+	public threeRotation: THREE.Quaternion = new THREE.Quaternion( 0, 0, 0 );
+
+	//stop
+	private isStop: boolean = false;
+	private stopSection: number = null;
+	
 
 	public get pageOffset(): number {
 	
@@ -75,7 +94,21 @@ export class PageScroller {
 
 	public get scrollVel(): number{
 
-		return this._scrollVel;
+		return this._velocity;
+
+	}
+
+	public get scrollPercentage(): number{
+		
+		let sum = 0;
+
+		for( let i = 1; i < this.sections.length; i++ ){
+
+			sum += this.sectionScrollPercentages[this.sections[i].name];
+
+		}
+
+		return sum / ( this.sections.length - 1 );
 
 	}
 
@@ -85,259 +118,396 @@ export class PageScroller {
 	
 		this.rect = this.element.getBoundingClientRect();
 
-		this.setEasing( Easings.linear );
+		this.initEasings();
 	
 	}
 
-	public resize() {
-	
-		this.rect = this.element.getBoundingClientRect();
+	private initEasings(){
 
-		for( let i = 0; i < this.sections.length; i++ ){
-
-			let clientRect = this.sections[i].element.getBoundingClientRect();
-
-			this.sections[i].rect.bottom = clientRect.bottom + this.pageOffset;
-			this.sections[i].rect.top = clientRect.top + this.pageOffset;
-			this.sections[i].rect.width = clientRect.width;
-			this.sections[i].rect.height = clientRect.height;
-
+		this.easingPos = {
+			func: Easings.linear,
+			variables: null
 		}
-	
+
+		this.easingRot = {
+			func: Easings.linear,
+			variables: null
+		}
+
+		this.easingAutoMove = {
+			func: Easings.sigmoid,
+			variables: [6]
+		}
 	}
 
-	public registerSections( param: PageScrollerSectionParam ){
+	public addVelocity( scrollVelocity: number ) {
 
-		let clientRect  = ( param.element as HTMLElement ).getBoundingClientRect();
+		if( this.autoMovingLock ) return;
 
-		let rect: CustomRect = {
-			top: clientRect.top,
-			bottom: clientRect.bottom,
-			width: clientRect.width,
-			height: clientRect.height,
-		}
+		if( this.isStop ){
 
-		let section: PageScrollerSection = {
-			name: param.name,
-			element: param.element,
-			rect: rect,
-			bottom: param.bottom ? param.bottom : false,
-			threePosition: param.threePosition,
-			stop: param.stop,
-			onStartDownScroll: param.onStartDownScroll,
-			onStartUpScroll: param.onStartUpScroll,
-			onArrivalDownScroll: param.onArrivalDownScroll,
-			onArrivalUpScroll: param.onArrivalUpScroll,
-		}
+			//スクロールロック解除条件に合わなければRETURN
+			if( !this.checkUnlockStopScroll( scrollVelocity ) ){
 
-			
-		this.sections.push( section );
-		this.scrollPercentages[ name ] = 0;
-
-		this.sortSections();
-
-		this._pageOffset = 0;
-		this.currentSection = 0;
-
-	}
-
-	private sortSections(){
-
-		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
-
-			return a.rect.top > b.rect.top ? 1 : -1;
-
-		} );
-
-		for( let i = 0; i < this.sections.length; i++ ){
-
-			if( this.sections[i].threePosition ){
-				
-				this.threePosition.copy( this.sections[i].threePosition );
-				break;
+				return;
 
 			}
+
 		}
 
-		this.scrollPercentages[this.sections[0].name] = 1;
+		this._velocity += scrollVelocity;
 
 	}
 
-	public moveto( target: HTMLElement, duration: number = 1.0, callback: Function = null ) {
-	
-		if ( !target ) {
-	
-			console.log( ( "target is null." ) );
-	
-			return;
-	
+	public setVelocity( scrollVelocity: number ) {
+
+		if( this.autoMovingLock ) return;
+
+		if( this.isStop ){
+
+			//スクロールロック解除条件に合わなければRETURN
+			if( !this.checkUnlockStopScroll( scrollVelocity ) ){
+
+				return;
+
+			}
+
 		}
 
-		if ( !this.isAutoMoving ) {			
-	
-			let targetRect = target.getBoundingClientRect();
-			let targetOffset = targetRect.top;
-			this.baseOffset = this.pageOffset;
-
-			this.x = 0;
-			this._scrollVel = 0;
-			this.isAutoMoving = true;
-			this.duration = duration;
-			
-			this.scrollDistance = Math.min( targetOffset,( this.rect.height - ( this.pageOffset + window.innerHeight ) ) );
-			this.onAutoMoved = callback;
-	
-		}
+		this._velocity = scrollVelocity;
 	
 	}
 
-	public setScrollVelocity( velocity: number ) {
+	private checkUnlockStopScroll( scrollVelocity: number ){
+
+		let unLock: boolean = true;
+		let sec = this.sections[this.stopSection];
+
+		if( scrollVelocity > 0 ){
+
+			if( sec.onStartDownScroll ){
+
+				unLock = sec.onStartDownScroll( scrollVelocity );
+
+			}
+
+		}else{
+
+			if( sec.onStartUpScroll ){
+
+				unLock = sec.onStartUpScroll( scrollVelocity );
+
+			}
+
+		}
+
+		if( unLock ){
+
+			this.isStop = false;
+			this.stopSection = null;
+
+		}
+
+		return unLock;
+
+	}
+
+	public setEasingPos( easingFunction: Function, ...variables: number[] ){
+
+		this.easingPos.func = easingFunction;
+		this.easingPos.variables = variables;
+
+	}
+
+	public setEasingRot( easingFunction: Function, ...variables: number[] ){
+
+		this.easingRot.func = easingFunction;
+		this.easingRot.variables = variables;
+
+	}
+
+	public setEasingAutoMove( easingFunction: Function, ...variables: number[] ){
+
+		this.easingAutoMove.func = easingFunction;
+		this.easingAutoMove.variables = variables;
+
+	}
+
+	public moveto( param: PageScrollerMoveToParam ) {
 	
-		this.isAutoMoving = false;
-		this._scrollVel = velocity;
+		let targetOffset: number;
 
+		if ( typeof param.target == 'string' ) {
 
-		if( this.scrollLock ){
+			let targetSection = this.getSection( param.target );
 
-			let unlock: boolean;
+			if( targetSection ){
 
-			if( velocity > 0 ){
+				if( targetSection.bottom ){
 
-				if( this.sections[this.currentSection].onStartDownScroll ){
-
-					unlock = this.sections[this.currentSection].onStartDownScroll( this.scrollVel );
+					targetOffset = targetSection.rect.bottom - window.innerHeight;
 
 				}else{
-					
-					unlock = true;
+
+					targetOffset = targetSection.rect.top;
 
 				}
-
-				if( unlock ){
-						
-					this.currentSection += 1;
-
-				}
-
-				
-			}else{
-				
-				if( this.sections[this.currentSection].onStartUpScroll ){
-
-					unlock = this.sections[this.currentSection].onStartUpScroll( this.scrollVel );
-				
-				}else{
-
-					unlock = true;
-					
-				}
-
-			}
-
-			if( unlock ){
-
-				this.scrollLock = false;
-
-			}else{;
-				
-				this._scrollVel = 0;
 
 			}
 			
+		}else{
+
+			let targetRect = param.target.getBoundingClientRect();
+			targetOffset = targetRect.top;
+
 		}
+	
+
+		this.baseOffset = this.pageOffset;
+
+		this.x = 0;
+		this._velocity = 0;
+		this.isAutoMoving = true;
+		this.duration = param.duration ? param.duration : 1.0;
+		this.autoMovingLock = param.lock ? param.lock : false;
+		
+		this.scrollDistance = Math.min( targetOffset, ( this.rect.height - ( this.pageOffset + window.innerHeight ) ) );
+		this.onAutoMoveFinished = param.callback ? param.callback : null;
 	
 	}
 
 	public update( deltaTime?: number ) {
-		
-		if ( !this.isAutoMoving ) {
-	
-			if( !this.scrollLock ){
 
-				this._pageOffset += this._scrollVel;
-				this._pageOffset = Math.min( Math.max( 0.0, this.pageOffset ), this.rect.height - window.innerHeight );
-				this._scrollVel *= this.velocityAttenuation;
+		if( !this.isStop ){
 
-			}
-	
-		} else {
-	
-			this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;
-	
-			let ended = false;
-			
-			if ( this.x >= 1.0 ) {
-	
-				ended = true;
-	
-				this.x = 1.0;
-	
-			}
+			this.updateScroll( deltaTime );
 
-			let w = this.easing( this.x, this.easingVariables );
+			this.checkThrowSection();
 
-			this._pageOffset = this.baseOffset + this.scrollDistance * w;
-
-			if ( ended ) {
-	
-				if ( this.onAutoMoved ) {
-	
-					this.onAutoMoved();
-	
-				}
-	
-				this.isAutoMoving = false;
-				this.onAutoMoved = null;
-	
-			}			
-	
 		}
 		
 		this.calcScrollPercentage();
 
-		let newSection = this.getCurrentSection();
-		
-		if( this.currentSection != newSection ){
-
-			let isDownScroll = newSection > this.currentSection;
-			let sec = this.sections[newSection - ( isDownScroll ? 1 : 0)]
-
-			this._pageOffset = sec.rect.top + (sec.bottom ? sec.rect.height - window.innerHeight: 0 );			
-
-			if( sec.stop ){
-
-				this.scrollLock = true;
-				this._scrollVel = 0;
-				this.calcScrollPercentage();
-				
-			}
-
-			if( isDownScroll ){
-
-				if( sec.onArrivalDownScroll ){
-
-					sec.onArrivalDownScroll();
-				
-				}
-
-			}else{
-				 
-				if( sec.onArrivalUpScroll ){
-
-					sec.onArrivalUpScroll();
-
-				}
-				
-			}
-
-			this.currentSection = this.getCurrentSection();
-
-		}
+		this.currentSection = this.getCurrentSection();
 		
 		this.calcThreePosition();
+		this.calcThreeRotation();
+
+		this.applyPageOffset( this.pageOffset );
 		
-		this.element.style.transform = 'translate3d( 0,' + -this._pageOffset + 'px,0 )';
+	}
+
+	private updateScroll( deltaTime: number ){
+
+		this._pageOffsetMem = this.pageOffset;
+
+		if ( this.isAutoMoving ) {
+
+			this.autoScroll( deltaTime );
+
+		} else {
+			
+			this.manualScroll( deltaTime )
+
+		}		
+
+	}
+
+	private manualScroll( deltaTime: number ){
+
+		this._pageOffset += this._velocity;
+		this._pageOffset = Math.min( Math.max( 0.0, this.pageOffset ), this.rect.height - window.innerHeight );
+		this._velocity *= this.velocityAttenuation;
+
+	}
+
+	private autoScroll( deltaTime: number ){
+
+		this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;
 	
+		let ended = false;
+		
+		if ( this.x >= 1.0 ) {
+
+			ended = true;
+
+			this.x = 1.0;
+
+		}
+
+		let w = this.easingAutoMove.func( this.x, this.easingAutoMove.variables );
+
+		this._pageOffset = this.baseOffset + this.scrollDistance * w;
+
+		if ( ended ) {
+
+			if ( this.onAutoMoveFinished ) {
+
+				this.onAutoMoveFinished();
+
+			}
+
+			this.isAutoMoving = false;
+			this.onAutoMoveFinished = null;
+			this._velocity = 0;
+			this.autoMovingLock = false;
+
+		}
+
+	}
+
+	private applyPageOffset( pageOffset: number ){
+
+		this.element.style.transform = 'translate3d( 0,' + -pageOffset + 'px,0 )';
+	
+	}
+
+	private checkThrowSection(){
+
+		let i: number;
+
+		for( i = 0; i < this.sections.length; i++ ){
+
+			let sec = this.sections[i];
+			let line: number;
+			let pos: number = this._pageOffset;
+			let posM: number = this._pageOffsetMem;
+			
+			if( sec.bottom ){
+
+				line = sec.rect.bottom;
+				pos += window.innerHeight;
+				posM += window.innerHeight;
+
+			}else{
+
+				line = sec.rect.top;
+				
+			}
+
+			//throw down scroll
+			if( pos >= line && line > posM ){
+
+				if( this.sections[i].onArrivalDownScroll ){
+
+					this.sections[i].onArrivalDownScroll();
+
+				}
+				
+				this.onThrowSection( i );
+
+				break;
+				
+			}
+
+			//throw up scroll
+			if( pos <= line && line < posM ){				
+
+				if( this.sections[i].onArrivalUpScroll ){
+
+					this.sections[i].onArrivalUpScroll();
+					
+				}
+
+				this.onThrowSection( i );
+
+				break;
+				
+			}
+
+			//stay
+			if( pos == posM && pos == line ){
+
+				this.onThrowSection( i );
+
+				break;
+				
+			}
+
+		}
+
+	}
+
+	private onThrowSection( secNum: number ){
+		
+		if( this.stopSection == secNum ){
+
+			return;
+		
+		}
+		
+		if( this.sections[secNum].stop ){
+
+			this.isStop = true;
+			this.stopSection = secNum;
+			this._velocity = 0;
+
+			this.setPageOffsetToSection( secNum );
+			
+		}
+	}
+
+	private setPageOffsetToSection( secNum: number ){
+
+		if( this.sections[secNum].bottom ){
+
+			this._pageOffset = this.sections[ secNum ].rect.bottom - window.innerHeight;
+
+		}else{
+			
+			this._pageOffset = this.sections[ secNum ].rect.top;
+			
+		}
+
+	}
+
+	public getSection( name: string ){
+
+		for( let i = 0; i < this.sections.length; i++ ){
+			
+			if( this.sections[i].name == name ){
+			
+				return this.sections[i];
+			
+			}
+		
+		}
+
+		return null;
+
+	}
+
+	private getCurrentSection(){
+
+		for( let i = 0; i < this.sections.length; i++){
+
+			let a = this.sections[i];
+			let ap = this.sectionScrollPercentages[a.name];
+
+			let b = this.sections[i + 1];
+
+			if( b == null ){
+
+				if( ap > 0 ) {
+					
+					return i;
+	
+				}
+
+				break;
+
+			}
+
+			let bp = this.sectionScrollPercentages[b.name];
+
+			if( ap > 0 && bp == 0 ){
+
+				return i;
+				
+			}
+
+		}
+
 	}
 
 	private calcScrollPercentage(){
@@ -388,12 +558,11 @@ export class PageScroller {
 			
 			let scrollPercentage = Math.min( 1, Math.max( 0.0, percent));
 			
-			this.scrollPercentages[under.name] = scrollPercentage;
+			this.sectionScrollPercentages[under.name] = scrollPercentage;
 
 		}
 
 	}
-	
 
 	private calcThreePosition(){
 
@@ -427,12 +596,16 @@ export class PageScroller {
 
 			for( let i = a + 1; i <= b; i++ ){
 
-				sum += this.scrollPercentages[this.sections[i].name];
+				sum += this.sectionScrollPercentages[this.sections[i].name];
 				num++;
 
 			}
 
-			this.threePosition.copy(aPos.clone().add( new THREE.Vector3().subVectors( bPos, aPos ).multiplyScalar( this.easing( sum / num , this.easingVariables ) ) ) );
+			let sec = this.sections[ this.currentSection ];
+
+			let value = this.calcThreeEasings( sum / num, sec, 'pos' );
+			
+			this.threePosition.copy(aPos.clone().add( new THREE.Vector3().subVectors( bPos, aPos ).multiplyScalar( value ) ) );
 
 		}else if( aPos ){
 
@@ -442,69 +615,158 @@ export class PageScroller {
 
 			this.threePosition.copy(bPos);
 
-		}		
+		}
 		
 	}
 
-	public getSection( name: string ){
+	private calcThreeRotation(){
 
-		for( let i = 0; i < this.sections.length; i++ ){
+		let a: number;
+		let b: number;
+		let aRot: THREE.Quaternion;
+		let bRot: THREE.Quaternion;
+
+		for( let i = this.currentSection - 1; i >= 0; i-- ){
 			
-			if( this.sections[i].name == name ){
+			a = i;
+			aRot = this.sections[a].threeRotation;
 			
-				return this.sections[i];
+			if( aRot != null ) break;
+
+		}
+
+		for( let i = this.currentSection; i < this.sections.length; i++ ){
 			
+			b = i;
+			bRot = this.sections[b].threeRotation;
+			
+			if( bRot != null ) break;
+			
+		}
+
+		let sum = 0;
+		let num = 0;
+
+		if( aRot && bRot){
+
+			for( let i = a + 1; i <= b; i++ ){
+
+				sum += this.sectionScrollPercentages[this.sections[i].name];
+				num++;
+
 			}
+
+			let sec = this.sections[ this.currentSection ];
+			let value = this.calcThreeEasings( sum / num, sec, 'rot' );
+
+			this.threeRotation.copy( aRot.clone().slerp( bRot, value ));
+
+		}else if( aRot ){
+
+			this.threeRotation.copy(aRot);
+
+		}else if( bRot ){
+
+			this.threeRotation.copy(bRot);
+
+		}
 		
+	}
+
+	private calcThreeEasings( value: number, section: PageScrollerSection, type: string ){
+		
+		if( type == 'pos'){
+
+			if( section.sectionEasings && section.sectionEasings.position ){
+
+				return section.sectionEasings.position.func( value, section.sectionEasings.position.variables );
+	
+			}else{
+	
+				return this.easingPos.func( value , this.easingPos.variables );
+	
+			}
+			
+		}
+		
+		if( type == 'rot'){
+
+			if( section.sectionEasings && section.sectionEasings.rotation ){
+
+				return section.sectionEasings.rotation.func( value, section.sectionEasings.rotation.variables );
+	
+			}else{
+	
+				return this.easingRot.func( value , this.easingRot.variables );
+	
+			}
+			
 		}
 
 	}
 
-	private getCurrentSection(){
+	public registerSections( param: PageScrollerSectionParam ){
 
-		for( let i = 0; i < this.sections.length; i++){
+		let clientRect  = ( param.element as HTMLElement ).getBoundingClientRect();
 
-			let a = this.sections[i];
-			let ap = this.scrollPercentages[a.name];
+		let rect: CustomRect = {
+			top: clientRect.top,
+			bottom: clientRect.bottom,
+			width: clientRect.width,
+			height: clientRect.height,
+		}
 
-			let b = this.sections[i + 1];
+		let section: PageScrollerSection = param as PageScrollerSection;
+		section.rect = rect;
 
-			if( b == null ){
+		this.sections.push( section );
+		this.sectionScrollPercentages[ param.name ] = 0;
+		this._pageOffset = 0;
+		this.currentSection = 0;
 
-				if( ap > 0 ) {
-					
-					return i;
-	
-				}
+		this.sortSections();
+		this.calcScrollPercentage();
+
+	}
+
+	private sortSections(){
+
+		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
+
+			return a.rect.top > b.rect.top ? 1 : -1;
+
+		} );
+
+		for( let i = 0; i < this.sections.length; i++ ){
+
+			if( this.sections[i].threePosition ){
+				
+				this.threePosition.copy( this.sections[i].threePosition );
 
 				break;
 
 			}
-
-			let bp = this.scrollPercentages[b.name];
-
-			if( ap > 0 && bp == 0 ){
-
-				return i;
-				
-			}
-
 		}
 
-	}
-
-	public setEasing( easing: Function, ...variables: number[] ){
-
-		this.easing = easing;
-		this.easingVariables = variables;
+		this.sectionScrollPercentages[this.sections[0].name] = 1;
 
 	}
+
+	public resize() {
 	
+		this.rect = this.element.getBoundingClientRect();
 
-	public unLockScroll(){
+		for( let i = 0; i < this.sections.length; i++ ){
 
-		this.scrollLock = false;
+			let clientRect = this.sections[i].element.getBoundingClientRect();
 
+			this.sections[i].rect.bottom = clientRect.bottom + this.pageOffset;
+			this.sections[i].rect.top = clientRect.top + this.pageOffset;
+			this.sections[i].rect.width = clientRect.width;
+			this.sections[i].rect.height = clientRect.height;
+
+		}
+	
 	}
 
 }
