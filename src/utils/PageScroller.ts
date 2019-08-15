@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Easings } from 'ore-three-ts';
+import { Easings } from './Easings';
 
 declare interface CustomRect{
 	width: number;
