@@ -147,7 +147,7 @@ export class PageScroller {
 		if( this.isStop ){
 
 			//スクロールロック解除条件に合わなければRETURN
-			if( !this.checkUnlockStopScroll( scrollVelocity ) ){
+			if( !this.checkUnlockStopScroll( scrollVelocity, false ) ){
 
 				return;
 
@@ -166,7 +166,7 @@ export class PageScroller {
 		if( this.isStop ){
 
 			//スクロールロック解除条件に合わなければRETURN
-			if( !this.checkUnlockStopScroll( scrollVelocity ) ){
+			if( !this.checkUnlockStopScroll( scrollVelocity, true ) ){
 
 				return;
 
@@ -178,7 +178,7 @@ export class PageScroller {
 	
 	}
 
-	private checkUnlockStopScroll( scrollVelocity: number ){
+	private checkUnlockStopScroll( scrollVelocity: number, isSetMode: boolean ){
 
 		let unLock: boolean = true;
 		let sec = this.sections[this.stopSection];
@@ -187,7 +187,7 @@ export class PageScroller {
 
 			if( sec.onStartDownScroll ){
 
-				unLock = sec.onStartDownScroll( scrollVelocity );
+				unLock = sec.onStartDownScroll( scrollVelocity, isSetMode );
 
 			}
 
@@ -195,7 +195,7 @@ export class PageScroller {
 
 			if( sec.onStartUpScroll ){
 
-				unLock = sec.onStartUpScroll( scrollVelocity );
+				unLock = sec.onStartUpScroll( scrollVelocity, isSetMode );
 
 			}
 
