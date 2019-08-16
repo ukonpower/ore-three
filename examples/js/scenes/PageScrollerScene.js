@@ -32,7 +32,7 @@ export default class MainScene extends ORE.BaseScene {
 		}
 
 		this.scroller = new ORE.PageScroller(wrapper);
-		this.scroller.setEasing( ORE.Easings.sigmoid, 6 );
+		this.scroller.setEasingPos( ORE.Easings.sigmoid, 6 );
 
 		for( let i = 0; i < 10; i++ ){
 
@@ -129,7 +129,7 @@ export default class MainScene extends ORE.BaseScene {
 
 	onTouchMove( cursor, event ){
 
-		this.scroller.setScrollVelocity( -cursor.delta.y );
+		this.scroller.setVelocity( -cursor.delta.y );
 
 		event.preventDefault();
 		
@@ -137,7 +137,7 @@ export default class MainScene extends ORE.BaseScene {
 
 	onWheel( e ){
 		
-		this.scroller.setScrollVelocity(e.deltaY * 0.5)
+		this.scroller.addVelocity(e.deltaY * 0.5)
 
 	}
 }
