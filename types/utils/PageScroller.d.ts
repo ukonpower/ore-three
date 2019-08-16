@@ -5,28 +5,35 @@ declare interface CustomRect {
     top: number;
     bottom: number;
 }
+declare interface ScrollerEasing {
+    func: Function;
+    variables: number[];
+}
+declare interface ScrollerSectionEasings {
+    position?: ScrollerEasing;
+    rotation?: ScrollerEasing;
+}
 export declare interface PageScrollerSectionParam {
     name: string;
     element: HTMLElement;
     bottom?: Boolean;
     threePosition?: THREE.Vector3;
+    threeRotation?: THREE.Quaternion;
     stop?: boolean;
     onStartDownScroll?: Function;
     onStartUpScroll?: Function;
     onArrivalDownScroll?: Function;
     onArrivalUpScroll?: Function;
+    sectionEasings?: ScrollerSectionEasings;
 }
-export declare interface PageScrollerSection {
-    name: string;
-    element: HTMLElement;
+export declare interface PageScrollerSection extends PageScrollerSectionParam {
     rect: CustomRect;
-    bottom?: Boolean;
-    threePosition?: THREE.Vector3;
-    stop: boolean;
-    onStartDownScroll?: Function;
-    onStartUpScroll?: Function;
-    onArrivalDownScroll?: Function;
-    onArrivalUpScroll?: Function;
+}
+export declare interface PageScrollerMoveToParam {
+    target: HTMLElement | string;
+    duration?: number;
+    callback?: Function;
+    lock?: boolean;
 }
 export interface ScrollPercentages {
     [key: string]: number;
@@ -34,36 +41,55 @@ export interface ScrollPercentages {
 export declare class PageScroller {
     private element;
     private rect;
-    private _scrollVel;
+    private _velocity;
     private _pageOffset;
+    private _pageOffsetMem;
     velocityAttenuation: number;
     private x;
-    private isAutoMoving;
     private duration;
     private baseOffset;
     private scrollDistance;
-    private onAutoMoved;
+    private onAutoMoveFinished;
+    private isAutoMoving;
+    private autoMovingLock;
     sections: PageScrollerSection[];
-    scrollPercentages: ScrollPercentages;
+    sectionScrollPercentages: ScrollPercentages;
     private currentSection;
-    private easing;
-    private easingVariables;
-    private scrollLock;
+    private easingPos;
+    private easingRot;
+    private easingAutoMove;
     threePosition: THREE.Vector3;
+    threeRotation: THREE.Quaternion;
+    private isStop;
+    private stopSection;
     readonly pageOffset: number;
     readonly scrollVel: number;
+    readonly scrollPercentage: number;
     constructor(element: HTMLElement);
-    resize(): void;
-    registerSections(param: PageScrollerSectionParam): void;
-    private sortSections;
-    moveto(target: HTMLElement, duration?: number, callback?: Function): void;
-    setScrollVelocity(velocity: number): void;
+    private initEasings;
+    addVelocity(scrollVelocity: number): void;
+    setVelocity(scrollVelocity: number): void;
+    private checkUnlockStopScroll;
+    setEasingPos(easingFunction: Function, ...variables: number[]): void;
+    setEasingRot(easingFunction: Function, ...variables: number[]): void;
+    setEasingAutoMove(easingFunction: Function, ...variables: number[]): void;
+    moveto(param: PageScrollerMoveToParam): void;
     update(deltaTime?: number): void;
-    private calcScrollPercentage;
-    private calcThreePosition;
+    private updateScroll;
+    private manualScroll;
+    private autoScroll;
+    private applyPageOffset;
+    private checkThrowSection;
+    private onThrowSection;
+    private setPageOffsetToSection;
     getSection(name: string): PageScrollerSection;
     private getCurrentSection;
-    setEasing(easing: Function, ...variables: number[]): void;
-    unLockScroll(): void;
+    private calcScrollPercentage;
+    private calcThreePosition;
+    private calcThreeRotation;
+    private calcThreeEasings;
+    registerSections(param: PageScrollerSectionParam): void;
+    private sortSections;
+    resize(): void;
 }
 export {};

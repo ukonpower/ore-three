@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PPParam | ore-three</title>
+	<title>PageScrollerMoveToParam | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="ppparam.html">PPParam</a>
+					<a href="pagescrollermovetoparam.html">PageScrollerMoveToParam</a>
 				</li>
 			</ul>
-			<h1>Interface PPParam</h1>
+			<h1>Interface PageScrollerMoveToParam</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PPParam</span>
+						<span class="target">PageScrollerMoveToParam</span>
 					</li>
 				</ul>
 			</section>
@@ -81,8 +81,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ppparam.html#fragmentshader" class="tsd-kind-icon">fragment<wbr>Shader</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ppparam.html#uniforms" class="tsd-kind-icon">uniforms</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollermovetoparam.html#callback" class="tsd-kind-icon">callback</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollermovetoparam.html#duration" class="tsd-kind-icon">duration</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollermovetoparam.html#lock" class="tsd-kind-icon">lock</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollermovetoparam.html#target" class="tsd-kind-icon">target</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,22 +93,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="fragmentshader" class="tsd-anchor"></a>
-					<h3>fragment<wbr>Shader</h3>
-					<div class="tsd-signature tsd-kind-icon">fragment<wbr>Shader<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="callback" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> callback</h3>
+					<div class="tsd-signature tsd-kind-icon">callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d82dc8/src/utils/PostProcessing/index.ts#L4">utils/PostProcessing/index.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d82dc8/src/utils/PageScroller.ts#L42">utils/PageScroller.ts:42</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="uniforms" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> uniforms</h3>
-					<div class="tsd-signature tsd-kind-icon">uniforms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="duration" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> duration</h3>
+					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d82dc8/src/utils/PostProcessing/index.ts#L5">utils/PostProcessing/index.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d82dc8/src/utils/PageScroller.ts#L41">utils/PageScroller.ts:41</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="lock" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> lock</h3>
+					<div class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d82dc8/src/utils/PageScroller.ts#L43">utils/PageScroller.ts:43</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="target" class="tsd-anchor"></a>
+					<h3>target</h3>
+					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0d82dc8/src/utils/PageScroller.ts#L40">utils/PageScroller.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -197,24 +219,30 @@
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="kernels.html" class="tsd-kind-icon">Kernels</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="ppparam.html" class="tsd-kind-icon">PPParam</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="ppparam.html" class="tsd-kind-icon">PPParam</a>
+						<a href="pagescrollermovetoparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Move<wbr>ToParam</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ppparam.html#fragmentshader" class="tsd-kind-icon">fragment<wbr>Shader</a>
+								<a href="pagescrollermovetoparam.html#callback" class="tsd-kind-icon">callback</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ppparam.html#uniforms" class="tsd-kind-icon">uniforms</a>
+								<a href="pagescrollermovetoparam.html#duration" class="tsd-kind-icon">duration</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollermovetoparam.html#lock" class="tsd-kind-icon">lock</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollermovetoparam.html#target" class="tsd-kind-icon">target</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="pagescrollermovetoparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Move<wbr>ToParam</a>
-					</li>
 					<li class=" tsd-kind-interface">
 						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
 					</li>
