@@ -38,7 +38,7 @@ export class PostProcessing {
         this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
         this.screenMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), null);
         this.scene.add(this.screenMesh);
-
+        
         this.initRenderTargets();
         
         parameter.forEach((param) => {
