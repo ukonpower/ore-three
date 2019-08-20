@@ -268,6 +268,7 @@ export class PageScroller {
 		this.x = 0;
 		this._velocity = 0;
 		this.isAutoMoving = true;
+		this.isStop = false;
 		this.duration = param.duration ? param.duration : 1.0;
 		this.autoMovingLock = param.lock ? param.lock : false;
 		
@@ -300,7 +301,7 @@ export class PageScroller {
 	private updateScroll( deltaTime: number ){
 
 		this._pageOffsetMem = this.pageOffset;
-
+		
 		if ( this.isAutoMoving ) {
 
 			this.autoScroll( deltaTime );
@@ -323,7 +324,7 @@ export class PageScroller {
 
 	private autoScroll( deltaTime: number ){
 
-		this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;
+		this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;		
 	
 		let ended = false;
 		
@@ -429,6 +430,8 @@ export class PageScroller {
 	}
 
 	private onThrowSection( secNum: number ){
+
+		if( this.isAutoMoving ) return;
 		
 		if( this.stopSection == secNum ){
 
