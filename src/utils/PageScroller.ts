@@ -286,6 +286,7 @@ export class PageScroller {
 		this.x = 0;
 		this._velocity = 0;
 		this.isAutoMoving = true;
+		this.isStop = false;
 		this.duration = param.duration ? param.duration : 1.0;
 		this.autoMovingLock = param.lock ? param.lock : false;
 		
@@ -451,6 +452,8 @@ export class PageScroller {
 	}
 
 	private onThrowSection( secNum: number ){
+
+		if( this.isAutoMoving ) return;
 		
 		if( this.stopSection == secNum ){
 
