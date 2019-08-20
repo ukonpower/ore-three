@@ -18,6 +18,16 @@ declare interface ScrollerSectionEasings{
 	rotation?: ScrollerEasing
 }
 
+export declare interface onArrivalScrollParam{
+	section: PageScrollerSection
+}
+
+export declare interface onStartScrollParam{
+	section: PageScrollerSection,
+	scrollVelocity: number,
+	velocityMode: string,
+}
+
 export declare interface PageScrollerSectionParam{
 	name: string
 	element: HTMLElement,
@@ -25,10 +35,10 @@ export declare interface PageScrollerSectionParam{
 	threePosition?: THREE.Vector3,
 	threeRotation?: THREE.Quaternion,
 	stop?: boolean,
-	onStartDownScroll?: Function,
-	onStartUpScroll?: Function,
-	onArrivalDownScroll?: Function,
-	onArrivalUpScroll?: Function,
+	onStartDownScroll?: ( param: onStartScrollParam ) => boolean,
+	onStartUpScroll?: ( param: onStartScrollParam ) => boolean,
+	onArrivalDownScroll?: ( param: onArrivalScrollParam ) => void,
+	onArrivalUpScroll?: ( param: onArrivalScrollParam ) => void,
 	sectionEasings?: ScrollerSectionEasings
 }
 
@@ -147,7 +157,7 @@ export class PageScroller {
 		if( this.isStop ){
 
 			//スクロールロック解除条件に合わなければRETURN
-			if( !this.checkUnlockStopScroll( scrollVelocity, false ) ){
+			if( !this.checkUnlockStopScroll( scrollVelocity, 'add' ) ){
 
 				return;
 
@@ -166,7 +176,7 @@ export class PageScroller {
 		if( this.isStop ){
 
 			//スクロールロック解除条件に合わなければRETURN
-			if( !this.checkUnlockStopScroll( scrollVelocity, true ) ){
+			if( !this.checkUnlockStopScroll( scrollVelocity, 'set' ) ){
 
 				return;
 
@@ -178,7 +188,7 @@ export class PageScroller {
 	
 	}
 
-	private checkUnlockStopScroll( scrollVelocity: number, isSetMode: boolean ){
+	private checkUnlockStopScroll( scrollVelocity: number, mode: string ){
 
 		let unLock: boolean = true;
 		let sec = this.sections[this.stopSection];
@@ -187,7 +197,11 @@ export class PageScroller {
 
 			if( sec.onStartDownScroll ){
 
-				unLock = sec.onStartDownScroll( scrollVelocity, isSetMode );
+				unLock = sec.onStartDownScroll({
+					section: sec,
+					scrollVelocity: scrollVelocity,
+					velocityMode: mode
+				});
 
 			}
 
@@ -195,7 +209,11 @@ export class PageScroller {
 
 			if( sec.onStartUpScroll ){
 
-				unLock = sec.onStartUpScroll( scrollVelocity, isSetMode );
+				unLock = sec.onStartUpScroll( {
+					section: sec,
+					scrollVelocity: scrollVelocity,
+					velocityMode: mode
+				} );
 
 			}
 
@@ -388,9 +406,11 @@ export class PageScroller {
 			//throw down scroll
 			if( pos >= line && line > posM ){
 
-				if( this.sections[i].onArrivalDownScroll ){
+				if( sec.onArrivalDownScroll ){
 
-					this.sections[i].onArrivalDownScroll();
+					sec.onArrivalDownScroll( {
+						section: sec
+					} );
 
 				}
 				
@@ -403,9 +423,11 @@ export class PageScroller {
 			//throw up scroll
 			if( pos <= line && line < posM ){				
 
-				if( this.sections[i].onArrivalUpScroll ){
+				if( sec.onArrivalUpScroll ){
 
-					this.sections[i].onArrivalUpScroll();
+					sec.onArrivalUpScroll( {
+						section: sec,
+					} );
 					
 				}
 

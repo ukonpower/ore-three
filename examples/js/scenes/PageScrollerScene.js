@@ -57,14 +57,14 @@ export default class MainScene extends ORE.BaseScene {
 			element: document.querySelector( '.part3'),
 			threePosition: new THREE.Vector3( 0, -8, 10 ),
 			stop: true,
-			onArrivalDownScroll: () => {
+			onArrivalDownScroll: ( param ) => {
 				
-				console.log( 'arrival section at down scroll');
+				console.log( 'arrival section at down scroll', param.section );
 				
 			},
-			onArrivalUpScroll: () => {
+			onArrivalUpScroll: ( param ) => {
 				
-				console.log( 'arrival section at up scroll');
+				console.log( 'arrival section at up scroll', param.section );
 				
 			}
 		});
@@ -74,11 +74,21 @@ export default class MainScene extends ORE.BaseScene {
 			element: document.querySelector( '.part4'),
 			threePosition: new THREE.Vector3( 0, -8, 10 ),
 			stop: true,
-			onStartDownScroll: ( vel ) => {
+			onArrivalDownScroll: ( param ) => {
+				
+				console.log( 'arrival section at down scroll', param.section  );
+				
+			},
+			onArrivalUpScroll: ( param ) => {
+				
+				console.log( 'arrival section at up scroll', param.section );
+				
+			},
+			onStartDownScroll: ( param ) => {
 
-				console.log( 'start up scroll' );
+				console.log( 'start up scroll', param.section );
 
-				if( vel > 20 ){
+				if( param.scrollVelocity > 20 ){
 
 					console.log( 'move.' );
 				
@@ -89,9 +99,9 @@ export default class MainScene extends ORE.BaseScene {
 				return false
 
 			},
-			onStartUpScroll: ( vel ) => {
+			onStartUpScroll: ( param ) => {
 
-				console.log( 'start up scroll' );
+				console.log( 'start up scroll', param.section );
 				
 				return true;
 
