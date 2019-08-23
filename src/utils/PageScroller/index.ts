@@ -1,49 +1,10 @@
 import * as THREE from 'three';
-import { Easings } from './Easings';
+import { Easings } from '../Easings';
+import { PageScrollerSection } from './PageScrollerSection';
 
-declare interface CustomRect{
-	width: number;
-	height: number;
-	top: number;
-	bottom: number;
-}
-
-declare interface ScrollerEasing{
+export declare interface PageScrollerEasing{
 	func: Function,
 	variables: number[],
-}
-
-declare interface ScrollerSectionEasings{
-	position?: ScrollerEasing,
-	rotation?: ScrollerEasing
-}
-
-export declare interface onArrivalScrollParam{
-	section: PageScrollerSection
-}
-
-export declare interface onStartScrollParam{
-	section: PageScrollerSection,
-	scrollVelocity: number,
-	velocityMode: string,
-}
-
-export declare interface PageScrollerSectionParam{
-	name: string
-	element: HTMLElement,
-	bottom?: Boolean,
-	threePosition?: THREE.Vector3,
-	threeRotation?: THREE.Quaternion,
-	stop?: boolean,
-	onStartDownScroll?: ( param: onStartScrollParam ) => boolean,
-	onStartUpScroll?: ( param: onStartScrollParam ) => boolean,
-	onArrivalDownScroll?: ( param: onArrivalScrollParam ) => void,
-	onArrivalUpScroll?: ( param: onArrivalScrollParam ) => void,
-	sectionEasings?: ScrollerSectionEasings
-}
-
-export declare interface PageScrollerSection extends PageScrollerSectionParam{
-	rect: CustomRect
 }
 
 export declare interface PageScrollerMoveToParam{
@@ -80,12 +41,12 @@ export class PageScroller {
 	//sections
 	public sections: PageScrollerSection[] = [];
 	public sectionScrollPercentages: ScrollPercentages = {};
-	private currentSection: number;
+	public currentSectionNum: number;
 
 	//easing
-	private easingPos: ScrollerEasing;
-	private easingRot: ScrollerEasing;
-	private easingAutoMove: ScrollerEasing;
+	private easingPos: PageScrollerEasing;
+	private easingRot: PageScrollerEasing;
+	private easingAutoMove: PageScrollerEasing;
 
 	//three transforms
 	public threePosition: THREE.Vector3 = new THREE.Vector3( 0, 0, 0 );
@@ -193,29 +154,12 @@ export class PageScroller {
 		let unLock: boolean = true;
 		let sec = this.sections[this.stopSection];
 
-		if( scrollVelocity > 0 ){
+		if( sec.events.onStartScroll ){
 
-			if( sec.onStartDownScroll ){
-
-				unLock = sec.onStartDownScroll({
-					section: sec,
-					scrollVelocity: scrollVelocity,
-					velocityMode: mode
-				});
-
-			}
-
-		}else{
-
-			if( sec.onStartUpScroll ){
-
-				unLock = sec.onStartUpScroll( {
-					section: sec,
-					scrollVelocity: scrollVelocity,
-					velocityMode: mode
-				} );
-
-			}
+			unLock = sec.events.onStartScroll({
+				section: sec,
+				scrollVelocity: scrollVelocity
+			});
 
 		}
 
@@ -307,7 +251,7 @@ export class PageScroller {
 		
 		this.calcScrollPercentage();
 
-		this.currentSection = this.getCurrentSection();
+		this.currentSectionNum = this.getCurrentSection();
 		
 		this.calcThreePosition();
 		this.calcThreeRotation();
@@ -404,47 +348,29 @@ export class PageScroller {
 				
 			}
 
-			//throw down scroll
-			if( pos >= line && line > posM ){
-
-				if( sec.onArrivalDownScroll ){
-
-					sec.onArrivalDownScroll( {
-						section: sec
-					} );
-
-				}
+			//throw section
+			if( ( pos >= line && line > posM ) || ( pos <= line && line < posM ) || ( pos == posM && pos == line ) ){
 				
 				this.onThrowSection( i );
-
-				break;
 				
 			}
 
-			//throw up scroll
-			if( pos <= line && line < posM ){				
+			//custom percentage
+			for( let j = 0; j < sec.events.onArrivals.length; j++ ){
 
-				if( sec.onArrivalUpScroll ){
+				let customLine = sec.rect.top + sec.rect.height * sec.events.onArrivals[j].percentage;
 
-					sec.onArrivalUpScroll( {
+				if( ( pos >= customLine && customLine > posM )|| ( pos <= customLine && customLine < posM ) || ( pos == posM && pos == customLine ) ){
+
+					sec.events.onArrivals[j].event({
 						section: sec,
-					} );
+						scrollVelocity: this._velocity
+					});
+
+					break;
 					
 				}
-
-				this.onThrowSection( i );
-
-				break;
-				
-			}
-
-			//stay
-			if( pos == posM && pos == line ){
-
-				this.onThrowSection( i );
-
-				break;
-				
+			
 			}
 
 		}
@@ -564,7 +490,7 @@ export class PageScroller {
 
 			}else{
 
-				if( top.bottom){
+				if( top.bottom ){
 
 					num = this._pageOffset - topPos + window.innerHeight;
 					deno = underPos - topPos + window.innerHeight;
@@ -596,7 +522,7 @@ export class PageScroller {
 		let aPos: THREE.Vector3;
 		let bPos: THREE.Vector3;
 
-		for( let i = this.currentSection - 1; i >= 0; i-- ){
+		for( let i = this.currentSectionNum - 1; i >= 0; i-- ){
 			
 			a = i;
 			aPos = this.sections[a].threePosition;
@@ -605,7 +531,7 @@ export class PageScroller {
 
 		}
 
-		for( let i = this.currentSection; i < this.sections.length; i++ ){
+		for( let i = this.currentSectionNum; i < this.sections.length; i++ ){
 			
 			b = i;
 			bPos = this.sections[b].threePosition;
@@ -626,7 +552,7 @@ export class PageScroller {
 
 			}
 
-			let sec = this.sections[ this.currentSection ];
+			let sec = this.sections[ this.currentSectionNum ];
 
 			let value = this.calcThreeEasings( sum / num, sec, 'pos' );
 			
@@ -651,7 +577,7 @@ export class PageScroller {
 		let aRot: THREE.Quaternion;
 		let bRot: THREE.Quaternion;
 
-		for( let i = this.currentSection - 1; i >= 0; i-- ){
+		for( let i = this.currentSectionNum - 1; i >= 0; i-- ){
 			
 			a = i;
 			aRot = this.sections[a].threeRotation;
@@ -660,7 +586,7 @@ export class PageScroller {
 
 		}
 
-		for( let i = this.currentSection; i < this.sections.length; i++ ){
+		for( let i = this.currentSectionNum; i < this.sections.length; i++ ){
 			
 			b = i;
 			bRot = this.sections[b].threeRotation;
@@ -681,7 +607,7 @@ export class PageScroller {
 
 			}
 
-			let sec = this.sections[ this.currentSection ];
+			let sec = this.sections[ this.currentSectionNum ];
 			let value = this.calcThreeEasings( sum / num, sec, 'rot' );
 
 			this.threeRotation.copy( aRot.clone().slerp( bRot, value ));
@@ -730,24 +656,12 @@ export class PageScroller {
 
 	}
 
-	public registerSections( param: PageScrollerSectionParam ){
-
-		let clientRect  = ( param.element as HTMLElement ).getBoundingClientRect();
-
-		let rect: CustomRect = {
-			top: clientRect.top,
-			bottom: clientRect.bottom,
-			width: clientRect.width,
-			height: clientRect.height,
-		}
-
-		let section: PageScrollerSection = param as PageScrollerSection;
-		section.rect = rect;
+	public registerSection( section: PageScrollerSection ){
 
 		this.sections.push( section );
-		this.sectionScrollPercentages[ param.name ] = 0;
+		this.sectionScrollPercentages[ section.name ] = 0;
 		this._pageOffset = 0;
-		this.currentSection = 0;
+		this.currentSectionNum = 0;
 
 		this.sortSections();
 		this.calcScrollPercentage();
@@ -783,12 +697,7 @@ export class PageScroller {
 
 		for( let i = 0; i < this.sections.length; i++ ){
 
-			let clientRect = this.sections[i].element.getBoundingClientRect();
-
-			this.sections[i].rect.bottom = clientRect.bottom + this.pageOffset;
-			this.sections[i].rect.top = clientRect.top + this.pageOffset;
-			this.sections[i].rect.width = clientRect.width;
-			this.sections[i].rect.height = clientRect.height;
+			this.sections[i].resize( this._pageOffset );			
 
 		}
 	

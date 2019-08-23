@@ -36,7 +36,7 @@ export default class MainScene extends ORE.BaseScene {
 
 		for( let i = 0; i < 10; i++ ){
 
-			const boxGeo = new THREE.BoxGeometry( 1,1,1 );
+			const boxGeo = new THREE.BoxGeometry( 1, 1, 1 );
 			const boXMat = new THREE.MeshNormalMaterial();
 			this.box = new THREE.Mesh( boxGeo,boXMat );
 
@@ -46,74 +46,68 @@ export default class MainScene extends ORE.BaseScene {
 		}
 
 		//html sections
-		this.scroller.registerSections({ 
+		this.scroller.registerSection( new ORE.PageScrollerSection({ 
 			name: "a",
-			element: document.querySelector( '.part1'),
-			threePosition: new THREE.Vector3( 0, 0, 10 ),
-		});
+			element: document.querySelector( '.part1' ),
+			threePosition: new THREE.Vector3( 0, 0, 10 )
+		}));
 		
-		this.scroller.registerSections({ 
+		this.scroller.registerSection( new ORE.PageScrollerSection({ 
 			name: "b",
-			element: document.querySelector( '.part3'),
+			element: document.querySelector( '.part3' ),
 			threePosition: new THREE.Vector3( 0, -8, 10 ),
 			stop: true,
-			onArrivalDownScroll: ( param ) => {
+			events: {
+				onStartScroll: ( args ) => {
 				
-				console.log( 'arrival section at down scroll', param.section );
-				
-			},
-			onArrivalUpScroll: ( param ) => {
-				
-				console.log( 'arrival section at up scroll', param.section );
-				
-			}
-		});
-		
-		this.scroller.registerSections({ 
-			name: "c",
-			element: document.querySelector( '.part4'),
-			threePosition: new THREE.Vector3( 0, -8, 10 ),
-			stop: true,
-			onArrivalDownScroll: ( param ) => {
-				
-				console.log( 'arrival section at down scroll', param.section  );
-				
-			},
-			onArrivalUpScroll: ( param ) => {
-				
-				console.log( 'arrival section at up scroll', param.section );
-				
-			},
-			onStartDownScroll: ( param ) => {
+					console.log( 'start Scroll : ', args.section );
 
-				console.log( 'start up scroll', param.section );
-
-				if( param.scrollVelocity > 20 ){
-
-					console.log( 'move.' );
-				
 					return true;
 
 				}
-
-				return false
-
-			},
-			onStartUpScroll: ( param ) => {
-
-				console.log( 'start up scroll', param.section );
-				
-				return true;
-
 			}
-		});
+		}));
+		
+		this.scroller.registerSection( new ORE.PageScrollerSection({ 
+			name: "c",
+			element: document.querySelector( '.part4' ),
+			threePosition: new THREE.Vector3( 0, -8, 10 ),
+			stop: true,
+			events: {
+				onStartScroll: ( args ) => {
+				
+					console.log( 'start Scroll : ', args.section );
 
-		this.scroller.registerSections({ 
+					return true;
+
+				}
+			}
+		}));
+
+		this.scroller.registerSection( new ORE.PageScrollerSection({ 
 			name: "d",
-			element: document.querySelector( '.part6'),
+			element: document.querySelector( '.part6' ),
 			threePosition: new THREE.Vector3( 0, -13, 10 ),
 			bottom: true,
-		});
+			stop: true,
+			events: {
+				onStartScroll: ( args ) => {
+				
+					console.log( 'start Scroll : ', args.section );
+
+					return true;
+
+				}
+			}
+		}));
+
+		this.scroller.getSection( 'a' ).addArrivalEvent( 
+			{
+				percentage: 0.5,
+				event: () => { console.log( "hello" )}
+			}
+		)
+		
 	}
 
 	animate( deltaTime ) {
