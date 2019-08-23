@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CustomRect | ore-three</title>
+	<title>StartScrollEventArgs | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="customrect.html">CustomRect</a>
+					<a href="startscrolleventargs.html">StartScrollEventArgs</a>
 				</li>
 			</ul>
-			<h1>Interface CustomRect</h1>
+			<h1>Interface StartScrollEventArgs</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CustomRect</span>
+						<a href="scrolleventargs.html" class="tsd-signature-type">ScrollEventArgs</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">StartScrollEventArgs</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -81,10 +86,9 @@
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="customrect.html#bottom" class="tsd-kind-icon">bottom</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="customrect.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="customrect.html#top" class="tsd-kind-icon">top</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="customrect.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="startscrolleventargs.html#scrollmode" class="tsd-kind-icon">scroll<wbr>Mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported"><a href="startscrolleventargs.html#scrollvelocity" class="tsd-kind-icon">scroll<wbr>Velocity</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported"><a href="startscrolleventargs.html#section" class="tsd-kind-icon">section</a></li>
 							</ul>
 						</section>
 					</div>
@@ -93,42 +97,34 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="bottom" class="tsd-anchor"></a>
-					<h3>bottom</h3>
-					<div class="tsd-signature tsd-kind-icon">bottom<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="scrollmode" class="tsd-anchor"></a>
+					<h3>scroll<wbr>Mode</h3>
+					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/67705e9/src/utils/PageScroller.ts#L8">utils/PageScroller.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L31">utils/PageScroller/PageScrollerSection.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="height" class="tsd-anchor"></a>
-					<h3>height</h3>
-					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+					<a name="scrollvelocity" class="tsd-anchor"></a>
+					<h3>scroll<wbr>Velocity</h3>
+					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Velocity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scrolleventargs.html">ScrollEventArgs</a>.<a href="scrolleventargs.html#scrollvelocity">scrollVelocity</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/67705e9/src/utils/PageScroller.ts#L6">utils/PageScroller.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L27">utils/PageScroller/PageScrollerSection.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="top" class="tsd-anchor"></a>
-					<h3>top</h3>
-					<div class="tsd-signature tsd-kind-icon">top<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+					<a name="section" class="tsd-anchor"></a>
+					<h3>section</h3>
+					<div class="tsd-signature tsd-kind-icon">section<span class="tsd-signature-symbol">:</span> <a href="../classes/pagescrollersection.html" class="tsd-signature-type">PageScrollerSection</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="scrolleventargs.html">ScrollEventArgs</a>.<a href="scrolleventargs.html#section">section</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/67705e9/src/utils/PageScroller.ts#L7">utils/PageScroller.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="width" class="tsd-anchor"></a>
-					<h3>width</h3>
-					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/67705e9/src/utils/PageScroller.ts#L5">utils/PageScroller.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L26">utils/PageScroller/PageScrollerSection.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -144,129 +140,24 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="../classes/audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/controller.html" class="tsd-kind-icon">Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/cursor.html" class="tsd-kind-icon">Cursor</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/domglsl.html" class="tsd-kind-icon">DomGLSL</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/fish.html" class="tsd-kind-icon">Fish</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/mousevertexrotator.html" class="tsd-kind-icon">Mouse<wbr>Vertex<wbr>Rotator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/stablefluids.html" class="tsd-kind-icon">Stable<wbr>Fluids</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/transformanimator.html" class="tsd-kind-icon">Transform<wbr>Animator</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="audioplayerparam.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-not-exported">
-						<a href="customrect.html" class="tsd-kind-icon">Custom<wbr>Rect</a>
+						<a href="startscrolleventargs.html" class="tsd-kind-icon">Start<wbr>Scroll<wbr>Event<wbr>Args</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="customrect.html#bottom" class="tsd-kind-icon">bottom</a>
+								<a href="startscrolleventargs.html#scrollmode" class="tsd-kind-icon">scroll<wbr>Mode</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="customrect.html#height" class="tsd-kind-icon">height</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+								<a href="startscrolleventargs.html#scrollvelocity" class="tsd-kind-icon">scroll<wbr>Velocity</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="customrect.html#top" class="tsd-kind-icon">top</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="customrect.html#width" class="tsd-kind-icon">width</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+								<a href="startscrolleventargs.html#section" class="tsd-kind-icon">section</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="domglslparam.html" class="tsd-kind-icon">DomGLSLParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="kernels.html" class="tsd-kind-icon">Kernels</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="ppparam.html" class="tsd-kind-icon">PPParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="pagescrollermovetoparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Move<wbr>ToParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="pagescrollersectionparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="scrollpercentages.html" class="tsd-kind-icon">Scroll<wbr>Percentages</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="scrollereasing.html" class="tsd-kind-icon">Scroller<wbr>Easing</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-not-exported">
-						<a href="scrollersectioneasings.html" class="tsd-kind-icon">Scroller<wbr>Section<wbr>Easings</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="stablefluidsparam.html" class="tsd-kind-icon">Stable<wbr>Fluids<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="uniforms.html" class="tsd-kind-icon">Uniforms</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#version" class="tsd-kind-icon">VERSION</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

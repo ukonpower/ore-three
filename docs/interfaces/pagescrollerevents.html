@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ScrollerSectionEasings | ore-three</title>
+	<title>PageScrollerEvents | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="scrollersectioneasings.html">ScrollerSectionEasings</a>
+					<a href="pagescrollerevents.html">PageScrollerEvents</a>
 				</li>
 			</ul>
-			<h1>Interface ScrollerSectionEasings</h1>
+			<h1>Interface PageScrollerEvents</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ScrollerSectionEasings</span>
+						<span class="target">PageScrollerEvents</span>
 					</li>
 				</ul>
 			</section>
@@ -78,37 +78,58 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="scrollersectioneasings.html#position" class="tsd-kind-icon">position</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="scrollersectioneasings.html#rotation" class="tsd-kind-icon">rotation</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollerevents.html#onarrivals" class="tsd-kind-icon">on<wbr>Arrivals</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollerevents.html#onstartscroll" class="tsd-kind-icon">on<wbr>Start<wbr>Scroll</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="position" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> position</h3>
-					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <a href="pagescrollereasing.html" class="tsd-signature-type">PageScrollerEasing</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="onarrivals" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Arrivals</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Arrivals<span class="tsd-signature-symbol">:</span> <a href="onarrivalevent.html" class="tsd-signature-type">onArrivalEvent</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L36">utils/PageScroller/PageScrollerSection.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L22">utils/PageScroller/PageScrollerSection.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="rotation" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rotation</h3>
-					<div class="tsd-signature tsd-kind-icon">rotation<span class="tsd-signature-symbol">:</span> <a href="pagescrollereasing.html" class="tsd-signature-type">PageScrollerEasing</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="onstartscroll" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Start<wbr>Scroll</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Start<wbr>Scroll<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L37">utils/PageScroller/PageScrollerSection.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/fc2c482/src/utils/PageScroller/PageScrollerSection.ts#L21">utils/PageScroller/PageScrollerSection.ts:21</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><a href="startscrolleventargs.html" class="tsd-signature-type">StartScrollEventArgs</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>args: <a href="startscrolleventargs.html" class="tsd-signature-type">StartScrollEventArgs</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -124,14 +145,14 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-not-exported">
-						<a href="scrollersectioneasings.html" class="tsd-kind-icon">Scroller<wbr>Section<wbr>Easings</a>
+					<li class="current tsd-kind-interface">
+						<a href="pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="scrollersectioneasings.html#position" class="tsd-kind-icon">position</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollerevents.html#onarrivals" class="tsd-kind-icon">on<wbr>Arrivals</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="scrollersectioneasings.html#rotation" class="tsd-kind-icon">rotation</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pagescrollerevents.html#onstartscroll" class="tsd-kind-icon">on<wbr>Start<wbr>Scroll</a>
 							</li>
 						</ul>
 					</li>

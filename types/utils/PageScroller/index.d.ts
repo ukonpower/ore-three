@@ -1,41 +1,8 @@
 import * as THREE from 'three';
-declare interface CustomRect {
-    width: number;
-    height: number;
-    top: number;
-    bottom: number;
-}
-declare interface ScrollerEasing {
+import { PageScrollerSection } from './PageScrollerSection';
+export declare interface PageScrollerEasing {
     func: Function;
     variables: number[];
-}
-declare interface ScrollerSectionEasings {
-    position?: ScrollerEasing;
-    rotation?: ScrollerEasing;
-}
-export declare interface onArrivalScrollParam {
-    section: PageScrollerSection;
-}
-export declare interface onStartScrollParam {
-    section: PageScrollerSection;
-    scrollVelocity: number;
-    velocityMode: string;
-}
-export declare interface PageScrollerSectionParam {
-    name: string;
-    element: HTMLElement;
-    bottom?: Boolean;
-    threePosition?: THREE.Vector3;
-    threeRotation?: THREE.Quaternion;
-    stop?: boolean;
-    onStartDownScroll?: (param: onStartScrollParam) => boolean;
-    onStartUpScroll?: (param: onStartScrollParam) => boolean;
-    onArrivalDownScroll?: (param: onArrivalScrollParam) => void;
-    onArrivalUpScroll?: (param: onArrivalScrollParam) => void;
-    sectionEasings?: ScrollerSectionEasings;
-}
-export declare interface PageScrollerSection extends PageScrollerSectionParam {
-    rect: CustomRect;
 }
 export declare interface PageScrollerMoveToParam {
     target: HTMLElement | string;
@@ -62,7 +29,7 @@ export declare class PageScroller {
     private autoMovingLock;
     sections: PageScrollerSection[];
     sectionScrollPercentages: ScrollPercentages;
-    private currentSection;
+    currentSectionNum: number;
     private easingPos;
     private easingRot;
     private easingAutoMove;
@@ -96,8 +63,7 @@ export declare class PageScroller {
     private calcThreePosition;
     private calcThreeRotation;
     private calcThreeEasings;
-    registerSections(param: PageScrollerSectionParam): void;
+    registerSection(section: PageScrollerSection): void;
     private sortSections;
     resize(): void;
 }
-export {};
