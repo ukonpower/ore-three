@@ -158,7 +158,8 @@ export class PageScroller {
 
 			unLock = sec.events.onStartScroll({
 				section: sec,
-				scrollVelocity: scrollVelocity
+				scrollVelocity: scrollVelocity,
+				scrollMode: mode
 			});
 
 		}
@@ -300,7 +301,11 @@ export class PageScroller {
 
 		let w = this.easingAutoMove.func( this.x, this.easingAutoMove.variables );
 
-		this._pageOffset = this.baseOffset + this.scrollDistance * w;
+		let newPos = this.baseOffset + this.scrollDistance * w;
+
+		this._velocity = newPos - this._pageOffset;
+		
+		this._pageOffset = newPos;
 
 		if ( ended ) {
 
@@ -358,7 +363,17 @@ export class PageScroller {
 			//custom percentage
 			for( let j = 0; j < sec.events.onArrivals.length; j++ ){
 
-				let customLine = sec.rect.top + sec.rect.height * sec.events.onArrivals[j].percentage;
+				let customLine: number = 0;
+
+				if( sec.bottom ){
+
+					customLine = sec.rect.bottom + sec.rect.height * sec.events.onArrivals[j].percentage
+
+				}else{
+
+					customLine = sec.rect.top + sec.rect.height * sec.events.onArrivals[j].percentage;
+
+				}
 
 				if( ( pos >= customLine && customLine > posM )|| ( pos <= customLine && customLine < posM ) || ( pos == posM && pos == customLine ) ){
 
@@ -378,8 +393,6 @@ export class PageScroller {
 	}
 
 	private onThrowSection( secNum: number ){
-
-		if( this.isAutoMoving ) return;
 		
 		if( this.stopSection == secNum ){
 
@@ -387,13 +400,31 @@ export class PageScroller {
 		
 		}
 		
-		if( this.sections[secNum].stop ){
+		let sec = this.sections[secNum];
 
-			this.isStop = true;
-			this.stopSection = secNum;
-			this._velocity = 0;
+		if( sec.stop ){
+			
+			if( this.isAutoMoving ){
+				
+				if( sec.events.onStartScroll ){					
 
-			this.setPageOffsetToSection( secNum );
+					sec.events.onStartScroll({
+						section: sec,
+						scrollVelocity: this._velocity,
+						scrollMode: 'auto',
+					})
+
+				}
+
+			}else{
+
+				this.isStop = true;
+				this.stopSection = secNum;
+				this._velocity = 0;
+	
+				this.setPageOffsetToSection( secNum );
+
+			}
 			
 		}
 	}
