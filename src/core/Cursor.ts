@@ -117,7 +117,7 @@ export class Cursor {
         
         if( this._touchDown ){
 
-            if( Number.isNaN( this._position.x ) || Number.isNaN( this._position.y ) ){
+            if( this._position.x !== this._position.x || this._position.y !== this._position.y ){
         
                 this._delta.set( 0, 0 );
             
@@ -131,7 +131,7 @@ export class Cursor {
         }
 
         //calc delta
-        if( Number.isNaN( this._hoverPosition.x ) || Number.isNaN( this._hoverPosition.y ) ){
+        if( this._hoverPosition.x !== this._hoverPosition.x || this._hoverPosition.y !== this._hoverPosition.y ){
             
             this._hoverDelta.set( 0, 0 );
 
