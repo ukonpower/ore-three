@@ -90,15 +90,6 @@ export default class MainScene extends ORE.BaseScene {
 			threePosition: new THREE.Vector3( 0, -13, 10 ),
 			bottom: true,
 			stop: true,
-			events: {
-				onStartScroll: ( args ) => {
-				
-					console.log( 'start Scroll : ', args.section );
-
-					return true;
-
-				}
-			}
 		}));
 
 		this.scroller.getSection( 'a' ).addArrivalEvent( 
@@ -122,6 +113,8 @@ export default class MainScene extends ORE.BaseScene {
 	onResize(width, height) {
 	
 		super.onResize(width, height);
+
+		this.scroller.resize();
 	
 	}
 
