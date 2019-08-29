@@ -41,7 +41,9 @@ export class BloomFilter {
 
 		this.blurTextureResolutionRatio = blurTextureResolutionRatio ? blurTextureResolutionRatio : 0.1;
 
-		this.resolution = new THREE.Vector2( window.innerWidth, window.innerHeight );
+		this.resolution = new THREE.Vector2();
+		this.renderer.getSize( this.resolution );
+		this.resolution.multiplyScalar( this.renderer.getPixelRatio() );		
 
 		this.init();
 
@@ -54,7 +56,7 @@ export class BloomFilter {
 		}
 
 		this.blurResolution = new THREE.Vector2().copy( this.resolution.clone().divideScalar( this.blurRange ) );
-
+		
 		//uniforms
 		this._brightUni = {
 			threshold: { value: this.threshold }
@@ -108,9 +110,7 @@ export class BloomFilter {
 		this._blurPP = new PostProcessing( this.renderer, blurParam, this.blurTextureResolutionRatio );
 		this._bloomPP = new PostProcessing( this.renderer, bloomParam );
 		this.sceneRenderTarget = this._bloomPP.createRenderTarget();
-
-		this.resize();
-
+		
 	}
 
 	public render( scene: THREE.Scene, camera: THREE.Camera ) {
@@ -143,20 +143,19 @@ export class BloomFilter {
 		this._bloomPP.render( tex, false );
 	}
 
-	public resize( width?: number, height?: number ){
+	public resize( windowPixelSize: THREE.Vector2){
 
-		let w = width ? width : window.innerWidth;
-		let h = height ? height : window.innerHeight;
-		
-		this.resolution.set( width, height );
+		this.resolution.copy( windowPixelSize );
 
 		this.blurResolution.copy( this.resolution.clone().divideScalar( this.blurRange ) );
 
-		this.sceneRenderTarget.setSize( w * this.renderer.getPixelRatio(), h * this.renderer.getPixelRatio());
+		this.sceneRenderTarget.setSize( windowPixelSize.x, windowPixelSize.y );
 
-		this._brightPP.resize( w, h );
-		this._blurPP.resize( w, h );
-		this._bloomPP.resize( w, h );
+		this._brightPP.resize( windowPixelSize );
+
+		this._blurPP.resize( windowPixelSize );
+
+		this._bloomPP.resize( windowPixelSize );
 
 	}
 }
