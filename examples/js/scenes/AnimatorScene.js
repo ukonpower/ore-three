@@ -52,9 +52,9 @@ export default class TransformAnimatorScene extends ORE.BaseScene {
 
 	}
 
-	onResize( width, height ) {
+	onResize( args ) {
 
-		super.onResize( width, height );
+		super.onResize( args );
 
 	}
 

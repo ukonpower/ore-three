@@ -56,10 +56,11 @@ export default class BackgroundScene extends ORE.BaseScene {
 
 	}
 
-	onResize( width, height ) {
+	onResize( args ) {
 
-		super.onResize( width, height );
-		this.uniforms.resolution.value = new THREE.Vector2( window.innerWidth, window.innerHeight );
+		super.onResize( args );
+
+		this.uniforms.resolution.value.copy( args.windowSize );
 
 	}
 	

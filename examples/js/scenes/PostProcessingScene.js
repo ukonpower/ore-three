@@ -79,10 +79,11 @@ export default class PostProcessScene extends ORE.BaseScene {
 
 	}
 
-	onResize( width, height ) {
+	onResize( args ) {
 
-		super.onResize( width, height );
-		this.pp.resize( width, height );
+		super.onResize( args );
+		
+		this.pp.resize( args.windowPixelSize );
 
 	}
 

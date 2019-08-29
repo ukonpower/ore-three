@@ -43,7 +43,7 @@ export default class BloomFilterScene extends ORE.BaseScene {
 
 		this.bloom = new ORE.BloomFilter(this.renderer, 0.1);
 		this.bloom.threshold = 0.0;
-		this.bloom.brightness = 0.9;
+		this.bloom.brightness = 0.6;
 		this.bloom.blurRange = 20.0;
 		
 	}
@@ -56,11 +56,12 @@ export default class BloomFilterScene extends ORE.BaseScene {
 
 	}
 
-	onResize(width, height) {
+	onResize( args ) {
 		
-		this.bloom.resize( width, height );
-		super.onResize(width, height);
+		super.onResize( args );
 
+		this.bloom.resize( args.windowPixelSize );
+		
 	}
 	
 }

@@ -87,9 +87,9 @@ export default class StableFluidScene extends ORE.BaseScene {
 
 	}
 
-	onResize( width, height ) {
+	onResize( args ) {
 
-		super.onResize( width, height );
+		super.onResize( args );
 
 		this.fluid.parameter.screenAspect = 1.0;
 

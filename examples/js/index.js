@@ -1,5 +1,5 @@
 import * as ORE from '../../src/';
-import MainScene from './scenes/PageScrollerScene';
+import MainScene from './scenes/MainScene';
 
 class APP {
 
@@ -8,7 +8,7 @@ class APP {
 		this.controller = new ORE.Controller( {
 
 			canvas: document.querySelector( "#canvas" ),
-			retina: false,
+			retina: true,
 			alpha: false,
 
 		} );
