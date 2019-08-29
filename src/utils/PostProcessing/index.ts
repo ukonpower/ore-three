@@ -21,22 +21,19 @@ export class PostProcessing {
     private writeBuffer: THREE.WebGLRenderTarget;
     public resultBuffer: THREE.WebGLRenderTarget;
     public resolution: THREE.Vector2;
-    public resolutionRatio: number;
-
     private effectMaterials: [EffectMaterial];
 
     constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number) {
 
         this.renderer = renderer;
-        this.resolutionRatio = resolutionRatio ? resolutionRatio : 1.0;
 
         this.resolution = new THREE.Vector2();
         this.renderer.getSize(this.resolution);
-        this.resolution.multiplyScalar(this.renderer.getPixelRatio() * (this.resolutionRatio ? this.resolutionRatio : 1.0));
+        this.resolution.multiplyScalar(this.renderer.getPixelRatio());
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        this.screenMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), null);
+        this.screenMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2));
         this.scene.add(this.screenMesh);
         
         this.initRenderTargets();
@@ -53,7 +50,7 @@ export class PostProcessing {
 
             if ( !param.uniforms.resolution ){
 
-                param.uniforms.resolution = { value: this.resolution};
+                param.uniforms.resolution = { value: this.resolution };
 
             }
 
@@ -63,6 +60,7 @@ export class PostProcessing {
                 vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
                 fragmentShader: param.fragmentShader,
                 depthTest: false,
+                depthFunc: THREE.NeverDepth
 
             })
 
@@ -173,10 +171,10 @@ export class PostProcessing {
 
     public resize(width: number,height: number){
 
-        this.resolution.set( width, height ).multiplyScalar( this.renderer.getPixelRatio() * this.resolutionRatio );
+        this.resolution.set( width, height );
         
-        this.readBuffer.setSize( this.resolution.x, this.resolution.y );
-        this.writeBuffer.setSize( this.resolution.x, this.resolution.y );
+        this.readBuffer.setSize( width, height );
+        this.writeBuffer.setSize( width, height );
 
     }
 }

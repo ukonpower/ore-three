@@ -47,7 +47,7 @@ export class DomGLSL extends THREE.Object3D {
 
 	createMesh() {
 		
-		let geo = new THREE.PlaneGeometry( 2, 2, 1, 1 );
+		let geo = new THREE.PlaneBufferGeometry( 2, 2, 1, 1 );
 		
 		let mat = new THREE.ShaderMaterial( {
 			uniforms: this.uni,

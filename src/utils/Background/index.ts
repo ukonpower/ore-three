@@ -23,7 +23,7 @@ export class Background extends THREE.Mesh{
         uvArray.push( 1,0 );
         uvArray.push( 0,0 );
 
-        indexArray.push( 0,2,1,0,3,2 )
+        indexArray.push( 0,2,1,0,3,2 );
         
         let pos = new Float32Array( posArray );
         let indices = new Uint32Array( indexArray );
@@ -38,6 +38,7 @@ export class Background extends THREE.Mesh{
             fragmentShader: fragmentShader,
             vertexShader: vert,
             transparent:true,
+            depthFunc: THREE.NeverDepth
         } );
 
         super( geo, mat )
