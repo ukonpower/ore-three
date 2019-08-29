@@ -11,6 +11,7 @@ export declare interface PageScrollerMoveToParam{
 	target: HTMLElement | string,
 	duration?: number,
 	callback?: Function,
+	bottom?: boolean;
 	lock?: boolean
 }
 
@@ -157,6 +158,7 @@ export class PageScroller {
 		if( sec.events.onStartScroll ){
 
 			unLock = sec.events.onStartScroll({
+				scroller: this,
 				section: sec,
 				scrollVelocity: scrollVelocity,
 				scrollMode: mode
@@ -206,7 +208,7 @@ export class PageScroller {
 
 			if( targetSection ){
 
-				if( targetSection.bottom ){
+				if( param.bottom ){
 
 					targetOffset = targetSection.rect.bottom - window.innerHeight;
 
@@ -225,7 +227,6 @@ export class PageScroller {
 
 		}
 	
-
 		this.baseOffset = this.pageOffset;
 
 		this.x = 0;
@@ -235,7 +236,7 @@ export class PageScroller {
 		this.duration = param.duration ? param.duration : 1.0;
 		this.autoMovingLock = param.lock ? param.lock : false;
 		
-		this.scrollDistance = Math.min( targetOffset, ( this.rect.height - ( this.pageOffset + window.innerHeight ) ) );
+		this.scrollDistance = targetOffset - this.baseOffset;
 		this.onAutoMoveFinished = param.callback ? param.callback : null;
 	
 	}
@@ -378,6 +379,7 @@ export class PageScroller {
 				if( ( pos >= customLine && customLine > posM )|| ( pos <= customLine && customLine < posM ) || ( pos == posM && pos == customLine ) ){
 
 					sec.events.onArrivals[j].event({
+						scroller: this,
 						section: sec,
 						scrollVelocity: this._velocity
 					});
@@ -409,6 +411,7 @@ export class PageScroller {
 				if( sec.events.onStartScroll ){					
 
 					sec.events.onStartScroll({
+						scroller: this,
 						section: sec,
 						scrollVelocity: this._velocity,
 						scrollMode: 'auto',
@@ -516,7 +519,7 @@ export class PageScroller {
 
 					num = this._pageOffset - topPos;
 					deno =  underPos - topPos - window.innerHeight;
-				
+
 				}
 
 			}else{
@@ -703,7 +706,7 @@ export class PageScroller {
 
 		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
 
-			return a.rect.top > b.rect.top ? 1 : -1;
+			return ( a.bottom ? a.rect.bottom : a.rect.top) > ( b.bottom ? b.bottom : b.rect.top) ? 1 : -1;
 
 		} );
 
