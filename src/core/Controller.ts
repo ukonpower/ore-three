@@ -4,11 +4,11 @@ import * as ORE from '../scene/BaseScene';
 
 const VERSION = require(  "../../package.json"  ).version;
 
-export interface ControllerParam extends THREE.WebGLRendererParameters{
+export declare interface ControllerParam extends THREE.WebGLRendererParameters{
     retina?: boolean;
 }
 
-export interface GlobalProperties{    
+export declare interface GlobalProperties{    
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
 }
@@ -54,6 +54,8 @@ export class Controller {
         window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
         window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
 
+        this.onWindowResize();
+
         this.tick();
 
     }
@@ -74,11 +76,12 @@ export class Controller {
 
     }
     
-    public bindScene(  scene: ORE.BaseScene ){
+    public bindScene( scene: ORE.BaseScene ){
 
         this.currentScene = scene;
+
         this.currentScene.onBind( this.gProps );
-        
+
         this.onWindowResize();
 
     }
@@ -98,14 +101,18 @@ export class Controller {
 
     private onWindowResize() {
         
-        let width = window.innerWidth;
-        let height = window.innerHeight;
+        let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight )
         
-        this.renderer.setSize( width, height );
-        
+        this.renderer.setSize( windowSize.x, windowSize.y );
+               
         if( this.currentScene ){
         
-            this.currentScene.onResize( width, height );
+            this.currentScene.onResize({
+                aspectRatio: windowSize.x / windowSize.y,
+                pixelRatio: this.renderer.getPixelRatio(),
+                windowSize: windowSize,
+                windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
+            });
         
         }
     }

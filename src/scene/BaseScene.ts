@@ -2,6 +2,13 @@ import * as THREE from 'three';
 import { Cursor } from '../core/Cursor';
 import { GlobalProperties } from '../core/Controller';
 
+export declare interface ResizeArgs{
+    aspectRatio: number,
+    pixelRatio: number,
+    windowSize: THREE.Vector2,
+    windowPixelSize: THREE.Vector2
+}
+
 export class BaseScene {
 
     public gProps: GlobalProperties;
@@ -13,9 +20,6 @@ export class BaseScene {
     
     public time: number = 0;
 
-    public width: number;
-    public height: number;
-
     constructor() {
         
         this.name = "";
@@ -23,9 +27,6 @@ export class BaseScene {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
     
-        this.width = window.innerWidth;
-        this.height = window.innerHeight;
-        
     }
 
     public tick( deltaTime: number ) {
@@ -82,12 +83,9 @@ export class BaseScene {
 
     }
 
-    public onResize( width: number, height: number ) {
-
-        this.width = width;
-        this.height = height
+    public onResize( args: ResizeArgs ) {
     
-        this.camera.aspect = width / height;
+        this.camera.aspect = args.aspectRatio
         this.camera.updateProjectionMatrix();
     
     }
