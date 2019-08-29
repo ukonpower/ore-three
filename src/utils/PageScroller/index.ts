@@ -24,6 +24,8 @@ export class PageScroller {
 	private element: HTMLElement;
 	private rect: ClientRect;
 
+	private enabled: boolean = true;
+
 	//manual move
 	private _velocity: number = 0;
 	private _pageOffset: number = 0;
@@ -114,6 +116,8 @@ export class PageScroller {
 
 	public addVelocity( scrollVelocity: number ) {
 
+		if( !this.enabled ) return;
+
 		if( this.autoMovingLock ) return;
 
 		if( this.isStop ){
@@ -132,6 +136,8 @@ export class PageScroller {
 	}
 
 	public setVelocity( scrollVelocity: number ) {
+
+		if( !this.enabled ) return;
 
 		if( this.autoMovingLock ) return;
 
@@ -200,6 +206,8 @@ export class PageScroller {
 
 	public moveto( param: PageScrollerMoveToParam ) {
 	
+		if( !this.enabled ) return;
+
 		let targetOffset: number;
 
 		if ( typeof param.target == 'string' ) {
@@ -242,6 +250,8 @@ export class PageScroller {
 	}
 
 	public update( deltaTime?: number ) {
+
+		if( !this.enabled ) return;
 
 		if( !this.isStop ){
 
