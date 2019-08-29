@@ -62,6 +62,7 @@ export class PostProcessing {
                 uniforms: param.uniforms,
                 vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
                 fragmentShader: param.fragmentShader,
+                depthTest: false,
 
             })
 
