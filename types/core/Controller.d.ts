@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import { Cursor } from './Cursor';
 import * as ORE from '../scene/BaseScene';
-export interface ControllerParam extends THREE.WebGLRendererParameters {
+export declare interface ControllerParam extends THREE.WebGLRendererParameters {
     retina?: boolean;
 }
-export interface GlobalProperties {
+export declare interface GlobalProperties {
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
 }

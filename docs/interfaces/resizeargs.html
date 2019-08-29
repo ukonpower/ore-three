@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MouseRotator | ore-three</title>
+	<title>ResizeArgs | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="mouserotator.html">MouseRotator</a>
+					<a href="resizeargs.html">ResizeArgs</a>
 				</li>
 			</ul>
-			<h1>Class MouseRotator</h1>
+			<h1>Interface ResizeArgs</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MouseRotator</span>
+						<span class="target">ResizeArgs</span>
 					</li>
 				</ul>
 			</section>
@@ -79,118 +79,58 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#target" class="tsd-kind-icon">target</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="resizeargs.html#aspectratio" class="tsd-kind-icon">aspect<wbr>Ratio</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="resizeargs.html#pixelratio" class="tsd-kind-icon">pixel<wbr>Ratio</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="resizeargs.html#windowpixelsize" class="tsd-kind-icon">window<wbr>Pixel<wbr>Size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="resizeargs.html#windowsize" class="tsd-kind-icon">window<wbr>Size</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Mouse<wbr>Rotator<span class="tsd-signature-symbol">(</span>objs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">THREE.Object3D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/object/MouseRotator.ts#L6">object/MouseRotator.ts:6</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>objs: <span class="tsd-signature-type">THREE.Object3D</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="scrollvel" class="tsd-anchor"></a>
-					<h3>scroll<wbr>Vel</h3>
-					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Vel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.Vector2</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="aspectratio" class="tsd-anchor"></a>
+					<h3>aspect<wbr>Ratio</h3>
+					<div class="tsd-signature tsd-kind-icon">aspect<wbr>Ratio<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/object/MouseRotator.ts#L6">object/MouseRotator.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/scene/BaseScene.ts#L6">scene/BaseScene.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="target" class="tsd-anchor"></a>
-					<h3>target</h3>
-					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.Object3D</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="pixelratio" class="tsd-anchor"></a>
+					<h3>pixel<wbr>Ratio</h3>
+					<div class="tsd-signature tsd-kind-icon">pixel<wbr>Ratio<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/object/MouseRotator.ts#L5">object/MouseRotator.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/scene/BaseScene.ts#L7">scene/BaseScene.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addvelocity" class="tsd-anchor"></a>
-					<h3>add<wbr>Velocity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Velocity<span class="tsd-signature-symbol">(</span>scrollDelta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">THREE.Vector2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/object/MouseRotator.ts#L29">object/MouseRotator.ts:29</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>scrollDelta: <span class="tsd-signature-type">THREE.Vector2</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="windowpixelsize" class="tsd-anchor"></a>
+					<h3>window<wbr>Pixel<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">window<wbr>Pixel<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.Vector2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/scene/BaseScene.ts#L9">scene/BaseScene.ts:9</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/object/MouseRotator.ts#L16">object/MouseRotator.ts:16</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="windowsize" class="tsd-anchor"></a>
+					<h3>window<wbr>Size</h3>
+					<div class="tsd-signature tsd-kind-icon">window<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.Vector2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/28eb857/src/scene/BaseScene.ts#L8">scene/BaseScene.ts:8</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -206,23 +146,20 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					<li class="current tsd-kind-interface">
+						<a href="resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="resizeargs.html#aspectratio" class="tsd-kind-icon">aspect<wbr>Ratio</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="resizeargs.html#pixelratio" class="tsd-kind-icon">pixel<wbr>Ratio</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#target" class="tsd-kind-icon">target</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="resizeargs.html#windowpixelsize" class="tsd-kind-icon">window<wbr>Pixel<wbr>Size</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#update" class="tsd-kind-icon">update</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="resizeargs.html#windowsize" class="tsd-kind-icon">window<wbr>Size</a>
 							</li>
 						</ul>
 					</li>

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { PageScrollerEasing } from '.';
+import { PageScrollerEasing, PageScroller } from '.';
 export declare interface PageScrollerSectionParam {
     name: string;
     bottom?: Boolean;
@@ -19,6 +19,7 @@ export declare interface PageScrollerEvents {
     onArrivals?: onArrivalEvent[];
 }
 declare interface ScrollEventArgs {
+    scroller: PageScroller;
     section: PageScrollerSection;
     scrollVelocity: number;
 }

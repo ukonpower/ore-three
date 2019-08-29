@@ -8,6 +8,7 @@ export declare interface PageScrollerMoveToParam {
     target: HTMLElement | string;
     duration?: number;
     callback?: Function;
+    bottom?: boolean;
     lock?: boolean;
 }
 export interface ScrollPercentages {
