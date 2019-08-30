@@ -1,10 +1,8 @@
 import * as THREE from 'three';
-export interface DomGLSLParam {
+export interface DomGLSLParam extends THREE.ShaderMaterialParameters {
     dom: any;
-    uniforms: any;
-    fragmentShader: string;
 }
-export declare class DomGLSL extends THREE.Object3D {
+export declare class DomGLSL extends THREE.Mesh {
     private uni;
     private frag;
     private dom;
@@ -12,6 +10,5 @@ export declare class DomGLSL extends THREE.Object3D {
     private domSize;
     private windowSize;
     constructor(parameter: DomGLSLParam);
-    createMesh(): void;
     updateDom(): void;
 }

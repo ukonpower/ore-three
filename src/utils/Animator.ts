@@ -57,7 +57,7 @@ export class Animator{
 		
 	}
 
-	public update( deltaTime: number ){
+	public update( deltaTime?: number ){
 
 		let keys = Object.keys( this.variables );
 
@@ -65,9 +65,9 @@ export class Animator{
 
 			let variable = this.variables[keys[i]];
 
-			if( variable.x < 1.0){
+			if( variable.x < 1.0 ){
 
-				variable.x += deltaTime / variable.duration;
+				variable.x += ( deltaTime || 0.016 ) / variable.duration;
 
 				let w = this.sigmoid( 6, variable.x );
 
