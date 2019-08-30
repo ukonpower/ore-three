@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import frag from './glsl/sample.fs';
 
-export default class BackgroundScene extends ORE.BaseScene {
+export class BackgroundScene extends ORE.BaseScene {
 
 	constructor() {
 

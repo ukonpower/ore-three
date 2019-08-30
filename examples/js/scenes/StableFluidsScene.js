@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import frag from './glsl/stableFluidsView.fs';
 import densityFrag from './glsl/stableFluidsDensity.fs';
 
-export default class StableFluidScene extends ORE.BaseScene {
+export class StableFluidsScene extends ORE.BaseScene {
 
 	constructor() {
 

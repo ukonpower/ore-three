@@ -16,6 +16,7 @@ export declare class PostProcessing {
     private writeBuffer;
     resultBuffer: THREE.WebGLRenderTarget;
     resolution: THREE.Vector2;
+    resolutionRatio: number;
     private effectMaterials;
     constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number);
     private initRenderTargets;
@@ -25,5 +26,5 @@ export declare class PostProcessing {
     render(srcTexture?: THREE.Texture, offScreenRendering?: boolean): any;
     render(scene: THREE.Scene, camera: THREE.Camera, offScreenRendering?: boolean): any;
     getResultTexture(): THREE.Texture;
-    resize(width: number, height: number): void;
+    resize(windowPixelSize: THREE.Vector2): void;
 }

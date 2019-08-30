@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import vert from './glsl/vertexRotator.vs';
 
-export default class MouseVertexRotatorScene extends ORE.BaseScene {
+export class MouseVertexRotatorScene extends ORE.BaseScene {
 
 	constructor() {
 

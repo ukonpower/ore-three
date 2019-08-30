@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import vert from './glsl/audioVisualize.vs';
 
-export default class AudioPlayerScene extends ORE.BaseScene {
+export class AudioPlayerScene extends ORE.BaseScene {
 
 	constructor() {
 
@@ -29,7 +29,7 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 		this.audioPlayer = new ORE.AudioPlayer( {
 
-			src: '../sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3',
+			src: '../assets/sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3',
 			bufferSize: 256
 
 		} );
@@ -102,13 +102,13 @@ export default class AudioPlayerScene extends ORE.BaseScene {
 
 			if ( this.soundNum == 0 ) {
 
-				this.audioPlayer.load( '../sounds/358232_j_s_song.mp3' );
+				this.audioPlayer.load( '../assets/sounds/358232_j_s_song.mp3' );
 				this.audioPlayer.play();
 				this.soundNum = 1;
 
 			} else {
 
-				this.audioPlayer.load( '../sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3' );
+				this.audioPlayer.load( '../assets/sounds/376737_Skullbeatz___Bad_Cat_Maste.mp3' );
 				this.audioPlayer.play();
 				this.soundNum = 0;
 

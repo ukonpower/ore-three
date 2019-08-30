@@ -1,7 +1,7 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class FishScene extends ORE.BaseScene {
+export class FishScene extends ORE.BaseScene {
 
 	constructor( gProps ) {
 

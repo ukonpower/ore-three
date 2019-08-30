@@ -1,15 +1,16 @@
 {
   "name": "ore-three-ts",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Three.js utils.",
   "main": "build/ore-three.js",
   "scripts": {
     "dev": "webpack-dev-server --watch-content-base --config ./webpack/dev.config.js",
-    "build": "npm run build:module && npm run build:min && npm run build:types && npm run build:typedoc",
+    "build": "npm run build:module && npm run build:min && npm run build:types && npm run build:typedoc && npm run build:examples",
     "build:module": "webpack --config ./webpack/build-module.config.js",
     "build:min": "webpack --config ./webpack/build-min.config.js",
     "build:types": "tsc --emitDeclarationOnly",
-    "build:typedoc": "typedoc --out ./docs/ ./src/ --mode file --name ore-three"
+    "build:typedoc": "typedoc --out ./docs/documentation/ ./src/ --mode file --name ore-three",
+    "build:examples": "webpack --config ./webpack/build-examples.config.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.4",
     "shader-loader": "^1.3.1",
     "ts-loader": "^6.0.0",
     "typedoc": "^0.14.2",

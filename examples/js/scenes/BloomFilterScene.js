@@ -1,7 +1,7 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class BloomFilterScene extends ORE.BaseScene {
+export class BloomFilterScene extends ORE.BaseScene {
 
 	constructor() {
 

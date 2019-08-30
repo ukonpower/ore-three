@@ -3,6 +3,7 @@ import { Cursor } from './Cursor';
 import * as ORE from '../scene/BaseScene';
 export declare interface ControllerParam extends THREE.WebGLRendererParameters {
     retina?: boolean;
+    silent?: boolean;
 }
 export declare interface GlobalProperties {
     renderer: THREE.WebGLRenderer;
@@ -14,10 +15,6 @@ export declare class Controller {
     cursor: Cursor;
     clock: THREE.Clock;
     gProps: GlobalProperties;
-    /**
-    * parameter extends THREE.WebGLRendererParameters.
-    * and it has retina option.
-    */
     constructor(parameter: ControllerParam);
     private tick;
     bindScene(scene: ORE.BaseScene): void;

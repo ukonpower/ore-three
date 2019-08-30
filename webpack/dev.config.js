@@ -1,5 +1,7 @@
 const merge = require('webpack-merge');
 const baseConfig = require('./base.config');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const path = require('path');
 
@@ -9,19 +11,29 @@ module.exports = merge(baseConfig,{
 		'main.js': './examples/js/index.js',
 	},
 	output: {
-		path: path.join(__dirname, 'build'),
-		filename: '[name]',
-		library: "ore-three",
-		libraryTarget: "umd"
+		filename: '[name]'
 	},
 	devServer: {
 		host: 'localhost',
 		port: 3000,
-		contentBase: path.resolve(__dirname, '../examples/'),
-		publicPath: '/js',
-		openPage: 'index.html',
+		contentBase: path.resolve(__dirname, '../'),
+		publicPath: '/examples/js',
+		openPage: 'examples/index.html',
 		disableHostCheck: true,
 		compress: true,
 		open: true
 	},
+	plugins: [
+        new webpack.DefinePlugin({
+			SCENE: JSON.stringify("MainScene"),
+		}),
+		new CopyWebpackPlugin(
+			[
+				{
+					from: './assets/',
+					to: './examples/assets',
+				},
+			],
+		)
+    ]
 });

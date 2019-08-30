@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import vert from './glsl/audioVisualize.vs';
 
-export default class MicDataScene extends ORE.BaseScene {
+export class MicDataScene extends ORE.BaseScene {
 
 	constructor() {
 

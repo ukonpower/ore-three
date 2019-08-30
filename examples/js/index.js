@@ -1,5 +1,8 @@
 import * as ORE from '../../src/';
-import MainScene from './scenes/MainScene';
+
+const SCENE_NAME = 'MainScene';
+
+const scene = require('./scenes/' + SCENE_NAME );
 
 class APP {
 
@@ -12,9 +15,9 @@ class APP {
 			alpha: false,
 
 		} );
-
-		this.controller.bindScene( new MainScene() );
-
+		
+		this.controller.bindScene( new scene[SCENE_NAME]() );
+		
 	}
 
 }

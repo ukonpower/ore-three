@@ -1,7 +1,7 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class MainScene extends ORE.BaseScene {
+export class PageScrollerScene extends ORE.BaseScene {
 
 	constructor() {
 	

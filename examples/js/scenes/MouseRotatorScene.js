@@ -1,7 +1,7 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class MouseRotatorScene extends ORE.BaseScene {
+export class MouseRotatorScene extends ORE.BaseScene {
 
 	constructor() {
 

@@ -17,6 +17,7 @@ export interface ScrollPercentages {
 export declare class PageScroller {
     private element;
     private rect;
+    private enabled;
     private _velocity;
     private _pageOffset;
     private _pageOffsetMem;

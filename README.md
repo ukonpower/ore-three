@@ -22,7 +22,7 @@ import * as ORE from 'ore-three-ts';
 
 ```javascript
 import * as ORE from 'ore-three-ts';
-import MainScene from './scenes/MainScene';
+import { MainScene } from './scenes/MainScene';
 
 class APP {
 
@@ -55,7 +55,7 @@ window.addEventListener( 'load', ()=>{
 import * as ORE from 'ore-three-ts';
 import * as THREE from 'three';
 
-export default class MainScene extends ORE.BaseScene {
+export class MainScene extends ORE.BaseScene {
 
 	constructor() {
 		

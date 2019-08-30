@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import pp1 from './glsl/pp1.fs';
 import pp2 from './glsl/pp2.fs';
 
-export default class PostProcessScene extends ORE.BaseScene {
+export class PostProcessingScene extends ORE.BaseScene {
 
 	constructor() {
 

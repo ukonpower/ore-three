@@ -1,14 +1,14 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
 
-export default class MainScene extends ORE.BaseScene {
+export class EasingScene extends ORE.BaseScene {
 
 
 	constructor() {
 		
 		super();
 
-		this.name = "MainScene";
+		this.name = "EasingScene";
 
 	}
 
