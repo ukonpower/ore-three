@@ -9,6 +9,6 @@ float random (vec2 st) {
 
 void main(void){
 	vec3 c = texture2D(backbuffer,vUv).xyz;
-	c += random(vUv + time);
+	c += random(vUv + time) * 0.5;
 	gl_FragColor = vec4(c,1.0);
 }
