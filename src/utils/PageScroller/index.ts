@@ -241,11 +241,10 @@ export class PageScroller {
 		this._velocity = 0;
 		this.isAutoMoving = true;
 		this.isStop = false;
-		this.duration = param.duration ? param.duration : 1.0;
-		this.autoMovingLock = param.lock ? param.lock : false;
-		
+		this.duration = param.duration || 1.0;
+		this.autoMovingLock = param.lock || false;
 		this.scrollDistance = targetOffset - this.baseOffset;
-		this.onAutoMoveFinished = param.callback ? param.callback : null;
+		this.onAutoMoveFinished = param.callback;
 	
 	}
 
@@ -298,7 +297,7 @@ export class PageScroller {
 
 	private autoScroll( deltaTime: number ){
 
-		this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;
+		this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;		
 	
 		let ended = false;
 		
