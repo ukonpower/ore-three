@@ -46,7 +46,7 @@ export class StableFluidsScene extends ORE.BaseScene {
 		
 		//create element
 		this.dom = document.createElement('div');
-		this.dom.classList.add('dom-glsl');
+		this.dom.classList.add('stableFluids');
 		document.body.insertBefore(this.dom,document.querySelector('#canvas'));
 
 		//create domGLSL
