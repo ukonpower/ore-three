@@ -16,19 +16,34 @@ body,html{
 	overflow: hidden;
 }
 
+/*----------------------
+	DomGLSL
+----------------------*/
+
 .dom-glsl{
+	z-index: 99;
 	position: absolute;
-	width: 500px;
-	height: 500px;
+	width: 300px;
+	height: 300px;
 	left: 50%;top: 50%;
-	transform: translate3D(-50%,-50%,0)
+	border: solid 2px white;
+	transform: translate3D(-50%,-50%,0);
 }
 
+.dom-glsl::after{
+	content: 'This Rect is HTML Element!!';
+	z-index: 99;
+	color: white;
+}
+
+/*----------------------
+	PageScroller
+----------------------*/
 .wrapper{
 	position: absolute;
 	top: 0; left: 0;
 	width: 100%;
-	opacity: 0.6;
+	color: white;
 }
 
 .target{
@@ -39,41 +54,62 @@ body,html{
 	width: 200px;
 	height: 200px;
 	background-color: #FFF;
-
 }
 
+.part{
+	border-bottom: solid 1px white;
+	border-top: solid 1px white;
+}
 .part1{
 	width: 100%;
 	height: 100vh;
-	background-color: rgb(218, 10, 10);
+}
+
+.part1::after{
+	content: 'Part-1';
 }
 
 .part2{
 	width: 100%;
 	height: 500px;
-	background-color: rgb(122, 172, 81);
+}
+
+.part2::after{
+	content: 'Part-2';
 }
 
 .part3{
 	width: 100%;
 	height: 500px;
-	background-color: rgb(10, 31, 218);
+}
+
+.part3::after{
+	content: 'Part-3';
 }
 
 .part4{
 	width: 100%;
 	height: 100vw;
-	background-color: rgb(207, 18, 160);
+}
+
+.part4::after{
+	content: 'Part-4';
 }
 
 .part5{
 	width: 100%;
 	height: 800px;
-	background-color: rgb(218, 137, 33);
+}
+
+.part5::after{
+	content: 'Part-5';
 }
 
 .part6{
 	width: 100%;
 	height: 1000px;
-	background-color: rgb(59, 207, 158);
+}
+
+.part6::after{
+	content: 'Part-6';
 }

@@ -26,7 +26,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 		for( let i = 0; i < 6; i++ ){
 
 			let elm = document.createElement( 'div' );
-			elm.classList.add('part' +  (i + 1).toString() );
+			elm.classList.add('part' +  (i + 1).toString(), 'part' );
 			wrapper.appendChild( elm );
 
 		}
@@ -110,9 +110,9 @@ export class PageScrollerScene extends ORE.BaseScene {
 	
 	}
 
-	onResize(width, height) {
+	onResize(args) {
 	
-		super.onResize(width, height);
+		super.onResize(args);
 
 		this.scroller.resize();
 	

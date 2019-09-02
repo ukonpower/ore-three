@@ -8,9 +8,15 @@
 
 	<style>
 
+
 		*{
 			margin: 0;
 			padding: 0;
+		}
+
+		html body{
+			width: 100%;
+			overflow-x: hidden;
 		}
 		
 		header{
@@ -18,7 +24,7 @@
 			background-color: black;
 			color: white;
 			font-size: 30px;
-			padding: 10px 15px;
+			padding: 10px 0;
 			width: 100%;
 		}
 
@@ -27,29 +33,81 @@
 		}
 
 		.example-list{
+			display: flex;
+			justify-content: space-between;
+
+			
+			align-content: stretch;
+			flex-wrap: wrap;
 			font-size: 20px;
 			list-style: none;
-			margin: 20px 0;
+			margin: 20px;
 			margin-left: 10px;
 		}
 
 		.example-list-item{
+			position: relative;
+			width: 32%;
+			height: 20vw;
+			/* margin: 0 5px; */
 			margin-bottom: 20px;
+		}	
+
+		.example-list img{
+			position: relative;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			z-index: -99;
 		}
 
-		.example-list-item a{
-			font-size: 15px;
-			color: white;
+		.example-list-item-description{
+			position: absolute;
+			bottom: 0; left: 0;
 			padding: 5px 10px;
-			margin-bottom: 20px;
-			
-			background-color: black;
-			
-			transition: .3s;
+			color: white;
+			background-color: rgba( 0, 0, 0, 0.5 );
+
+			font-size: 15px;
+
 		}
 
-		.example-list-item a:hover{
-			background-color: #666;
+		.example-list-item-link{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: 98;
+			transition: .4s;
+		}
+		a
+		.example-list-item-link:hover{
+			background-color:rgba( 0, 0, 0, 0.5 );
+		}
+
+		.example-list-item-github{
+			display: block;
+			position: absolute;
+			right: 0;
+			padding: 10px;
+
+			background: rgba( 255, 255, 255, 0.2 );
+			z-index: 99;
+			color: white;
+			
+		}
+
+		.example-list-item-github:hover{
+			background: rgba( 255, 255, 255, 0.6 );
+		}
+
+		.example-list-item-title{
+			position: absolute;
+			top: 0; left: 0;
+			padding: 5px 10px;
+			font-size: 15px;
+			font-weight: 10;
+			color: white;
+			background-color: black;
 		}
 
 		.content{
@@ -61,6 +119,16 @@
 			color: black;
 		}
 
+		@media screen and (max-width:800px){
+			.example-list-item{
+				position: relative;
+				width: 100%;
+				height: 50vw;
+				/* margin: 0 5px; */
+				margin-bottom: 20px;
+			}
+		}
+
 	</style>
 
 </head>
@@ -70,21 +138,105 @@
 	<div class="content">
 		<h2 class="title">Examples</h2>
 		<ul class="example-list">
-			<li class="example-list-item"><a href="./AnimatorScene/">AnimationScene</a></li>
-			<li class="example-list-item"><a href="./AudioPlayerScene/">AudioPlayerScene</a></li>
-			<li class="example-list-item"><a href="./BackgroundScene/">BackgroundScene</a></li>
-			<li class="example-list-item"><a href="./BloomFilterScene/">BloomFilterScene</a></li>
-			<li class="example-list-item"><a href="./DomGLSLScene/">DomGLSLScene</a></li>
-			<li class="example-list-item"><a href="./EasingScene/">EasingScene</a></li>
-			<li class="example-list-item"><a href="./FishScene/">FishScene</a></li>
-			<li class="example-list-item"><a href="./MainScene/">MainScene</a></li>
-			<li class="example-list-item"><a href="./MicDataScene/">MicDataScene</a></li>
-			<li class="example-list-item"><a href="./MouseRotatorScene/">MouseRotatorScene</a></li>
-			<li class="example-list-item"><a href="./MouseVertexRotatorScene/">MouseVertexRotatorScene</a></li>
-			<li class="example-list-item"><a href="./PageScrollerScene/">PageScrollerScene</a></li>
-			<li class="example-list-item"><a href="./PostProcessingScene/">PostProcessingScene</a></li>
-			<li class="example-list-item"><a href="./StableFluidsScene/">StableFluidsScene</a></li>
-			<li class="example-list-item"><a href="./TransformAnimatorScene/">TransformAnimatorScene</a></li>
+			<li class="example-list-item">
+				<a href="./AnimatorScene/" class="example-list-item-link"></a>
+				<a href="https://github.com/ukonpower/ore-three-ts/blob/master/examples/js/scenes/AnimatorScene.js" class="example-list-item-github">&lt;&gt;</a>
+				<h2 class="example-list-item-title">AnimatorScene</h2>
+				<img src="./assets/thumbnails/animator.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./AudioPlayerScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">AudioPlayerScene</h2>
+				<img src="./assets/thumbnails/audio_player.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./BackgroundScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">BackgroundScene</h2>
+				<img src="./assets/thumbnails/background.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./BloomFilterScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">BloomFilterScene</h2>
+				<img src="./assets/thumbnails/bloom.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./DomGLSLScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">DomGLSLScene</h2>
+				<img src="./assets/thumbnails/dom_glsl.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./FishScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">FishScene</h2>
+				<img src="./assets/thumbnails/fish.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./MainScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">MainScene</h2>
+				<img src="./assets/thumbnails/main_scene.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./MicDataScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">MicDataScene</h2>
+				<img src="./assets/thumbnails/mic_data.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./MouseRotatorScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">MouseRotatorScene</h2>
+				<img src="./assets/thumbnails/mouse_rotator.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./MouseVertexRotatorScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">MouseVertexRotatorScene</h2>
+				<img src="./assets/thumbnails/mouse_vertex_rotator.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./PageScrollerScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">PageScrollerScene</h2>
+				<img src="./assets/thumbnails/page_scrolle.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./PostProcessingScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">PostProcessingScene</h2>
+				<img src="./assets/thumbnails/postprocessing.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./StableFluidsScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">StableFluidsScene</h2>
+				<img src="./assets/thumbnails/stable_fluids.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
+			<li class="example-list-item">
+				<a href="./TransformAnimatorScene/" class="example-list-item-link"></a>
+				<h2 class="example-list-item-title">TransformAnimatorScene</h2>
+				<img src="./assets/thumbnails/transform_animamtor.png" alt="">
+				<p class="example-list-item-description">
+				</p>
+			</li>
 		</ul>
 		<a class="back" href="../">Back</a>
 	</div>

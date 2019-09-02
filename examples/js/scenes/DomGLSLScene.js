@@ -23,6 +23,7 @@ export class DomGLSLScene extends ORE.BaseScene {
 
 		let dom = document.createElement('div');
 		dom.classList.add('dom-glsl');
+		
 		document.body.insertBefore(dom,document.querySelector('#canvas'));
 
 		//create domGLSL
