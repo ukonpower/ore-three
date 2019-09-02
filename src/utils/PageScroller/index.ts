@@ -3,16 +3,17 @@ import { Easings } from '../Easings';
 import { PageScrollerSection } from './PageScrollerSection';
 
 export declare interface PageScrollerEasing{
-	func: Function,
-	variables: number[],
+	func: Function;
+	variables: number[];
 }
 
 export declare interface PageScrollerMoveToParam{
-	target: HTMLElement | string,
-	duration?: number,
-	callback?: Function,
+	target: HTMLElement | string;
+	duration?: number;
+	callback?: Function;
 	bottom?: boolean;
-	lock?: boolean
+	lock?: boolean;
+	force?: boolean;
 }
 
 export interface ScrollPercentages{
@@ -24,7 +25,7 @@ export class PageScroller {
 	private element: HTMLElement;
 	private rect: ClientRect;
 
-	private enabled: boolean = true;
+	public enabled: boolean = true;
 
 	//manual move
 	private _velocity: number = 0;
@@ -40,6 +41,7 @@ export class PageScroller {
 	private onAutoMoveFinished: Function;
 	private isAutoMoving: boolean = false;
 	private autoMovingLock: boolean = false;
+	private forceAutoMove: boolean = false;
 
 	//sections
 	public sections: PageScrollerSection[] = [];
@@ -205,8 +207,8 @@ export class PageScroller {
 	}
 
 	public moveto( param: PageScrollerMoveToParam ) {
-	
-		if( !this.enabled ) return;
+		
+		if( !this.enabled && !param.force ) return;
 
 		let targetOffset: number;
 
@@ -245,12 +247,11 @@ export class PageScroller {
 		this.autoMovingLock = param.lock || false;
 		this.scrollDistance = targetOffset - this.baseOffset;
 		this.onAutoMoveFinished = param.callback;
+		this.forceAutoMove = param.force || false;
 	
 	}
 
 	public update( deltaTime?: number ) {
-
-		if( !this.enabled ) return;
 
 		if( !this.isStop ){
 
@@ -277,10 +278,14 @@ export class PageScroller {
 
 		if ( this.isAutoMoving ) {
 
+			if( !this.enabled && !this.forceAutoMove ) return;
+
 			this.autoScroll( deltaTime );
 
 		} else {
 			
+			if( !this.enabled ) return;			
+
 			this.manualScroll( deltaTime )
 
 		}		

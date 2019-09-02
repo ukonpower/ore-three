@@ -26,7 +26,7 @@ declare interface ScrollEventArgs {
 declare interface StartScrollEventArgs extends ScrollEventArgs {
     scrollMode: string;
 }
-declare interface ScrollerSectionEasings {
+export declare interface ScrollerSectionEasings {
     position?: PageScrollerEasing;
     rotation?: PageScrollerEasing;
 }

@@ -42,6 +42,7 @@ export declare interface PageScrollerMoveToParam {
     duration?: number;
     callback?: Function;
     lock?: boolean;
+    force?: boolean;
 }
 export interface ScrollPercentages {
     [key: string]: number;

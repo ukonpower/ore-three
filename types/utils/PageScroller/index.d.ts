@@ -10,6 +10,7 @@ export declare interface PageScrollerMoveToParam {
     callback?: Function;
     bottom?: boolean;
     lock?: boolean;
+    force?: boolean;
 }
 export interface ScrollPercentages {
     [key: string]: number;
@@ -17,7 +18,7 @@ export interface ScrollPercentages {
 export declare class PageScroller {
     private element;
     private rect;
-    private enabled;
+    enabled: boolean;
     private _velocity;
     private _pageOffset;
     private _pageOffsetMem;
@@ -29,6 +30,7 @@ export declare class PageScroller {
     private onAutoMoveFinished;
     private isAutoMoving;
     private autoMovingLock;
+    private forceAutoMove;
     sections: PageScrollerSection[];
     sectionScrollPercentages: ScrollPercentages;
     currentSectionNum: number;

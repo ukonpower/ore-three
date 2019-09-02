@@ -33,7 +33,7 @@ declare interface StartScrollEventArgs extends ScrollEventArgs{
 }
 
 
-declare interface ScrollerSectionEasings{
+export declare interface ScrollerSectionEasings{
 	position?: PageScrollerEasing,
 	rotation?: PageScrollerEasing
 }
