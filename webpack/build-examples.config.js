@@ -10,7 +10,6 @@ var scenes = [
 	'BackgroundScene',
 	'BloomFilterScene',
 	'DomGLSLScene',
-	'EasingScene',
 	'FishScene',
 	'MainScene',
 	'MicDataScene',
