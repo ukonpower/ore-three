@@ -1,6 +1,15 @@
 import * as THREE from 'three';
 
-export interface PPParam {
+export interface PPParam{
+    defines?: any;
+	linewidth?: number;
+	wireframe?: boolean;
+	wireframeLinewidth?: number;
+	lights?: boolean;
+	clipping?: boolean;
+	skinning?: boolean;
+	morphTargets?: boolean;
+	morphNormals?: boolean;
     fragmentShader: string,
     uniforms?: any
 }
@@ -58,12 +67,20 @@ export class PostProcessing {
             }
 
             let mat = new THREE.ShaderMaterial({
-
+                defines: param.defines, 
+                linewidth: param.linewidth, 
+                wireframe: param.wireframe, 
+                wireframeLinewidth: param.wireframeLinewidth, 
+                lights: param.lights, 
+                clipping: param.clipping, 
+                skinning: param.skinning, 
+                morphTargets: param.morphTargets, 
+                morphNormals: param.morphNormals, 
                 uniforms: param.uniforms,
                 vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
                 fragmentShader: param.fragmentShader,
                 depthTest: false,
-                depthFunc: THREE.NeverDepth
+                depthFunc: THREE.NeverDepth,
 
             })
 

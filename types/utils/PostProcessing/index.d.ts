@@ -1,5 +1,14 @@
 import * as THREE from 'three';
 export interface PPParam {
+    defines?: any;
+    linewidth?: number;
+    wireframe?: boolean;
+    wireframeLinewidth?: number;
+    lights?: boolean;
+    clipping?: boolean;
+    skinning?: boolean;
+    morphTargets?: boolean;
+    morphNormals?: boolean;
     fragmentShader: string;
     uniforms?: any;
 }
