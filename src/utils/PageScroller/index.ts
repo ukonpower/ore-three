@@ -88,9 +88,15 @@ export class PageScroller {
 
 	}
 
-	public  getCustomScrollPercentage( sections: string[] ): number{
+	public  getScrollPercentage( sections?: string[] ): number{
 
 		let sum = 0;
+
+		if( !sections ){
+
+			sections = [ this.sections[0].name, this.sections[this.sections.length - 1].name ];
+
+		}
 
 		for( let i = 0; i < sections.length - 1; i++ ){
 
@@ -111,8 +117,7 @@ export class PageScroller {
 		}
 
 
-
-		return (sum) / ( sections.length - 1);
+		return sum / ( sections.length - 1);
 
 	}
 

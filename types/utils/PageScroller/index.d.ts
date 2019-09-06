@@ -44,6 +44,7 @@ export declare class PageScroller {
     readonly pageOffset: number;
     readonly scrollVel: number;
     readonly scrollPercentage: number;
+    getScrollPercentage(sections?: string[]): number;
     constructor(element: HTMLElement);
     private initEasings;
     addVelocity(scrollVelocity: number): void;
