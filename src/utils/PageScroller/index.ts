@@ -88,6 +88,34 @@ export class PageScroller {
 
 	}
 
+	public  getCustomScrollPercentage( sections: string[] ): number{
+
+		let sum = 0;
+
+		for( let i = 0; i < sections.length - 1; i++ ){
+
+			let secA = this.getSection( sections[i] );
+			let secB = this.getSection( sections[i + 1] );
+
+			let eachSum = 0
+			let eachNum = secB.num - secA.num;
+
+			for( let j = secA.num + 1; j <= secB.num; j++ ){
+
+				eachSum += this.sectionScrollPercentages[this.sections[j].name];
+
+			}
+			
+			sum += eachSum / eachNum;
+
+		}
+
+
+
+		return (sum) / ( sections.length - 1);
+
+	}
+
 	constructor( element: HTMLElement ) {
 	
 		this.element = element;
@@ -724,13 +752,19 @@ export class PageScroller {
 
 		} );
 
+		let setThreePos = false;
+
 		for( let i = 0; i < this.sections.length; i++ ){
 
-			if( this.sections[i].threePosition ){
+			//sorted section number
+			this.sections[i].num = i;
+
+			if( !setThreePos && this.sections[i].threePosition ){
 				
+				//initialize threeposition
 				this.threePosition.copy( this.sections[i].threePosition );
 
-				break;
+				setThreePos = true;
 
 			}
 		}

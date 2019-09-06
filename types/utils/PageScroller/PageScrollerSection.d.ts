@@ -42,6 +42,7 @@ export declare class PageScrollerSection {
     sectionEasings?: ScrollerSectionEasings;
     stop?: boolean;
     bottom?: Boolean;
+    num: number;
     private _name;
     private _element;
     private _events;

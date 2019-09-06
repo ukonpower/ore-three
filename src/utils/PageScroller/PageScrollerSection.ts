@@ -52,6 +52,7 @@ export class PageScrollerSection{
 	public sectionEasings?: ScrollerSectionEasings
 	public stop?: boolean;
 	public bottom?: Boolean;
+	public num: number;
 
 	private _name: string
 	private _element: HTMLElement;
