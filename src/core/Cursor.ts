@@ -159,7 +159,7 @@ export class Cursor {
 
         } else {
 
-            this._position.set( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
+            this.setPos( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
 
         }
 
