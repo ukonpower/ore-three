@@ -114,6 +114,29 @@ export class PageScrollerSection{
 			
 		}
 
+		this.sectionEasings = {
+			position: null,
+			rotation: null
+		}
+
+		if( param.sectionEasings && param.sectionEasings.position ){
+
+			this.sectionEasings.position = {
+				func: param.sectionEasings.position.func || null,
+				variables: param.sectionEasings.position.variables || [],
+			}
+
+		}
+
+		if( param.sectionEasings && param.sectionEasings.rotation ){
+
+			this.sectionEasings.rotation = {
+				func: param.sectionEasings.rotation.func || null,
+				variables: param.sectionEasings.rotation.variables || [],
+			}
+
+		}
+
 	}
 
 	public resize( pageOffset: number ){
