@@ -8,6 +8,8 @@ export interface AudioPlayerParam{
 
 export class AudioPlayer {
 
+	private loadingManager: THREE.LoadingManager;
+
 	public audio: THREE.Audio;
 	public listener: THREE.AudioListener;
 	public analyser: THREE.AudioAnalyser;
@@ -34,8 +36,10 @@ export class AudioPlayer {
 
 	}
 
-	constructor( parameter: AudioPlayerParam ) {
+	constructor( parameter: AudioPlayerParam, loadingManager?: THREE.LoadingManager ) {
 
+		this.loadingManager = loadingManager;
+		
 		this.listener = parameter.listener ? parameter.listener : new THREE.AudioListener();
 
 		this.audio = new THREE.Audio( this.listener );
@@ -58,7 +62,7 @@ export class AudioPlayer {
 
 		}
 
-		let loader = new THREE.AudioLoader();
+		let loader = new THREE.AudioLoader( this.loadingManager );
 
 		this.isLoaded = false;
 
@@ -125,6 +129,12 @@ export class AudioPlayer {
 			this.audio.pause();
 
 		}
+
+	}
+
+	public stop(){
+
+		this.audio.stop();
 
 	}
 	

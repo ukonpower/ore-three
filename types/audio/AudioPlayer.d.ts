@@ -5,6 +5,7 @@ export interface AudioPlayerParam {
     bufferSize?: number;
 }
 export declare class AudioPlayer {
+    private loadingManager;
     audio: THREE.Audio;
     listener: THREE.AudioListener;
     analyser: THREE.AudioAnalyser;
@@ -15,9 +16,10 @@ export declare class AudioPlayer {
     volume: number;
     private uniforms;
     readonly isPlaying: boolean;
-    constructor(parameter: AudioPlayerParam);
+    constructor(parameter: AudioPlayerParam, loadingManager?: THREE.LoadingManager);
     load(src: any): void;
     play(): void;
     pause(): void;
+    stop(): void;
     update(): void;
 }

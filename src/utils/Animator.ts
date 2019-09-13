@@ -34,7 +34,7 @@ export class Animator{
 		let variable = this.variables[name];
 
 		variable.x = 0;
-		variable.duration = duration;
+		variable.duration = duration || 1;
 		variable.base = variable.value;
 		variable.distance = goalValue - variable.base;
 		variable.onMoved = callback;		
