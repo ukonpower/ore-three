@@ -97,7 +97,7 @@ export class PageScroller {
 			sections = [ this.sections[0].name, this.sections[this.sections.length - 1].name ];
 
 		}
-
+		
 		for( let i = 0; i < sections.length - 1; i++ ){
 
 			let secA = this.getSection( sections[i] );
@@ -105,7 +105,7 @@ export class PageScroller {
 
 			let eachSum = 0
 			let eachNum = secB.num - secA.num;
-
+			
 			for( let j = secA.num + 1; j <= secB.num; j++ ){
 
 				eachSum += this.sectionScrollPercentages[this.sections[j].name];
@@ -115,7 +115,7 @@ export class PageScroller {
 			sum += eachSum / eachNum;
 
 		}
-
+		
 
 		return sum / ( sections.length - 1);
 
@@ -261,6 +261,12 @@ export class PageScroller {
 
 				}
 
+			}else{
+
+				console.log( param.target + 'is not exist.' );
+				
+				return;
+				
 			}
 			
 		}else{
@@ -705,12 +711,12 @@ export class PageScroller {
 		
 	}
 
-	private calcThreeEasings( value: number, section: PageScrollerSection, type: string ){
-		
+	private calcThreeEasings( value: number, section: PageScrollerSection, type: string ){		
+
 		if( type == 'pos'){
-
+			
 			if( section.sectionEasings && section.sectionEasings.position ){
-
+				
 				return section.sectionEasings.position.func( value, section.sectionEasings.position.variables );
 	
 			}else{
