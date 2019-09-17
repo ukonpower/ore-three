@@ -1,3 +1,11 @@
+import { threadId } from "worker_threads";
+import { Easings } from "./Easings";
+
+export declare interface AnimatorEasing{
+	func: Function;
+	variables?: number[];
+}
+
 declare interface variable{
 	x: number;
 	duration: number;
@@ -5,6 +13,7 @@ declare interface variable{
 	base: number;
 	distance: number;
 	onMoved?: Function;
+	easing: AnimatorEasing;
 }
 
 export class Animator{
@@ -17,14 +26,49 @@ export class Animator{
 
 	}
 
-	public addVariable( name: string, initValue?: number ){
+	public addVariable( name: string, initValue?: number, easing?: AnimatorEasing ){
+
+		let eas: AnimatorEasing;
+
+		if( easing ){
+
+			eas = {
+				func: easing.func,
+				variables: easing.variables || []
+			}
+
+		}else{
+
+			eas = {
+				func: Easings.sigmoid,
+				variables: [4]
+			}
+
+		}
 
 		this.variables[name] = {
 			x: 1,
 			duration: 1,
 			value: initValue ? initValue : 0,
 			base: 0,		
-			distance: 0
+			distance: 0,
+			easing: eas
+		}
+
+	}
+
+	public setEasing( name: string, easing: AnimatorEasing ){
+
+		let variable = this.variables[name];
+
+		if( variable ){
+
+			variable.easing = easing;
+
+		}else{
+
+			console.warn( "variable doesn't exist : " + name );
+			
 		}
 
 	}
@@ -33,11 +77,19 @@ export class Animator{
 
 		let variable = this.variables[name];
 
-		variable.x = 0;
-		variable.duration = duration || 1;
-		variable.base = variable.value;
-		variable.distance = goalValue - variable.base;
-		variable.onMoved = callback;		
+		if( variable ){
+
+			variable.x = 0;
+			variable.duration = ( duration != null ) ? duration : 1;
+			variable.base = variable.value;
+			variable.distance = goalValue - variable.base;
+			variable.onMoved = callback;
+
+		}else{
+
+			console.warn( "variable doesn't exist : " + name );
+			
+		}
 
 	}
 
@@ -49,7 +101,7 @@ export class Animator{
 
 		}else{
 
-			console.warn( 'not exist variable:' + name );
+			console.warn( "variable doesn't exist:" + name );
 
 			return null;
 
@@ -67,9 +119,17 @@ export class Animator{
 
 			if( variable.x < 1.0 ){
 
-				variable.x += ( deltaTime || 0.016 ) / variable.duration;
+				if( variable.duration != 0 ){
+					
+					variable.x += ( deltaTime || 0.016 ) / variable.duration;
+					
+				}else{
+					
+					variable.x = 1.0;
+					
+				}
 
-				let w = this.sigmoid( 6, variable.x );
+				let w = variable.easing.func( variable.x, variable.easing.variables );
 
 				variable.value = variable.base + variable.distance * w;
 
@@ -92,14 +152,6 @@ export class Animator{
 			}
 
 		}
-
-	}
-
-	private sigmoid( a, x ) {
-		
-		var e1 = Math.exp( -a * ( 2 * x - 1 ) );
-		var e2 = Math.exp( -a );
-		return ( 1 + ( 1 - e1 ) / ( 1 + e1 ) * ( 1 + e2 ) / ( 1 - e2 ) ) / 2;
 
 	}
 
