@@ -10,8 +10,9 @@ export interface PPParam{
 	skinning?: boolean;
 	morphTargets?: boolean;
 	morphNormals?: boolean;
-    fragmentShader: string,
-    uniforms?: any
+    fragmentShader: string;
+    uniforms?: any;
+    transparent?: boolean;
 }
 
 export interface EffectMaterial {
@@ -81,7 +82,7 @@ export class PostProcessing {
                 fragmentShader: param.fragmentShader,
                 depthTest: false,
                 depthFunc: THREE.NeverDepth,
-
+                transparent: param.transparent || false
             })
 
             let effectMaterial = { material: mat, uniforms: param.uniforms }

@@ -11,6 +11,7 @@ export interface PPParam {
     morphNormals?: boolean;
     fragmentShader: string;
     uniforms?: any;
+    transparent?: boolean;
 }
 export interface EffectMaterial {
     material: THREE.ShaderMaterial;
