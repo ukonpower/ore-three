@@ -407,13 +407,6 @@ export class PageScroller {
 				
 			}
 
-			//throw section
-			if( ( pos >= line && line > posM ) || ( pos <= line && line < posM ) || ( pos == posM && pos == line ) ){
-				
-				this.onThrowSection( i );
-				
-			}
-
 			//custom percentage
 			for( let j = 0; j < sec.events.onArrivals.length; j++ ){
 
@@ -441,6 +434,13 @@ export class PageScroller {
 					
 				}
 			
+			}
+
+			//throw section
+			if( ( pos >= line && line > posM ) || ( pos <= line && line < posM ) || ( pos == posM && pos == line ) ){
+				
+				this.onThrowSection( i );
+				
 			}
 
 		}
