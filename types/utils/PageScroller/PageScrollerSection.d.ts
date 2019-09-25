@@ -15,15 +15,13 @@ export declare interface onArrivalEvent {
     event: (args: ScrollEventArgs) => void;
 }
 export declare interface PageScrollerEvents {
-    onStartScroll?: (args: StartScrollEventArgs) => boolean;
+    onStartScroll?: (args: ScrollEventArgs) => boolean;
     onArrivals?: onArrivalEvent[];
 }
 declare interface ScrollEventArgs {
     scroller: PageScroller;
     section: PageScrollerSection;
     scrollVelocity: number;
-}
-declare interface StartScrollEventArgs extends ScrollEventArgs {
     scrollMode: string;
 }
 export declare interface ScrollerSectionEasings {

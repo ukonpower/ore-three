@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Uniforms } from '../../shaders/shader';
 export interface PPParam {
     defines?: any;
     linewidth?: number;
@@ -10,8 +11,9 @@ export interface PPParam {
     morphTargets?: boolean;
     morphNormals?: boolean;
     fragmentShader: string;
-    uniforms?: any;
+    uniforms?: Uniforms;
     transparent?: boolean;
+    blending?: THREE.Blending;
 }
 export interface EffectMaterial {
     material: THREE.ShaderMaterial;
