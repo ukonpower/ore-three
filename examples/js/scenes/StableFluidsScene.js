@@ -45,13 +45,12 @@ export class StableFluidsScene extends ORE.BaseScene {
 		this.densityKernel.uniforms.time = { value: 0 };
 		
 		//create element
-		this.dom = document.createElement('div');
-		this.dom.classList.add('stableFluids');
-		document.body.insertBefore(this.dom,document.querySelector('#canvas'));
+		this.elm = document.createElement('div');
+		this.elm.classList.add('stableFluids');
+		document.body.insertBefore(this.elm,document.querySelector('#canvas'));
 
 		//create domGLSL
 		this.param = {
-			dom: this.dom,
 			fragmentShader: frag,
 			uniforms: {
 				time: { value: 0 },
@@ -59,7 +58,7 @@ export class StableFluidsScene extends ORE.BaseScene {
 			}
 		};
 
-		this.domglsl = new ORE.DomGLSL( this.param );
+		this.domglsl = new ORE.DomGLSL( this.elm, this.param );
 
 		this.scene.add( this.domglsl );
 
@@ -99,7 +98,7 @@ export class StableFluidsScene extends ORE.BaseScene {
 
 		//update fluid
 		let vec = new THREE.Vector2( cursor.hoverDelta.x, -cursor.hoverDelta.y );
-		let pos = cursor.getRelativePosition( this.dom, true, true);
+		let pos = cursor.getRelativePosition( this.elm, true, true);
 
 		if( pos ){			
 
