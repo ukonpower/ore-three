@@ -92,6 +92,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="audioplayer.html#buffersize" class="tsd-kind-icon">buffer<wbr>Size</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="audioplayer.html#isloaded" class="tsd-kind-icon">is<wbr>Loaded</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="audioplayer.html#listener" class="tsd-kind-icon">listener</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="audioplayer.html#loadingmanager" class="tsd-kind-icon">loading<wbr>Manager</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="audioplayer.html#onload" class="tsd-kind-icon">on<wbr>Load</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="audioplayer.html#spectrumdata" class="tsd-kind-icon">spectrum<wbr>Data</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="audioplayer.html#uniforms" class="tsd-kind-icon">uniforms</a></li>
@@ -110,6 +111,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#load" class="tsd-kind-icon">load</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#pause" class="tsd-kind-icon">pause</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#play" class="tsd-kind-icon">play</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#stop" class="tsd-kind-icon">stop</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
@@ -122,19 +124,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Audio<wbr>Player<span class="tsd-signature-symbol">(</span>parameter<span class="tsd-signature-symbol">: </span><a href="../interfaces/audioplayerparam.html" class="tsd-signature-type">AudioPlayerParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Audio<wbr>Player<span class="tsd-signature-symbol">(</span>parameter<span class="tsd-signature-symbol">: </span><a href="../interfaces/audioplayerparam.html" class="tsd-signature-type">AudioPlayerParam</a>, loadingManager<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">LoadingManager</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L35">audio/AudioPlayer.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L37">audio/AudioPlayer.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>parameter: <a href="../interfaces/audioplayerparam.html" class="tsd-signature-type">AudioPlayerParam</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> loadingManager: <span class="tsd-signature-type">LoadingManager</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></h4>
@@ -147,20 +152,20 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="analyser" class="tsd-anchor"></a>
 					<h3>analyser</h3>
-					<div class="tsd-signature tsd-kind-icon">analyser<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.AudioAnalyser</span></div>
+					<div class="tsd-signature tsd-kind-icon">analyser<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioAnalyser</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L13">audio/AudioPlayer.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L15">audio/AudioPlayer.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="audio" class="tsd-anchor"></a>
 					<h3>audio</h3>
-					<div class="tsd-signature tsd-kind-icon">audio<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.Audio</span></div>
+					<div class="tsd-signature tsd-kind-icon">audio<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Audio</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L11">audio/AudioPlayer.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L13">audio/AudioPlayer.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -170,7 +175,7 @@
 					<div class="tsd-signature tsd-kind-icon">buffer<wbr>Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L14">audio/AudioPlayer.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L16">audio/AudioPlayer.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,17 +185,27 @@
 					<div class="tsd-signature tsd-kind-icon">is<wbr>Loaded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L16">audio/AudioPlayer.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L18">audio/AudioPlayer.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="listener" class="tsd-anchor"></a>
 					<h3>listener</h3>
-					<div class="tsd-signature tsd-kind-icon">listener<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.AudioListener</span></div>
+					<div class="tsd-signature tsd-kind-icon">listener<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AudioListener</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L12">audio/AudioPlayer.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L14">audio/AudioPlayer.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="loadingmanager" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> loading<wbr>Manager</h3>
+					<div class="tsd-signature tsd-kind-icon">loading<wbr>Manager<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">LoadingManager</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L11">audio/AudioPlayer.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -200,17 +215,17 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Load<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L15">audio/AudioPlayer.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L17">audio/AudioPlayer.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="spectrumdata" class="tsd-anchor"></a>
 					<h3>spectrum<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">spectrum<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">THREE.DataTexture</span></div>
+					<div class="tsd-signature tsd-kind-icon">spectrum<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DataTexture</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L18">audio/AudioPlayer.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L20">audio/AudioPlayer.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -220,7 +235,7 @@
 					<div class="tsd-signature tsd-kind-icon">uniforms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L21">audio/AudioPlayer.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L23">audio/AudioPlayer.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -230,7 +245,7 @@
 					<div class="tsd-signature tsd-kind-icon">volume<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L19">audio/AudioPlayer.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L21">audio/AudioPlayer.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -247,7 +262,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L23">audio/AudioPlayer.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L25">audio/AudioPlayer.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -267,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L53">audio/AudioPlayer.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L57">audio/AudioPlayer.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -290,7 +305,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L121">audio/AudioPlayer.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L125">audio/AudioPlayer.ts:125</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -307,7 +322,24 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L104">audio/AudioPlayer.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L108">audio/AudioPlayer.ts:108</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="stop" class="tsd-anchor"></a>
+					<h3>stop</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L135">audio/AudioPlayer.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -324,7 +356,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/0bd50ae/src/audio/AudioPlayer.ts#L131">audio/AudioPlayer.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/f8de906/src/audio/AudioPlayer.ts#L141">audio/AudioPlayer.ts:141</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -367,6 +399,9 @@
 								<a href="audioplayer.html#listener" class="tsd-kind-icon">listener</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="audioplayer.html#loadingmanager" class="tsd-kind-icon">loading<wbr>Manager</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="audioplayer.html#onload" class="tsd-kind-icon">on<wbr>Load</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -389,6 +424,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="audioplayer.html#play" class="tsd-kind-icon">play</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="audioplayer.html#stop" class="tsd-kind-icon">stop</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="audioplayer.html#update" class="tsd-kind-icon">update</a>

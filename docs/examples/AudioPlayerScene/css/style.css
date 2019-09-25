@@ -37,6 +37,21 @@ body,html{
 }
 
 /*----------------------
+	stableFluids
+----------------------*/
+
+.stableFluids{
+	z-index: 99;
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	left: 50%;top: 50%;
+	border: solid 2px white;
+	transform: translate3D(-50%,-50%,0);
+}
+
+
+/*----------------------
 	PageScroller
 ----------------------*/
 .wrapper{
