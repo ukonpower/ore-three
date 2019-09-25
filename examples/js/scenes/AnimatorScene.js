@@ -62,17 +62,22 @@ export class AnimatorScene extends ORE.BaseScene {
 
 		if ( this.left ) {
 
+			this.left = false;
+
 			this.animator.animate( 'posX', 1, 1, () => {
+
+				console.log( 'animated' );
 				
-				this.left = false;
 
 			});
 
 		} else {
 
+			this.left = true;
+
 			this.animator.animate( 'posX', -1, 1, () => {
 				
-				this.left = true;
+				console.log( 'animated' );
 				
 			});
 
