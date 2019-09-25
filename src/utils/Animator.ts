@@ -19,10 +19,18 @@ declare interface variable{
 export class Animator{
 
 	private variables: { [key: string]: variable };
+	private _isAnimating: boolean = false;
+	private animatingCount: number = 0;
 
 	constructor(){
 
 		this.variables = {};
+
+	}
+
+	public get isAnimating(){
+
+		return this._isAnimating;
 
 	}
 
@@ -78,6 +86,13 @@ export class Animator{
 		let variable = this.variables[name];
 
 		if( variable ){
+
+			if( variable.x >= 1.0 ){
+
+				this._isAnimating = true;
+				this.animatingCount++;
+				
+			}
 
 			variable.x = 0;
 			variable.duration = ( duration != null ) ? duration : 1;
@@ -138,6 +153,14 @@ export class Animator{
 					variable.x = 1.0;
 
 					variable.value = variable.base + variable.distance;
+
+					this.animatingCount--;
+
+					if( this.animatingCount == 0 ){
+
+						this._isAnimating = false;
+
+					}
 
 					if( variable.onMoved ){
 
