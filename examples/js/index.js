@@ -1,6 +1,6 @@
 import * as ORE from '../../src/';
 
-const SCENE_NAME = 'StableFluidsScene';
+const SCENE_NAME = 'MainScene';
 
 const scene = require('./scenes/' + SCENE_NAME );
 
