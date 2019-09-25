@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Uniforms } from '../../shaders/shader';
 
 export interface PPParam{
     defines?: any;
@@ -11,8 +12,9 @@ export interface PPParam{
 	morphTargets?: boolean;
 	morphNormals?: boolean;
     fragmentShader: string;
-    uniforms?: any;
+    uniforms?: Uniforms;
     transparent?: boolean;
+    blending?: THREE.Blending;
 }
 
 export interface EffectMaterial {
@@ -68,21 +70,22 @@ export class PostProcessing {
             }
 
             let mat = new THREE.ShaderMaterial({
-                defines: param.defines, 
-                linewidth: param.linewidth, 
-                wireframe: param.wireframe, 
-                wireframeLinewidth: param.wireframeLinewidth, 
-                lights: param.lights, 
-                clipping: param.clipping, 
-                skinning: param.skinning, 
-                morphTargets: param.morphTargets, 
-                morphNormals: param.morphNormals, 
-                uniforms: param.uniforms,
+                defines: param.defines || null, 
+                linewidth: param.linewidth || null, 
+                wireframe: param.wireframe || null, 
+                wireframeLinewidth: param.wireframeLinewidth || null, 
+                lights: param.lights || null, 
+                clipping: param.clipping || null, 
+                skinning: param.skinning || null, 
+                morphTargets: param.morphTargets || null, 
+                morphNormals: param.morphNormals || null, 
+                uniforms: param.uniforms || null,
                 vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
-                fragmentShader: param.fragmentShader,
+                fragmentShader: param.fragmentShader || null,
                 depthTest: false,
                 depthFunc: THREE.NeverDepth,
-                transparent: param.transparent || false
+                transparent: param.transparent || false,
+                blending: param.blending || THREE.NormalBlending,
             })
 
             let effectMaterial = { material: mat, uniforms: param.uniforms }
@@ -134,7 +137,10 @@ export class PostProcessing {
 
         if (scene_srcTexture_offScreen.type == 'Scene') {
             
-            this.renderer.setRenderTarget(this.readBuffer);
+            this.renderer.setRenderTarget(this.readBuffer)
+
+            this.renderer.clear();
+
             this.renderer.render(scene_srcTexture_offScreen, camera_offScreenRendering);
 
             isOffscreen = offScreenRendering;
@@ -155,7 +161,7 @@ export class PostProcessing {
 
         }
         
-        this.effectMaterials.forEach((mat, i) => {
+        this.effectMaterials.forEach((mat, i) => {            
             
             this.screenMesh.material = mat.material;          
             
