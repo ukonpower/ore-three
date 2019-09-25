@@ -4,7 +4,10 @@ export declare interface AnimatorEasing {
 }
 export declare class Animator {
     private variables;
+    private _isAnimating;
+    private animatingCount;
     constructor();
+    readonly isAnimating: boolean;
     addVariable(name: string, initValue?: number, easing?: AnimatorEasing): void;
     setEasing(name: string, easing: AnimatorEasing): void;
     animate(name: string, goalValue: number, duration?: number, callback?: Function): void;

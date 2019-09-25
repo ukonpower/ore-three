@@ -1,14 +1,13 @@
 import * as THREE from 'three';
-export interface DomGLSLParam extends THREE.ShaderMaterialParameters {
-    dom: any;
-}
+import { ShaderMaterialParameters } from 'three';
+import { Uniforms } from '../../shaders/shader';
 export declare class DomGLSL extends THREE.Mesh {
     private uni;
-    private frag;
     private dom;
     private domPos;
     private domSize;
     private windowSize;
-    constructor(parameter: DomGLSLParam);
+    constructor(element: HTMLElement, parameter: ShaderMaterialParameters);
+    readonly uniforms: Uniforms;
     updateDom(): void;
 }
