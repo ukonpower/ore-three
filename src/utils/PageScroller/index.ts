@@ -193,7 +193,7 @@ export class PageScroller {
 
 	private checkUnlockStopScroll( scrollVelocity: number, mode: string ){
 
-		let unLock: boolean = true;
+		let unLock: boolean;
 		let sec = this.sections[this.stopSection];
 
 		if( sec.events.onStartScroll ){
@@ -204,6 +204,10 @@ export class PageScroller {
 				scrollVelocity: scrollVelocity,
 				scrollMode: mode
 			});
+
+		}else{
+
+			unLock = true;
 
 		}
 
@@ -281,12 +285,22 @@ export class PageScroller {
 		this.x = 0;
 		this._velocity = 0;
 		this.isAutoMoving = true;
-		this.isStop = false;
 		this.duration = param.duration || 1.0;
 		this.autoMovingLock = param.lock || false;
 		this.scrollDistance = targetOffset - this.baseOffset;
 		this.onAutoMoveFinished = param.callback;
 		this.forceAutoMove = param.force || false;
+
+		if( this.isStop ){
+
+			//スクロールロック解除条件に合わなければRETURN
+			if( !this.checkUnlockStopScroll( this.scrollDistance, 'auto' ) ){
+
+				return;
+
+			}
+
+		}
 	
 	}
 
@@ -422,12 +436,13 @@ export class PageScroller {
 
 				}
 
-				if( ( pos >= customLine && customLine > posM )|| ( pos <= customLine && customLine < posM ) || ( pos == posM && pos == customLine ) ){
+				if( ( pos >= customLine && customLine > posM )|| ( pos <= customLine && customLine < posM )  ){
 
 					sec.events.onArrivals[j].event({
 						scroller: this,
 						section: sec,
-						scrollVelocity: this._velocity
+						scrollVelocity: this._velocity,
+						scrollMode: this.isAutoMoving ? 'auto' : 'manual'
 					});
 
 					break;
@@ -750,16 +765,18 @@ export class PageScroller {
 		this._pageOffset = 0;
 		this.currentSectionNum = 0;
 
+		this.resize();
+
 		this.sortSections();
 		this.calcScrollPercentage();
 
 	}
 
-	private sortSections(){
+	private sortSections( ){
 
 		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
-
-			return ( a.bottom ? a.rect.bottom : a.rect.top) > ( b.bottom ? b.bottom : b.rect.top) ? 1 : -1;
+			
+			return ( a.bottom ? a.rect.bottom : a.rect.top) > ( b.bottom ? b.rect.bottom : b.rect.top) ? 1 : -1;
 
 		} );
 
