@@ -4,12 +4,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>ore-three - Docs</title>
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
 	<link href="https://fonts.googleapis.com/css?family=Comfortaa|M+PLUS+Rounded+1c", rel="stylesheet" >
 
 	<style>
 		*{
 			margin: 0;
 			padding: 0;
+			box-sizing: border-box;
 		}
 
 		header{
@@ -18,6 +20,7 @@
 			color: white;
 			font-size: 30px;
 			padding: 10px 15px;
+			margin-bottom: 40px;
 		}
 	
 		a{
@@ -27,21 +30,28 @@
 		.menu-list{
 			font-size: 20px;
 			list-style: none;
+			width: 100%;
 		}
 	
 		.menu-list-item{
+			display: inline-block;
+			margin-right: 20px;
 			margin-bottom: 15px;
+			text-align: center;
 		}
 
 		.menu-list-item a{
-			font-size: 15px;
-			color: white;
-			padding: 5px 10px;
-			margin-bottom: 20px;
+			display: block;
+			width: 250px;
+			padding: 10px 0;
+			margin-bottom: 10px;
 			
 			background-color: black;
+			font-size: 15px;
+			color: white;
 			
 			transition: .3s;
+			border-radius: 5px;
 		}
 		
 		.menu-list-item a:hover{
@@ -50,7 +60,42 @@
 
 		.content{
 			width: 95%;
-			margin: 20px auto;
+			margin: 0 auto;
+			margin-bottom: 100px;
+		}
+
+		pre{
+			max-width: 1200px;
+			margin-left: 10px !important;
+			margin-bottom: 20px !important;
+		}
+
+		.wrapper{
+			margin-bottom: 20px;
+		}
+
+		p{
+			line-height: 1.7;
+			margin-bottom: 5px;
+		}
+
+		.translated{
+			color: #999;
+			font-size: 14px;
+		}
+
+		.mark{
+			padding: 3px 5px;
+			background-color: rgba(0, 0, 0, 0.2);
+			border-radius: 3px;
+		}
+
+		h2{
+			margin-bottom: 10px;
+		}
+
+		h3{
+			margin-bottom: 10px;
 		}
 		
 	</style>
@@ -64,6 +109,170 @@
 			<li class="menu-list-item"><a href="./documentation/">Documentation</a></li>
 			<li class="menu-list-item"><a href="./examples/">Examples</a></li>
 		</ul>
+		<div class="wto">
+			<h2 class="wto-title">What is ore-three</h2>
+			<div class="wrapper">
+				<p>
+					ore-threeはthree.jsをより手軽に扱えるようにするためのユーティリティパッケージです。<br>
+					例えば、こんな<a href="https://ukonpower.github.io/ore-three-ts/examples/MainScene/">シンプルなシーン</a>を何も使わない状態とore-threeを使った場合を比較してみます。
+				</p>
+				<p class="translated">
+					ore-three is a utility package that makes it easier to handle three.js. <br>
+					For example, in this simple scene, let's compare the normal case with the use of ore-three. <br>
+				</p>
+			</div>
+
+			<h3>ore-threeを使わない場合</h3>
+			<pre class="prettyprint linenums">
+import * as ORE from 'ore-three-ts'
+import * as THREE from 'three';
+
+export default class MainScene{
+
+	private renderer: THREE.WebGLRenderer;
+	private camera: THREE.PerspectiveCamera;		
+	private scene: THREE.Scene;
+	private box: THREE.Mesh;
+	private light: THREE.Light;
+
+	constructor(){
+		
+		this.renderer = new THREE.WebGLRenderer({
+			canvas: document.querySelector('#canvas'),
+		})
+
+		this.renderer.debug.checkShaderErrors = true;
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
+		this.renderer.setPixelRatio( window.devicePixelRatio );
+		
+		window.addEventListener( 'orientationchange', this.onWindowResize.bind( this ) );
+		window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
+
+		this.scene = new THREE.Scene();
+		this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
+
+		this.camera.position.set( 0, 1.5, 3 );
+		this.camera.lookAt( 0, 0, 0 );
+
+		var boxGeo = new THREE.BoxGeometry( 1, 1, 1 );
+		var boXMat = new THREE.MeshNormalMaterial();
+		this.box = new THREE.Mesh( boxGeo, boXMat );
+		this.scene.add( this.box );
+
+		this.light = new THREE.DirectionalLight();
+		this.light.position.y = 10;
+		this.scene.add( this.light );	
+
+		this.animate();
+
+	}
+
+	private animate(){
+	
+		this.box.rotateY( 0.01 );
+		this.renderer.render( this.scene, this.camera );
+
+		requestAnimationFrame( this.animate.bind( this ) );
+
+	}
+
+	private onWindowResize() {
+		
+		let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight )
+		
+		this.renderer.setSize( windowSize.x, windowSize.y );
+		this.camera.aspect = windowSize.x / windowSize.y;
+		this.camera.updateProjectionMatrix();
+		
+	}
+
+}
+			</pre>
+
+			<h3>ore-threeを使った場合</h3>
+			<pre class="prettyprint linenums">
+
+import * as ORE from 'ore-three-ts'
+import * as THREE from 'three';
+
+export default class MainScene extends ORE.BaseScene{
+
+	private renderer: THREE.WebGLRenderer;
+	private box: THREE.Mesh;
+	private light: THREE.Light;
+
+	constructor(){
+
+		super();
+
+		this.name = "MainScene";
+	
+	}
+
+	onBind( gProps: ORE.GlobalProperties ){
+
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
+		
+		this.camera.position.set( 0, 1.5, 3 );
+		this.camera.lookAt( 0, 0, 0 );
+
+		var boxGeo = new THREE.BoxGeometry( 1, 1, 1 );
+		var boXMat = new THREE.MeshNormalMaterial();
+		this.box = new THREE.Mesh( boxGeo, boXMat );
+		this.scene.add( this.box );
+
+		this.light = new THREE.DirectionalLight();
+		this.light.position.y = 10;
+		this.scene.add( this.light );
+
+	}
+
+	public animate( deltaTime: number ){
+
+		this.box.rotateY( 0.01 );
+		
+		this.renderer.render( this.scene, this.camera );
+	
+	}
+
+	public onResize( args: ORE.ResizeArgs ) {
+		
+		super.onResize( args );
+	
+	}
+
+}
+			</pre>
+
+			<div class="wrapper">
+				<p>
+					rendererやカメラの初期化、リサイズイベントなどを自分で書く必要がなくなり若干スッキリしました。<br>
+					ただし、上記のMainSceneは<span class="mark">ORE.BaseScene</span>を継承しています。<br>
+					<span class="mark">ORE.BaseScene</span>を使用するには<span class="mark">ORE.Controller</span>を作成する必要があります。
+					詳しくは<a href="./documentation/">ドキュメント</a>または<a href="./examples/">サンプル</a>をご覧ください。<br>
+				</p>
+				<p class="translated">
+					There is no need to write renderers, cameras, resize events, etc. <br>
+					However, the above MainScene inherits ORE.BaseScene.<br>
+					To use ORE.BaseScene you need to create a ORE.Controller. <br>
+					See documentation or examples for details.
+				</p>
+			</div>
+
+			<h3>そのほかのユーティリティ</h3>
+			<div class="wrapper">
+				<p>
+					ore-threeにはこれ以外にも様々なユーティリティを用意しています。<br>
+					全てを知りたい方は<a href="./documentation/">ドキュメント</a>または<a href="./examples/">サンプル</a>をご覧ください。<br>
+				</p>
+				<p class="translated">
+					There are various other utilities for ore-three. <br>
+					If you want to know everything, see the documentation or sample. <br>
+				</p>
+			</div>
+		</div>
 	</div>
 
 </body>
