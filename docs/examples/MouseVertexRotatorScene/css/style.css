@@ -36,6 +36,16 @@ body,html{
 	color: white;
 }
 
+.back{
+    font-family: 'Comfortaa', sans-serif;
+    position: absolute;
+    left: 5%;
+    top: 30px;
+    text-decoration: none;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+}
+
 /*----------------------
 	stableFluids
 ----------------------*/
