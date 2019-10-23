@@ -1,4 +1,3 @@
-import { threadId } from "worker_threads";
 import { Easings } from "./Easings";
 
 export declare interface AnimatorEasing{
