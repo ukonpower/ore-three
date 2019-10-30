@@ -186,11 +186,15 @@ export class Cursor {
 
         }else if( type == 'move' ){
 
-            this.setPos( x, y );
+            if( this._touchDown ){
             
-            if( this.onTouchMove ){
+                this.setPos( x, y );
+                
+                if( this.onTouchMove ){
 
-                this.onTouchMove( event );
+                    this.onTouchMove( event );
+                    
+                }
                 
             }
 
