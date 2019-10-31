@@ -17,9 +17,6 @@ export class Cursor {
 
     private _hoverPosition: THREE.Vector2;
     private _hoverDelta: THREE.Vector2;
-
-    public hoverMode: boolean = false;
-
     
     public get position(): THREE.Vector2 {
 
@@ -85,18 +82,8 @@ export class Cursor {
 
         let pos: THREE.Vector2;
         
-        if( this.hoverMode ){
+        pos = this._hoverPosition
 
-            pos = this._hoverPosition
-
-        }else{
-            
-            if( !this._touchDown ) return null;
-
-            pos = this._position;
-        
-        }
-        
         let x = pos.x - rect.left;
         let y = pos.y - rect.top;
 
@@ -229,13 +216,9 @@ export class Cursor {
         this._delta.multiplyScalar( this.attenuation );
         this._hoverDelta.multiplyScalar( this.attenuation );
 
-        if( this.hoverMode ){
+        if( this.onHover ){
 
-            if( this.onHover ){
-
-                this.onHover();
-
-            }
+            this.onHover();
 
         }
 

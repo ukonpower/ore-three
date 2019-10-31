@@ -1,5 +1,6 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
+import { Cursor } from '../../../src/';
 
 export class MainScene extends ORE.BaseScene {
 
@@ -36,6 +37,18 @@ export class MainScene extends ORE.BaseScene {
 		this.box.rotateY( 0.01 );
 		this.renderer.render( this.scene, this.camera );
 
+	}
+
+	onTouchMove( cursor, event ){
+
+		console.log( cursor.position );
+		
+	}
+
+	onHover( cursor ){
+
+		console.log( cursor.hoverPosition );
+		
 	}
 
 	onResize( args ) {
