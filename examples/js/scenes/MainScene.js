@@ -39,18 +39,6 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
-	onTouchMove( cursor, event ){
-
-		console.log( cursor.position );
-		
-	}
-
-	onHover( cursor ){
-
-		console.log( cursor.hoverPosition );
-		
-	}
-
 	onResize( args ) {
 
 		super.onResize( args );
