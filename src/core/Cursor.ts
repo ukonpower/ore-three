@@ -144,8 +144,12 @@ export class Cursor {
         
         if( 'touches' in event ){
 
-            x = event.touches[0].clientX;
-            y = event.touches[0].clientY;
+            if( event.touches.length > 0 ){
+            
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+
+            }
 
         }else{
 
