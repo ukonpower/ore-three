@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-
 export interface AudioPlayerParam{
 	src?: string;
 	listener?: THREE.AudioListener;
@@ -61,14 +60,14 @@ export class AudioPlayer {
 			this.audio.stop();
 
 		}
-
+		
 		let loader = new THREE.AudioLoader( this.loadingManager );
 
 		this.isLoaded = false;
 
 		loader.load( src,
 
-			( buffer: THREE.AudioBuffer ) => {
+			( buffer: AudioBuffer ) => {
 
 				this.audio.setBuffer( buffer );
 				this.audio.setLoop( true );
