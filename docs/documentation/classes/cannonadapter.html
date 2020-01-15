@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MouseRotator | ore-three</title>
+	<title>CannonAdapter | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="mouserotator.html">MouseRotator</a>
+					<a href="cannonadapter.html">CannonAdapter</a>
 				</li>
 			</ul>
-			<h1>Class MouseRotator</h1>
+			<h1>Class CannonAdapter</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MouseRotator</span>
+						<span class="target">CannonAdapter</span>
 					</li>
 				</ul>
 			</section>
@@ -81,21 +81,24 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="cannonadapter.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="mouserotator.html#target" class="tsd-kind-icon">target</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="cannonadapter.html#cannongroup" class="tsd-kind-icon">cannon<wbr>Group</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="cannonadapter.html#objs" class="tsd-kind-icon">objs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="cannonadapter.html#scene" class="tsd-kind-icon">scene</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="cannonadapter.html#world" class="tsd-kind-icon">world</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mouserotator.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="cannonadapter.html#add" class="tsd-kind-icon">add</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="cannonadapter.html#createshape" class="tsd-kind-icon">create<wbr>Shape</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="cannonadapter.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,22 +110,25 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Mouse<wbr>Rotator<span class="tsd-signature-symbol">(</span>objs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Cannon<wbr>Adapter<span class="tsd-signature-symbol">(</span>scene<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Scene</span>, worldParam<span class="tsd-signature-symbol">?: </span><a href="../interfaces/cannonworldparam.html" class="tsd-signature-type">CannonWorldParam</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="cannonadapter.html" class="tsd-signature-type">CannonAdapter</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/object/MouseRotator.ts#L6">src/object/MouseRotator.ts:6</a></li>
+									<li>Defined in src/physics/CannonAdapter.ts:21</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>objs: <span class="tsd-signature-type">Object3D</span></h5>
+									<h5>scene: <span class="tsd-signature-type">Scene</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> worldParam: <a href="../interfaces/cannonworldparam.html" class="tsd-signature-type">CannonWorldParam</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="mouserotator.html" class="tsd-signature-type">MouseRotator</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="cannonadapter.html" class="tsd-signature-type">CannonAdapter</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -130,22 +136,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="scrollvel" class="tsd-anchor"></a>
-					<h3>scroll<wbr>Vel</h3>
-					<div class="tsd-signature tsd-kind-icon">scroll<wbr>Vel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector2</span></div>
+					<a name="cannongroup" class="tsd-anchor"></a>
+					<h3>cannon<wbr>Group</h3>
+					<div class="tsd-signature tsd-kind-icon">cannon<wbr>Group<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Group</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/object/MouseRotator.ts#L6">src/object/MouseRotator.ts:6</a></li>
+							<li>Defined in src/physics/CannonAdapter.ts:19</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="target" class="tsd-anchor"></a>
-					<h3>target</h3>
-					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Object3D</span></div>
+					<a name="objs" class="tsd-anchor"></a>
+					<h3>objs</h3>
+					<div class="tsd-signature tsd-kind-icon">objs<span class="tsd-signature-symbol">:</span> <a href="../interfaces/cannonphysicsobjects.html" class="tsd-signature-type">CannonPhysicsObjects</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/object/MouseRotator.ts#L5">src/object/MouseRotator.ts:5</a></li>
+							<li>Defined in src/physics/CannonAdapter.ts:21</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="scene" class="tsd-anchor"></a>
+					<h3>scene</h3>
+					<div class="tsd-signature tsd-kind-icon">scene<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Scene</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/CannonAdapter.ts:18</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="world" class="tsd-anchor"></a>
+					<h3>world</h3>
+					<div class="tsd-signature tsd-kind-icon">world<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">World</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/CannonAdapter.ts:17</li>
 						</ul>
 					</aside>
 				</section>
@@ -153,25 +179,51 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addvelocity" class="tsd-anchor"></a>
-					<h3>add<wbr>Velocity</h3>
+					<a name="add" class="tsd-anchor"></a>
+					<h3>add</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Velocity<span class="tsd-signature-symbol">(</span>scrollDelta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span>, param<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IBodyOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Body</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/object/MouseRotator.ts#L29">src/object/MouseRotator.ts:29</a></li>
+									<li>Defined in src/physics/CannonAdapter.ts:41</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>scrollDelta: <span class="tsd-signature-type">Vector2</span></h5>
+									<h5>obj: <span class="tsd-signature-type">Object3D</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> param: <span class="tsd-signature-type">IBodyOptions</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Body</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="createshape" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> create<wbr>Shape</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Shape<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Shape</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/physics/CannonAdapter.ts:66</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">Object3D</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Shape</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -179,15 +231,21 @@
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>deltaTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/object/MouseRotator.ts#L16">src/object/MouseRotator.ts:16</a></li>
+									<li>Defined in src/physics/CannonAdapter.ts:120</li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>deltaTime: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -207,22 +265,31 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+						<a href="cannonadapter.html" class="tsd-kind-icon">Cannon<wbr>Adapter</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="mouserotator.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="cannonadapter.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#scrollvel" class="tsd-kind-icon">scroll<wbr>Vel</a>
+								<a href="cannonadapter.html#cannongroup" class="tsd-kind-icon">cannon<wbr>Group</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="mouserotator.html#target" class="tsd-kind-icon">target</a>
+								<a href="cannonadapter.html#objs" class="tsd-kind-icon">objs</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="cannonadapter.html#scene" class="tsd-kind-icon">scene</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="cannonadapter.html#world" class="tsd-kind-icon">world</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#addvelocity" class="tsd-kind-icon">add<wbr>Velocity</a>
+								<a href="cannonadapter.html#add" class="tsd-kind-icon">add</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="cannonadapter.html#createshape" class="tsd-kind-icon">create<wbr>Shape</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mouserotator.html#update" class="tsd-kind-icon">update</a>
+								<a href="cannonadapter.html#update" class="tsd-kind-icon">update</a>
 							</li>
 						</ul>
 					</li>

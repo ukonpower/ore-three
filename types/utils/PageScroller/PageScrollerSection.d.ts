@@ -45,10 +45,10 @@ export declare class PageScrollerSection {
     private _element;
     private _events;
     private _rect;
-    readonly name: string;
-    readonly element: HTMLElement;
-    readonly events: PageScrollerEvents;
-    readonly rect: PageScrollerSectionRect;
+    get name(): string;
+    get element(): HTMLElement;
+    get events(): PageScrollerEvents;
+    get rect(): PageScrollerSectionRect;
     constructor(param: PageScrollerSectionParam);
     resize(pageOffset: number): void;
     addArrivalEvent(...customEvents: onArrivalEvent[]): void;

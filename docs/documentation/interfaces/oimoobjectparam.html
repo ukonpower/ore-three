@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EffectMaterial | ore-three</title>
+	<title>OimoObjectParam | ore-three</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="effectmaterial.html">EffectMaterial</a>
+					<a href="oimoobjectparam.html">OimoObjectParam</a>
 				</li>
 			</ul>
-			<h1>Interface EffectMaterial</h1>
+			<h1>Interface OimoObjectParam</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">EffectMaterial</span>
+						<span class="target">OimoObjectParam</span>
 					</li>
 				</ul>
 			</section>
@@ -81,8 +81,16 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="effectmaterial.html#material" class="tsd-kind-icon">material</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="effectmaterial.html#uniforms" class="tsd-kind-icon">uniforms</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#belongsto" class="tsd-kind-icon">belongs<wbr>To</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#collideswith" class="tsd-kind-icon">collides<wbr>With</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#density" class="tsd-kind-icon">density</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#friction" class="tsd-kind-icon">friction</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#move" class="tsd-kind-icon">move</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#pos" class="tsd-kind-icon">pos</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#restitution" class="tsd-kind-icon">restitution</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#rot" class="tsd-kind-icon">rot</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#size" class="tsd-kind-icon">size</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="oimoobjectparam.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,22 +99,102 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="material" class="tsd-anchor"></a>
-					<h3>material</h3>
-					<div class="tsd-signature tsd-kind-icon">material<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ShaderMaterial</span></div>
+					<a name="belongsto" class="tsd-anchor"></a>
+					<h3>belongs<wbr>To</h3>
+					<div class="tsd-signature tsd-kind-icon">belongs<wbr>To<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/utils/PostProcessing/index.ts#L21">src/utils/PostProcessing/index.ts:21</a></li>
+							<li>Defined in src/physics/OimoAdapter.ts:24</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="uniforms" class="tsd-anchor"></a>
-					<h3>uniforms</h3>
-					<div class="tsd-signature tsd-kind-icon">uniforms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="collideswith" class="tsd-anchor"></a>
+					<h3>collides<wbr>With</h3>
+					<div class="tsd-signature tsd-kind-icon">collides<wbr>With<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/1d4feb2/src/utils/PostProcessing/index.ts#L22">src/utils/PostProcessing/index.ts:22</a></li>
+							<li>Defined in src/physics/OimoAdapter.ts:25</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="density" class="tsd-anchor"></a>
+					<h3>density</h3>
+					<div class="tsd-signature tsd-kind-icon">density<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:21</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="friction" class="tsd-anchor"></a>
+					<h3>friction</h3>
+					<div class="tsd-signature tsd-kind-icon">friction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:22</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="move" class="tsd-anchor"></a>
+					<h3>move</h3>
+					<div class="tsd-signature tsd-kind-icon">move<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:20</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="pos" class="tsd-anchor"></a>
+					<h3>pos</h3>
+					<div class="tsd-signature tsd-kind-icon">pos<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:18</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="restitution" class="tsd-anchor"></a>
+					<h3>restitution</h3>
+					<div class="tsd-signature tsd-kind-icon">restitution<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:23</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="rot" class="tsd-anchor"></a>
+					<h3>rot</h3>
+					<div class="tsd-signature tsd-kind-icon">rot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:19</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="size" class="tsd-anchor"></a>
+					<h3>size</h3>
+					<div class="tsd-signature tsd-kind-icon">size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:17</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/physics/OimoAdapter.ts:16</li>
 						</ul>
 					</aside>
 				</section>
@@ -125,13 +213,37 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
+						<a href="oimoobjectparam.html" class="tsd-kind-icon">Oimo<wbr>Object<wbr>Param</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="effectmaterial.html#material" class="tsd-kind-icon">material</a>
+								<a href="oimoobjectparam.html#belongsto" class="tsd-kind-icon">belongs<wbr>To</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="effectmaterial.html#uniforms" class="tsd-kind-icon">uniforms</a>
+								<a href="oimoobjectparam.html#collideswith" class="tsd-kind-icon">collides<wbr>With</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#density" class="tsd-kind-icon">density</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#friction" class="tsd-kind-icon">friction</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#move" class="tsd-kind-icon">move</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#pos" class="tsd-kind-icon">pos</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#restitution" class="tsd-kind-icon">restitution</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#rot" class="tsd-kind-icon">rot</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#size" class="tsd-kind-icon">size</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="oimoobjectparam.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>

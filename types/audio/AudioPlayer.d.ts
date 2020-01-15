@@ -15,7 +15,7 @@ export declare class AudioPlayer {
     spectrumData: THREE.DataTexture;
     volume: number;
     private uniforms;
-    readonly isPlaying: boolean;
+    get isPlaying(): boolean;
     constructor(parameter: AudioPlayerParam, loadingManager?: THREE.LoadingManager);
     load(src: any): void;
     play(): void;
