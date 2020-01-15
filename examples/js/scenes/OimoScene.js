@@ -23,7 +23,7 @@ export class OimoScene extends ORE.BaseScene {
 		
 		this.oimoAdapter = new ORE.OimoAdapter( this.scene );
 
-		let groundGeo = new THREE.BoxGeometry( 20, 0.5, 20 );
+		let groundGeo = new THREE.BoxGeometry( 30, 0.5, 30 );
 		let normalMat = new THREE.MeshNormalMaterial();
 
 		let ground = new THREE.Mesh( groundGeo, normalMat );
@@ -31,7 +31,7 @@ export class OimoScene extends ORE.BaseScene {
 		ground.position.set( 0, -2, 0 );
 		this.oimoAdapter.add( ground, {move: false } );
 
-		let sphereGeo = new THREE.SphereGeometry( 1, 10, 10 );
+		let sphereGeo = new THREE.SphereGeometry( 1.5, 10, 10 );
 		let sphere = new THREE.Mesh( sphereGeo, normalMat );
 
 		let sphereBody = this.oimoAdapter.add( sphere );

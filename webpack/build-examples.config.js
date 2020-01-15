@@ -19,6 +19,8 @@ var scenes = [
 	'PostProcessingScene',
 	'StableFluidsScene',
 	'TransformAnimatorScene',
+	'OimoScene',
+	'CannonScene'
 ]
 
 var configArray = [];
