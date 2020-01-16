@@ -1,4 +1,3 @@
-import { threadId } from "worker_threads";
 import { Easings } from "./Easings";
 
 export declare interface AnimatorEasing{
@@ -21,6 +20,8 @@ export class Animator{
 	private variables: { [key: string]: variable };
 	private _isAnimating: boolean = false;
 	private animatingCount: number = 0;
+
+	private dispatchEvents: Function[] = [];
 
 	constructor(){
 
@@ -128,6 +129,12 @@ export class Animator{
 
 		let keys = Object.keys( this.variables );
 
+		while( this.dispatchEvents.length != 0 ){
+
+			this.dispatchEvents.pop()();
+			
+		}
+		
 		for( let i = 0; i < keys.length; i++ ){
 
 			let variable = this.variables[keys[i]];
@@ -163,10 +170,8 @@ export class Animator{
 					}
 
 					if( variable.onMoved ){
-
-						variable.onMoved();
-
-						variable.onMoved = null;
+						
+						this.dispatchEvents.push( variable.onMoved );
 
 					}
 

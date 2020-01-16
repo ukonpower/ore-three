@@ -1,5 +1,6 @@
 import * as ORE from '../../../src/';
 import * as THREE from 'three';
+import { Cursor } from '../../../src/';
 
 export class MainScene extends ORE.BaseScene {
 

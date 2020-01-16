@@ -16,7 +16,7 @@ export declare class GPUComputationController {
     private materials;
     private tempDataLinear;
     private tempDataNear;
-    readonly isSupported: boolean;
+    get isSupported(): boolean;
     constructor(renderer: THREE.WebGLRenderer, resolution: THREE.Vector2);
     createInitializeTexture(): THREE.DataTexture;
     createData(): GPUcomputationData;

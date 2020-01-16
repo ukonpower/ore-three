@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+}
+
+body,html{
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+	overflow:hidden;
+}
+
+#canvas{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+/*----------------------
+	DomGLSL
+----------------------*/
+
+.dom-glsl{
+	z-index: 99;
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	left: 50%;top: 50%;
+	border: solid 2px white;
+	transform: translate3D(-50%,-50%,0);
+}
+
+.dom-glsl::after{
+	content: 'This Rect is HTML Element!!';
+	z-index: 99;
+	color: white;
+}
+
+.back{
+    font-family: 'Comfortaa', sans-serif;
+    position: absolute;
+    left: 5%;
+    top: 30px;
+    text-decoration: none;
+    color: white;
+	background-color: rgba(0, 0, 0, 0);
+	z-index: 99;
+}
+
+/*----------------------
+	stableFluids
+----------------------*/
+
+.stableFluids{
+	z-index: 99;
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	left: 50%;top: 50%;
+	border: solid 2px white;
+	transform: translate3D(-50%,-50%,0);
+}
+
+
+/*----------------------
+	PageScroller
+----------------------*/
+.wrapper{
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%;
+	color: white;
+}
+
+.target{
+	position: absolute;
+	top: 1000px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	height: 200px;
+	background-color: #FFF;
+}
+
+.part{
+	border-bottom: solid 1px white;
+	border-top: solid 1px white;
+}
+.part1{
+	width: 100%;
+	height: 100vh;
+}
+
+.part1::after{
+	content: 'Part-1';
+}
+
+.part2{
+	width: 100%;
+	height: 500px;
+}
+
+.part2::after{
+	content: 'Part-2';
+}
+
+.part3{
+	width: 100%;
+	height: 500px;
+}
+
+.part3::after{
+	content: 'Part-3';
+}
+
+.part4{
+	width: 100%;
+	height: 100vw;
+}
+
+.part4::after{
+	content: 'Part-4';
+}
+
+.part5{
+	width: 100%;
+	height: 800px;
+}
+
+.part5::after{
+	content: 'Part-5';
+}
+
+.part6{
+	width: 100%;
+	height: 1000px;
+}
+
+.part6::after{
+	content: 'Part-6';
+}

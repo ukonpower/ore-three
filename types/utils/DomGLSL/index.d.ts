@@ -8,6 +8,6 @@ export declare class DomGLSL extends THREE.Mesh {
     private domSize;
     private windowSize;
     constructor(element: HTMLElement, parameter: ShaderMaterialParameters);
-    readonly uniforms: Uniforms;
+    get uniforms(): Uniforms;
     updateDom(): void;
 }

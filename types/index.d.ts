@@ -8,6 +8,8 @@ export * from './object/MouseVertexRotator';
 export * from './object/TransformAnimator';
 export * from './audio/AudioPlayer';
 export * from './audio/MicData';
+export * from './physics/CannonAdapter';
+export * from './physics/OimoAdapter';
 export * from './shaders/shader';
 export * from './utils/Animator';
 export * from './utils/Background';

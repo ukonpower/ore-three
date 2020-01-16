@@ -1,6 +1,6 @@
 import * as ORE from '../../src/';
 
-const SCENE_NAME = 'MainScene';
+const SCENE_NAME = 'OimoScene';
 
 const scene = require('./scenes/' + SCENE_NAME );
 

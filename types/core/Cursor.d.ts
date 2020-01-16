@@ -11,17 +11,14 @@ export declare class Cursor {
     private _delta;
     private _hoverPosition;
     private _hoverDelta;
-    hoverMode: boolean;
-    readonly position: THREE.Vector2;
-    readonly delta: THREE.Vector2;
-    readonly hoverPosition: THREE.Vector2;
-    readonly hoverDelta: THREE.Vector2;
+    get position(): THREE.Vector2;
+    get delta(): THREE.Vector2;
+    get hoverPosition(): THREE.Vector2;
+    get hoverDelta(): THREE.Vector2;
     constructor();
     getRelativePosition(elm: HTMLElement, normalize?: boolean): THREE.Vector2;
     private setPos;
-    private _TouchStart;
-    private _TouchMove;
-    private _TouchEnd;
+    private _MouseEvent;
     private wheel;
     update(): void;
 }

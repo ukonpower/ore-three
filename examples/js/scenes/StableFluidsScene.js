@@ -20,8 +20,6 @@ export class StableFluidsScene extends ORE.BaseScene {
 
 		this.renderer = this.gProps.renderer;
 
-		this.gProps.cursor.hoverMode = true;
-
 		this.camera.position.set( 0, 1.5, 3 );
 		this.camera.lookAt( 0, 0, 0 );
 

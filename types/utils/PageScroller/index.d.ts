@@ -41,9 +41,9 @@ export declare class PageScroller {
     threeRotation: THREE.Quaternion;
     private isStop;
     private stopSection;
-    readonly pageOffset: number;
-    readonly scrollVel: number;
-    readonly scrollPercentage: number;
+    get pageOffset(): number;
+    get scrollVel(): number;
+    get scrollPercentage(): number;
     getScrollPercentage(sections?: string[]): number;
     constructor(element: HTMLElement);
     private initEasings;

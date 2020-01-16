@@ -17,9 +17,6 @@ export class Cursor {
 
     private _hoverPosition: THREE.Vector2;
     private _hoverDelta: THREE.Vector2;
-
-    public hoverMode: boolean = false;
-
     
     public get position(): THREE.Vector2 {
 
@@ -58,16 +55,16 @@ export class Cursor {
 
         if ( userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 ) {
         
-            window.addEventListener( 'touchstart', this._TouchStart.bind( this ) );
-            window.addEventListener( 'touchmove', this._TouchMove.bind( this ), { passive: false } );
-            window.addEventListener( 'touchend', this._TouchEnd.bind( this ) );
+            window.addEventListener( 'touchstart', this._MouseEvent.bind( this, 'start' ) );
+            window.addEventListener( 'touchmove', this._MouseEvent.bind( this, 'move' ), { passive: false } );
+            window.addEventListener( 'touchend', this._MouseEvent.bind( this, 'end' ) );
         
         } else {
         
-            window.addEventListener( 'mousedown', this._TouchStart.bind( this ) );
-            window.addEventListener( 'mousemove', this._TouchMove.bind( this ) );
-            window.addEventListener( 'mouseup', this._TouchEnd.bind( this ) );
-            window.addEventListener( 'dragend', this._TouchEnd.bind( this ) );
+            window.addEventListener( 'mousedown', this._MouseEvent.bind( this, 'start' ) );
+            window.addEventListener( 'mousemove', this._MouseEvent.bind( this, 'move' ) );
+            window.addEventListener( 'mouseup', this._MouseEvent.bind( this, 'end' ) );
+            window.addEventListener( 'dragend', this._MouseEvent.bind( this, 'end' ) );
             window.addEventListener( 'wheel',this.wheel.bind( this ),{ passive: false } );
         
         }
@@ -85,18 +82,8 @@ export class Cursor {
 
         let pos: THREE.Vector2;
         
-        if( this.hoverMode ){
+        pos = this._hoverPosition
 
-            pos = this._hoverPosition
-
-        }else{
-            
-            if( !this._touchDown ) return null;
-
-            pos = this._position;
-        
-        }
-        
         let x = pos.x - rect.left;
         let y = pos.y - rect.top;
 
@@ -128,6 +115,11 @@ export class Cursor {
     
             this._position.set( x, y );
 
+        }else{
+
+            this._position.set( NaN, NaN );
+            this._delta.set( 0, 0 );
+            
         }
 
         //calc delta
@@ -144,68 +136,71 @@ export class Cursor {
         this._hoverPosition.set( x, y );
     
     }
-     
-    private _TouchStart( event ) {
 
-        this._touchDown = true;
+    private _MouseEvent( type: string, event: MouseEvent | TouchEvent ){
         
-        if ( !event.touches ) {
+        let x: number;
+        let y: number;
+        
+        if( 'touches' in event ){
 
-            if ( event.button == 0 ){
-
-                this.setPos( event.pageX, event.pageY );
+            if( event.touches.length > 0 ){
+            
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
 
             }
 
-        } else {
+        }else{
 
-            this.setPos( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
+            if( event.button == 0 ){
+
+                x = event.pageX - window.pageXOffset;
+                y =  event.pageY - window.pageYOffset;
+
+            }
 
         }
 
-        if ( this.onTouchStart ) {
-
-            this.onTouchStart( event );
-
-        }
-    }
-
-    private _TouchMove( event ) {
-            
-        if ( !event.touches ) {
-
-            this.setPos( event.pageX, event.pageY );
-
-        } else {
-            
-            this.setPos( event.touches[0].clientX + window.pageXOffset, event.touches[0].clientY + window.pageYOffset );
         
-        }
+        if( type == 'start' ){
 
-        if ( this._touchDown && this.onTouchMove ) {
+            this._touchDown = true;
+
+            this.setPos( x, y );
+
+            if ( this.onTouchStart ) {
+
+                this.onTouchStart( event );
+    
+            }
+
+        }else if( type == 'move' ){
             
-            this.onTouchMove( event );
+            this.setPos( x, y );
 
-        }
+            if( this._touchDown ){
 
-    }
+                if( this.onTouchMove ){
 
-    private _TouchEnd( event ) {
-        
-        if ( this._touchDown ) {
+                    this.onTouchMove( event );
+                    
+                }
+                
+            }
+
+        }else if( type == 'end' ){
 
             this._touchDown = false;
             
-            this._position.set( NaN, NaN );
+            this.setPos( x, y );
 
-            if ( this.onTouchEnd ) {
+            if( this.onTouchEnd ){
 
                 this.onTouchEnd( event );
-
+                
             }
-
-            this._delta.set( 0, 0 );
-
+            
         }
 
     }
@@ -225,13 +220,9 @@ export class Cursor {
         this._delta.multiplyScalar( this.attenuation );
         this._hoverDelta.multiplyScalar( this.attenuation );
 
-        if( this.hoverMode ){
+        if( this.onHover ){
 
-            if( this.onHover ){
-
-                this.onHover();
-
-            }
+            this.onHover();
 
         }
 
