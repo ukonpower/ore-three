@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import * as OIMO from 'oimo';
-import { BoxGeometry, Geometry, LineSegments, BoxBufferGeometry, DynamicCopyUsage } from 'three';
 
 export declare interface OimoWorldParam{
 	timestep: number;
@@ -101,7 +100,7 @@ export class OimoAdapter{
 	private createParam( param: OimoObjectParam, obj: THREE.Object3D ){
 
 		let scale = obj.scale;
-		let geo = ( obj as any ).geometry as THREE.BufferGeometry | Geometry;
+		let geo = ( obj as any ).geometry as THREE.BufferGeometry | THREE.Geometry;
 
 		if( geo && param.type == null ){
 
