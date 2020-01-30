@@ -18,6 +18,7 @@ export * from './physics/OimoAdapter';
 export * from './shaders/shader';
 
 export * from './utils/Animator';
+export * from './utils/TimelineAnimator';
 export * from './utils/Background';
 export * from './utils/BloomFilter';
 export * from './utils/DomGLSL';

@@ -267,7 +267,7 @@ export class PageScroller {
 
 			}else{
 
-				console.log( param.target + 'is not exist.' );
+				console.log( param.target + ' is not exist.' );
 				
 				return;
 				
@@ -649,7 +649,7 @@ export class PageScroller {
 
 			for( let i = a + 1; i <= b; i++ ){
 
-				sum += this.sectionScrollPercentages[this.sections[i].name];
+				sum += this.sectionScrollPercentages[ this.sections[i].name ];
 				num++;
 
 			}
