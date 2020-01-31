@@ -33,6 +33,14 @@ export class TimelineAnimator {
 
 	public add<T>( params: TimelineAnimatorAddParams<T> ) {
 		
+		if( params.keyframes.length == 0 ){
+
+			console.warn( '"' + params.name + '"', 'Keyframe length is 0!!');
+			
+			return;
+			
+		}
+		
 		this.variables[ params.name ] = {
 			keyframes: params.keyframes,
 			transitionFunc: params.customTransition,
@@ -84,7 +92,7 @@ export class TimelineAnimator {
 
 					console.log( 'Different length Arrays!!!' );
 					
-					return null;
+					return false;
 					
 				}
 				
@@ -136,16 +144,28 @@ export class TimelineAnimator {
 			let a: TimelineAnimatorKeyFrame<any>;
 			let b: TimelineAnimatorKeyFrame<any>;
 
-			for( let j = 0; j < kfs.length - 1; j++ ){
+			let t = Math.max( kfs[ 0 ].time, Math.min( kfs[ kfs.length - 1 ].time ,this.time) )
 
-				a = kfs[ j ];
-				b = kfs[ j + 1 ];
+			if( kfs.length == 1 ){
 
-				if( a.time < this.time && this.time < b.time ) break;
+				t = kfs[ 0 ].time;
+				a = b = kfs[ 0 ];
+				
+			} else {
+
+				for( let j = 0; j < kfs.length - 1; j++ ){
+
+					a = kfs[ j ];
+					b = kfs[ j + 1 ];
+	
+					if( a.time <= t && t <= b.time ) break;
+					
+				}
+
+				t = ( t - a.time ) / ( b.time - a.time );
 				
 			}
 
-			let t = ( this.time - a.time ) / ( b.time - a.time );
 			
 			if( valiable.easing ) {
 
@@ -161,9 +181,15 @@ export class TimelineAnimator {
 
 				valiable.value = valiable.transitionFunc( a.value, b.value, t );
 
+				if( valiable.value === false ) {
+
+					console.log( 'error at ' + '"' + keys[i] + '"' );
+					
+				}
+
 			} else {
 
-				console.warn( 'Transition function has not been set.' );
+				console.warn( '"' + keys[i] + '"', 'Transition function is not set.' );
 				
 			}
 			
