@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import  { EasingSet } from '../Easings'
+import { Lerps, LerpFunc } from '../Lerps';
 
 export declare interface TimelineAnimatorKeyFrame<T> {
 	time: number;
@@ -8,7 +9,7 @@ export declare interface TimelineAnimatorKeyFrame<T> {
 
 export declare interface TimelineAnimatorVariable<T> {
 	keyframes: TimelineAnimatorKeyFrame<T>[];
-	lerpFunc: ( a: T, b: T, t: number ) => T;
+	lerpFunc: LerpFunc<T>;
 	value: T;
 	easing?: EasingSet;
 }
@@ -16,7 +17,7 @@ export declare interface TimelineAnimatorVariable<T> {
 export declare interface TimelineAnimatorAddParams<T> {
 	name: string;
 	keyframes: TimelineAnimatorKeyFrame<T>[];
-	customLerp?: ( a: T, b: T, t: number ) => T,
+	customLerp?: LerpFunc<T>,
 	easing?: EasingSet;
 }
 export class TimelineAnimator {
@@ -27,7 +28,7 @@ export class TimelineAnimator {
 	
 	constructor( ) {
 
-		this.time = 0
+		this.time = 0;
 
 	}
 
@@ -52,7 +53,7 @@ export class TimelineAnimator {
 		
 		if( !this.variables[ params.name ].lerpFunc ){
 
-			this.variables[ params.name ].lerpFunc = this.getLerpFunc( params.keyframes[ 0 ].value )
+			this.variables[ params.name ].lerpFunc = Lerps.getLerpFunc( params.keyframes[ 0 ].value )
 			
 		}
 		
@@ -62,61 +63,7 @@ export class TimelineAnimator {
 
 	}
 
-	public getLerpFunc( value: any ) {
-
-		if( typeof( value ) == 'number' ){
-			
-			return ( a: number, b: number, t: number ) => {
-
-				return a + ( b - a ) * t;
-				
-			}
-			
-		} else if ( value instanceof Array && typeof( value[0] ) == 'number' ) {
-
-			return ( a: number[], b: number[], t: number ) => {
-
-				if( a.length == b.length ){
-
-					let c = [];
-
-					for( let i = 0; i < a.length; i++ ){
-					
-						c.push( a[ i ] + ( b[ i ] - a[ i ] ) * t );
-						
-					}
-					
-					return c;
-
-				}else{
-
-					console.log( 'Different length Arrays!!!' );
-					
-					return false;
-					
-				}
-				
-			}
-
-		} else if ( value.isVector2 | value.isVector3 | value.isVector4 | value.isColor ){
-
-			return ( a: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, b: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, t: number ) => {
-
-				return a.clone().lerp( b, t );
-
-			}
-			
-		} else if ( value.isQuaternion ){
-
-			return ( a: THREE.Quaternion, b: THREE.Quaternion, t: number ) => {
-
-				return a.clone().slerp( b, t );
-				
-			}
-			
-		}
-
-	}
+	
 
 	public get<T>( name: string ): T {
 

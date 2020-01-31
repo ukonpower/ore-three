@@ -24,6 +24,7 @@ export * from './utils/BloomFilter';
 export * from './utils/DomGLSL';
 export * from './utils/Easings';
 export * from './utils/Fish';
-export * from './utils/GPUComputationController'
+export * from './utils/GPUComputationController';
+export * from './utils/Lerps';
 export * from './utils/PostProcessing';
 export * from './utils/StableFluids';
