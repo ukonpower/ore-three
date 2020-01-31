@@ -1,11 +1,6 @@
 import * as THREE from 'three';
-import { Easings } from '../Easings';
+import { Easings, EasingSet } from '../Easings';
 import { PageScrollerSection } from './PageScrollerSection';
-
-export declare interface PageScrollerEasing{
-	func: Function;
-	variables: number[];
-}
 
 export declare interface PageScrollerMoveToParam{
 	target: HTMLElement | string;
@@ -49,9 +44,9 @@ export class PageScroller {
 	public currentSectionNum: number;
 
 	//easing
-	private easingPos: PageScrollerEasing;
-	private easingRot: PageScrollerEasing;
-	private easingAutoMove: PageScrollerEasing;
+	private easingPos: EasingSet;
+	private easingRot: EasingSet;
+	private easingAutoMove: EasingSet;
 
 	//three transforms
 	public threePosition: THREE.Vector3 = new THREE.Vector3( 0, 0, 0 );

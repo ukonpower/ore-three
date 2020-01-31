@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import  { EasingSet } from '../Easings'
 
 export declare interface TimelineAnimatorKeyFrame<T> {
 	time: number;
@@ -7,38 +8,109 @@ export declare interface TimelineAnimatorKeyFrame<T> {
 
 export declare interface TimelineAnimatorVariable<T> {
 	keyframes: TimelineAnimatorKeyFrame<T>[];
-	easingFunc: ( a: T, b: T, t: number ) => T;
+	transitionFunc: ( a: T, b: T, t: number ) => T;
 	value: T;
+	easing?: EasingSet;
 }
 
+export declare interface TimelineAnimatorAddParams<T> {
+	name: string;
+	keyframes: TimelineAnimatorKeyFrame<T>[];
+	customTransition?: ( a: T, b: T, t: number ) => T,
+	easing?: EasingSet;
+}
 export class TimelineAnimator {
 	
 	private variables: { [name: string]: TimelineAnimatorVariable<any> } = {};
 	private time: number;
+	public defaultEasing: EasingSet;
 	
-	constructor( duration?: number ) {
+	constructor( ) {
 
 		this.time = 0
 
 	}
 
-	public add<T>( name: string, initValue: T, keyframes: TimelineAnimatorKeyFrame<T>[], customEasing?: ( a: T, b: T, t: number ) => T ) {
+	public add<T>( params: TimelineAnimatorAddParams<T> ) {
 		
-		this.variables[ name ] = {
-			keyframes: keyframes,
-			easingFunc: customEasing,
+		this.variables[ params.name ] = {
+			keyframes: params.keyframes,
+			transitionFunc: params.customTransition,
+			easing: params.easing,
 			value: null
 		}
 
-		this.variables[ name ].keyframes.sort( ( a, b ) => { return ( a.time < b.time ) ? -1 : 1 } );
+		this.variables[ params.name ].keyframes.sort( ( a, b ) => { return ( a.time < b.time ) ? -1 : 1 } );
+		
+		if( !this.variables[ params.name ].transitionFunc ){
+
+			this.variables[ params.name ].transitionFunc = this.getTransitionFunc( params.keyframes[ 0 ].value )
+			
+		}
 		
 		this.calc();
 		
-		return name;
+		return params.name;
 
 	}
 
-	public get( name: string ) {
+	public getTransitionFunc( value: any ) {
+
+		if( typeof( value ) == 'number' ){
+			
+			return ( a: number, b: number, t: number ) => {
+
+				return a + ( b - a ) * t;
+				
+			}
+			
+		} else if ( value instanceof Array && typeof( value[0] ) == 'number' ) {
+
+			return ( a: number[], b: number[], t: number ) => {
+
+				if( a.length == b.length ){
+
+					let c = [];
+
+					for( let i = 0; i < a.length; i++ ){
+					
+						c.push( a[ i ] + ( b[ i ] - a[ i ] ) * t );
+						
+					}
+					
+					return c;
+
+				}else{
+
+					console.log( 'Different length Arrays!!!' );
+					
+					return null;
+					
+				}
+				
+			}
+
+		} else if ( value.isVector2 | value.isVector3 | value.isVector4 ){
+
+			return ( a: THREE.Vector2 & THREE.Vector3 & THREE.Vector4, b: THREE.Vector2 & THREE.Vector3 & THREE.Vector4, t: number ) => {
+
+				return a.clone().lerp( b, t );
+
+			}
+			
+		} else if ( value.isQuaternion ){
+
+			return ( a: THREE.Quaternion, b: THREE.Quaternion, t: number ) => {
+
+				return a.clone().slerp( b, t );
+				
+			}
+			
+		}
+
+	}
+
+	public get<T>( name: string ): T {
 
 		return this.variables[ name ].value;
 
@@ -75,7 +147,26 @@ export class TimelineAnimator {
 
 			let t = ( this.time - a.time ) / ( b.time - a.time );
 			
-			valiable.value = valiable.easingFunc( a.value, b.value, t );
+			if( valiable.easing ) {
+
+				t = valiable.easing.func( t, valiable.easing.variables );
+				
+			}else if( this.defaultEasing ){
+
+				t = this.defaultEasing.func( t, this.defaultEasing.variables );
+				
+			}
+			
+			if( valiable.transitionFunc ){
+
+				valiable.value = valiable.transitionFunc( a.value, b.value, t );
+
+			} else {
+
+				console.warn( 'Transition function has not been set.' );
+				
+			}
+			
 			
 		}
 		

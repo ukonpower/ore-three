@@ -1,3 +1,8 @@
+export declare interface EasingSet{
+	func: Function;
+	variables: number[];
+}
+
 export namespace Easings {
 	
 	export function sigmoid( x: number, variables: number[] ): number{

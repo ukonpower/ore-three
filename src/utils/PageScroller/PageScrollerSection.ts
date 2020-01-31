@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { PageScrollerEasing, PageScroller } from '.';
+import { PageScroller } from '.';
+import { EasingSet } from '../Easings';
 
 export declare interface PageScrollerSectionParam{
 	name: string;
@@ -30,8 +31,8 @@ declare interface ScrollEventArgs{
 }
 
 export declare interface ScrollerSectionEasings{
-	position?: PageScrollerEasing,
-	rotation?: PageScrollerEasing
+	position?: EasingSet,
+	rotation?: EasingSet
 }
 
 declare interface PageScrollerSectionRect{
