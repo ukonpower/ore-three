@@ -50,11 +50,13 @@ export class PageScrollerSection{
 	public stop?: boolean;
 	public bottom?: Boolean;
 	public num: number;
+	public scrollPosition: number;
 
 	private _name: string
 	private _element: HTMLElement;
 	private _events: PageScrollerEvents;
 	private _rect: PageScrollerSectionRect;
+
 	
 	public get name(){
 		

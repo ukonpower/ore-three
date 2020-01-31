@@ -753,7 +753,7 @@ export class PageScroller {
 
 	}
 
-	public registerSection( section: PageScrollerSection ){
+	public addSection( section: PageScrollerSection ){
 
 		this.sections.push( section );
 		this.sectionScrollPercentages[ section.name ] = 0;
@@ -763,6 +763,7 @@ export class PageScroller {
 		this.resize();
 
 		this.sortSections();
+
 		this.calcScrollPercentage();
 
 	}
@@ -782,6 +783,8 @@ export class PageScroller {
 			//sorted section number
 			this.sections[i].num = i;
 
+			this.sections[i].scrollPosition = i / this.sections.length;
+			
 			if( !setThreePos && this.sections[i].threePosition ){
 				
 				//initialize threeposition
