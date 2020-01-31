@@ -1,6 +1,6 @@
 export declare interface EasingSet{
 	func: Function;
-	variables: number[];
+	variables?: number[];
 }
 
 export namespace Easings {
