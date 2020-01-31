@@ -8,7 +8,7 @@ export declare interface TimelineAnimatorKeyFrame<T> {
 
 export declare interface TimelineAnimatorVariable<T> {
 	keyframes: TimelineAnimatorKeyFrame<T>[];
-	transitionFunc: ( a: T, b: T, t: number ) => T;
+	lerpFunc: ( a: T, b: T, t: number ) => T;
 	value: T;
 	easing?: EasingSet;
 }
@@ -16,7 +16,7 @@ export declare interface TimelineAnimatorVariable<T> {
 export declare interface TimelineAnimatorAddParams<T> {
 	name: string;
 	keyframes: TimelineAnimatorKeyFrame<T>[];
-	customTransition?: ( a: T, b: T, t: number ) => T,
+	customLerp?: ( a: T, b: T, t: number ) => T,
 	easing?: EasingSet;
 }
 export class TimelineAnimator {
@@ -43,16 +43,16 @@ export class TimelineAnimator {
 		
 		this.variables[ params.name ] = {
 			keyframes: params.keyframes,
-			transitionFunc: params.customTransition,
+			lerpFunc: params.customLerp,
 			easing: params.easing,
 			value: null
 		}
 
 		this.variables[ params.name ].keyframes.sort( ( a, b ) => { return ( a.time < b.time ) ? -1 : 1 } );
 		
-		if( !this.variables[ params.name ].transitionFunc ){
+		if( !this.variables[ params.name ].lerpFunc ){
 
-			this.variables[ params.name ].transitionFunc = this.getTransitionFunc( params.keyframes[ 0 ].value )
+			this.variables[ params.name ].lerpFunc = this.getLerpFunc( params.keyframes[ 0 ].value )
 			
 		}
 		
@@ -62,7 +62,7 @@ export class TimelineAnimator {
 
 	}
 
-	public getTransitionFunc( value: any ) {
+	public getLerpFunc( value: any ) {
 
 		if( typeof( value ) == 'number' ){
 			
@@ -98,9 +98,9 @@ export class TimelineAnimator {
 				
 			}
 
-		} else if ( value.isVector2 | value.isVector3 | value.isVector4 ){
+		} else if ( value.isVector2 | value.isVector3 | value.isVector4 | value.isColor ){
 
-			return ( a: THREE.Vector2 & THREE.Vector3 & THREE.Vector4, b: THREE.Vector2 & THREE.Vector3 & THREE.Vector4, t: number ) => {
+			return ( a: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, b: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, t: number ) => {
 
 				return a.clone().lerp( b, t );
 
@@ -177,9 +177,9 @@ export class TimelineAnimator {
 				
 			}
 			
-			if( valiable.transitionFunc ){
+			if( valiable.lerpFunc ){
 
-				valiable.value = valiable.transitionFunc( a.value, b.value, t );
+				valiable.value = valiable.lerpFunc( a.value, b.value, t );
 
 				if( valiable.value === false ) {
 
@@ -189,7 +189,7 @@ export class TimelineAnimator {
 
 			} else {
 
-				console.warn( '"' + keys[i] + '"', 'Transition function is not set.' );
+				console.warn( '"' + keys[i] + '"', 'lerp function is not set.' );
 				
 			}
 			
