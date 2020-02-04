@@ -102,21 +102,7 @@ export class Animator{
 
 	}
 
-	private copyValue( value: any ) {
-
-		// if( value.clone ){
-
-		// 	return value.clone();
-			
-		// }else if( value instanceof Array ){
-
-		// 	return value.
-			
-		// }
-		
-	}
-
-	public get( name: string ): number{
+	public get<T>( name: string ): T{
 
 		if( this.variables[name] ){
 

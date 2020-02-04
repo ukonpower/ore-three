@@ -42,6 +42,19 @@ export namespace Lerps {
 		
 	}
 
+	export function THREEEuler ( a: THREE.Euler, b: THREE.Euler, t: number ) {
+
+		let ac = a.clone();
+		let bc = b.clone();
+		
+		ac.x = ac.x + ( bc.x - ac.x ) * t;
+		ac.y = ac.y + ( bc.y - ac.y ) * t;
+		ac.z = ac.z + ( bc.z - ac.z ) * t;
+
+		return ac;
+		
+	}
+
 	export function getLerpFunc( value: any ) {
 
 		if( typeof( value ) == 'number' ){
@@ -59,6 +72,10 @@ export namespace Lerps {
 		} else if ( value.isQuaternion ){
 
 			return Lerps.THREEQuaternion;
+			
+		} else if ( value.isEuler ){
+
+			return Lerps.THREEEuler;
 			
 		}
 
