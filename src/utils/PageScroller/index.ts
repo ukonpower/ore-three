@@ -762,8 +762,6 @@ export class PageScroller {
 
 		this.resize();
 
-		this.sortSections();
-
 		this.calcScrollPercentage();
 
 	}
@@ -808,6 +806,8 @@ export class PageScroller {
 			this.sections[i].resize( this._pageOffset );			
 
 		}
+
+		this.sortSections();
 	
 	}
 
