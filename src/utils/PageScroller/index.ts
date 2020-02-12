@@ -783,7 +783,7 @@ export class PageScroller {
 			//sorted section number
 			this.sections[i].num = i;
 
-			this.sections[i].scrollPosition = i / this.sections.length;
+			this.sections[i].scrollPosition = i / ( this.sections.length - 1 );
 			
 			if( !setThreePos && this.sections[i].threePosition ){
 				
