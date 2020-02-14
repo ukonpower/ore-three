@@ -32,6 +32,7 @@ export class PageScroller {
 	private x: number = 1.0;
 	private duration: number;
 	private baseOffset: number
+	private targetOffset: number;
 	private scrollDistance: number;
 	private onAutoMoveFinished: Function;
 	private isAutoMoving: boolean = false;
@@ -242,8 +243,6 @@ export class PageScroller {
 		
 		if( !this.enabled && !param.force ) return;
 
-		let targetOffset: number;
-
 		if ( typeof param.target == 'string' ) {
 
 			let targetSection = this.getSection( param.target );
@@ -252,11 +251,11 @@ export class PageScroller {
 
 				if( param.bottom ){
 
-					targetOffset = targetSection.rect.bottom - window.innerHeight;
+					this.targetOffset = targetSection.rect.bottom - window.innerHeight;
 
 				}else{
 
-					targetOffset = targetSection.rect.top;
+					this.targetOffset = targetSection.rect.top;
 
 				}
 
@@ -271,7 +270,7 @@ export class PageScroller {
 		}else{
 
 			let targetRect = param.target.getBoundingClientRect();
-			targetOffset = targetRect.top;
+			this.targetOffset = targetRect.top;
 
 		}
 	
@@ -282,7 +281,7 @@ export class PageScroller {
 		this.isAutoMoving = true;
 		this.duration = param.duration || 1.0;
 		this.autoMovingLock = param.lock || false;
-		this.scrollDistance = targetOffset - this.baseOffset;
+		this.scrollDistance = this.targetOffset - this.baseOffset;
 		this.onAutoMoveFinished = param.callback;
 		this.forceAutoMove = param.force || false;
 
@@ -373,16 +372,19 @@ export class PageScroller {
 		if ( ended ) {
 
 			if ( this.onAutoMoveFinished ) {
-
+				
 				this.onAutoMoveFinished();
 
 			}
+
+			
 
 			this.isAutoMoving = false;
 			this.onAutoMoveFinished = null;
 			this._velocity = 0;
 			this.autoMovingLock = false;
-
+			this._pageOffset = this._pageOffsetMem = this.targetOffset;
+			
 		}
 
 	}
@@ -447,7 +449,7 @@ export class PageScroller {
 			}
 
 			//throw section
-			if( ( pos >= line && line > posM ) || ( pos <= line && line < posM ) || ( pos == posM && pos == line ) ){
+			if( ( pos >= line && line > posM ) || ( pos <= line && line < posM ) || ( Math.abs( pos - posM ) < 0.1 && Math.abs( pos - line ) < 0.1 ) ){
 				
 				this.onThrowSection( i );
 				
