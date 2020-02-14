@@ -1,9 +1,14 @@
+import { Animator } from "./Animator";
+import { Easings, EasingSet } from "./Easings";
+
 export declare interface SwiperParams {
 	items: number;
 	loop?: boolean;
 }
 
 export class Swiper {
+
+	public itemCount: number;
 
 	private _activeNum: number;
 	private _value: number;
@@ -12,7 +17,6 @@ export class Swiper {
 	
 	private isLoopMode: boolean;
 	private swipeVelocity: number = 0;
-	private items: number;
 
 	private isTouching: boolean = false;
 	private value_mem: number;
@@ -20,14 +24,44 @@ export class Swiper {
 	private pos_mem: number;
 	private pos_start: number;
 	private weight: number = 1.0;
+
+	private animator: Animator;
 	
 	constructor( param: SwiperParams ) {
 
-		this.items = param.items;
+		this.itemCount = param.items;
 		this.isLoopMode = param.loop != null ? param.loop : false;
 
 		this._activeNum = 0;
 		this._value = 0;
+		
+		this.animator = new Animator();
+		this.animator.add<number>( {
+			name: "value",
+			initValue: 0,
+			easing: {
+				func: Easings.sigmoid,
+				variables: [ 5 ],
+			}
+		} )
+
+	}
+
+	public get value() {
+
+		if( this.isLoopMode ){
+
+			return this._value % this.itemCount;
+			
+		}
+		
+		return this._value;
+		
+	}
+
+	public get activeNum() {
+
+		return (( this._activeNum % this.itemCount ) + this.itemCount ) % this.itemCount;
 		
 	}
 
@@ -70,28 +104,48 @@ export class Swiper {
 		
 	}
 
-	public get value() {
+	public select( num: number, callback?: Function, duration: number = 1.5, easing?: EasingSet ) { 
 
-		if( this.isLoopMode ){
+		let right = ( num - this.value + this.itemCount ) % this.itemCount;
 
-			return this._value % this.items;
+		num = this.value + ( ( right < this.itemCount / 2 ) ? right : - ( this.itemCount - right ) );
+			
+		this.animator.setValue( 'value', this.value );
+
+		if( easing ) {
+
+			this.animator.setEasing( 'value', easing )
 			
 		}
-		
-		return this._value;
+
+		this.animator.animate( 'value', num, duration, callback );
+
+	}
+	
+	public next( callback?: Function, duration: number = 1.5, easing?: EasingSet ) {
+
+		this.select( ( this.activeNum + 1 ) % this.itemCount, callback, duration, easing );
 		
 	}
 
-	public get activeNum() {
+	public before( callback?: Function, duration: number = 1.5, easing?: EasingSet ) {
 
-		return this._activeNum % this.items;
+		this.select( ( this.activeNum + ( this.itemCount - 1 ) ) % this.itemCount, callback, duration, easing );
 		
 	}
 	
-	public update() {
+	public update( deltaTime? : number ) {
 
 		this._value += this.swipeVelocity;
 		this.swipeVelocity *= this.attenuation;
+
+		if( this.animator.isAnimating ){
+
+			this.animator.update( deltaTime || 1 / 16 );
+
+			this._value = this.animator.get( 'value' );
+
+		}
 		
 		if( this.isTouching ) {
 
@@ -108,7 +162,7 @@ export class Swiper {
 
 			} else {
 
-				this._activeNum = Math.max( 0, Math.min( this.items - 1, Math.round( this._value ) ) );
+				this._activeNum = Math.max( 0, Math.min( this.itemCount - 1, Math.round( this._value ) ) );
 				
 			}
 

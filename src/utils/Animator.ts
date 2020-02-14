@@ -1,11 +1,6 @@
 import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 
-export declare interface AnimatorEasing{
-	func: Function;
-	variables?: number[];
-}
-
 declare interface variable<T>{
 	time: number;
 	duration?: number;
@@ -14,7 +9,7 @@ declare interface variable<T>{
 	goalValue: T;
 	onAnimationFinished?: Function;
 	lerpFunc: LerpFunc<T>;
-	easing: AnimatorEasing;
+	easing: EasingSet;
 }
 
 export declare interface AnimatorValiableParams<T> {
@@ -58,7 +53,7 @@ export class Animator{
 
 	}
 
-	public setEasing( name: string, easing: AnimatorEasing ){
+	public setEasing( name: string, easing: EasingSet ){
 
 		let variable = this.variables[ name ];
 
@@ -100,6 +95,22 @@ export class Animator{
 			
 		}
 
+	}
+
+	public setValue<T>( name: string, value: T ){
+
+		if( this.variables[name] ){
+
+			this.variables[name].value = value;
+
+		}else{
+
+			console.warn( '"' + name + '"' + ' is not exist' );
+
+			return null;
+
+		}
+		
 	}
 
 	public get<T>( name: string ): T{
