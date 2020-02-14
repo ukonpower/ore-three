@@ -28,3 +28,4 @@ export * from './utils/GPUComputationController';
 export * from './utils/Lerps';
 export * from './utils/PostProcessing';
 export * from './utils/StableFluids';
+export * from './utils/Swiper';
