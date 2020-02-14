@@ -5,7 +5,7 @@ export declare interface SwiperParams {
 
 export class Swiper {
 
-	public _activeNum: number;
+	private _activeNum: number;
 	private _value: number;
 
 	public attenuation: number = 0.8;
@@ -92,22 +92,6 @@ export class Swiper {
 
 		this._value += this.swipeVelocity;
 		this.swipeVelocity *= this.attenuation;
-		
-		if( this.isLoopMode ) {
-
-			if( this._value < 0 ) {
-
-				this._value += this.items;
-				this.value_mem += this.items;
-				
-			} else if( this._value > this.items ) {
-
-				this._value -= this.items;
-				this.value_mem -= this.items;
-				
-			}
-			
-		}
 		
 		if( this.isTouching ) {
 
