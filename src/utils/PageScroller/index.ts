@@ -801,6 +801,8 @@ export class PageScroller {
 	
 		this.rect = this.element.getBoundingClientRect();
 
+		if( this.sections.length == 0 ) return;
+
 		for( let i = 0; i < this.sections.length; i++ ){
 
 			this.sections[i].resize( this._pageOffset );			
