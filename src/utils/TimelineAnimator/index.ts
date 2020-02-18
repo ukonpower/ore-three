@@ -67,7 +67,16 @@ export class TimelineAnimator {
 
 	public get<T>( name: string ): T {
 
-		return this.variables[ name ].value;
+		if( this.variables[ name ] ){
+
+			return this.variables[ name ].value;
+
+		} else {
+
+			return null;
+			
+		}
+		
 
 	}
 

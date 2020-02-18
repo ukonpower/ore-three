@@ -3,7 +3,7 @@ import { Easings, EasingSet } from '../Easings';
 import { PageScrollerSection } from './PageScrollerSection';
 
 export declare interface PageScrollerMoveToParam{
-	target: HTMLElement | string;
+	target: HTMLElement | string | number;
 	duration?: number;
 	callback?: Function;
 	bottom?: boolean;
@@ -76,11 +76,11 @@ export class PageScroller {
 
 		for( let i = 1; i < this.sections.length; i++ ){
 
-			sum += this.sectionScrollPercentages[this.sections[i].name];
+			sum += this.sectionScrollPercentages[ this.sections[ i ].name ];
 
 		}
 
-		return sum / ( this.sections.length - 1 );
+		return sum / ( ( this.sections.length - 1 || 1 ) );
 
 	}
 
@@ -243,7 +243,11 @@ export class PageScroller {
 		
 		if( !this.enabled && !param.force ) return;
 
-		if ( typeof param.target == 'string' ) {
+		if( typeof param.target == 'number' ) {
+
+			this.targetOffset = 0;
+			
+		} else if ( typeof param.target == 'string' ) {
 
 			let targetSection = this.getSection( param.target );
 
@@ -279,7 +283,7 @@ export class PageScroller {
 		this.x = 0;
 		this._velocity = 0;
 		this.isAutoMoving = true;
-		this.duration = param.duration || 1.0;
+		this.duration = param.duration != null ? param.duration : 1.0;
 		this.autoMovingLock = param.lock || false;
 		this.scrollDistance = this.targetOffset - this.baseOffset;
 		this.onAutoMoveFinished = param.callback;
@@ -349,7 +353,16 @@ export class PageScroller {
 
 	private autoScroll( deltaTime: number ){
 
-		this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;		
+		if( this.duration == 0 ){
+
+			this.x = 1.0;
+			
+		} else {
+
+			this.x += ( deltaTime ? deltaTime : 0.016 ) / this.duration;
+			
+		}
+			
 	
 		let ended = false;
 		

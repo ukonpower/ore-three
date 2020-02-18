@@ -30,6 +30,12 @@ export namespace Easings {
 
 	}
 
+	export function lerpNumber( a: number, b: number, t: number ): number{
+
+		return ( 1.0 - t ) * a + t * b;
+		
+	}
+
 	/*
 	@auther https://gist.github.com/gre/1650294
 	*/

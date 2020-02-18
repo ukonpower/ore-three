@@ -1,5 +1,6 @@
 import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
+import { Uniforms } from "../shaders/shader";
 
 declare interface variable<T>{
 	time: number;
@@ -47,7 +48,7 @@ export class Animator{
 			value: params.initValue,
 			startValue: params.initValue,
 			goalValue: null,
-			easing: params.easing,
+			easing: params.easing || { func: Easings.sigmoid, variables: [ 6 ] },
 			lerpFunc: lerpFunc,
 		}
 
@@ -72,9 +73,10 @@ export class Animator{
 	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function ){
 
 		let variable = this.variables[name];
-		variable.duration = duration;
 
 		if( variable ){
+			
+			variable.duration = duration;
 
 			if( variable.time >= 1.0 ){
 
@@ -129,6 +131,20 @@ export class Animator{
 		
 	}
 
+	public applyToUniforms( uniforms: Uniforms ) {
+
+		let keys = Object.keys( this.variables );
+
+		for( let i = 0; i < keys.length; i++ ){
+
+			if( !uniforms[ keys[ i ] ] ) uniforms[ keys[ i ] ] = { value: null }
+
+			uniforms[ keys[ i ]  ].value = this.variables[ keys[ i ] ].value;
+			
+		}
+
+	}
+	
 	public update( deltaTime?: number ){
 
 		let keys = Object.keys( this.variables );
