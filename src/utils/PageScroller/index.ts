@@ -307,10 +307,11 @@ export class PageScroller {
 		if( !this.isStop ){
 
 			this.updateScroll( deltaTime );
-
+			
 			this.checkThrowSection();
 
 		}
+
 		
 		this.calcScrollPercentage();
 
@@ -319,6 +320,7 @@ export class PageScroller {
 		this.calcThreePosition();
 		this.calcThreeRotation();
 
+		
 		this.applyPageOffset( this.pageOffset );
 		
 	}
@@ -446,7 +448,7 @@ export class PageScroller {
 
 				}
 
-				if( ( pos >= customLine && customLine > posM )|| ( pos <= customLine && customLine < posM )  ){
+				if( ( pos >= customLine && customLine > posM ) || ( pos <= customLine && customLine < posM ) || ( Math.abs( pos - posM ) < 0.1 && Math.abs( pos - customLine ) < 0.1 ) ){
 
 					sec.events.onArrivals[j].event({
 						scroller: this,
@@ -627,7 +629,7 @@ export class PageScroller {
 
 			if( this.sections[ 0 ].bottom ) {
 
-				let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight ) );
+				let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight );
 				this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent));
 
 			}
