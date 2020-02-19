@@ -577,7 +577,7 @@ export class PageScroller {
 
 		for( let i = 1; i < this.sections.length; i++ ){
 
-			let top = this.sections[i - 1];
+			let top = this.sections[ i - 1 ];
 			let under = this.sections[i];
 			
 			let topPos = top.bottom ? top.rect.bottom : top.rect.top;
@@ -619,10 +619,19 @@ export class PageScroller {
 
 			let percent = ( num ) / ( deno );
 			
-			let scrollPercentage = Math.min( 1, Math.max( 0.0, percent));
-			
-			this.sectionScrollPercentages[under.name] = scrollPercentage;
+			this.sectionScrollPercentages[under.name] = Math.min( 1, Math.max( 0.0, percent));
 
+		}
+
+		if( this.sections.length >= 1 ) {
+
+			if( this.sections[ 0 ].bottom ) {
+
+				let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight ) );
+				this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent));
+
+			}
+			
 		}
 
 	}
