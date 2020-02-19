@@ -74,46 +74,31 @@ export class PageScroller {
 		
 		let sum = 0;
 
-		for( let i = 1; i < this.sections.length; i++ ){
+		for( let i = this.sections[0].bottom ? 0 : 1; i < this.sections.length; i++ ){
 
 			sum += this.sectionScrollPercentages[ this.sections[ i ].name ];
 
 		}
 
-		return sum / ( ( this.sections.length - 1 || 1 ) );
+		return sum / ( this.sections.length - ( this.sections[ 0 ].bottom ? 0 : 1 ) );
 
 	}
 
-	public  getScrollPercentage( sections?: string[] ): number{
+	public  getScrollPercentage( sectionA: PageScrollerSection, sectionB: PageScrollerSection ): number{
+
+		if( sectionA.num >= sectionB.num ) return null;
 
 		let sum = 0;
-
-		if( !sections ){
-
-			sections = [ this.sections[0].name, this.sections[this.sections.length - 1].name ];
-
-		}
+		let cnt = 0;
 		
-		for( let i = 0; i < sections.length - 1; i++ ){
+		for( let i = sectionA.num; i <= sectionB.num; i++ ) {
 
-			let secA = this.getSection( sections[i] );
-			let secB = this.getSection( sections[i + 1] );
-
-			let eachSum = 0
-			let eachNum = secB.num - secA.num;
+			sum += ( this.sectionScrollPercentages[ this.sections[ i ].name ] );
+			cnt ++;
 			
-			for( let j = secA.num + 1; j <= secB.num; j++ ){
-
-				eachSum += this.sectionScrollPercentages[this.sections[j].name];
-
-			}
-			
-			sum += eachSum / eachNum;
-
 		}
-		
 
-		return sum / ( sections.length - 1);
+		return sum / ( cnt || 1 );
 
 	}
 
@@ -312,7 +297,6 @@ export class PageScroller {
 
 		}
 
-		
 		this.calcScrollPercentage();
 
 		this.currentSectionNum = this.getCurrentSection();
@@ -577,7 +561,24 @@ export class PageScroller {
 
 	private calcScrollPercentage(){
 
-		for( let i = 1; i < this.sections.length; i++ ){
+		for( let i = 0; i < this.sections.length; i++ ){
+
+			if( i == 0 ) {
+
+				if( this.sections[ 0 ].bottom ) {
+
+					let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight );
+					this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent));
+					
+				} else {
+
+					this.sectionScrollPercentages[ this.sections[ 0 ].name ] = 1;
+					
+				}
+
+				continue;
+
+			}
 
 			let top = this.sections[ i - 1 ];
 			let under = this.sections[i];
@@ -623,17 +624,6 @@ export class PageScroller {
 			
 			this.sectionScrollPercentages[under.name] = Math.min( 1, Math.max( 0.0, percent));
 
-		}
-
-		if( this.sections.length >= 1 ) {
-
-			if( this.sections[ 0 ].bottom ) {
-
-				let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight );
-				this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent));
-
-			}
-			
 		}
 
 	}
@@ -796,7 +786,8 @@ export class PageScroller {
 
 		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
 			
-			return ( a.bottom ? a.rect.bottom : a.rect.top) > ( b.bottom ? b.rect.bottom : b.rect.top) ? 1 : -1;
+			return a.rect.top > b.rect.top ? 1 : -1;
+			// return ( a.bottom ? a.rect.bottom : a.rect.top) > ( b.bottom ? b.rect.bottom : b.rect.top) ? 1 : -1;
 
 		} );
 
