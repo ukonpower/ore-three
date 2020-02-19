@@ -51,7 +51,7 @@ export class Swiper {
 
 		if( this.isLoopMode ){
 
-			return this._value % this.itemCount;
+			return ( ( this._value % this.itemCount ) + this.itemCount ) % ( this.itemCount );
 			
 		}
 		
