@@ -140,7 +140,7 @@ export class PageScroller {
 
 			//スクロールロック解除条件に合わなければRETURN
 			if( !this.checkUnlockStopScroll( scrollVelocity, 'add' ) ){
-
+				
 				return;
 
 			}
@@ -522,6 +522,8 @@ export class PageScroller {
 		
 		}
 
+		console.warn( 'section "' + name + '" is not exist.');
+		
 		return null;
 
 	}
@@ -600,6 +602,7 @@ export class PageScroller {
 
 					num = this._pageOffset - topPos;
 					deno =  underPos - topPos - window.innerHeight;
+					if( under.name == 'Footer' ) console.log( "aaa"  );
 
 				}
 
@@ -621,6 +624,7 @@ export class PageScroller {
 			}
 
 			let percent = ( num ) / ( deno );
+
 			
 			this.sectionScrollPercentages[under.name] = Math.min( 1, Math.max( 0.0, percent));
 
