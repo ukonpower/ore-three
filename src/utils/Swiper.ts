@@ -100,7 +100,7 @@ export class Swiper {
 
 		this.isTouching = false;
 
-		this.setVelocity( ( this.pos_mem - this.pos ) * this.weight * 2.0 );
+		this.setVelocity( ( this.pos_mem - this.pos ) * this.weight * 1.5 );
 		
 	}
 
@@ -158,7 +158,7 @@ export class Swiper {
 
 			if( this.isLoopMode ){
 
-				this._activeNum = Math.round( this._value );
+				this._activeNum = Math.round( this._value + this.getDirection( this.swipeVelocity ) * 0.3 );
 
 			} else {
 
@@ -166,10 +166,16 @@ export class Swiper {
 				
 			}
 
-			this._value += ( this._activeNum - this._value ) * 0.1;
+			this._value += ( this._activeNum - this._value ) * 0.2;
 
 		}
 
+	}
+
+	private getDirection( vel: number ){
+
+		return vel < 0 ? -1 : 1.0;
+		
 	}
 
 }
