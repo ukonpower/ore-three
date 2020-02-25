@@ -83,7 +83,7 @@ export class BaseScene {
 
     }
 
-    public onResize( args: ResizeArgs ) {
+    onResize( args: ResizeArgs ) {
     
         this.camera.aspect = args.aspectRatio
         this.camera.updateProjectionMatrix();

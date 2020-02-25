@@ -289,10 +289,10 @@ export class PageScroller {
 
 	public update( deltaTime?: number ) {
 
+		this.updateScroll( deltaTime );
+		
 		if( !this.isStop ){
 
-			this.updateScroll( deltaTime );
-			
 			this.checkThrowSection();
 
 		}
@@ -317,6 +317,9 @@ export class PageScroller {
 
 			if( !this.enabled && !this.forceAutoMove ) return;
 
+			console.log( "aauto");
+			
+			
 			this.autoScroll( deltaTime );
 
 		} else {
