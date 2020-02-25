@@ -602,8 +602,7 @@ export class PageScroller {
 
 					num = this._pageOffset - topPos;
 					deno =  underPos - topPos - window.innerHeight;
-					if( under.name == 'Footer' ) console.log( "aaa"  );
-
+					
 				}
 
 			}else{
