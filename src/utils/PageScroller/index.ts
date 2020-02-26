@@ -317,9 +317,6 @@ export class PageScroller {
 
 			if( !this.enabled && !this.forceAutoMove ) return;
 
-			console.log( "aauto");
-			
-			
 			this.autoScroll( deltaTime );
 
 		} else {
