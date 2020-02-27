@@ -20,25 +20,25 @@ export class Cursor {
     
     public get position(): THREE.Vector2 {
 
-        return this._position;
+        return this._position.clone();
     
     }
 
     public get delta(): THREE.Vector2 { 
 
-        return this._delta;
+        return this._delta.clone();
 
     }
 
     public get hoverPosition(): THREE.Vector2 {
 
-        return this._hoverPosition;
+        return this._hoverPosition.clone();
 
     }
     
     public get hoverDelta(): THREE.Vector2 {
 
-        return this._hoverDelta;
+        return this._hoverDelta.clone();
         
     }
 
@@ -193,13 +193,13 @@ export class Cursor {
 
             this._touchDown = false;
             
-            this.setPos( x, y );
-
             if( this.onTouchEnd ){
 
                 this.onTouchEnd( event );
                 
             }
+
+            this.setPos( x, y );
             
         }
 
