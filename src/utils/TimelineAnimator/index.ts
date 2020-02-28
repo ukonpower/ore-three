@@ -5,6 +5,7 @@ import { Lerps, LerpFunc } from '../Lerps';
 export declare interface TimelineAnimatorKeyFrame<T> {
 	time: number;
 	value: T;
+	easing?: EasingSet;
 }
 
 export declare interface TimelineAnimatorVariable<T> {
@@ -102,6 +103,8 @@ export class TimelineAnimator {
 
 			let t = Math.max( kfs[ 0 ].time, Math.min( kfs[ kfs.length - 1 ].time ,this.time) )
 
+			let easing: EasingSet;
+
 			if( kfs.length == 1 ){
 
 				t = kfs[ 0 ].time;
@@ -109,21 +112,28 @@ export class TimelineAnimator {
 				
 			} else {
 
+				
 				for( let j = 0; j < kfs.length - 1; j++ ){
 
 					a = kfs[ j ];
 					b = kfs[ j + 1 ];
 	
+					easing = a.easing;
+					
 					if( a.time <= t && t <= b.time ) break;
 					
 				}
 
 				t = ( t - a.time ) / ( b.time - a.time );
+
 				
 			}
 
-			
-			if( valiable.easing ) {
+			if( easing ) {
+
+				t = easing.func( t, easing.variables );
+
+			} else if( valiable.easing ) {
 
 				t = valiable.easing.func( t, valiable.easing.variables );
 				
