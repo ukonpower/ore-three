@@ -15,6 +15,7 @@ export interface PPParam{
     uniforms?: Uniforms;
     transparent?: boolean;
     blending?: THREE.Blending;
+    vertexShader?: string;
 }
 
 export interface EffectMaterial {
@@ -80,7 +81,7 @@ export class PostProcessing {
                 morphTargets: param.morphTargets || null, 
                 morphNormals: param.morphNormals || null, 
                 uniforms: param.uniforms || null,
-                vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
+                vertexShader: param.vertexShader ||  "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ",
                 fragmentShader: param.fragmentShader || null,
                 depthTest: false,
                 depthFunc: THREE.NeverDepth,

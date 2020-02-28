@@ -113,7 +113,7 @@ export class BloomFilter {
 		
 	}
 
-	public render( scene: THREE.Scene, camera: THREE.Camera ) {
+	public render( scene: THREE.Scene, camera: THREE.Camera, offscreenRendering: boolean = false ) {
 
 		//apply uniforms
 		this._brightUni.threshold.value = this.threshold;
@@ -140,7 +140,9 @@ export class BloomFilter {
 		}
 
 		//composition bloom
-		this._bloomPP.render( tex, false );
+		this._bloomPP.render( tex, offscreenRendering );
+
+		return offscreenRendering ? this._bloomPP.getResultTexture() : null;
 	}
 
 	public resize( windowPixelSize: THREE.Vector2){
