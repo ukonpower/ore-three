@@ -26,6 +26,7 @@ export class Swiper {
 	private weight: number = 1.0;
 
 	private animator: Animator;
+	private isAutoSlide: boolean = false;
 	
 	constructor( param: SwiperParams ) {
 
@@ -79,6 +80,8 @@ export class Swiper {
 
 	public catch( pos: number ) {
 
+		if( this.isAutoSlide ) return;
+		
 		this.isTouching = true;
 		
 		this.value_mem = this._value;
@@ -87,6 +90,8 @@ export class Swiper {
 	}
 
 	public move( pos: number, weight?: number ){
+		
+		if( this.isAutoSlide ) return;
 		
 		this.pos_mem = this.pos;
 
@@ -98,6 +103,8 @@ export class Swiper {
 
 	public release() {
 
+		if( this.isAutoSlide ) return;
+		
 		this.isTouching = false;
 
 		this.setVelocity( ( this.pos_mem - this.pos ) * this.weight * 1.5 );
@@ -106,6 +113,8 @@ export class Swiper {
 
 	public select( num: number, callback?: Function, duration: number = 1.5, easing?: EasingSet ) { 
 
+		if( this.isAutoSlide ) return
+		
 		let right = ( num - this.value + this.itemCount ) % this.itemCount;
 
 		num = this.value + ( ( right < this.itemCount / 2 ) ? right : - ( this.itemCount - right ) );
@@ -118,7 +127,15 @@ export class Swiper {
 			
 		}
 
-		this.animator.animate( 'value', num, duration, callback );
+		this.isAutoSlide = true;
+
+		this.animator.animate( 'value', num, duration, () => {
+
+			if( callback ) callback();
+			
+			this.isAutoSlide = false;
+			
+		 } );
 
 	}
 	
@@ -128,7 +145,7 @@ export class Swiper {
 		
 	}
 
-	public before( callback?: Function, duration: number = 1.5, easing?: EasingSet ) {
+	public prev( callback?: Function, duration: number = 1.5, easing?: EasingSet ) {
 
 		this.select( ( this.activeNum + ( this.itemCount - 1 ) ) % this.itemCount, callback, duration, easing );
 		

@@ -148,12 +148,6 @@ export class Animator{
 	public update( deltaTime?: number ){
 
 		let keys = Object.keys( this.variables );
-
-		while( this.dispatchEvents.length != 0 ){
-
-			this.dispatchEvents.pop()();
-			
-		}
 		
 		for( let i = 0; i < keys.length; i++ ){
 
@@ -199,6 +193,16 @@ export class Animator{
 
 			}
 
+		}
+
+		while( this.dispatchEvents.length != 0 ){
+
+			console.log("fefeaaa");
+			console.log( this.dispatchEvents[0] );
+			
+			
+			this.dispatchEvents.pop()();
+			
 		}
 
 	}
