@@ -197,10 +197,6 @@ export class Animator{
 
 		while( this.dispatchEvents.length != 0 ){
 
-			console.log("fefeaaa");
-			console.log( this.dispatchEvents[0] );
-			
-			
 			this.dispatchEvents.pop()();
 			
 		}
