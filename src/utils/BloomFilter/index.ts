@@ -113,7 +113,11 @@ export class BloomFilter {
 		
 	}
 
-	public render( scene: THREE.Scene, camera: THREE.Camera, offscreenRendering: boolean = false ) {
+	public render( srcTexture: THREE.Texture, offscreenRendering?: boolean );
+
+	public render( scene: THREE.Scene, camera: THREE.Camera, offscreenRendering: boolean  );
+
+	public render( tex_scene: THREE.Texture | THREE.Scene = null, offscreen_camera: boolean | THREE.Camera = false, offscreenRendering: boolean = false) {
 
 		//apply uniforms
 		this._brightUni.threshold.value = this.threshold;
@@ -121,14 +125,24 @@ export class BloomFilter {
 
 		this.blurResolution.copy( this.resolution.clone().divideScalar( this.blurRange ) );
 		
+		let isInputedTexture: boolean = true;
+		let offsc = offscreen_camera as boolean;
+		
 		//render scene
-		this.renderer.setRenderTarget( this.sceneRenderTarget );
-		this.renderer.render( scene, camera );
+		if( ( tex_scene as THREE.Scene ).isScene ) {
+			
+			isInputedTexture = false;
+			offsc = offscreenRendering;
+			
+			this.renderer.setRenderTarget( this.sceneRenderTarget );			
+			this.renderer.render( tex_scene as THREE.Scene, offscreen_camera as THREE.Camera );
 
-		this.sceneTex.value = this.sceneRenderTarget.texture;
+		}
+
+		this.sceneTex.value = isInputedTexture ? tex_scene : this.sceneRenderTarget.texture;
 
 		//render birightness part
-		this._brightPP.render( this.sceneRenderTarget.texture, true );
+		this._brightPP.render( isInputedTexture ? tex_scene as THREE.Texture : this.sceneRenderTarget.texture, true );
 		let tex = this._brightPP.getResultTexture();
 
 		//render blur
@@ -140,9 +154,9 @@ export class BloomFilter {
 		}
 
 		//composition bloom
-		this._bloomPP.render( tex, offscreenRendering );
+		this._bloomPP.render( tex, offsc );
 
-		return offscreenRendering ? this._bloomPP.getResultTexture() : null;
+		return offsc ? this._bloomPP.getResultTexture() : null;
 	}
 
 	public resize( windowPixelSize: THREE.Vector2){
