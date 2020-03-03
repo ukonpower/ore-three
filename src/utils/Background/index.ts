@@ -5,7 +5,7 @@ import vert from './shaders/background.vs';
 
 export class Background extends THREE.Mesh{
     
-    constructor( fragmentShader: string, uniforms: ORE.Uniforms ){
+    constructor( param: THREE.ShaderMaterialParameters ){
 
         let geo = new THREE.BufferGeometry();
 
@@ -34,10 +34,10 @@ export class Background extends THREE.Mesh{
         geo.setIndex( new THREE.BufferAttribute( indices,1 ) )
         
         let mat = new THREE.ShaderMaterial( {
-            uniforms: uniforms,
-            fragmentShader: fragmentShader,
-            vertexShader: vert,
-            transparent:true,
+            uniforms: param.uniforms,
+            fragmentShader: param.fragmentShader,
+            vertexShader: param.vertexShader || vert,
+            transparent: true,
             depthFunc: THREE.NeverDepth
         } );
 

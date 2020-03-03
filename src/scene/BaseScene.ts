@@ -98,6 +98,6 @@ export class BaseScene {
 
     public onHover( cursor: Cursor ) { }
 
-    public onWheel( event: WheelEvent ) { }
+    public onWheel( event: WheelEvent, trackpadDelta: number ) { }
 
 }

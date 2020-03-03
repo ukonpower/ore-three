@@ -88,9 +88,8 @@ export class PageScrollerSection{
 
 			console.error( '"' + param.name + '"' + ' Element is null.' );
 			
-			
 		}
-		
+
 		let clientRect  = ( param.element as HTMLElement ).getBoundingClientRect();
 
 		let rect: PageScrollerSectionRect = {

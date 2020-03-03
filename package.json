@@ -46,5 +46,8 @@
     "webpack-dev-server": "^3.3.1",
     "webpack-merge": "^4.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lethargy": "^1.0.9",
+    "to-px": "^1.1.0"
+  }
 }
