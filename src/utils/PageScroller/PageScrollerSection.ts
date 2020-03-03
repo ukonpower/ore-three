@@ -5,7 +5,7 @@ import { EasingSet } from '../Easings';
 export declare interface PageScrollerSectionParam{
 	name: string;
 	bottom?: Boolean;
-	element: HTMLElement;
+	element: HTMLElement | string;
 	events?: PageScrollerEvents;
 	stop?: boolean;
 	sectionEasings?: ScrollerSectionEasings;
@@ -52,6 +52,7 @@ export class PageScrollerSection{
 	public num: number;
 	public scrollPosition: number;
 
+	private _selector: string;
 	private _name: string
 	private _element: HTMLElement;
 	private _events: PageScrollerEvents;
@@ -82,6 +83,12 @@ export class PageScrollerSection{
 
 	}
 
+	public get selector() {
+
+		return this._selector;
+		
+	}
+
 	constructor( param: PageScrollerSectionParam ){
 
 		if( !param.element ){
@@ -90,7 +97,20 @@ export class PageScrollerSection{
 			
 		}
 
-		let clientRect  = ( param.element as HTMLElement ).getBoundingClientRect();
+		let elm: HTMLElement;
+
+		if( typeof param.element == 'string' ) {
+			
+			elm = document.querySelector( param.element )
+			this._selector = param.element;
+
+		} else {
+
+			elm = param.element;
+			
+		}
+		
+		let clientRect  = ( elm as HTMLElement ).getBoundingClientRect();
 
 		let rect: PageScrollerSectionRect = {
 			top: clientRect.top,
@@ -100,7 +120,7 @@ export class PageScrollerSection{
 		}
 
 		this._name = param.name;
-		this._element = param.element;
+		this._element = elm;
 		this._rect = rect;
 		this.bottom = param.bottom || false;
 		this.stop = param.stop || false;
