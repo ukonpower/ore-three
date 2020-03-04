@@ -84,8 +84,15 @@ export class PageScroller {
 
 	}
 
-	public  getScrollPercentage( sectionA: PageScrollerSection, sectionB: PageScrollerSection ): number{
+	public  getScrollPercentage( sectionA?: PageScrollerSection, sectionB?: PageScrollerSection ): number{
 
+		if( !sectionA && !sectionB ) {
+
+			sectionA = this.sections[ 0 ];
+			sectionB = this.sections[ this.sections.length - 1 ];
+			
+		}
+		
 		if( sectionA.num >= sectionB.num ) return null;
 
 		let sum = 0;

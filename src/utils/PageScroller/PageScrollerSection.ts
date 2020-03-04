@@ -5,7 +5,7 @@ import { EasingSet } from '../Easings';
 export declare interface PageScrollerSectionParam{
 	name: string;
 	bottom?: Boolean;
-	element: HTMLElement | string;
+	element: Element | string;
 	events?: PageScrollerEvents;
 	stop?: boolean;
 	sectionEasings?: ScrollerSectionEasings;
@@ -97,7 +97,7 @@ export class PageScrollerSection{
 			
 		}
 
-		let elm: HTMLElement;
+		let elm: Element;
 
 		if( typeof param.element == 'string' ) {
 			
@@ -120,7 +120,7 @@ export class PageScrollerSection{
 		}
 
 		this._name = param.name;
-		this._element = elm;
+		this._element = elm as HTMLElement;
 		this._rect = rect;
 		this.bottom = param.bottom || false;
 		this.stop = param.stop || false;
