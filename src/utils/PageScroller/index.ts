@@ -100,12 +100,15 @@ export class PageScroller {
 		
 		for( let i = sectionA.num; i <= sectionB.num; i++ ) {
 
-			sum += ( this.sectionScrollPercentages[ this.sections[ i ].name ] );
-			cnt ++;
+			let sec = this.sections[ i ];
+			
+			sum += ( this.sectionScrollPercentages[ sec.name ] * sec.sectionPercentageScale );
+			cnt += sec.sectionPercentageScale;
 			
 		}
 
-		return sum / ( cnt || 1 );
+		return sum / cnt;
+
 
 	}
 
@@ -577,7 +580,7 @@ export class PageScroller {
 				if( this.sections[ 0 ].bottom ) {
 
 					let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight );
-					this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent));
+					this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent ) );
 					
 				} else {
 
@@ -632,7 +635,7 @@ export class PageScroller {
 			let percent = ( num ) / ( deno );
 
 			
-			this.sectionScrollPercentages[under.name] = Math.min( 1, Math.max( 0.0, percent));
+			this.sectionScrollPercentages[under.name] = Math.min( 1, Math.max( 0.0, percent ) );
 
 		}
 
@@ -803,17 +806,25 @@ export class PageScroller {
 
 		let setThreePos = false;
 
+		let topSum = 0;
+		
 		for( let i = 0; i < this.sections.length; i++ ){
 
-			//sorted section number
-			this.sections[i].num = i;
-
-			this.sections[i].scrollPosition = i / ( this.sections.length - 1 );
+			let sec = this.sections[ i ];
 			
-			if( !setThreePos && this.sections[i].threePosition ){
+			//sorted section number
+			sec.num = i;
+
+			// sec.scrollPosition = i / ( this.sections.length - 1 );
+			let befSection = this.sections[ i - 1 ];
+			
+			sec.scrollPosition = ( sec.bottom ? sec.rect.bottom : sec.rect.top ) / this.rect.height;
+			sec.sectionPercentageScale = sec.scrollPosition - ( befSection ? befSection.scrollPosition : 0 );
+
+			if( !setThreePos && sec.threePosition ){
 				
 				//initialize threeposition
-				this.threePosition.copy( this.sections[i].threePosition );
+				this.threePosition.copy( sec.threePosition );
 
 				setThreePos = true;
 

@@ -51,13 +51,13 @@ export class PageScrollerSection{
 	public bottom?: Boolean;
 	public num: number;
 	public scrollPosition: number;
+	public sectionPercentageScale: number;
 
 	private _selector: string;
 	private _name: string
 	private _element: HTMLElement;
 	private _events: PageScrollerEvents;
 	private _rect: PageScrollerSectionRect;
-
 	
 	public get name(){
 		
