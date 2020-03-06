@@ -38,14 +38,24 @@ export class PostProcessing {
 
     private effectMaterials: [EffectMaterial];
 
-    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number) {
+    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number, resolution?: THREE.Vector2) {
 
         this.renderer = renderer;
         this.resolutionRatio = resolutionRatio ? resolutionRatio : 1.0;
 
         this.resolution = new THREE.Vector2();
-        this.renderer.getSize(this.resolution);
-        this.resolution.multiplyScalar(this.renderer.getPixelRatio() * (this.resolutionRatio ? this.resolutionRatio : 1.0));
+
+        if( resolution ) {
+
+            this.resolution.copy( resolution );
+
+        } else { 
+
+            this.renderer.getSize( this.resolution );
+            
+        }
+
+        this.resolution.multiplyScalar( (this.resolutionRatio ? this.resolutionRatio : this.renderer.pixelRatio ) );
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -86,7 +96,9 @@ export class PostProcessing {
                 depthTest: false,
                 depthFunc: THREE.NeverDepth,
                 transparent: param.transparent || false,
-                blending: param.blending || THREE.NormalBlending,
+                blending: THREE.CustomBlending,
+                blendDst: THREE.ZeroFactor,
+                blendSrc: THREE.OneFactor
             })
 
             let effectMaterial = { material: mat, uniforms: param.uniforms }

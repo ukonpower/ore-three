@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Cursor } from './Cursor';
-import { BaseScene } from '../scene/BaseScene';
+import { BaseScene, ResizeArgs } from '../scene/BaseScene';
 
 import { Lethargy } from 'lethargy';
 import { toPx } from 'to-px';
@@ -15,6 +15,7 @@ export declare interface ControllerParam extends THREE.WebGLRendererParameters{
 export declare interface GlobalProperties{    
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
+    resizeArgs: ResizeArgs;
 }
 
 export class Controller {
@@ -51,7 +52,8 @@ export class Controller {
 
         this.gProps = {
             renderer: this.renderer,
-            cursor: this.cursor
+            cursor: this.cursor,
+            resizeArgs: null
         }
 
         window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
@@ -107,17 +109,22 @@ export class Controller {
         let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight )
         
         this.renderer.setSize( windowSize.x, windowSize.y );
-               
+
+        let resizeArgs: ResizeArgs = {
+            aspectRatio: windowSize.x / windowSize.y,
+            pixelRatio: this.renderer.getPixelRatio(),
+            windowSize: windowSize,
+            windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
+        }
+        
+        this.gProps.resizeArgs = resizeArgs;
+        
         if( this.currentScene ){
         
-            this.currentScene.onResize({
-                aspectRatio: windowSize.x / windowSize.y,
-                pixelRatio: this.renderer.getPixelRatio(),
-                windowSize: windowSize,
-                windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
-            });
+            this.currentScene.onResize( resizeArgs );
         
         }
+
     }
 
     

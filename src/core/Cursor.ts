@@ -32,13 +32,13 @@ export class Cursor {
 
     public get hoverPosition(): THREE.Vector2 {
 
-        return this._hoverPosition.clone();
+        return ( this._hoverPosition.x == this._hoverPosition.x ) ? this._hoverPosition.clone() : new THREE.Vector2().set( NaN, NaN );
 
     }
     
     public get hoverDelta(): THREE.Vector2 {
 
-        return this._hoverDelta.clone();
+        return ( this.hoverDelta.x == this.hoverDelta.x ) ? this.hoverDelta.clone() : new THREE.Vector2().set( NaN, NaN );
         
     }
 
@@ -161,7 +161,6 @@ export class Cursor {
             }
 
         }
-
         
         if( type == 'start' ){
 
