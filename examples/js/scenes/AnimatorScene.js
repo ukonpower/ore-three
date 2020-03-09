@@ -26,7 +26,7 @@ export class AnimatorScene extends ORE.BaseScene {
 		this.scene.add( this.box );
 
 		this.animator = new ORE.Animator();
-		this.animator.addVariable( 'posX', 0 );
+		this.animator.add( 'pos', new THREE.Vector3( 0, 0, 0 ) );
 
 		this.left = true;
 		this.transforms = {

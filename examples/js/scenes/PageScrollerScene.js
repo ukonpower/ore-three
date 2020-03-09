@@ -46,13 +46,13 @@ export class PageScrollerScene extends ORE.BaseScene {
 		}
 
 		//html sections
-		this.scroller.registerSection( new ORE.PageScrollerSection({ 
+		this.scroller.addSection( new ORE.PageScrollerSection({ 
 			name: "a",
 			element: document.querySelector( '.part1' ),
 			threePosition: new THREE.Vector3( 0, 0, 10 )
 		}));
 		
-		this.scroller.registerSection( new ORE.PageScrollerSection({ 
+		this.scroller.addSection( new ORE.PageScrollerSection({ 
 			name: "b",
 			element: document.querySelector( '.part3' ),
 			threePosition: new THREE.Vector3( 0, -8, 10 ),
@@ -68,7 +68,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 			}
 		}));
 		
-		this.scroller.registerSection( new ORE.PageScrollerSection({ 
+		this.scroller.addSection( new ORE.PageScrollerSection({ 
 			name: "c",
 			element: document.querySelector( '.part4' ),
 			threePosition: new THREE.Vector3( 0, -8, 10 ),
@@ -84,7 +84,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 			}
 		}));
 
-		this.scroller.registerSection( new ORE.PageScrollerSection({ 
+		this.scroller.addSection( new ORE.PageScrollerSection({ 
 			name: "d",
 			element: document.querySelector( '.part6' ),
 			threePosition: new THREE.Vector3( 0, -13, 10 ),
