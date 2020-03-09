@@ -17,27 +17,27 @@ export interface ScrollPercentages{
 
 export class PageScroller {
 
-	private element: HTMLElement;
-	private rect: ClientRect;
+	protected element: HTMLElement;
+	protected rect: ClientRect;
 
 	public enabled: boolean = true;
 
 	//manual move
-	private _velocity: number = 0;
-	private _pageOffset: number = 0;
-	private _pageOffsetMem: number = 0;
+	protected _velocity: number = 0;
+	protected _pageOffset: number = 0;
+	protected _pageOffsetMem: number = 0;
 	public velocityAttenuation: number = 0.95;
 
 	//auto move
-	private x: number = 1.0;
-	private duration: number;
-	private baseOffset: number
-	private targetOffset: number;
-	private scrollDistance: number;
-	private onAutoMoveFinished: Function;
-	private isAutoMoving: boolean = false;
-	private autoMovingLock: boolean = false;
-	private forceAutoMove: boolean = false;
+	protected x: number = 1.0;
+	protected duration: number;
+	protected baseOffset: number
+	protected targetOffset: number;
+	protected scrollDistance: number;
+	protected onAutoMoveFinished: Function;
+	protected isAutoMoving: boolean = false;
+	protected autoMovingLock: boolean = false;
+	protected forceAutoMove: boolean = false;
 
 	//sections
 	public sections: PageScrollerSection[] = [];
@@ -45,17 +45,17 @@ export class PageScroller {
 	public currentSectionNum: number;
 
 	//easing
-	private easingPos: EasingSet;
-	private easingRot: EasingSet;
-	private easingAutoMove: EasingSet;
+	protected easingPos: EasingSet;
+	protected easingRot: EasingSet;
+	protected easingAutoMove: EasingSet;
 
 	//three transforms
 	public threePosition: THREE.Vector3 = new THREE.Vector3( 0, 0, 0 );
 	public threeRotation: THREE.Quaternion = new THREE.Quaternion( 0, 0, 0 );
 
 	//stop
-	private isStop: boolean = false;
-	private stopSection: number = null;
+	protected isStop: boolean = false;
+	protected stopSection: number = null;
 	
 
 	public get pageOffset(): number {
@@ -100,18 +100,14 @@ export class PageScroller {
 		
 		for( let i = sectionA.num; i <= sectionB.num; i++ ) {
 
-			let sec = this.sections[ i ];
-			
-			sum += ( this.sectionScrollPercentages[ sec.name ] * sec.sectionPercentageScale );
-			cnt += sec.sectionPercentageScale;
+			sum += ( this.sectionScrollPercentages[ this.sections[ i ].name ] );
+			cnt ++;
 			
 		}
 
-		return sum / cnt;
-
+		return sum / ( cnt || 1 );
 
 	}
-
 	constructor( element: HTMLElement ) {
 	
 		this.element = element;
@@ -122,7 +118,7 @@ export class PageScroller {
 	
 	}
 
-	private initEasings(){
+	protected initEasings(){
 
 		this.easingPos = {
 			func: Easings.linear,
@@ -182,7 +178,7 @@ export class PageScroller {
 	
 	}
 
-	private checkUnlockStopScroll( scrollVelocity: number, mode: string ){
+	protected checkUnlockStopScroll( scrollVelocity: number, mode: string ){
 
 		let unLock: boolean;
 		let sec = this.sections[this.stopSection];
@@ -319,7 +315,7 @@ export class PageScroller {
 		
 	}
 
-	private updateScroll( deltaTime: number ){
+	protected updateScroll( deltaTime: number ){
 
 		this._pageOffsetMem = this.pageOffset;
 
@@ -339,7 +335,7 @@ export class PageScroller {
 
 	}
 
-	private manualScroll( deltaTime: number ){
+	protected manualScroll( deltaTime: number ){
 
 		this._pageOffset += this._velocity;
 		this._pageOffset = Math.min( Math.max( 0.0, this.pageOffset ), this.rect.height - window.innerHeight );
@@ -347,7 +343,7 @@ export class PageScroller {
 
 	}
 
-	private autoScroll( deltaTime: number ){
+	protected autoScroll( deltaTime: number ){
 
 		if( this.duration == 0 ){
 
@@ -398,13 +394,13 @@ export class PageScroller {
 
 	}
 
-	private applyPageOffset( pageOffset: number ){
+	protected applyPageOffset( pageOffset: number ){
 
 		this.element.style.transform = 'translate3d( 0,' + -pageOffset + 'px,0 )';
 	
 	}
 
-	private checkThrowSection(){
+	protected checkThrowSection(){
 
 		let i: number;
 
@@ -468,7 +464,7 @@ export class PageScroller {
 
 	}
 
-	private onThrowSection( secNum: number ){
+	protected onThrowSection( secNum: number ){
 		
 		if( this.stopSection == secNum ){
 
@@ -506,7 +502,7 @@ export class PageScroller {
 		}
 	}
 
-	private setPageOffsetToSection( secNum: number ){
+	protected setPageOffsetToSection( secNum: number ){
 
 		if( this.sections[secNum].bottom ){
 
@@ -538,7 +534,7 @@ export class PageScroller {
 
 	}
 
-	private getCurrentSection(){
+	protected getCurrentSection(){
 
 		for( let i = 0; i < this.sections.length; i++){
 
@@ -571,7 +567,7 @@ export class PageScroller {
 
 	}
 
-	private calcScrollPercentage(){
+	protected calcScrollPercentage(){
 
 		for( let i = 0; i < this.sections.length; i++ ){
 
@@ -580,7 +576,7 @@ export class PageScroller {
 				if( this.sections[ 0 ].bottom ) {
 
 					let percent = this.pageOffset / ( this.sections[ 0 ].rect.top + this.sections[ 0 ].rect.height - window.innerHeight );
-					this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent ) );
+					this.sectionScrollPercentages[ this.sections[0].name ] = Math.min( 1, Math.max( 0.0, percent));
 					
 				} else {
 
@@ -641,7 +637,7 @@ export class PageScroller {
 
 	}
 
-	private calcThreePosition(){
+	protected calcThreePosition(){
 
 		let a: number;
 		let b: number;
@@ -696,7 +692,7 @@ export class PageScroller {
 		
 	}
 
-	private calcThreeRotation(){
+	protected calcThreeRotation(){
 
 		let a: number;
 		let b: number;
@@ -750,7 +746,7 @@ export class PageScroller {
 		
 	}
 
-	private calcThreeEasings( value: number, section: PageScrollerSection, type: string ){		
+	protected calcThreeEasings( value: number, section: PageScrollerSection, type: string ){		
 
 		if( type == 'pos'){
 			
@@ -795,7 +791,7 @@ export class PageScroller {
 
 	}
 
-	private sortSections( ){
+	protected sortSections( ){
 
 		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
 			
@@ -806,25 +802,17 @@ export class PageScroller {
 
 		let setThreePos = false;
 
-		let topSum = 0;
-		
 		for( let i = 0; i < this.sections.length; i++ ){
 
-			let sec = this.sections[ i ];
-			
 			//sorted section number
-			sec.num = i;
+			this.sections[i].num = i;
 
-			// sec.scrollPosition = i / ( this.sections.length - 1 );
-			let befSection = this.sections[ i - 1 ];
+			this.sections[i].scrollPosition = i / ( this.sections.length - 1 );
 			
-			sec.scrollPosition = ( sec.bottom ? sec.rect.bottom : sec.rect.top ) / this.rect.height;
-			sec.sectionPercentageScale = sec.scrollPosition - ( befSection ? befSection.scrollPosition : 0 );
-
-			if( !setThreePos && sec.threePosition ){
+			if( !setThreePos && this.sections[i].threePosition ){
 				
 				//initialize threeposition
-				this.threePosition.copy( sec.threePosition );
+				this.threePosition.copy( this.sections[i].threePosition );
 
 				setThreePos = true;
 
