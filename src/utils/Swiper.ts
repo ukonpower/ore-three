@@ -91,7 +91,7 @@ export class Swiper {
 
 	public move( pos: number, weight?: number ){
 		
-		if( this.isAutoSlide ) return;
+		if( this.isAutoSlide || !this.isTouching ) return;
 		
 		this.pos_mem = this.pos;
 
@@ -103,7 +103,7 @@ export class Swiper {
 
 	public release() {
 
-		if( this.isAutoSlide ) return;
+		if( this.isAutoSlide || !this.isTouching ) return;
 		
 		this.isTouching = false;
 
