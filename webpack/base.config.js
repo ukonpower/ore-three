@@ -1,25 +1,32 @@
-const path = require('path');
+const path = require( 'path' );
 
 module.exports = {
+	resolve: {
+		modules: ['node_modules'],
+		extensions: ['.ts', '.js'],
+		alias: {
+			"@ore-three-ts": path.resolve(__dirname, '../src/')
+		}
+	},
 	module: {
-		rules: [{
+		rules: [
+			{
 				test: /\.ts$/,
 				exclude: /node_modules/,
-				use: 'ts-loader'
+				loader: 'ts-loader',
+				options: {
+                    configFile: 'webpack/tsconfig/dev.json'
+                }
 			},
 			{
 				test: /\.(glsl|vs|fs)$/,
 				loader: 'shader-loader',
 				options: {
 					glsl: {
-						chunkPath: "src/shaders/chunks"
+						chunkPath: "src/glsl-chunks"
 					}
 				}
 			}
 		]
-	},
-	resolve: {
-		modules: ['node_modules'],
-		extensions: ['.ts', '.js']
 	}
 };

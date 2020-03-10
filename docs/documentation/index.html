@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ore-three</title>
+	<title>ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">ore-three</a>
+					<a href="index.html" class="title">ore-three-ts</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>ore-three</h1>
+			<h1>ore-three-ts</h1>
 		</div>
 	</div>
 </header>
@@ -64,116 +64,6 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#ore-three" id="ore-three" style="color: inherit; text-decoration: none;">
-					<h1>ore-three</h1>
-				</a>
-				<p><a href="https://github.com/mrdoob/three.js">three.js</a> utils.</p>
-				<p><a href="https://ukonpower.github.io/ore-three-ts/">Documentation</a>
-				<a href="https://github.com/ukonpower/ore-three-ts/tree/master/examples/js">Examples</a></p>
-				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
-					<h3>install</h3>
-				</a>
-				<p>You can get the library from <a href="https://www.npmjs.com/package/ore-three-ts">npm</a>.</p>
-				<pre><code class="language-bash">$ npm install ore-three-ts</code></pre>
-				<a href="#import" id="import" style="color: inherit; text-decoration: none;">
-					<h5>Import</h5>
-				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">'ore-three-ts'</span>;</code></pre>
-				<a href="#create-controller" id="create-controller" style="color: inherit; text-decoration: none;">
-					<h3>Create Controller</h3>
-				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">'ore-three-ts'</span>;
-<span class="hljs-keyword">import</span> { MainScene } <span class="hljs-keyword">from</span> <span class="hljs-string">'./scenes/MainScene'</span>;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">APP</span> </span>{
-
-    <span class="hljs-keyword">constructor</span>() {
-
-        <span class="hljs-keyword">this</span>.controller = <span class="hljs-keyword">new</span> ORE.Controller( {
-
-            <span class="hljs-attr">canvas</span>: <span class="hljs-built_in">document</span>.querySelector( <span class="hljs-string">"#canvas"</span> ),
-            <span class="hljs-attr">retina</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">alpha</span>: <span class="hljs-literal">false</span>,
-
-        } );
-
-        <span class="hljs-keyword">this</span>.controller.bindScene( <span class="hljs-keyword">new</span> MainScene() );
-
-    }
-
-}
-
-<span class="hljs-built_in">window</span>.addEventListener( <span class="hljs-string">'load'</span>, ()=&gt;{
-
-    <span class="hljs-keyword">let</span> app = <span class="hljs-keyword">new</span> APP();
-
-} );</code></pre>
-				<a href="#create-scene" id="create-scene" style="color: inherit; text-decoration: none;">
-					<h3>Create Scene</h3>
-				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">'ore-three-ts'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> THREE <span class="hljs-keyword">from</span> <span class="hljs-string">'three'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainScene</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ORE</span>.<span class="hljs-title">BaseScene</span> </span>{
-
-    <span class="hljs-keyword">constructor</span>() {
-
-        <span class="hljs-keyword">super</span>();
-
-        <span class="hljs-keyword">this</span>.name = <span class="hljs-string">"MainScene"</span>;
-
-    }
-
-    onBind( gProps ) {
-
-        <span class="hljs-keyword">super</span>.onBind( gProps );
-
-        <span class="hljs-keyword">this</span>.renderer = <span class="hljs-keyword">this</span>.gProps.renderer;
-
-        <span class="hljs-keyword">this</span>.camera.position.set( <span class="hljs-number">0</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">3</span> );
-        <span class="hljs-keyword">this</span>.camera.lookAt( <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span> );
-
-        <span class="hljs-keyword">var</span> boxGeo = <span class="hljs-keyword">new</span> THREE.BoxGeometry( <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> );
-        <span class="hljs-keyword">var</span> boXMat = <span class="hljs-keyword">new</span> THREE.MeshNormalMaterial();
-        <span class="hljs-keyword">this</span>.box = <span class="hljs-keyword">new</span> THREE.Mesh( boxGeo, boXMat );
-        <span class="hljs-keyword">this</span>.scene.add( <span class="hljs-keyword">this</span>.box );
-
-        <span class="hljs-keyword">this</span>.light = <span class="hljs-keyword">new</span> THREE.DirectionalLight();
-        <span class="hljs-keyword">this</span>.light.position.y = <span class="hljs-number">10</span>;
-        <span class="hljs-keyword">this</span>.scene.add( <span class="hljs-keyword">this</span>.light );        
-
-    }
-
-    animate( deltaTime ) {
-
-        <span class="hljs-keyword">this</span>.box.rotateY( <span class="hljs-number">0.01</span> );
-        <span class="hljs-keyword">this</span>.renderer.render( <span class="hljs-keyword">this</span>.scene, <span class="hljs-keyword">this</span>.camera );
-
-    }
-
-    onResize( args ) {
-
-        <span class="hljs-keyword">super</span>.onResize( args );
-
-    }
-
-}</code></pre>
-				<a href="#use-utility" id="use-utility" style="color: inherit; text-decoration: none;">
-					<h3>Use utility</h3>
-				</a>
-				<p>if you want add GPU fish...</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">this</span>.fish = <span class="hljs-keyword">new</span> ORE.Fish( <span class="hljs-keyword">this</span>.renderer,<span class="hljs-number">1000</span>,<span class="hljs-number">10</span> );
-<span class="hljs-keyword">this</span>.scene.add( <span class="hljs-keyword">this</span>.fish );</code></pre>
-				<p>and update fish</p>
-				<pre><code class="language-javascript">animate( deltaTime ) {
-
-    <span class="hljs-keyword">if</span>( <span class="hljs-keyword">this</span>.fish ) {
-
-        <span class="hljs-keyword">this</span>.fish.update(  <span class="hljs-keyword">this</span>.time  );
-
-    }
-
-}</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -182,30 +72,12 @@
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/easings.html">Easings</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="classes/animator.html" class="tsd-kind-icon">Animator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/cannonadapter.html" class="tsd-kind-icon">Cannon<wbr>Adapter</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/controller.html" class="tsd-kind-icon">Controller</a>
@@ -213,122 +85,14 @@
 					<li class=" tsd-kind-class">
 						<a href="classes/cursor.html" class="tsd-kind-icon">Cursor</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/domglsl.html" class="tsd-kind-icon">DomGLSL</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/fish.html" class="tsd-kind-icon">Fish</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/micdata.html" class="tsd-kind-icon">Mic<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/mousevertexrotator.html" class="tsd-kind-icon">Mouse<wbr>Vertex<wbr>Rotator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/oimoadapter.html" class="tsd-kind-icon">Oimo<wbr>Adapter</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/stablefluids.html" class="tsd-kind-icon">Stable<wbr>Fluids</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/transformanimator.html" class="tsd-kind-icon">Transform<wbr>Animator</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/animatoreasing.html" class="tsd-kind-icon">Animator<wbr>Easing</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/audioplayerparam.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/cannonphysicsobjects.html" class="tsd-kind-icon">Cannon<wbr>Physics<wbr>Objects</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/cannonworldparam.html" class="tsd-kind-icon">Cannon<wbr>World<wbr>Param</a>
-					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/kernels.html" class="tsd-kind-icon">Kernels</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/oimoobjectparam.html" class="tsd-kind-icon">Oimo<wbr>Object<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/oimophysicsobject.html" class="tsd-kind-icon">Oimo<wbr>Physics<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/oimoworldparam.html" class="tsd-kind-icon">Oimo<wbr>World<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pagescrollereasing.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Easing</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pagescrollermovetoparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Move<wbr>ToParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pagescrollersectionparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/scrolleventargs.html" class="tsd-kind-icon">Scroll<wbr>Event<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/scrollpercentages.html" class="tsd-kind-icon">Scroll<wbr>Percentages</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/scrollersectioneasings.html" class="tsd-kind-icon">Scroller<wbr>Section<wbr>Easings</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/stablefluidsparam.html" class="tsd-kind-icon">Stable<wbr>Fluids<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/onarrivalevent.html" class="tsd-kind-icon">on<wbr>Arrival<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/variable.html" class="tsd-kind-icon">variable</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#version" class="tsd-kind-icon">VERSION</a>

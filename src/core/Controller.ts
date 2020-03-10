@@ -1,15 +1,22 @@
 import * as THREE from 'three';
-import { Cursor } from './Cursor';
-import { BaseScene, ResizeArgs } from '../scene/BaseScene';
+import { Cursor } from '../utils/Cursor';
+import { BaseScene } from '../core/BaseScene';
 
 import { Lethargy } from 'lethargy';
 import { toPx } from 'to-px';
 
-const VERSION = require(  "../../package.json"  ).version;
+const VERSION = require( "../../package.json" ).version;
 
 export declare interface ControllerParam extends THREE.WebGLRendererParameters{
     retina?: boolean;
     silent?: boolean;
+}
+
+export declare interface ResizeArgs{
+	aspectRatio: number,
+	pixelRatio: number,
+	windowSize: THREE.Vector2,
+	windowPixelSize: THREE.Vector2
 }
 
 export declare interface GlobalProperties{    
@@ -65,7 +72,7 @@ export class Controller {
 
     }
 
-    private tick() {
+    protected tick() {
 
         let deltatime = this.clock.getDelta();
         
@@ -104,7 +111,7 @@ export class Controller {
 
     }
 
-    private onWindowResize() {
+    protected onWindowResize() {
         
         let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight )
         
@@ -113,7 +120,7 @@ export class Controller {
         let resizeArgs: ResizeArgs = {
             aspectRatio: windowSize.x / windowSize.y,
             pixelRatio: this.renderer.getPixelRatio(),
-            windowSize: windowSize,
+            windowSize: windowSize.clone(),
             windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
         }
         
@@ -128,7 +135,7 @@ export class Controller {
     }
 
     
-    private onOrientationDevice() {
+    public onOrientationDevice() {
     
         this.onWindowResize();
     
@@ -174,9 +181,9 @@ export class Controller {
 
     }
 
-    private memDelta = 0;
-	private max: boolean = false;
-	private lethargy = new Lethargy(7, 0, 0.05);
+    protected trackpadMemDelta = 0;
+	protected trackpadMax: boolean = false;
+	protected lethargy = new Lethargy( 7, 0, 0.05 );
     
     public onWheel( e: WheelEvent ) { 
 
@@ -201,18 +208,18 @@ export class Controller {
 
 		}else{
 
-			let d = delta - this.memDelta;
+			let d = delta - this.trackpadMemDelta;
 
 			if( Math.abs( d ) > 50 ) {
 
-				this.memDelta = d;
+				this.trackpadMemDelta = d;
 				trackpadDelta = delta;
 				
-				this.max = true;
+				this.trackpadMax = true;
 
 			}else if( d == 0 ) {
 
-				if( this.max ) {
+				if( this.trackpadMax ) {
 
 					trackpadDelta = delta;
 					
@@ -220,11 +227,11 @@ export class Controller {
 
 			}else if( d < 0 ) {
 
-				this.max = false;
+				this.trackpadMax = false;
 
 			}
 
-			this.memDelta = (delta);
+			this.trackpadMemDelta = (delta);
 
         }
         
