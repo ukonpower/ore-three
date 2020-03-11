@@ -1,8 +1,8 @@
-const info = require('../info');
-const merge = require('webpack-merge');
-const baseConfig = require('./build-base.config');
+const info = require( '../info' );
+const merge = require( 'webpack-merge' );
+const baseConfig = require( './build-base.config' );
 
-module.exports = merge(baseConfig,{
+module.exports = merge( baseConfig, {
 	mode: 'production',
 	output: {
 		filename: info.packageName + '.min.js',
@@ -16,8 +16,8 @@ module.exports = merge(baseConfig,{
 				exclude: /node_modules/,
 				loader: 'ts-loader',
 				options: {
-                    configFile: 'webpack/tsconfig/build.json'
-                }
+					configFile: 'webpack/tsconfig/build.json'
+				}
 			},
 			{
 				test: /\.(glsl|vs|fs)$/,
@@ -30,4 +30,7 @@ module.exports = merge(baseConfig,{
 			}
 		]
 	},
-});
+	externals: {
+		'three': 'THREE'
+	},
+} );
