@@ -2,7 +2,7 @@ import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "../shaders/shader";
 
-declare interface variable<T>{
+declare interface AnimatorVariable<T>{
 	time: number;
 	duration?: number;
 	value: T;
@@ -22,7 +22,7 @@ export declare interface AnimatorValiableParams<T> {
 
 export class Animator{
 
-	private variables: { [ key: string ]: variable<any> };
+	private variables: { [ key: string ]: AnimatorVariable<any> };
 	private _isAnimating: boolean = false;
 	private animatingCount: number = 0;
 	private dispatchEvents: Function[] = [];
@@ -120,6 +120,22 @@ export class Animator{
 		if( this.variables[name] ){
 
 			return this.variables[name].value;
+
+		}else{
+
+			console.warn( '"' + name + '"' + ' is not exist' );
+
+			return null;
+
+		}
+		
+	}
+
+	public getVariableObject<T>( name: string ): AnimatorVariable<T>{
+
+		if( this.variables[name] ){
+
+			return this.variables[name];
 
 		}else{
 
