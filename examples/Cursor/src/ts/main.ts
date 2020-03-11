@@ -1,29 +1,29 @@
-import * as ORE from '@ore-three-ts';
+import * as ORE from "@ore-three-ts";
 
-import { ControllerScene } from './CursorScene';
+import { CursorScene } from "./CursorScene";
 
-export class APP{
+export class APP {
 
 	private controller: ORE.Controller;
-	private scene: ControllerScene;
+	private scene: CursorScene;
 
-	constructor(){
+	constructor() {
 
 		this.controller = new ORE.Controller( {
-			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-			retina: true,
+			canvas: document.querySelector( "#canvas" ) as HTMLCanvasElement,
+			retina: true
 		} );
-		
-		this.scene = new ControllerScene();
+
+		this.scene = new CursorScene();
 
 		this.controller.bindScene( this.scene );
-		
+
 	}
 
 }
 
-window.addEventListener( 'load', () => {
+window.addEventListener( "load", () => {
 
-	let app = new APP();
+	const app = new APP();
 
-});
+} );

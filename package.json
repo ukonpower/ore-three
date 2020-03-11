@@ -32,6 +32,7 @@
 		"del": "^5.1.0",
 		"eslint": "^6.8.0",
 		"eslint-config-mdcs": "^4.2.3",
+		"glslify-loader": "^2.0.0",
 		"gulp": "^4.0.2",
 		"gulp-autoprefixer": "^7.0.1",
 		"gulp-cssmin": "^0.2.0",
@@ -54,6 +55,7 @@
 	},
 	"dependencies": {
 		"lethargy": "^1.0.9",
+		"raw-loader": "^4.0.0",
 		"to-px": "^1.1.0"
 	}
 }
