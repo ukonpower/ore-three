@@ -1,7 +1,1 @@
-import * as THREE from 'three';
-export interface Uniforms {
-    [key: string]: THREE.IUniform;
-}
-export declare namespace UniformsLib {
-    function CopyUniforms(uni1: Uniforms, uni2: Uniforms): Uniforms;
-}
+export declare var UniformsLib: any;
