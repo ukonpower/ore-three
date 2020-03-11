@@ -1,5 +1,6 @@
-const info = require('./info');
+const info = require( './info' );
 const gulp = require( 'gulp' );
+const gulpIf = require( 'gulp-if' );
 const minimist = require( 'minimist' );
 const webpackStream = require( 'webpack-stream' );
 const webpack = require( 'webpack' );
@@ -10,6 +11,7 @@ const sass = require( 'gulp-sass' );
 const cssmin = require( 'gulp-cssmin' );
 const del = require( 'del' );
 const fs = require( 'fs' );
+const eslint = require( 'gulp-eslint' );
 const typedoc = require( 'gulp-typedoc' );
 
 const options = minimist( process.argv.slice( 2 ), {
@@ -17,7 +19,7 @@ const options = minimist( process.argv.slice( 2 ), {
 		dev: 'untitle',
 		P: false,
 	}
-});
+} );
 
 
 /*-------------------
@@ -27,89 +29,116 @@ const options = minimist( process.argv.slice( 2 ), {
 const exDir = './examples/';
 const docsExDir = './docs/examples/';
 
-function buildPackages( cb ){
+function isFixed( file ) {
+
+	return file.eslint != null && file.eslint.fixed;
+
+}
+
+function esLint( cb ) {
+
+	let paths = [ './src/', './examples/' ];
+
+	for ( let i = 0; i < paths.length; i ++ ) {
+
+		gulp.src( paths[ i ] + '**/*.ts' )
+			.pipe( eslint( { useEslintrc: true, fix: true } ) ) // .eslintrc を参照
+			.pipe( eslint.format() )
+			.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
+			.pipe( eslint.failAfterError() );
+
+	}
+
+	cb();
+
+}
+
+function buildPackages( cb ) {
 
 	//min build
-	let confMin = require( './webpack/build-min.config' );
+	const confMin = require( './webpack/build-min.config' );
 
 	webpackStream( confMin, webpack )
 		.pipe( gulp.dest( './build/' ) );
 
 	//module build
-	let confModule = require( './webpack/build-module.config' );
-	
+	const confModule = require( './webpack/build-module.config' );
+
 	webpackStream( confModule, webpack )
 		.pipe( gulp.dest( './build/' ) );
 
+	//eslint
+	gulp.series( esLint );
+
 	//typedoc
 	gulp.src( './src' )
-		.pipe( typedoc({
+		.pipe( typedoc( {
 			module: "umd",
 			target: "es6",
 			out: "./docs/documentation",
 			mode: "file",
 			name: info.packageName,
 			moduleResolution: "node"
-		}));
+		} ) );
 
 	cb();
 
 }
 
-function buildExamples( cb ){
+function buildExamples( cb ) {
 
 	fs.readdir( exDir, ( err, files ) => {
 
 		if ( err ) throw err;
 
-		let conf = require( './webpack/build-example.config' );
+		const conf = require( './webpack/build-example.config' );
 		conf.mode = 'production';
 
-		for ( let i = 0; i < files.length; i++ ) {
+		for ( let i = 0; i < files.length; i ++ ) {
 
 			//set webpack entry files
-			conf.entry[files[i]] = exDir + files[i] + '/src/ts/main.ts';     
+			conf.entry[ files[ i ] ] = exDir + files[ i ] + '/src/ts/main.ts';
 
 			//sass
-			gulp.src( exDir + files[i] + "/src/scss/style.scss" )
+			gulp.src( exDir + files[ i ] + "/src/scss/style.scss" )
 				.pipe( plumber() )
 				.pipe( autoprefixer() )
 				.pipe( sass() )
 				.pipe( cssmin() )
-				.pipe( gulp.dest( docsExDir + files[i] + "/css/" ) )
+				.pipe( gulp.dest( docsExDir + files[ i ] + "/css/" ) );
 
 			//copy files
-			gulp.src( exDir + files[i] + '/src/html/**/*' ).pipe( gulp.dest( docsExDir + files[i] + '/' ) );
-			gulp.src( exDir + files[i] + '/src/assets/**/*' ).pipe( gulp.dest( docsExDir + files[i] + '/assets/' ) );
-			
+			gulp.src( exDir + files[ i ] + '/src/html/**/*' ).pipe( gulp.dest( docsExDir + files[ i ] + '/' ) );
+			gulp.src( exDir + files[ i ] + '/src/assets/**/*' ).pipe( gulp.dest( docsExDir + files[ i ] + '/assets/' ) );
+
 		}
-		
+
 		conf.output.filename = '[name]/js/main.js';
 
 		//webpack
 		webpackStream( conf, webpack )
 			.pipe( gulp.dest( docsExDir ) )
-			.on( 'end', cb )
+			.on( 'end', cb );
 
-	});
+	} );
 
 }
 
-function cleanBuildFiles( cb ){
+function cleanBuildFiles( cb ) {
 
-	del([
+	del( [
 		'./docs/examples/',
 		'./docs/documentation/',
 		'./types/'
-	],{
+	], {
 
 		force: true,
 
-	}).then( paths => {
+	} ).then( paths => {
 
 		cb();
 
-	});
+	} );
 
 }
 
@@ -120,46 +149,46 @@ function cleanBuildFiles( cb ){
 let srcDir = '';
 let distDir = '';
 
-function copyDevFiles( cb ){
+function copyDevFiles( cb ) {
 
 	gulp.src( srcDir + '/html/**/*' ).pipe( gulp.dest( distDir ) );
 	gulp.src( srcDir + '/assets/**/*' ).pipe( gulp.dest( distDir + '/assets/' ) );
 
 	browserSync.reload();
-	
+
 	cb();
 
 }
 
-function cleanDevFiles( cb ){
+function cleanDevFiles( cb ) {
 
-	del([
+	del( [
 		distDir,
-	],{
+	], {
 
 		force: true,
 
-	}).then( ( paths ) => {
+	} ).then( ( paths ) => {
 
 		cb();
 
-	});
+	} );
 
 }
 
-function webpackDev(){
+function webpackDev() {
 
-	let conf = require( './webpack/build-example.config' );
+	const conf = require( './webpack/build-example.config' );
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.mode = options.P ? 'production' : 'development';
 
 	return webpackStream( conf, webpack )
 		.pipe( gulp.dest( distDir + "/js/" ) )
-		.on( 'end', browserSync.reload )
+		.on( 'end', browserSync.reload );
 
 }
 
-function sassDev(){
+function sassDev() {
 
 	return gulp.src( srcDir + "/scss/style.scss" )
 		.pipe( plumber() )
@@ -167,41 +196,40 @@ function sassDev(){
 		.pipe( sass() )
 		.pipe( cssmin() )
 		.pipe( gulp.dest( distDir + "/css/" ) )
-		.pipe( browserSync.stream() )
+		.pipe( browserSync.stream() );
 
 }
 
-function brSync(){
+function brSync() {
 
-	browserSync.init({
+	browserSync.init( {
 		server: {
 			baseDir: distDir,
 			index: "index.html",
 		},
-	});
+	} );
 
 }
 
-function watch(){
+function watch() {
 
 	gulp.watch( './src/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/scss/*.scss', gulp.series( sassDev ) );
 	gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
 
-	console.log(srcDir + '/html/**/*');
-	
 }
 
-function setDevLibraryPath( cb ){
-	
+function setDevLibraryPath( cb ) {
+
 	srcDir = './examples/' + options.dev + '/src';
 	distDir = './examples/' + options.dev + '/public';
 
 	cb();
+
 }
 
-function setDevDocumentsPath( cb ){
+function setDevDocumentsPath( cb ) {
 
 	srcDir = './docs_src';
 	distDir = './docs';
@@ -210,12 +238,13 @@ function setDevDocumentsPath( cb ){
 
 }
 
-let develop = gulp.series( 
+const develop = gulp.series(
 	copyDevFiles,
 	gulp.parallel( webpackDev, sassDev ),
-	gulp.parallel( brSync, watch ),
+	gulp.parallel( brSync, watch )
 );
 
 exports.default = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
+exports.lint = gulp.series( esLint );
 exports.docs = gulp.series( setDevDocumentsPath, develop );
 exports.build = gulp.series( cleanBuildFiles, buildPackages, buildExamples, setDevDocumentsPath, develop );
