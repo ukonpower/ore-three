@@ -30,7 +30,11 @@ export namespace Lerps {
 		}
 	}
 
-	export function THREEVectors ( a: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, b: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, t: number ) {
+	export function THREEVectors( a: THREE.Vector2, b: THREE.Vector2, t: number );
+	export function THREEVectors( a: THREE.Vector3, b: THREE.Vector3, t: number );
+	export function THREEVectors( a: THREE.Vector4, b: THREE.Vector4, t: number );
+	export function THREEVectors( a: THREE.Color, b: THREE.Color, t: number );
+	export function THREEVectors( a: any, b: any, t: number ) {
 
 		return a.clone().lerp( b, t );
 
