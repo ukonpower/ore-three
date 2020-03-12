@@ -22,10 +22,10 @@ export declare interface AnimatorValiableParams<T> {
 
 export class Animator {
 
-	private variables: { [ key: string ]: AnimatorVariable<any> };
-	private _isAnimating: boolean = false;
-	private animatingCount: number = 0;
-	private dispatchEvents: Function[] = [];
+	protected variables: { [ key: string ]: AnimatorVariable<any> };
+	protected _isAnimating: boolean = false;
+	protected animatingCount: number = 0;
+	protected dispatchEvents: Function[] = [];
 
 	constructor() {
 

@@ -10,10 +10,10 @@ export class Cursor {
 	public onWheel: Function;
 	public attenuation: number = 0.9;
 
-	private _touchDown: boolean;
+	protected _touchDown: boolean;
 
-	private _position: THREE.Vector2;
-	private _delta: THREE.Vector2;
+	protected _position: THREE.Vector2;
+	protected _delta: THREE.Vector2;
 
 	public get position(): THREE.Vector2 {
 
@@ -107,7 +107,7 @@ export class Cursor {
 
 	}
 
-	private setPos( x: number, y: number ) {
+	protected setPos( x: number, y: number ) {
 
 		if (
 			this._position.x !== this._position.x ||
@@ -126,7 +126,7 @@ export class Cursor {
 
 	}
 
-	private _MouseEvent( type: string, event: MouseEvent | TouchEvent ) {
+	protected _MouseEvent( type: string, event: MouseEvent | TouchEvent ) {
 
 		let x: number;
 		let y: number;
@@ -193,7 +193,7 @@ export class Cursor {
 
 	}
 
-	private wheel( e: MouseWheelEvent ) {
+	protected wheel( e: MouseWheelEvent ) {
 
 		if ( this.onWheel ) {
 
