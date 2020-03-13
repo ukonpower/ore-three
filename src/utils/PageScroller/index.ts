@@ -628,7 +628,7 @@ export class PageScroller {
 
 			}
 
-			let percent = ( num ) / ( deno );
+			let percent = ( num ) / ( deno || 1 );
 
 			
 			this.sectionScrollPercentages[under.name] = Math.min( 1, Math.max( 0.0, percent ) );
