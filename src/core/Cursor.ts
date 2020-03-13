@@ -53,7 +53,7 @@ export class Cursor {
         
         let userAgent = navigator.userAgent;
 
-        if ( userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 ) {
+        if ( userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || (navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && (navigator as any ).standalone !== undefined )) {
         
             window.addEventListener( 'touchstart', this._MouseEvent.bind( this, 'start' ) );
             window.addEventListener( 'touchmove', this._MouseEvent.bind( this, 'move' ), { passive: false } );
