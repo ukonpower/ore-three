@@ -3,9 +3,10 @@ const path = require( 'path' );
 module.exports = {
 	resolve: {
 		modules: [ 'node_modules' ],
-		extensions: [ '.ts', '.js' ],
+		extensions: [ '.ts', '.js', '.fs', '.vs', '.glsl' ],
 		alias: {
-			"@ore-three-ts": path.resolve( __dirname, '../src/' )
+			"@ore-three-ts": path.resolve( __dirname, '../src/' ),
+			"@shaders": path.resolve( __dirname, '../src/shaders/shader-modules' )
 		}
 	},
 	module: {
@@ -21,8 +22,17 @@ module.exports = {
 			{
 				test: /\.(glsl|vs|fs)$/,
 				use: [
-					'raw-loader',
-					'glslify-loader'
+					{
+						loader: 'shader-loader',
+						options: {
+							glsl: {
+								chunkPath: 'src/shader/modules/'
+							}
+						}
+					},
+					{
+						loader: 'glslify-loader'
+					}
 				]
 			}
 		]
