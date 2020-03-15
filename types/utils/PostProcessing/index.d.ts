@@ -14,6 +14,7 @@ export interface PPParam {
     uniforms?: Uniforms;
     transparent?: boolean;
     blending?: THREE.Blending;
+    vertexShader?: string;
 }
 export interface EffectMaterial {
     material: THREE.ShaderMaterial;
@@ -30,7 +31,7 @@ export declare class PostProcessing {
     resolution: THREE.Vector2;
     resolutionRatio: number;
     private effectMaterials;
-    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number);
+    constructor(renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number, resolution?: THREE.Vector2);
     private initRenderTargets;
     createRenderTarget(): THREE.WebGLRenderTarget;
     private swapBuffers;

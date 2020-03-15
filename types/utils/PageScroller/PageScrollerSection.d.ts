@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import { PageScrollerEasing, PageScroller } from '.';
+import { PageScroller } from '.';
+import { EasingSet } from '../Easings';
 export declare interface PageScrollerSectionParam {
     name: string;
     bottom?: Boolean;
-    element: HTMLElement;
+    element: Element | string;
     events?: PageScrollerEvents;
     stop?: boolean;
     sectionEasings?: ScrollerSectionEasings;
@@ -25,8 +26,8 @@ declare interface ScrollEventArgs {
     scrollMode: string;
 }
 export declare interface ScrollerSectionEasings {
-    position?: PageScrollerEasing;
-    rotation?: PageScrollerEasing;
+    position?: EasingSet;
+    rotation?: EasingSet;
 }
 declare interface PageScrollerSectionRect {
     width: number;
@@ -41,6 +42,8 @@ export declare class PageScrollerSection {
     stop?: boolean;
     bottom?: Boolean;
     num: number;
+    scrollPosition: number;
+    private _selector;
     private _name;
     private _element;
     private _events;
@@ -49,6 +52,7 @@ export declare class PageScrollerSection {
     get element(): HTMLElement;
     get events(): PageScrollerEvents;
     get rect(): PageScrollerSectionRect;
+    get selector(): string;
     constructor(param: PageScrollerSectionParam);
     resize(pageOffset: number): void;
     addArrivalEvent(...customEvents: onArrivalEvent[]): void;

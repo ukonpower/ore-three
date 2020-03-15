@@ -1,6 +1,11 @@
+export declare interface EasingSet {
+    func: Function;
+    variables?: number[];
+}
 export declare namespace Easings {
     function sigmoid(x: number, variables: number[]): number;
     function smoothstep(min: number, max: number, value: number): number;
+    function lerpNumber(a: number, b: number, t: number): number;
     function linear(t: number): number;
     function easeInQuad(t: number): number;
     function easeOutQuad(t: number): number;

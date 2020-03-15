@@ -24,5 +24,5 @@ export declare class BaseScene {
     onTouchMove(cursor: Cursor, event: MouseEvent): void;
     onTouchEnd(cursor: Cursor, event: MouseEvent): void;
     onHover(cursor: Cursor): void;
-    onWheel(event: WheelEvent): void;
+    onWheel(event: WheelEvent, trackpadDelta: number): void;
 }
