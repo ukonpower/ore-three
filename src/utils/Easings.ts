@@ -1,11 +1,11 @@
 export declare interface EasingSet{
 	func: Function;
-	variables?: number[];
+	args?: number | number[];
 }
 
 export namespace Easings {
 
-	export function sigmoid( x: number, variables: number[] ): number {
+	export function sigmoid( x: number, ...variables: number[] ): number {
 
 		let weight = 6;
 

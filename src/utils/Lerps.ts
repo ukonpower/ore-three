@@ -1,4 +1,3 @@
-
 export declare interface LerpFunc<T>{
 	( a: T, b: T, t: number ): T;
 }

@@ -48,7 +48,7 @@ export class Animator {
 			value: params.initValue,
 			startValue: params.initValue,
 			goalValue: null,
-			easing: params.easing || { func: Easings.sigmoid, variables: [ 6 ] },
+			easing: params.easing || { func: Easings.sigmoid, args: 6 },
 			lerpFunc: lerpFunc,
 		};
 
@@ -183,7 +183,7 @@ export class Animator {
 
 				if ( variable.easing ) {
 
-					t = variable.easing.func( t, variable.easing.variables );
+					t = variable.easing.func( t, variable.easing.args );
 
 				}
 
