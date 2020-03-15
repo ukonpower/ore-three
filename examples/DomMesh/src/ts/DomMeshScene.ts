@@ -7,7 +7,7 @@ import domMeshFrag3 from './shaders/domMesh3.fs';
 
 export class DomMeshScene extends ORE.BaseScene {
 
-	private domMesh: ORE.DomMesh[] = [];
+	private domMesh: ORE.DOMMesh[] = [];
 	private uniforms: ORE.Uniforms;
 
 	constructor() {
@@ -27,21 +27,21 @@ export class DomMeshScene extends ORE.BaseScene {
 		};
 
 		this.domMesh.push(
-			new ORE.DomMesh( document.querySelector( '#meshElement1' ), {
+			new ORE.DOMMesh( document.querySelector( '#meshElement1' ), {
 				fragmentShader: domMeshFrag1,
 				uniforms: this.uniforms,
 			} )
 		);
 
 		this.domMesh.push(
-			new ORE.DomMesh( document.querySelector( '#meshElement2' ), {
+			new ORE.DOMMesh( document.querySelector( '#meshElement2' ), {
 				fragmentShader: domMeshFrag2,
 				uniforms: this.uniforms,
 			} )
 		);
 
 		this.domMesh.push(
-			new ORE.DomMesh( document.querySelector( '#meshElement3' ), {
+			new ORE.DOMMesh( document.querySelector( '#meshElement3' ), {
 				fragmentShader: domMeshFrag3,
 				uniforms: this.uniforms,
 			} )
@@ -56,6 +56,8 @@ export class DomMeshScene extends ORE.BaseScene {
 	}
 
 	public animate( deltaTime: number ) {
+
+		this.uniforms.time.value = this.time;
 
 		for ( let i = 0; i < this.domMesh.length; i ++ ) {
 

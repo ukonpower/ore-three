@@ -3,7 +3,7 @@ import vert from './domMesh.vs';
 import { ShaderMaterial, ShaderMaterialParameters } from 'three';
 import { Uniforms, UniformsLib } from '../Uniforms';
 
-export class DomMesh extends THREE.Mesh {
+export class DOMMesh extends THREE.Mesh {
 
 	private _uniforms: Uniforms;
 	private element: HTMLElement;
