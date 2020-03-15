@@ -152,7 +152,7 @@ export class OimoAdapter{
 			}
 
 			param.pos = [ obj.position.x, obj.position.y, obj.position.z ];
-			param.rot = [ obj.rotation.x * THREE.Math.RAD2DEG, obj.rotation.y * THREE.Math.RAD2DEG, obj.rotation.z * THREE.Math.RAD2DEG ];
+			param.rot = [ obj.rotation.x * THREE.MathUtils.RAD2DEG, obj.rotation.y * THREE.MathUtils.RAD2DEG, obj.rotation.z * THREE.MathUtils.RAD2DEG ];
 
 		}
 

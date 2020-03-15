@@ -20,25 +20,25 @@ export class Cursor {
     
     public get position(): THREE.Vector2 {
 
-        return this._position;
+        return this._position.clone();
     
     }
 
     public get delta(): THREE.Vector2 { 
 
-        return this._delta;
+        return this._delta.clone();
 
     }
 
     public get hoverPosition(): THREE.Vector2 {
 
-        return this._hoverPosition;
+        return ( this._hoverPosition.x == this._hoverPosition.x ) ? this._hoverPosition.clone() : new THREE.Vector2().set( NaN, NaN );
 
     }
     
     public get hoverDelta(): THREE.Vector2 {
 
-        return this._hoverDelta;
+        return ( this.hoverDelta.x == this.hoverDelta.x ) ? this.hoverDelta.clone() : new THREE.Vector2().set( NaN, NaN );
         
     }
 
@@ -53,7 +53,7 @@ export class Cursor {
         
         let userAgent = navigator.userAgent;
 
-        if ( userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 ) {
+        if ( userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || (navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && (navigator as any ).standalone !== undefined )) {
         
             window.addEventListener( 'touchstart', this._MouseEvent.bind( this, 'start' ) );
             window.addEventListener( 'touchmove', this._MouseEvent.bind( this, 'move' ), { passive: false } );
@@ -161,7 +161,6 @@ export class Cursor {
             }
 
         }
-
         
         if( type == 'start' ){
 
@@ -193,13 +192,13 @@ export class Cursor {
 
             this._touchDown = false;
             
-            this.setPos( x, y );
-
             if( this.onTouchEnd ){
 
                 this.onTouchEnd( event );
                 
             }
+
+            this.setPos( x, y );
             
         }
 

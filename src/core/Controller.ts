@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import { Cursor } from './Cursor';
-import * as ORE from '../scene/BaseScene';
+import { BaseScene, ResizeArgs } from '../scene/BaseScene';
+
+import { Lethargy } from 'lethargy';
+import { toPx } from 'to-px';
 
 const VERSION = require(  "../../package.json"  ).version;
 
@@ -12,11 +15,12 @@ export declare interface ControllerParam extends THREE.WebGLRendererParameters{
 export declare interface GlobalProperties{    
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
+    resizeArgs: ResizeArgs;
 }
 
 export class Controller {
 
-    public currentScene: ORE.BaseScene;
+    public currentScene: BaseScene;
 
     public renderer: THREE.WebGLRenderer;
     public cursor: Cursor;
@@ -48,7 +52,8 @@ export class Controller {
 
         this.gProps = {
             renderer: this.renderer,
-            cursor: this.cursor
+            cursor: this.cursor,
+            resizeArgs: null
         }
 
         window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
@@ -76,7 +81,7 @@ export class Controller {
 
     }
     
-    public bindScene( scene: ORE.BaseScene ){
+    public bindScene( scene: BaseScene ){
 
         this.currentScene = scene;
 
@@ -104,17 +109,22 @@ export class Controller {
         let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight )
         
         this.renderer.setSize( windowSize.x, windowSize.y );
-               
+
+        let resizeArgs: ResizeArgs = {
+            aspectRatio: windowSize.x / windowSize.y,
+            pixelRatio: this.renderer.getPixelRatio(),
+            windowSize: windowSize,
+            windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
+        }
+        
+        this.gProps.resizeArgs = resizeArgs;
+        
         if( this.currentScene ){
         
-            this.currentScene.onResize({
-                aspectRatio: windowSize.x / windowSize.y,
-                pixelRatio: this.renderer.getPixelRatio(),
-                windowSize: windowSize,
-                windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
-            });
+            this.currentScene.onResize( resizeArgs );
         
         }
+
     }
 
     
@@ -164,11 +174,63 @@ export class Controller {
 
     }
 
+    private memDelta = 0;
+	private max: boolean = false;
+	private lethargy = new Lethargy(7, 0, 0.05);
+    
     public onWheel( e: WheelEvent ) { 
 
+        let delta = e.deltaY;
+        let trackpadDelta = 0;
+
+		switch ( e.deltaMode ) {
+
+			case e.DOM_DELTA_LINE:
+				delta *= toPx( 'ex', window ) * 2.5;
+                break;
+                
+			case e.DOM_DELTA_PAGE:
+				delta *= window.innerHeight;
+                break;
+                
+		}
+
+		if( this.lethargy.check( e ) ) {
+
+			trackpadDelta = delta;
+
+		}else{
+
+			let d = delta - this.memDelta;
+
+			if( Math.abs( d ) > 50 ) {
+
+				this.memDelta = d;
+				trackpadDelta = delta;
+				
+				this.max = true;
+
+			}else if( d == 0 ) {
+
+				if( this.max ) {
+
+					trackpadDelta = delta;
+					
+				}
+
+			}else if( d < 0 ) {
+
+				this.max = false;
+
+			}
+
+			this.memDelta = (delta);
+
+        }
+        
         if( this.currentScene ){
 
-            this.currentScene.onWheel( e );
+            this.currentScene.onWheel( e, trackpadDelta );
 
         }
 

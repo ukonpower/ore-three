@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { PageScrollerEasing, PageScroller } from '.';
+import { PageScroller } from '.';
+import { EasingSet } from '../Easings';
 
 export declare interface PageScrollerSectionParam{
 	name: string;
 	bottom?: Boolean;
-	element: HTMLElement;
+	element: Element | string;
 	events?: PageScrollerEvents;
 	stop?: boolean;
 	sectionEasings?: ScrollerSectionEasings;
@@ -30,8 +31,8 @@ declare interface ScrollEventArgs{
 }
 
 export declare interface ScrollerSectionEasings{
-	position?: PageScrollerEasing,
-	rotation?: PageScrollerEasing
+	position?: EasingSet,
+	rotation?: EasingSet
 }
 
 declare interface PageScrollerSectionRect{
@@ -49,7 +50,9 @@ export class PageScrollerSection{
 	public stop?: boolean;
 	public bottom?: Boolean;
 	public num: number;
+	public scrollPosition: number;
 
+	private _selector: string;
 	private _name: string
 	private _element: HTMLElement;
 	private _events: PageScrollerEvents;
@@ -79,9 +82,34 @@ export class PageScrollerSection{
 
 	}
 
+	public get selector() {
+
+		return this._selector;
+		
+	}
+
 	constructor( param: PageScrollerSectionParam ){
 
-		let clientRect  = ( param.element as HTMLElement ).getBoundingClientRect();
+		if( !param.element ){
+
+			console.error( '"' + param.name + '"' + ' Element is null.' );
+			
+		}
+
+		let elm: Element;
+
+		if( typeof param.element == 'string' ) {
+			
+			elm = document.querySelector( param.element )
+			this._selector = param.element;
+
+		} else {
+
+			elm = param.element;
+			
+		}
+		
+		let clientRect  = ( elm as HTMLElement ).getBoundingClientRect();
 
 		let rect: PageScrollerSectionRect = {
 			top: clientRect.top,
@@ -91,7 +119,7 @@ export class PageScrollerSection{
 		}
 
 		this._name = param.name;
-		this._element = param.element;
+		this._element = elm as HTMLElement;
 		this._rect = rect;
 		this.bottom = param.bottom || false;
 		this.stop = param.stop || false;
