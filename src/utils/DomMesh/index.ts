@@ -5,8 +5,8 @@ import { Uniforms, UniformsLib } from '../Uniforms';
 
 export class DOMMesh extends THREE.Mesh {
 
-	private _uniforms: Uniforms;
-	private element: HTMLElement;
+	protected _uniforms: Uniforms;
+	protected element: HTMLElement;
 
 	constructor( element: HTMLElement, parameter: ShaderMaterialParameters ) {
 
