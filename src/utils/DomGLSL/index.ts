@@ -3,6 +3,10 @@ import vert from './domglsl.vs';
 import { ShaderMaterial, ShaderMaterialParameters } from 'three';
 import { Uniforms } from '../../shaders/shader';
 
+export declare interface DomGLSLParam extends ShaderMaterialParameters{
+	depth?: number;
+}
+
 export class DomGLSL extends THREE.Mesh {
 	
 	private uni: Uniforms;
@@ -11,8 +15,7 @@ export class DomGLSL extends THREE.Mesh {
 	private domSize: THREE.Vector2;
 	private windowSize: THREE.Vector2;
 
-
-	constructor( element: HTMLElement, parameter: ShaderMaterialParameters ) {
+	constructor( element: HTMLElement, parameter: DomGLSLParam ) {
 
 		let geo = new THREE.PlaneBufferGeometry( 2, 2, 1, 1 );
 		
@@ -44,6 +47,10 @@ export class DomGLSL extends THREE.Mesh {
 			value: this.windowSize
 		}
 
+		this.uni.depth = {
+			value: parameter.depth || 0.0
+		}
+
 	}
 
 	public get uniforms(){
@@ -51,6 +58,12 @@ export class DomGLSL extends THREE.Mesh {
 		return this.uni;
 	}
 
+	public setElement( element: HTMLElement ) {
+
+		this.dom = element;
+
+	}
+	
 	public updateDom(): void {
 	
 		this.windowSize.set( window.innerWidth, window.innerHeight );
