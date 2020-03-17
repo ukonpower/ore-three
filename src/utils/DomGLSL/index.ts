@@ -30,7 +30,18 @@ export class DomGLSL extends THREE.Mesh {
 		this.dom = element;
 		this.uni = parameter.uniforms;
 
-		let rect = this.dom.getBoundingClientRect();
+		let rect: DOMRect;
+
+		if( this.dom ) {
+			
+			rect = this.dom.getBoundingClientRect();
+
+		}else {
+
+			rect = new DOMRect();
+			
+		}
+		
 		this.domPos = new THREE.Vector2( rect.left, rect.right );
 		this.domSize = new THREE.Vector2( rect.width, rect.height );
 		this.windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
@@ -66,6 +77,8 @@ export class DomGLSL extends THREE.Mesh {
 	
 	public updateDom(): void {
 	
+		if( !this.dom ) return;
+		
 		this.windowSize.set( window.innerWidth, window.innerHeight );
 	
 		let rect = this.dom.getBoundingClientRect();
