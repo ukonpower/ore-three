@@ -3,7 +3,7 @@ import { Cursor } from './Cursor';
 import { BaseScene, ResizeArgs } from '../scene/BaseScene';
 
 import { Lethargy } from 'lethargy';
-import { toPx } from 'to-px';
+import toPx from 'to-px';
 
 const VERSION = require(  "../../package.json"  ).version;
 
@@ -183,6 +183,9 @@ export class Controller {
         let delta = e.deltaY;
         let trackpadDelta = 0;
 
+        console.log( toPx );
+        
+        
 		switch ( e.deltaMode ) {
 
 			case e.DOM_DELTA_LINE:
