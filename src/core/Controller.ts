@@ -183,9 +183,6 @@ export class Controller {
         let delta = e.deltaY;
         let trackpadDelta = 0;
 
-        console.log( toPx );
-        
-        
 		switch ( e.deltaMode ) {
 
 			case e.DOM_DELTA_LINE:
