@@ -198,6 +198,8 @@ export class PageScroller {
 
 		}
 
+		if( mode == 'auto' ) unLock = true;
+		
 		if( unLock ){
 
 			this.isStop = false;
