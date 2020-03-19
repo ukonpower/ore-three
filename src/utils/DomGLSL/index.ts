@@ -19,7 +19,7 @@ export class DomGLSL extends THREE.Mesh {
 
 		let geo = new THREE.PlaneBufferGeometry( 2, 2, 1, 1 );
 		
-		parameter.vertexShader = vert;
+		parameter.vertexShader = parameter.vertexShader || vert;
 
 		let mat = new THREE.ShaderMaterial( parameter );
 		
