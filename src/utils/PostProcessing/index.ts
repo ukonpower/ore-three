@@ -20,35 +20,22 @@ export class PostProcessing {
     protected writeBuffer: THREE.WebGLRenderTarget;
     public resultBuffer: THREE.WebGLRenderTarget;
     public resolution: THREE.Vector2;
-    public resolutionRatio: number;
 
     protected effectMaterials: [EffectMaterial];
 
-    constructor( renderer: THREE.WebGLRenderer, parameter: PPParam[], resolutionRatio?: number, resolution?: THREE.Vector2 ) {
+    constructor( renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: THREE.Vector2 ) {
 
     	this.renderer = renderer;
-    	this.resolutionRatio = resolutionRatio ? resolutionRatio : this.renderer.getPixelRatio();
 
     	this.resolution = new THREE.Vector2();
-
-    	if ( resolution ) {
-
-    		this.resolution.copy( resolution );
-
-    	} else {
-
-    		this.renderer.getSize( this.resolution );
-
-    	}
-
-    	this.resolution.multiplyScalar( ( this.resolutionRatio ? this.resolutionRatio : this.renderer.pixelRatio ) );
-
     	this.scene = new THREE.Scene();
     	this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
     	this.screenMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), null );
     	this.scene.add( this.screenMesh );
 
     	this.initRenderTargets();
+
+    	this.resize( resolution );
 
     	parameter.forEach( ( param ) => {
 
@@ -94,7 +81,7 @@ export class PostProcessing {
 
     }
 
-    protected createRenderTarget() {
+    public createRenderTarget() {
 
     	return new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y );
 
@@ -181,15 +168,25 @@ export class PostProcessing {
 
     }
 
-    public resize( windowPixelSize: THREE.Vector2 ) {
+    public resize( resolution?: THREE.Vector2 ) {
 
-    	let res = windowPixelSize.clone().multiplyScalar( this.resolutionRatio );
+    	let res = new THREE.Vector2();
 
-    	this.resolution.set( res.x, res.y );
+    	if ( resolution ) {
 
-    	this.readBuffer.setSize( res.x, res.y );
+    		res.copy( resolution );
 
-    	this.writeBuffer.setSize( res.x, res.y );
+    	} else {
+
+    		this.renderer.getSize( res ).multiplyScalar( this.renderer.getPixelRatio() );
+
+    	}
+
+    	this.resolution.copy( res );
+
+    	this.readBuffer.setSize( this.resolution.x, this.resolution.y );
+
+    	this.writeBuffer.setSize( this.resolution.x, this.resolution.y );
 
     }
 
