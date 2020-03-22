@@ -10,6 +10,8 @@ export class Cursor {
 	public onWheel: Function;
 	public attenuation: number = 0.9;
 
+	protected isSP: boolean;
+
 	protected _touchDown: boolean;
 
 	protected _position: THREE.Vector2;
@@ -35,9 +37,7 @@ export class Cursor {
 		let userAgent = navigator.userAgent;
 
 		if (
-			userAgent.indexOf( "iPhone" ) >= 0 ||
-			userAgent.indexOf( "iPad" ) >= 0 ||
-			userAgent.indexOf( "Android" ) >= 0
+			userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined )
 		) {
 
 			window.addEventListener(
@@ -73,10 +73,12 @@ export class Cursor {
 
 	}
 
-	public getNormalizePosition( resolution: THREE.Vector2 ) {
+	public getNormalizePosition( windowSize: THREE.Vector2 ) {
 
-		let p = this.position
-			.divide( resolution )
+		if ( this._position.x != this._position.x ) return new THREE.Vector2( NaN, NaN );
+
+		let p = this._position.clone()
+			.divide( windowSize )
 			.multiplyScalar( 2.0 )
 			.subScalar( 1.0 );
 		p.y *= - 1;
@@ -187,8 +189,6 @@ export class Cursor {
 
 			}
 
-			this.setPos( x, y );
-
 		}
 
 	}
@@ -207,7 +207,7 @@ export class Cursor {
 
 		this._delta.multiplyScalar( this.attenuation );
 
-		if ( this.onHover ) {
+		if ( this.onHover && ! this.isSP ) {
 
 			this.onHover();
 

@@ -11,9 +11,19 @@ export class CursorScene extends ORE.BaseScene {
 
 	}
 
+	private weight: number = 5;
+
 	public onBind( gProps: ORE.GlobalProperties ) {
 
 		super.onBind( gProps );
+
+		this.camera.position.set( 0, 0, 10 );
+
+		let geo = new THREE.BoxBufferGeometry();
+		let mat = new THREE.MeshNormalMaterial();
+
+		this.box = new THREE.Mesh( geo, mat );
+		this.scene.add( this.box );
 
 	}
 
@@ -25,25 +35,31 @@ export class CursorScene extends ORE.BaseScene {
 
 	public onTouchStart( cursor: ORE.Cursor, e: MouseEvent ) {
 
-		console.log( cursor.position, cursor.delta );
+		this.box.scale.setScalar( 1.5 );
 
 	}
 
 	public onTouchMove( cursor: ORE.Cursor, e: MouseEvent ) {
 
-		console.log( cursor.position, cursor.delta );
+		let cursorPos = cursor.getNormalizePosition( this.gProps.resizeArgs.windowSize );
+
+		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
+
+		e.preventDefault();
 
 	}
 
 	public onTouchEnd( cursor: ORE.Cursor, e: MouseEvent ) {
 
-		console.log( cursor.position, cursor.delta );
+		this.box.scale.setScalar( 1.0 );
 
 	}
 
 	public onHover( cursor: ORE.Cursor ) {
 
-		console.log( cursor.getNormalizePosition( this.gProps.resizeArgs.windowSize ), cursor.delta );
+		let cursorPos = cursor.getNormalizePosition( this.gProps.resizeArgs.windowSize );
+
+		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
 
 	}
 
