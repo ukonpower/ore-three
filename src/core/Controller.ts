@@ -3,7 +3,7 @@ import { Cursor } from '../utils/Cursor';
 import { BaseScene } from '../core/BaseScene';
 
 import { Lethargy } from 'lethargy';
-import { toPx } from 'to-px';
+import toPx from 'to-px';
 
 const VERSION = require( "../../package.json" ).version;
 
