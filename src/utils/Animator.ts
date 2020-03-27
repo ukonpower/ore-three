@@ -70,7 +70,7 @@ export class Animator {
 
 	}
 
-	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function ) {
+	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingSet ) {
 
 		let variable = this.variables[ name ];
 
@@ -90,6 +90,12 @@ export class Animator {
 			variable.startValue = variable.value;
 			variable.goalValue = goalValue;
 			variable.onAnimationFinished = callback;
+
+			if ( easing ) {
+
+				this.setEasing( name, easing );
+
+			}
 
 		} else {
 
@@ -163,11 +169,29 @@ export class Animator {
 
 	public update( deltaTime?: number ) {
 
+		if ( this.animatingCount == 0 ) {
+
+			this._isAnimating = false;
+
+		}
+
 		let keys = Object.keys( this.variables );
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
 			let variable = this.variables[ keys[ i ] ];
+
+			if ( variable.time == 1.0 ) {
+
+				this.animatingCount --;
+
+				if ( variable.onAnimationFinished ) {
+
+					this.dispatchEvents.push( variable.onAnimationFinished );
+
+				}
+
+			}
 
 			if ( variable.time < 1.0 ) {
 
@@ -191,19 +215,7 @@ export class Animator {
 
 				if ( variable.time == 1.0 ) {
 
-					this.animatingCount --;
-
-					if ( this.animatingCount == 0 ) {
-
-						this._isAnimating = false;
-
-					}
-
-					if ( variable.onAnimationFinished ) {
-
-						this.dispatchEvents.push( variable.onAnimationFinished );
-
-					}
+					variable.value = variable.goalValue;
 
 				}
 
