@@ -30,13 +30,15 @@ export class PageScrollerScene extends ORE.BaseScene {
 		this.scroller.add( new ORE.PageScrollerSection( {
 			name: 'sec1',
 			element: document.querySelector( '.section1' ),
-			stop: false
+			stop: true,
+			bottom: false,
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {
 			name: 'sec2',
 			element: document.querySelector( '.section2' ),
 			stop: true,
+			bottom: true,
 			events: {
 				onStartScroll: {
 					down: ( args ) => {
@@ -63,7 +65,8 @@ export class PageScrollerScene extends ORE.BaseScene {
 					up: ( args ) => {
 
 						this.scroller.autoMove( {
-							target: 'sec2'
+							target: 'sec2',
+							bottom: true
 						} );
 
 					},
@@ -74,8 +77,8 @@ export class PageScrollerScene extends ORE.BaseScene {
 		this.scroller.add( new ORE.PageScrollerSection( {
 			name: 'sec4',
 			element: document.querySelector( '.section4' ),
-			stop: false,
-			bottom: false,
+			stop: true,
+			bottom: true,
 			events: {
 				onArrivals: [
 					{
@@ -114,6 +117,8 @@ export class PageScrollerScene extends ORE.BaseScene {
 		this.scroller.update( deltaTime );
 
 		this.camera.position.y = - this.scroller.scrollPercentageDelay * 5.0;
+
+		console.log( this.scroller.scrollTimelinePercentage );
 
 		this.renderer.render( this.scene, this.camera );
 

@@ -51,6 +51,7 @@ export class PageScrollerSection {
 	public startScrollDown: number;
 	public events: PageScrollerEvents;
 	public bottom: boolean;
+	public timelinePercentage: number = 0;
 
 	constructor( params: PageScrollerSectionParams ) {
 
@@ -80,6 +81,25 @@ export class PageScrollerSection {
 			width: this.element.offsetWidth,
 			height: this.element.offsetHeight
 		};
+
+	}
+
+	public getScrollPercentage( offsetPos?: number ) {
+
+		let bottomOffset = ( this.bottom ? this.rect.height - window.innerHeight : 0 );
+		let pos = ( this.rect.y + bottomOffset ) - ( offsetPos || 0 );
+
+		let firstHalfHeight = this.bottom ? this.rect.height : window.innerHeight;
+		let firstHalf = Math.min( 1.0, 1.0 - ( pos / firstHalfHeight ) );
+
+		let secondHalfHeight = this.bottom ? window.innerHeight : this.rect.height;
+		let secondHalf = Math.max( 0.0, - pos / secondHalfHeight );
+
+		let percentage = firstHalf + secondHalf;
+
+		this.timelinePercentage = percentage;
+
+		return percentage;
 
 	}
 

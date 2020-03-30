@@ -89,9 +89,52 @@ export class PageScroller {
 
 	}
 
+	public get scrollTimelinePercentage() {
+
+		let sum = 0;
+
+		for ( let i = 0; i < this.sections.length; i ++ ) {
+
+			let sec = this.sections[ i ];
+			let secBef = this.sections[ i - 1 ];
+
+			let a = Math.max( 0.0, sec.element.offsetTop - this.scrollPosDelay + ( sec.bottom ? sec.rect.height - window.innerHeight : 0 ) );
+			let b = ( ( secBef ? secBef.rect.height - ( secBef.bottom ? window.innerHeight : 0 ) : 0 ) + ( sec.bottom ? sec.rect.height - window.innerHeight : 0 ) ) || 1;
+
+			let d = 1.0 - ( a / b );
+			d = Math.max( 0.0, d );
+
+			sum += d;
+
+			if ( d < 1.0 ) break;
+
+		}
+
+		return sum / this.sections.length;
+
+	}
+
 	public add( section: PageScrollerSection ) {
 
 		this.sections.push( section );
+
+		this.sortSections();
+
+	}
+
+	public sortSections() {
+
+		this.sections.sort( ( a: PageScrollerSection, b: PageScrollerSection ): number => {
+
+			return a.rect.y > b.rect.y ? 1 : - 1;
+
+		} );
+
+		for ( let i = 0; i < this.sections.length; i ++ ) {
+
+			this.sections[ i ].timelinePercentage = ( i + 1 ) / this.sections.length;
+
+		}
 
 	}
 
@@ -262,8 +305,8 @@ export class PageScroller {
 
 		if ( ! section.events ) return null;
 
-		let percentage = this.getSectionScrollPercentage( section );
-		let movedPercentage = this.getSectionScrollPercentage( section, scrollDelta );
+		let percentage = section.getScrollPercentage();
+		let movedPercentage = section.getScrollPercentage( scrollDelta );
 
 		let args: PageScrollerEventArgs = {
 			scroller: this,
@@ -312,24 +355,6 @@ export class PageScroller {
 		}
 
 		return null;
-
-	}
-
-	protected getSectionScrollPercentage( section: PageScrollerSection, offsetPos?: number ) {
-
-		let bottomOffset = ( section.bottom ? section.rect.height - window.innerHeight : 0 );
-		let pos = ( section.rect.y + bottomOffset ) - ( offsetPos || 0 );
-
-		let firstHalfHeight = section.bottom ? section.rect.height : window.innerHeight;
-		let firstHalf = Math.min( 1.0, 1.0 - ( pos / firstHalfHeight ) );
-
-
-		let secondHalfHeight = section.bottom ? window.innerHeight : section.rect.height;
-		let secondHalf = Math.max( 0.0, - pos / secondHalfHeight );
-
-		let percentage = firstHalf + secondHalf;
-
-		return percentage;
 
 	}
 
