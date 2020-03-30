@@ -81,10 +81,13 @@
 								<li class="tsd-kind-class"><a href="classes/animator.html" class="tsd-kind-icon">Animator</a></li>
 								<li class="tsd-kind-class"><a href="classes/background.html" class="tsd-kind-icon">Background</a></li>
 								<li class="tsd-kind-class"><a href="classes/basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a></li>
+								<li class="tsd-kind-class"><a href="classes/bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a></li>
 								<li class="tsd-kind-class"><a href="classes/controller.html" class="tsd-kind-icon">Controller</a></li>
 								<li class="tsd-kind-class"><a href="classes/cursor.html" class="tsd-kind-icon">Cursor</a></li>
 								<li class="tsd-kind-class"><a href="classes/dommesh.html" class="tsd-kind-icon">DOMMesh</a></li>
 								<li class="tsd-kind-class"><a href="classes/gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a></li>
+								<li class="tsd-kind-class"><a href="classes/pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a></li>
+								<li class="tsd-kind-class"><a href="classes/pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a></li>
 								<li class="tsd-kind-class"><a href="classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a></li>
 								<li class="tsd-kind-class"><a href="classes/timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a></li>
 							</ul>
@@ -102,6 +105,12 @@
 								<li class="tsd-kind-interface"><a href="interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/lerpfunc.html" class="tsd-kind-icon">Lerp<wbr>Func</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/pagescrollerautomoveparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Auto<wbr>Move<wbr>Param</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/pagescrollerevent.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/pagescrollereventargs.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event<wbr>Args</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/pagescrollersectionparams.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Params</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/timelineanimatoraddparams.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Add<wbr>Params</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/timelineanimatorkeyframe.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Key<wbr>Frame</a></li>
@@ -126,7 +135,7 @@
 					<div class="tsd-signature tsd-kind-icon">VERSION<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = require( &quot;../../package.json&quot; ).version</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/9a957bc/src/core/Controller.ts#L8">src/core/Controller.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/5483a32/src/core/Controller.ts#L8">src/core/Controller.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -161,6 +170,9 @@
 						<a href="classes/basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/controller.html" class="tsd-kind-icon">Controller</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -171,6 +183,12 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
@@ -207,6 +225,24 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pagescrollerautomoveparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Auto<wbr>Move<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pagescrollerevent.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pagescrollereventargs.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pagescrollersectionparams.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
