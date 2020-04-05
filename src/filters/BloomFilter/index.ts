@@ -20,7 +20,7 @@ export class BloomFilter {
 	protected sceneRenderTarget: THREE.WebGLRenderTarget;
 
 	//uniforms
-	private _blurRange: number = 4;
+	private _blurRange: number = 2;
 	public sceneTex: THREE.IUniform;
 	protected commonUniforms: Uniforms;
 
@@ -173,7 +173,8 @@ export class BloomFilter {
 
 		} else {
 
-			this.renderer.getSize( res ).multiplyScalar( this.renderer.getPixelRatio() );
+			res.set( window.innerWidth, window.innerHeight );
+			res.multiplyScalar( this.renderer.getPixelRatio() );
 
 		}
 
@@ -183,9 +184,9 @@ export class BloomFilter {
 
 		this.sceneRenderTarget.setSize( this.resolution.x, this.resolution.y );
 
-		this._brightPP.resize( this.resolution );
+		this._brightPP.resize( this.lowResolution );
 
-		this._blurPP.resize( this.resolution );
+		this._blurPP.resize( this.lowResolution );
 
 		this._bloomPP.resize( this.resolution );
 

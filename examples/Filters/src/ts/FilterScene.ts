@@ -35,7 +35,7 @@ export class FilterScene extends ORE.BaseScene {
 		} ) );
 		this.scene.add( this.obj );
 
-		this.bloomFilter = new ORE.BloomFilter( this.renderer, 0.5 );
+		this.bloomFilter = new ORE.BloomFilter( this.renderer, 0.3 );
 
 		this.filterType = ( document.querySelector( '#selector' ) as HTMLInputElement ).value;
 		document.querySelector( '#selector' ).addEventListener( 'input', ( e ) => {
