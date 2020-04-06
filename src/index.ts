@@ -7,6 +7,7 @@ export * from './utils/Cursor';
 export * from './utils/DOMMesh';
 export * from './utils/Easings';
 export * from './utils/GPUComputationController';
+export * from './utils/MouseRotator';
 export * from './utils/PostProcessing';
 export * from './utils/PageScroller';
 export * from './utils/PageScroller/PageScrollerSection';
