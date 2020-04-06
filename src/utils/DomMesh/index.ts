@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import vert from './domMesh.vs';
-import { ShaderMaterial, ShaderMaterialParameters } from 'three';
 import { Uniforms, UniformsLib } from '../Uniforms';
 
 export class DOMMesh extends THREE.Mesh {
@@ -8,7 +7,7 @@ export class DOMMesh extends THREE.Mesh {
 	protected _uniforms: Uniforms;
 	protected element: HTMLElement;
 
-	constructor( element: HTMLElement, parameter: ShaderMaterialParameters ) {
+	constructor( element: HTMLElement, parameter: THREE.ShaderMaterialParameters ) {
 
 		let geo = new THREE.PlaneBufferGeometry( 2, 2 );
 
