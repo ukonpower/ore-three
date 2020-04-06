@@ -2,7 +2,7 @@ import * as ORE from '../../';
 import * as THREE from 'three';
 
 import vert from './shaders/background.vs';
-import { ResizeArgs } from 'src/core/Controller';
+import { ResizeArgs } from '../../core/Controller';
 
 export class Background extends THREE.Mesh {
 
