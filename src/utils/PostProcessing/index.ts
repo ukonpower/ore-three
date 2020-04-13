@@ -106,6 +106,8 @@ export class PostProcessing {
     	let isOffscreen = false;
     	let skipSetBackBuffer = false;
 
+    	let currentRenderTarget = this.renderer.getRenderTarget();
+
     	if ( scene_srcTexture_offScreen.type == 'Scene' ) {
 
     		this.renderer.setRenderTarget( this.readBuffer );
@@ -159,6 +161,8 @@ export class PostProcessing {
     	} );
 
     	this.resultBuffer = isOffscreen ? this.readBuffer : null;
+
+    	this.renderer.setRenderTarget( currentRenderTarget );
 
     }
 

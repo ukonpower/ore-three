@@ -151,7 +151,7 @@ export class GPUComputationControllerScene extends ORE.BaseScene {
 			uniforms: ORE.UniformsLib.CopyUniforms( { selector: { value: 1 } }, this.pointUni )
 		} ) );
 
-		posViewer.position.x = -1.5;
+		posViewer.position.x = - 1.5;
 
 		// this.scene.add( posViewer );
 

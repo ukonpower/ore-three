@@ -31,7 +31,7 @@ export class PostProcessingScene extends ORE.BaseScene {
 			time: {
 				value: 0
 			}
-		}
+		};
 
 		this.postProcessing = new ORE.PostProcessing( this.renderer, [
 			{
