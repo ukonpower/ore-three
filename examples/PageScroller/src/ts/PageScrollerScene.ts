@@ -31,7 +31,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 			name: 'sec1',
 			element: document.querySelector( '.section1' ),
 			stop: true,
-			bottom: false,
+			bottom: true,
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {

@@ -97,8 +97,6 @@ export class PageScrollerSection {
 
 		let percentage = firstHalf + secondHalf;
 
-		this.timelinePercentage = percentage;
-
 		return percentage;
 
 	}

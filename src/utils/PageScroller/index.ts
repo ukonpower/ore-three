@@ -303,38 +303,40 @@ export class PageScroller {
 
 	protected checkThrowSectionEvents( section: PageScrollerSection, scrollDelta: number ) {
 
-		if ( ! section.events ) return null;
-
 		let percentage = section.getScrollPercentage();
 		let movedPercentage = section.getScrollPercentage( scrollDelta );
 
-		let args: PageScrollerEventArgs = {
-			scroller: this,
-			section: section,
-			scrollMode: this.isAutoMove ? 'auto' : 'manual',
-			scrollDelta: scrollDelta,
-			scrollPower: Math.abs( scrollDelta ),
-		};
+		if ( section.events ) {
 
-		let arrivalEvents = section.events.onArrivals && section.events.onArrivals.length || 0;
+			let args: PageScrollerEventArgs = {
+				scroller: this,
+				section: section,
+				scrollMode: this.isAutoMove ? 'auto' : 'manual',
+				scrollDelta: scrollDelta,
+				scrollPower: Math.abs( scrollDelta ),
+			};
 
-		for ( let i = 0; i < arrivalEvents; i ++ ) {
+			let arrivalEvents = section.events.onArrivals && section.events.onArrivals.length || 0;
 
-			let arrivalEvent = section.events.onArrivals[ i ];
+			for ( let i = 0; i < arrivalEvents; i ++ ) {
 
-			let isThrow = this.checkThrowLine( percentage, movedPercentage, arrivalEvent.percentage );
+				let arrivalEvent = section.events.onArrivals[ i ];
 
-			if ( isThrow != 0 ) {
+				let isThrow = this.checkThrowLine( percentage, movedPercentage, arrivalEvent.percentage );
 
-				arrivalEvent.event.common && arrivalEvent.event.common( args );
+				if ( isThrow != 0 ) {
 
-				if ( isThrow < 0 ) {
+					arrivalEvent.event.common && arrivalEvent.event.common( args );
 
-					arrivalEvent.event.up && arrivalEvent.event.up( args );
+					if ( isThrow < 0 ) {
 
-				} else {
+						arrivalEvent.event.up && arrivalEvent.event.up( args );
 
-					arrivalEvent.event.down && arrivalEvent.event.down( args );
+					} else {
+
+						arrivalEvent.event.down && arrivalEvent.event.down( args );
+
+					}
 
 				}
 
