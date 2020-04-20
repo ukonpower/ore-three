@@ -411,7 +411,7 @@ export class PageScroller {
 
 	protected applyParentElementTransform() {
 
-		this.parentElement.style.transform = 'translate( 0,' + - this.scrollPosDelay.toString() + 'px )';
+		this.parentElement.style.transform = 'translate3d( 0,' + - this.scrollPosDelay.toString() + 'px, 0 )';
 
 	}
 
