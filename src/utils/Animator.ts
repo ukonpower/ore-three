@@ -159,9 +159,7 @@ export class Animator {
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
-			if ( ! uniforms[ keys[ i ] ] ) uniforms[ keys[ i ] ] = { value: null };
-
-			uniforms[ keys[ i ] ].value = this.variables[ keys[ i ] ].value;
+			uniforms[ keys[ i ] ] = this.getVariableObject( keys[ i ] );
 
 		}
 
