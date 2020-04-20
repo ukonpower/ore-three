@@ -11,9 +11,9 @@ export declare interface PageScrollerEventArgs {
 }
 
 declare interface PageScrollerEvent {
-	common?: ( args: PageScrollerEventArgs ) => void;
-	up?: ( args: PageScrollerEventArgs ) => void;
-	down?: ( args: PageScrollerEventArgs ) => void;
+	common?: ( args: PageScrollerEventArgs ) => void | boolean;
+	up?: ( args: PageScrollerEventArgs ) => void | boolean;
+	down?: ( args: PageScrollerEventArgs ) => void | boolean;
 }
 
 declare interface PageScrollerEvents {

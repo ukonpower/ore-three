@@ -251,9 +251,17 @@ export class PageScroller {
 						scrollPower: Math.abs( scrollDelta ),
 					};
 
-					this.caughtSection.events.onStartScroll.common && this.caughtSection.events.onStartScroll.common( args );
-					if ( unlockDir == - 1 ) this.caughtSection.events.onStartScroll.up && this.caughtSection.events.onStartScroll.up( args );
-					if ( unlockDir == 1 ) this.caughtSection.events.onStartScroll.down && this.caughtSection.events.onStartScroll.down( args );
+					let unlock: boolean | void;
+
+					let commonUnlock = this.caughtSection.events.onStartScroll.common && this.caughtSection.events.onStartScroll.common( args );
+					if ( unlockDir == - 1 ) unlock = this.caughtSection.events.onStartScroll.up && this.caughtSection.events.onStartScroll.up( args );
+					if ( unlockDir == 1 ) unlock = this.caughtSection.events.onStartScroll.down && this.caughtSection.events.onStartScroll.down( args );
+
+					if ( commonUnlock === false || unlock === false ) {
+
+						unlockDir = 0;
+
+					}
 
 				}
 
