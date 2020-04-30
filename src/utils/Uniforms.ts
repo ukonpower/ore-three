@@ -12,7 +12,11 @@ export namespace UniformsLib {
 
   		for ( let i = 0; i < keys.length; i ++ ) {
 
-  			uni1[ keys[ i ] ] = uni2[ keys[ i ] ];
+  			if ( ! uni1[ keys[ i ] ] ) {
+
+  				uni1[ keys[ i ] ] = uni2[ keys[ i ] ];
+
+  			}
 
   		}
 
