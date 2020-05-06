@@ -3,6 +3,7 @@ import { Uniforms } from '../../';
 
 import vert from './shaders/passThrough.vs';
 import passThroughFrag from './shaders/passThrough.fs';
+import { UniformsLib } from '../Uniforms';
 
 export interface GPUComputationKernel{
     material: THREE.RawShaderMaterial,
@@ -16,7 +17,7 @@ export interface GPUcomputationData{
 export class GPUComputationController {
 
     protected renderer: THREE.WebGLRenderer;
-    protected dataSize: THREE.Vector2
+	protected uniforms: Uniforms;
 
     protected scene: THREE.Scene;
     protected camera: THREE.Camera;
@@ -38,7 +39,11 @@ export class GPUComputationController {
 
     	this.renderer = renderer;
 
-    	this.dataSize = dataSize;
+    	this.uniforms = {
+    		dataSize: {
+    			value: dataSize.clone()
+    		}
+    	};
 
     	this.tempDataLinear = this.createData( {
     		minFilter: THREE.LinearFilter,
@@ -61,8 +66,8 @@ export class GPUComputationController {
 
     public createInitializeTexture() {
 
-    	let a = new Float32Array( this.dataSize.x * this.dataSize.y * 4 );
-    	let texture = new THREE.DataTexture( a, this.dataSize.x, this.dataSize.y, THREE.RGBAFormat, THREE.FloatType );
+    	let a = new Float32Array( this.uniforms.dataSize.value.x * this.uniforms.dataSize.value.y * 4 );
+    	let texture = new THREE.DataTexture( a, this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, THREE.RGBAFormat, THREE.FloatType );
     	texture.needsUpdate = true;
 
     	return texture;
@@ -126,7 +131,7 @@ export class GPUComputationController {
 
     	}
 
-    	let buf = new THREE.WebGLRenderTarget( this.dataSize.x, this.dataSize.y, param );
+    	let buf = new THREE.WebGLRenderTarget( this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, param );
 
     	let data = { buffer: buf };
 
@@ -146,9 +151,8 @@ export class GPUComputationController {
 
     public createKernel( shader: string, uniforms?: Uniforms ): GPUComputationKernel {
 
-    	let uni: Uniforms = uniforms || {};
-
-    	uni.dataSize = { value: this.dataSize };
+    	let uni: Uniforms = UniformsLib.CopyUniforms( {}, uniforms );
+    	uni = UniformsLib.CopyUniforms( uni, this.uniforms );
 
     	let mat = new THREE.ShaderMaterial( {
     		vertexShader: vert,
@@ -183,13 +187,15 @@ export class GPUComputationController {
 
     	this.mesh.material = kernel.material;
 
+    	let currentRenderTarget = this.renderer.getRenderTarget();
+
     	this.renderer.setRenderTarget( temp.buffer );
 
     	this.renderer.render( this.scene, this.camera );
 
     	this.swapBuffers( data, temp );
 
-    	this.renderer.setRenderTarget( null );
+    	this.renderer.setRenderTarget( currentRenderTarget );
 
     }
 
