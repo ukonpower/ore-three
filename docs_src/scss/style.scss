@@ -26,6 +26,12 @@ html,body{
 	overflow: hidden;
 }
 
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+
 #canvas{
 	position: fixed;
 	left: 0; top: 0;
@@ -40,7 +46,7 @@ html,body{
 	
 	.section{
 		width: 80%;
-		height: 100vh;
+		min-height: 100vh;
 		margin: 0 auto;
 		padding: 70px 0;
 	}
@@ -63,47 +69,134 @@ html,body{
 	}
 
 	.about {
+		padding-top: 200px;
+
+		@include sp{
+			padding-top: 50px;
+		}
+
 		h1 {
 			font-size: 40px;
+			padding-bottom: 30px;
+
+			@include sp{
+				font-size: 30px;
+			}
+		}
+		&-inner {
+			// background-color: rgba($color: #000000, $alpha: 0.1);
+			// padding: 20px 30px;
+			// border-radius: 20px;
+			width: 80%;
+			max-width: 700;
+
+			@include sp{
+				width: 100%;
+			}
+
+		}
+		&-desc {
+			margin-bottom: 50px;
+		}
+
+		&-example{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			width: 100%;
+			padding: 0;
+
+			&-item{
+				width: 30%;
+				list-style: none;
+
+				@include sp{
+					width: 100%;
+				}
+				
+				figure{
+					width: 100%;
+					margin-bottom: 40px;
+
+					a {
+						width: 100%;
+						display: block;
+						margin-bottom: 10px;
+					}
+					img {
+						width: 100%;
+						border-radius: 8px;
+					}
+					figcaption {
+						font-size: 14px;
+					}
+				}
+			}
+		}
+
+		&-more {
+			display: block;
+			text-align: right;
 		}
 	}
 	
-}
-.visual {
-	width: 100%;
-	height: 60vh;
-	@include sp{
-		height: 50vh;
-	}
+	.usage {
 
-}
+		padding-top: 100px;
 
-.menu {
-	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
-	width: 80%;
-	max-width: 700px;
-	margin: 0 auto;
-	padding: 0;
-	list-style: none;
+		@include sp{
+			padding-top: 50px;
+		}
 
-	&-item{
-		display: block;
-		background-color: rgba($color: #000000, $alpha: 0.5);
-		border-radius: 3px;
-		margin-bottom: 20px;
+		h1 {
+			font-size: 40px;
+			padding-bottom: 30px;
 
-		a {
-			display: block;
-			// min-width: 1px;
-			font-size: 20px;
-			padding: 17px 30px;
-			text-align: center;
-			text-decoration: none;
 			@include sp{
-				font-size: 18px;
+				font-size: 30px;
 			}
 		}
+		&-inner {
+			// background-color: rgba($color: #000000, $alpha: 0.1);
+			// padding: 20px 30px;
+			// border-radius: 20px;
+			width: 80%;
+			max-width: 600;
+			margin-left: auto;
+
+			@include sp{
+				width: 100%;
+			}
+
+		}
+
+		p {
+			margin-bottom: 10px;
+			.small {
+				font-size: 12px;
+			}
+		}
+		.install {
+			padding-bottom: 30px;
+		}
+
+		.import {
+			padding-bottom: 30px;
+		}
+
+		.code {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: rgba($color: #000000, $alpha: 0.4);
+			border-radius: 5px;
+		}
+	}
+	
+	.link{
+		&-list{
+			
+		}
+
 	}
 }
+

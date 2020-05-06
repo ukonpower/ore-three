@@ -20,6 +20,11 @@ export class MainScene extends ORE.BaseScene {
 
 		this.initScroller();
 
+		// this.scrollManager.scroller.autoMove( {
+		// 	target: 'usage',
+		// 	duration: 0.01
+		// } );
+
 	}
 
 	public onBind( gProps: ORE.GlobalProperties ) {
