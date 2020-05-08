@@ -378,6 +378,10 @@ export class PageScroller {
 
 			return - 1;
 
+		} else if ( a == line && line == b ) {
+
+			return 2;
+
 		} else {
 
 			return 0;
