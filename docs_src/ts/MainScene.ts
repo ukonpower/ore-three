@@ -25,17 +25,17 @@ export class MainScene extends ORE.BaseScene {
 
 			this.initScroller();
 
-			document.querySelector( '.ui-menu-button' ).addEventListener( 'click', ( e ) => {
-
-				document.body.setAttribute( 'data-menu-open', document.body.getAttribute( 'data-menu-open' ) == 'true' ? 'false' : 'true' );
-
-			} );
-
 		} else {
 
 			document.body.setAttribute( 'data-useScroller', 'false' );
 
 		}
+
+		document.querySelector( '.ui-menu-button' ).addEventListener( 'click', ( e ) => {
+
+			document.body.setAttribute( 'data-menu-open', document.body.getAttribute( 'data-menu-open' ) == 'true' ? 'false' : 'true' );
+
+		} );
 
 		// this.scrollManager.scroller.autoMove( {
 		// 	target: 'usage',
