@@ -13,12 +13,29 @@ export class MainScene extends ORE.BaseScene {
 	private uniforms: ORE.Uniforms;
 
 	private scrollManager: ScrollManager;
+	private isExamplePage: boolean = false;
 
 	constructor() {
 
 		super();
 
-		this.initScroller();
+		this.isExamplePage = window.location.href.indexOf( 'examples' ) != - 1;
+
+		if ( ! this.isExamplePage ) {
+
+			this.initScroller();
+
+			document.querySelector( '.ui-menu-button' ).addEventListener( 'click', ( e ) => {
+
+				document.body.setAttribute( 'data-menu-open', document.body.getAttribute( 'data-menu-open' ) == 'true' ? 'false' : 'true' );
+
+			} );
+
+		} else {
+
+			document.body.setAttribute( 'data-useScroller', 'false' );
+
+		}
 
 		// this.scrollManager.scroller.autoMove( {
 		// 	target: 'usage',
@@ -32,7 +49,7 @@ export class MainScene extends ORE.BaseScene {
 		super.onBind( gProps );
 
 		this.camera.position.set( 0, 4, 15 );
-		this.camera.lookAt( 0, 0, 0 );
+		this.camera.lookAt( 0, 0.9, 0 );
 
 		let aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;
@@ -43,8 +60,12 @@ export class MainScene extends ORE.BaseScene {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
-		this.mainObj = new MainObj();
-		this.scene.add( this.mainObj.obj );
+		if ( ! this.isExamplePage ) {
+
+			this.mainObj = new MainObj();
+			this.scene.add( this.mainObj.obj );
+
+		}
 
 		this.uniforms = {
 			time: {
@@ -71,12 +92,16 @@ export class MainScene extends ORE.BaseScene {
 
 		this.uniforms.time.value = this.time;
 
-		this.scrollManager.scroller.update( deltaTime );
-		this.scrollManager.timeline.update( this.scrollManager.scroller.scrollTimelinePercentage );
+		if ( ! this.isExamplePage ) {
 
-		this.camera.position.copy( this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' ) );
+			this.scrollManager.scroller.update( deltaTime );
+			this.scrollManager.timeline.update( this.scrollManager.scroller.scrollTimelinePercentage );
 
-		this.mainObj.update( this.time );
+			this.camera.position.copy( this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' ) );
+
+			this.mainObj.update( this.time );
+
+		}
 
 		this.renderer.render( this.scene, this.camera );
 
@@ -92,26 +117,25 @@ export class MainScene extends ORE.BaseScene {
 
 	public onWheel( e: WheelEvent, trackPadDelta: number ) {
 
-		this.scrollManager.scroller.scroll( trackPadDelta );
+		this.scrollManager && this.scrollManager.scroller.scroll( trackPadDelta );
 
 	}
 
 	public onTouchStart( cursor: ORE.Cursor, e: MouseEvent ) {
 
-		this.scrollManager.scroller.catch();
+		this.scrollManager && this.scrollManager.scroller.catch();
 
 	}
 
 	public onTouchMove( cursor: ORE.Cursor, e: MouseEvent ) {
 
-		this.scrollManager.scroller.drag( - cursor.delta.y );
-
+		this.scrollManager && this.scrollManager.scroller.drag( - cursor.delta.y );
 
 	}
 
 	public onTouchEnd( cursor: ORE.Cursor ) {
 
-		this.scrollManager.scroller.release();
+		this.scrollManager && this.scrollManager.scroller.release();
 
 	}
 

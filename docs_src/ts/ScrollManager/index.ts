@@ -29,25 +29,52 @@ export class ScrollManager {
 		this.scroller.add( new ORE.PageScrollerSection( {
 			element: document.querySelector( '.mainVis' ),
 			name: "mainVis",
+			events: {
+				onArrivals: [
+					{
+						percentage: 1.0,
+						event: {
+							common: () => {
+
+								document.body.setAttribute( 'data-isScrollTop', 'true' );
+
+							}
+						}
+					}
+				],
+				onStartScroll: {
+					up: () => {
+
+						return false;
+
+					},
+					down: () =>{
+
+						document.body.setAttribute( 'data-isScrollTop', 'false' );
+
+					}
+				}
+			},
 			stop: true
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {
 			element: document.querySelector( '.about' ),
 			name: "about",
-			stop: true
+			stop: false
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {
 			element: document.querySelector( '.usage' ),
 			name: "usage",
-			stop: true
+			stop: false
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {
-			element: document.querySelector( '.links' ),
-			name: "links",
-			stop: true
+			element: document.querySelector( '.link' ),
+			name: "link",
+			bottom: true,
+			stop: false
 		} ) );
 
 	}
@@ -69,15 +96,27 @@ export class ScrollManager {
 						value: new THREE.Vector3( - 2, 1.5, 7 )
 					},
 					{
+						time: this.scroller.get( 'about' ).timelinePercentage * 1.1,
+						value: new THREE.Vector3( - 2, 1.5, 7 )
+					},
+					{
 						time: this.scroller.get( 'usage' ).timelinePercentage,
 						value: new THREE.Vector3( 2, 1.5, 7 )
 					},
 					{
-						time: this.scroller.get( 'links' ).timelinePercentage,
+						time: this.scroller.get( 'usage' ).timelinePercentage * 1.1,
+						value: new THREE.Vector3( 2, 1.5, 7 )
+					},
+					{
+						time: this.scroller.get( 'link' ).timelinePercentage,
 						value: new THREE.Vector3( 0, 4, 15 )
 					},
-				]
-			}
+				],
+				easing: {
+					func: ORE.Easings.sigmoid,
+					args: 4
+				}
+			},
 		);
 
 	}

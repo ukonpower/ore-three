@@ -13,7 +13,7 @@ void main(){
     // c.x += snoise(vec3(uv + vec2(200.0),t));
     float n = snoise(vec3(uv,t)) * 0.5;
     c.x -= n;
-    c.y -= n * 2.0;
+    c.y -= n * 1.8;
     c.z -= n;
     gl_FragColor = vec4(c,1.0);
 }

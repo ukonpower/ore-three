@@ -207,6 +207,8 @@ function brSync() {
 			baseDir: distDir,
 			index: "index.html",
 		},
+		notify: false,
+		ghostMode: false
 	} );
 
 }

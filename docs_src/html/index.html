@@ -7,7 +7,13 @@
 	<link rel="stylesheet" href="./css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 </head>
-<body>
+<body data-isScrollTop="true" data-usescroller="true">
+	<header class="header">
+		<div class="header-inner">
+			<a class="header-title" href="../">Ore Three</a>
+		</div>
+	</header>
+
 	<canvas id="canvas"></canvas>
 	<div class="transform-container">
 		<div class="section mainVis">
@@ -80,10 +86,30 @@
 				<li class="link-list-item"><a href="https://github.com/ukonpower/ore-three-ts/">GitHub</a></li>
 			</ul>
 		</div>
-		<!-- <ul class="menu">
-			<li class="menu-item"><a href="./documentation/">Documentation</a></li>
-			<li class="menu-item"><a href="./examples/">Examples</a></li>
-		</ul> -->
+	</div>
+	<div class="ui">
+		<div class="scroll">Scroll</div>
+		<div class="ui-menu-button">
+			<span class="ui-menu-button-lineTop"></span>
+			<span class="ui-menu-button-lineMiddle"></span>
+			<span class="ui-menu-button-lineBottom"></span>
+		</div>
+		
+		<div class="ui-header-menu-container">
+			<ul class="ui-header-menu">
+				<li class="ui-header-menu-item"><a href="../documentation">Documentation</a></li>
+				<li class="ui-header-menu-item"><a href="./">Examples</a></li>
+				<li class="ui-header-menu-item"><a href="https://github.com/ukonpower/ore-three-ts" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		
+		<div class="ui-menu">
+			<ul class="ui-menu-list">
+				<li class="ui-menu-list-item"><a href="../documentation">Documentation</a></li>
+				<li class="ui-menu-list-item"><a href="./">Examples</a></li>
+				<li class="ui-menu-list-item"><a href="https://github.com/ukonpower/ore-three-ts" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
 	</div>
 	<script src="./js/main.js"></script>
 </body>
