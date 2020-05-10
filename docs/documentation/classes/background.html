@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Background | ore-three</title>
+	<title>Background | ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">ore-three</a>
+					<a href="../index.html" class="title">ore-three-ts</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -89,7 +89,7 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="background.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="background.html#castshadow" class="tsd-kind-icon">cast<wbr>Shadow</a></li>
@@ -122,6 +122,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="background.html#rotation" class="tsd-kind-icon">rotation</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="background.html#scale" class="tsd-kind-icon">scale</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="background.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="background.html#uniforms" class="tsd-kind-icon">uniforms</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="background.html#up" class="tsd-kind-icon">up</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="background.html#userdata" class="tsd-kind-icon">user<wbr>Data</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="background.html#uuid" class="tsd-kind-icon">uuid</a></li>
@@ -130,7 +131,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="background.html#defaultup" class="tsd-kind-icon">Default<wbr>Up</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="background.html#add" class="tsd-kind-icon">add</a></li>
@@ -154,6 +155,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="background.html#raycast" class="tsd-kind-icon">raycast</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="background.html#remove" class="tsd-kind-icon">remove</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="background.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.html#resize" class="tsd-kind-icon">resize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="background.html#rotateonaxis" class="tsd-kind-icon">rotate<wbr>OnAxis</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="background.html#rotateonworldaxis" class="tsd-kind-icon">rotate<wbr>OnWorld<wbr>Axis</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="background.html#rotatex" class="tsd-kind-icon">rotateX</a></li>
@@ -194,7 +196,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Mesh.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/utils/Background/index.ts#L6">src/utils/Background/index.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Background/index.ts#L9">src/utils/Background/index.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -208,7 +210,7 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="castshadow" class="tsd-anchor"></a>
@@ -724,9 +726,19 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="background.html">Background</a>.<a href="background.html#type">type</a></p>
-						<p>Overrides <a href="fish.html">Fish</a>.<a href="fish.html#type">type</a></p>
+						<p>Overrides Object3D.type</p>
 						<ul>
 							<li>Defined in node_modules/three/src/objects/Mesh.d.ts:20</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="uniforms" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> uniforms</h3>
+					<div class="tsd-signature tsd-kind-icon">uniforms<span class="tsd-signature-symbol">:</span> <a href="../interfaces/uniforms.html" class="tsd-signature-type">Uniforms</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Background/index.ts#L9">src/utils/Background/index.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -820,7 +832,7 @@
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="add" class="tsd-anchor"></a>
@@ -1404,7 +1416,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="background.html">Background</a>.<a href="background.html#raycast">raycast</a></p>
-								<p>Overrides <a href="fish.html">Fish</a>.<a href="fish.html#raycast">raycast</a></p>
+								<p>Overrides Object3D.raycast</p>
 								<ul>
 									<li>Defined in node_modules/three/src/objects/Mesh.d.ts:23</li>
 								</ul>
@@ -1501,6 +1513,29 @@
 											</ul>
 										</li>
 									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="resize" class="tsd-anchor"></a>
+					<h3>resize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">resize<span class="tsd-signature-symbol">(</span>args<span class="tsd-signature-symbol">: </span><a href="../interfaces/resizeargs.html" class="tsd-signature-type">ResizeArgs</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Background/index.ts#L53">src/utils/Background/index.ts:53</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>args: <a href="../interfaces/resizeargs.html" class="tsd-signature-type">ResizeArgs</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2202,6 +2237,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="animator.html" class="tsd-kind-icon">Animator</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -2300,6 +2338,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="background.html#type" class="tsd-kind-icon">type</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="background.html#uniforms" class="tsd-kind-icon">uniforms</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="background.html#up" class="tsd-kind-icon">up</a>
 							</li>
@@ -2381,6 +2422,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="background.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="background.html#resize" class="tsd-kind-icon">resize</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="background.html#rotateonaxis" class="tsd-kind-icon">rotate<wbr>OnAxis</a>
 							</li>
@@ -2451,6 +2495,105 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="controller.html" class="tsd-kind-icon">Controller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="cursor.html" class="tsd-kind-icon">Cursor</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dommesh.html" class="tsd-kind-icon">DOMMesh</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/animatorvaliableparams.html" class="tsd-kind-icon">Animator<wbr>Valiable<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/animatorvariable.html" class="tsd-kind-icon">Animator<wbr>Variable</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/easingset.html" class="tsd-kind-icon">Easing<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/lerpfunc.html" class="tsd-kind-icon">Lerp<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerautomoveparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Auto<wbr>Move<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerevent.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollereventargs.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersectionparams.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatoraddparams.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Add<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatorkeyframe.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Key<wbr>Frame</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatorvariable.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Variable</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#version" class="tsd-kind-icon">VERSION</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

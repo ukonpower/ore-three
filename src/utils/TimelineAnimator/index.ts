@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import  { EasingSet } from '../Easings'
+import { EasingSet } from '../Easings';
 import { Lerps, LerpFunc } from '../Lerps';
 
 export declare interface TimelineAnimatorKeyFrame<T> {
@@ -22,11 +22,11 @@ export declare interface TimelineAnimatorAddParams<T> {
 	easing?: EasingSet;
 }
 export class TimelineAnimator {
-	
-	private variables: { [name: string]: TimelineAnimatorVariable<any> } = {};
-	private time: number;
+
+	protected variables: { [name: string]: TimelineAnimatorVariable<any> } = {};
+	protected time: number;
 	public defaultEasing: EasingSet;
-	
+
 	constructor( ) {
 
 		this.time = 0;
@@ -34,134 +34,153 @@ export class TimelineAnimator {
 	}
 
 	public add<T>( params: TimelineAnimatorAddParams<T> ) {
-		
-		if( params.keyframes.length == 0 ){
 
-			console.warn( '"' + params.name + '"', 'Keyframe length is 0!!');
-			
+		if ( params.keyframes.length == 0 ) {
+
+			console.warn( '"' + params.name + '"', 'Keyframe length is 0!!' );
+
 			return;
-			
+
 		}
-		
+
 		this.variables[ params.name ] = {
 			keyframes: params.keyframes,
 			lerpFunc: params.customLerp,
 			easing: params.easing,
 			value: null
+		};
+
+		this.variables[ params.name ].keyframes.sort( ( a, b ) => {
+
+			return ( a.time < b.time ) ? - 1 : 1;
+
+		} );
+
+		if ( ! this.variables[ params.name ].lerpFunc ) {
+
+			this.variables[ params.name ].lerpFunc = Lerps.getLerpFunc( params.keyframes[ 0 ].value );
+
 		}
 
-		this.variables[ params.name ].keyframes.sort( ( a, b ) => { return ( a.time < b.time ) ? -1 : 1 } );
-		
-		if( !this.variables[ params.name ].lerpFunc ){
-
-			this.variables[ params.name ].lerpFunc = Lerps.getLerpFunc( params.keyframes[ 0 ].value )
-			
-		}
-		
 		this.calc();
-		
+
 		return params.name;
 
 	}
 
-	
-
 	public get<T>( name: string ): T {
 
-		if( this.variables[ name ] ){
+		if ( this.variables[ name ] ) {
 
 			return this.variables[ name ].value;
 
 		} else {
 
+			console.warn( '"' + name + '"' + ' is not exist' );
+
 			return null;
-			
+
 		}
-		
+
+	}
+
+	public getVariableObject<T>( name: string ): TimelineAnimatorVariable<T> {
+
+		if ( this.variables[ name ] ) {
+
+			return this.variables[ name ];
+
+		} else {
+
+			console.warn( '"' + name + '"' + ' is not exist' );
+
+			return null;
+
+		}
 
 	}
 
 	public update( time: number ) {
 
 		this.time = time;
-		
+
 		this.calc();
 
 	}
 
-	private calc() {
+	protected calc() {
 
 		let keys = Object.keys( this.variables );
 
-		for( let i = 0; i < keys.length; i++ ){
+		for ( let i = 0; i < keys.length; i ++ ) {
 
 			let valiable = this.variables[ keys[ i ] ];
 			let kfs = valiable.keyframes;
-			
+
 			let a: TimelineAnimatorKeyFrame<any>;
 			let b: TimelineAnimatorKeyFrame<any>;
 
-			let t = Math.max( kfs[ 0 ].time, Math.min( kfs[ kfs.length - 1 ].time ,this.time) )
+			let t = Math.max( kfs[ 0 ].time, Math.min( kfs[ kfs.length - 1 ].time, this.time ) );
 
 			let easing: EasingSet;
 
-			if( kfs.length == 1 ){
+			if ( kfs.length == 1 ) {
 
 				t = kfs[ 0 ].time;
 				a = b = kfs[ 0 ];
-				
+
 			} else {
 
-				
-				for( let j = 0; j < kfs.length - 1; j++ ){
+
+				for ( let j = 0; j < kfs.length - 1; j ++ ) {
 
 					a = kfs[ j ];
 					b = kfs[ j + 1 ];
-	
+
 					easing = a.easing;
-					
-					if( a.time <= t && t <= b.time ) break;
-					
+
+					if ( a.time <= t && t <= b.time ) break;
+
 				}
 
 				t = ( t - a.time ) / ( b.time - a.time );
 
-				
+
 			}
 
-			if( easing ) {
+			if ( easing ) {
 
-				t = easing.func( t, easing.variables );
+				t = easing.func( t, easing.args );
 
-			} else if( valiable.easing ) {
+			} else if ( valiable.easing ) {
 
-				t = valiable.easing.func( t, valiable.easing.variables );
-				
-			}else if( this.defaultEasing ){
+				t = valiable.easing.func( t, valiable.easing.args );
 
-				t = this.defaultEasing.func( t, this.defaultEasing.variables );
-				
+			} else if ( this.defaultEasing ) {
+
+				t = this.defaultEasing.func( t, this.defaultEasing.args );
+
 			}
-			
-			if( valiable.lerpFunc ){
+
+			if ( valiable.lerpFunc ) {
 
 				valiable.value = valiable.lerpFunc( a.value, b.value, t );
 
-				if( valiable.value === false ) {
+				if ( valiable.value === false ) {
 
-					console.log( 'error at ' + '"' + keys[i] + '"' );
-					
+					console.log( 'error at ' + '"' + keys[ i ] + '"' );
+
 				}
 
 			} else {
 
-				console.warn( '"' + keys[i] + '"', 'lerp function is not set.' );
-				
+				console.warn( '"' + keys[ i ] + '"', 'lerp function is not set.' );
+
 			}
-			
-			
+
+
 		}
-		
+
 	}
 
 }

@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import { Uniforms } from '../../';
 
-import passThroughVert from './shaders/passThrough.vs';
+import vert from './shaders/passThrough.vs';
 import passThroughFrag from './shaders/passThrough.fs';
+import { UniformsLib } from '../Uniforms';
 
 export interface GPUComputationKernel{
     material: THREE.RawShaderMaterial,
@@ -10,217 +11,219 @@ export interface GPUComputationKernel{
 }
 
 export interface GPUcomputationData{
-    buffer: THREE.WebGLRenderTarget 
+    buffer: THREE.WebGLRenderTarget
 }
 
 export class GPUComputationController {
 
-    private renderer: THREE.WebGLRenderer;
-    private resolution: THREE.Vector2
+    protected renderer: THREE.WebGLRenderer;
+	protected uniforms: Uniforms;
 
-    private scene: THREE.Scene;
-    private camera: THREE.Camera;
+    protected scene: THREE.Scene;
+    protected camera: THREE.Camera;
 
-    private mesh: THREE.Mesh;
-    private materials: THREE.ShaderMaterial[];
+    protected mesh: THREE.Mesh;
+    protected materials: THREE.ShaderMaterial[];
 
-    private tempDataLinear: GPUcomputationData;
-    private tempDataNear: GPUcomputationData;
+    protected tempDataLinear: GPUcomputationData;
+    protected tempDataNear: GPUcomputationData;
 
-    
+
     public get isSupported() : boolean {
-        
-        return this.renderer.extensions.get( "OES_texture_float" );
+
+    	return this.renderer.extensions.get( "OES_texture_float" );
 
     }
 
-    constructor( renderer: THREE.WebGLRenderer, resolution: THREE.Vector2 ){
+    constructor( renderer: THREE.WebGLRenderer, dataSize: THREE.Vector2 ) {
 
-        this.renderer = renderer;
+    	this.renderer = renderer;
 
-        this.resolution = resolution;
+    	this.uniforms = {
+    		dataSize: {
+    			value: dataSize.clone()
+    		}
+    	};
 
-        this.tempDataLinear = this.createData({ 
-            minFilter: THREE.LinearFilter,
-            magFilter: THREE.LinearFilter
-        });
+    	this.tempDataLinear = this.createData( {
+    		minFilter: THREE.LinearFilter,
+    		magFilter: THREE.LinearFilter
+    	} );
 
-        this.tempDataNear = this.createData({ 
-            minFilter: THREE.NearestFilter,
-            magFilter: THREE.NearestFilter
-        });
+    	this.tempDataNear = this.createData( {
+    		minFilter: THREE.NearestFilter,
+    		magFilter: THREE.NearestFilter
+    	} );
 
-        this.scene = new THREE.Scene();
-		this.camera = new THREE.Camera();
-        this.camera.position.z = 1;
-        
-        this.materials = [];
-        this.mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
-		this.scene.add( this.mesh );
+    	this.scene = new THREE.Scene();
+    	this.camera = new THREE.Camera();
+
+    	this.materials = [];
+    	this.mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
+    	this.scene.add( this.mesh );
 
     }
 
-    public createInitializeTexture(): THREE.DataTexture {
+    public createInitializeTexture() {
 
-		let a = new Float32Array( this.resolution.x * this.resolution.y * 4 );
-		let texture = new THREE.DataTexture( a, this.resolution.x, this.resolution.y, THREE.RGBAFormat, THREE.FloatType );
-		texture.needsUpdate = true;
+    	let a = new Float32Array( this.uniforms.dataSize.value.x * this.uniforms.dataSize.value.y * 4 );
+    	let texture = new THREE.DataTexture( a, this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, THREE.RGBAFormat, THREE.FloatType );
+    	texture.needsUpdate = true;
 
-		return texture;
+    	return texture;
 
-	}
+    }
 
     public createData(): GPUcomputationData;
-    
+
     public createData( initializeTexture: THREE.DataTexture ): GPUcomputationData;
 
     public createData( textureParam: THREE.WebGLRenderTargetOptions ): GPUcomputationData;
 
     public createData( initializeTexture: THREE.DataTexture, textureParam: THREE.WebGLRenderTargetOptions ): GPUcomputationData;
-    
-    public createData( initTex_texParam?: any, textureParam? : THREE.WebGLRenderTargetOptions)  {
 
-        let param: THREE.WebGLRenderTargetOptions = {
-            wrapS: THREE.ClampToEdgeWrapping,
-			wrapT: THREE.ClampToEdgeWrapping,
-			minFilter: THREE.LinearFilter,
-			magFilter: THREE.LinearFilter,
-			format: THREE.RGBAFormat,
-			type: ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) ? THREE.HalfFloatType : THREE.FloatType,
-			stencilBuffer: false,
-			depthBuffer: false
-        };
+    public createData( initTex_texParam?: any, textureParam? : THREE.WebGLRenderTargetOptions ): GPUcomputationData {
 
-        let initTex: THREE.DataTexture;
-        let customParam: THREE.WebGLRenderTargetOptions;
+    	let param: THREE.WebGLRenderTargetOptions = {
+    		wrapS: THREE.ClampToEdgeWrapping,
+    		wrapT: THREE.ClampToEdgeWrapping,
+    		minFilter: THREE.NearestFilter,
+    		magFilter: THREE.NearestFilter,
+    		format: THREE.RGBAFormat,
+    		type: ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) ? THREE.HalfFloatType : THREE.FloatType,
+    		stencilBuffer: false,
+    		depthBuffer: false
+    	};
 
-        if( initTex_texParam ){
+    	let initTex: THREE.DataTexture;
+    	let customParam: THREE.WebGLRenderTargetOptions;
 
-            if( initTex_texParam.isDataTexture ){
+    	if ( initTex_texParam ) {
 
-                initTex = initTex_texParam;
+    		if ( initTex_texParam.isDataTexture ) {
 
-                if( textureParam ){
+    			initTex = initTex_texParam;
 
-                    customParam = textureParam;
+    			if ( textureParam ) {
 
-                }
+    				customParam = textureParam;
 
-            }else{
+    			}
 
-                customParam = initTex_texParam;
+    		} else {
 
-            }
+    			customParam = initTex_texParam;
 
-        }
-        
-        if( customParam ){
-                
-            param.wrapS = customParam.wrapS || param.wrapS;
-            param.wrapT = customParam.wrapT || param.wrapT;
-            param.minFilter = customParam.minFilter || param.minFilter;
-            param.magFilter = customParam.magFilter || param.magFilter;
-            param.format = customParam.format || param.format;
-            param.type = customParam.type || param.type;
-            param.stencilBuffer = customParam.stencilBuffer || param.stencilBuffer;
-            param.depthBuffer = customParam.depthBuffer || param.depthBuffer;
+    		}
 
-        }
+    	}
 
-        let buf = new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y, param );
+    	if ( customParam ) {
 
-        let data = { buffer: buf };
+    		param.wrapS = customParam.wrapS || param.wrapS;
+    		param.wrapT = customParam.wrapT || param.wrapT;
+    		param.minFilter = customParam.minFilter || param.minFilter;
+    		param.magFilter = customParam.magFilter || param.magFilter;
+    		param.format = customParam.format || param.format;
+    		param.type = customParam.type || param.type;
+    		param.stencilBuffer = customParam.stencilBuffer || param.stencilBuffer;
+    		param.depthBuffer = customParam.depthBuffer || param.depthBuffer;
 
+    	}
 
-        if( initTex ){
+    	let buf = new THREE.WebGLRenderTarget( this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, param );
 
-            let initKernel = this.createKernel( passThroughFrag );
+    	let data = { buffer: buf };
 
-            initKernel.uniforms.texture = { value: initTex };
+    	if ( initTex ) {
 
-            this.compute( initKernel, data );
+    		let initKernel = this.createKernel( passThroughFrag );
 
-        }
+    		initKernel.uniforms.texture = { value: initTex };
 
-        return data;
+    		this.compute( initKernel, data );
 
-    }
+    	}
 
-    public createKernel( shader: string ): GPUComputationKernel{
-        
-        let uniforms: Uniforms = {
-            resolution: {
-                value: this.resolution
-            }
-        };
-
-        let mat = new THREE.ShaderMaterial({
-            vertexShader: passThroughVert,
-            fragmentShader: shader,
-            uniforms: uniforms
-        });
-
-        this.materials.push(mat);
-
-        let kernel: GPUComputationKernel = {
-            material: mat,
-            uniforms: uniforms
-        }
-
-        return kernel;
+    	return data;
 
     }
 
-    public compute( kernel: GPUComputationKernel, variable: GPUcomputationData ){
+    public createKernel( shader: string, uniforms?: Uniforms ): GPUComputationKernel {
 
-        let temp: GPUcomputationData;
+    	let uni: Uniforms = UniformsLib.CopyUniforms( {}, uniforms );
+    	uni = UniformsLib.CopyUniforms( uni, this.uniforms );
 
-        if( variable.buffer.texture.magFilter == THREE.LinearFilter ){
-            
-            temp = this.tempDataLinear;
+    	let mat = new THREE.ShaderMaterial( {
+    		vertexShader: vert,
+    		fragmentShader: shader,
+    		uniforms: uni
+    	} );
 
-        }else{
+    	this.materials.push( mat );
 
-            temp = this.tempDataNear;
-            
-        }
+    	let kernel: GPUComputationKernel = {
+    		material: mat,
+    		uniforms: uni
+    	};
 
-        this.mesh.material = kernel.material;
-
-        this.renderer.setRenderTarget( temp.buffer );
-
-        this.renderer.render( this.scene, this.camera );
-        
-        this.swapBuffers( variable, temp );
-
-        this.renderer.setRenderTarget( null );
-        
-    }
-
-    private swapBuffers( b1: GPUcomputationData, b2: GPUcomputationData ){
-
-        let tmp = b1.buffer;
-        b1.buffer = b2.buffer;
-        b2.buffer = tmp;
+    	return kernel;
 
     }
 
-    public dispose(){
+    public compute( kernel: GPUComputationKernel, data: GPUcomputationData ) {
 
-        let geo = this.mesh.geometry;
-        geo.dispose();
-        
-        for( let i = 0; i < this.materials.length; i++ ){
+    	let temp: GPUcomputationData;
 
-            this.materials[i].dispose();
-        
-        }
+    	if ( data.buffer.texture.magFilter == THREE.LinearFilter ) {
 
-        this.scene.remove( this.mesh );
+    		temp = this.tempDataLinear;
 
-        this.tempDataLinear.buffer.dispose();
+    	} else {
+
+    		temp = this.tempDataNear;
+
+    	}
+
+    	this.mesh.material = kernel.material;
+
+    	let currentRenderTarget = this.renderer.getRenderTarget();
+
+    	this.renderer.setRenderTarget( temp.buffer );
+
+    	this.renderer.render( this.scene, this.camera );
+
+    	this.swapBuffers( data, temp );
+
+    	this.renderer.setRenderTarget( currentRenderTarget );
 
     }
 
-    
+    protected swapBuffers( b1: GPUcomputationData, b2: GPUcomputationData ) {
+
+    	let tmp = b1.buffer;
+    	b1.buffer = b2.buffer;
+    	b2.buffer = tmp;
+
+    }
+
+    public dispose() {
+
+    	let geo = this.mesh.geometry;
+    	geo.dispose();
+
+    	for ( let i = 0; i < this.materials.length; i ++ ) {
+
+    		this.materials[ i ].dispose();
+
+    	}
+
+    	this.scene.remove( this.mesh );
+
+    	this.tempDataLinear.buffer.dispose();
+    	this.tempDataNear.buffer.dispose();
+
+    }
+
+
 }

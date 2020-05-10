@@ -1,4 +1,4 @@
-# ore-three
+# Ore Three
 [three.js]( https://github.com/mrdoob/three.js ) utils.
 
 [Documentation](https://ukonpower.github.io/ore-three-ts/)
@@ -31,8 +31,8 @@ class APP {
 		this.controller = new ORE.Controller( {
 
 			canvas: document.querySelector( "#canvas" ),
-			retina: false,
-			alpha: false,
+			retina: true,
+			alpha: true,
 
 		} );
 
@@ -85,6 +85,8 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
+	//Animation Loop!!
+
 	animate( deltaTime ) {
 		
 		this.box.rotateY( 0.01 );
@@ -92,35 +94,23 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
+	//You can use any events!!
+
 	onResize( args ) {
 
 		super.onResize( args );
 
 	}
 	
+	public onTouchStart( cursor: Cursor, event: MouseEvent ) {}
+
+	public onTouchMove( cursor: Cursor, event: MouseEvent ) { }
+
+	public onTouchEnd( cursor: Cursor, event: MouseEvent ) { }
+
+	public onHover( cursor: Cursor ) { }
+
+	public onWheel( event: WheelEvent, trackpadDelta: number ) { }
+
 }
 ```
-
-### Use utility
-if you want add GPU fish...
-
-```javascript
-this.fish = new ORE.Fish( this.renderer,1000,10 );
-this.scene.add( this.fish );
-```
-
-and update fish
-
-```javascript
-animate( deltaTime ) {
-    
-    if( this.fish ) {
-    
-        this.fish.update(  this.time  );
-    
-    }
-    
-}
-```
-
-

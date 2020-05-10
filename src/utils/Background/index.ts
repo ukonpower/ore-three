@@ -1,49 +1,60 @@
-import * as ORE from '../../'
+import * as ORE from '../../';
 import * as THREE from 'three';
 
 import vert from './shaders/background.vs';
+import { ResizeArgs } from '../../core/Controller';
 
-export class Background extends THREE.Mesh{
-    
-    constructor( param: THREE.ShaderMaterialParameters ){
+export class Background extends THREE.Mesh {
 
-        let geo = new THREE.BufferGeometry();
+	protected uniforms: ORE.Uniforms;
 
-        let posArray = [];
-        let indexArray = [];
-        let uvArray = [];
+	constructor( param: THREE.ShaderMaterialParameters ) {
 
-        posArray.push( -1,1,0 );
-        posArray.push( 1,1,0 );
-        posArray.push( 1,-1,0 );
-        posArray.push( -1,-1,0 );
+		let geo = new THREE.BufferGeometry();
 
-        uvArray.push( 0,1 );
-        uvArray.push( 1,1 );
-        uvArray.push( 1,0 );
-        uvArray.push( 0,0 );
+		let posArray = [];
+		let indexArray = [];
+		let uvArray = [];
 
-        indexArray.push( 0,2,1,0,3,2 );
-        
-        let pos = new Float32Array( posArray );
-        let indices = new Uint32Array( indexArray );
-        let uv = new Float32Array( uvArray );
+		posArray.push( - 1, 1, 0 );
+		posArray.push( 1, 1, 0 );
+		posArray.push( 1, - 1, 0 );
+		posArray.push( - 1, - 1, 0 );
 
-        geo.setAttribute( 'position', new THREE.BufferAttribute(  pos, 3  )  );
-        geo.setAttribute( 'uv', new THREE.BufferAttribute(  uv, 2  )  );
-        geo.setIndex( new THREE.BufferAttribute( indices,1 ) )
-        
-        let mat = new THREE.ShaderMaterial( {
-            uniforms: param.uniforms,
-            fragmentShader: param.fragmentShader,
-            vertexShader: param.vertexShader || vert,
-            transparent: true,
-            depthFunc: THREE.NeverDepth
-        } );
+		uvArray.push( 0, 1 );
+		uvArray.push( 1, 1 );
+		uvArray.push( 1, 0 );
+		uvArray.push( 0, 0 );
 
-        super( geo, mat )
+		indexArray.push( 0, 2, 1, 0, 3, 2 );
 
-        this.frustumCulled = false;
-    }
+		let pos = new Float32Array( posArray );
+		let indices = new Uint32Array( indexArray );
+		let uv = new Float32Array( uvArray );
+
+		geo.setAttribute( 'position', new THREE.BufferAttribute( pos, 3 ) );
+		geo.setAttribute( 'uv', new THREE.BufferAttribute( uv, 2 ) );
+		geo.setIndex( new THREE.BufferAttribute( indices, 1 ) );
+
+		param.vertexShader = param.vertexShader || vert;
+		param.transparent = param.transparent != undefined ? param.transparent : true;
+		param.depthFunc = param.depthFunc != undefined ? param.depthFunc : THREE.NeverDepth;
+
+		let mat = new THREE.ShaderMaterial( param );
+
+		super( geo, mat );
+
+		this.uniforms = param.uniforms || {};
+
+		this.frustumCulled = false;
+
+	}
+
+	public resize( args: ResizeArgs ) {
+
+		this.uniforms.resolution = { value: args.windowSize };
+		this.uniforms.aspectRatio = { value: args.aspectRatio };
+
+	}
 
 }

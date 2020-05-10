@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Controller | ore-three</title>
+	<title>Controller | ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">ore-three</a>
+					<a href="../index.html" class="title">ore-three-ts</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -91,10 +91,10 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="controller.html#currentscene" class="tsd-kind-icon">current<wbr>Scene</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="controller.html#cursor" class="tsd-kind-icon">cursor</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="controller.html#gprops" class="tsd-kind-icon">g<wbr>Props</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="controller.html#lethargy" class="tsd-kind-icon">lethargy</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="controller.html#max" class="tsd-kind-icon">max</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="controller.html#memdelta" class="tsd-kind-icon">mem<wbr>Delta</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="controller.html#lethargy" class="tsd-kind-icon">lethargy</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="controller.html#renderer" class="tsd-kind-icon">renderer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="controller.html#trackpadmax" class="tsd-kind-icon">trackpad<wbr>Max</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="controller.html#trackpadmemdelta" class="tsd-kind-icon">trackpad<wbr>Mem<wbr>Delta</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -102,13 +102,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#bindscene" class="tsd-kind-icon">bind<wbr>Scene</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#onhover" class="tsd-kind-icon">on<wbr>Hover</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="controller.html#onorientationdevice" class="tsd-kind-icon">on<wbr>Orientation<wbr>Device</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#onorientationdevice" class="tsd-kind-icon">on<wbr>Orientation<wbr>Device</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#ontouchend" class="tsd-kind-icon">on<wbr>Touch<wbr>End</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#ontouchmove" class="tsd-kind-icon">on<wbr>Touch<wbr>Move</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#ontouchstart" class="tsd-kind-icon">on<wbr>Touch<wbr>Start</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#onwheel" class="tsd-kind-icon">on<wbr>Wheel</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="controller.html#onwindowresize" class="tsd-kind-icon">on<wbr>Window<wbr>Resize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="controller.html#tick" class="tsd-kind-icon">tick</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="controller.html#onwindowresize" class="tsd-kind-icon">on<wbr>Window<wbr>Resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="controller.html#tick" class="tsd-kind-icon">tick</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="controller.html#unbindscene" class="tsd-kind-icon">unbind<wbr>Scene</a></li>
 							</ul>
 						</section>
@@ -127,7 +127,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L29">src/core/Controller.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L36">src/core/Controller.ts:36</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -149,7 +149,7 @@
 					<div class="tsd-signature tsd-kind-icon">clock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Clock</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L27">src/core/Controller.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L34">src/core/Controller.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -159,7 +159,7 @@
 					<div class="tsd-signature tsd-kind-icon">current<wbr>Scene<span class="tsd-signature-symbol">:</span> <a href="basescene.html" class="tsd-signature-type">BaseScene</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L23">src/core/Controller.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L30">src/core/Controller.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -169,7 +169,7 @@
 					<div class="tsd-signature tsd-kind-icon">cursor<span class="tsd-signature-symbol">:</span> <a href="cursor.html" class="tsd-signature-type">Cursor</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L26">src/core/Controller.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L33">src/core/Controller.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -179,37 +179,17 @@
 					<div class="tsd-signature tsd-kind-icon">g<wbr>Props<span class="tsd-signature-symbol">:</span> <a href="../interfaces/globalproperties.html" class="tsd-signature-type">GlobalProperties</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L29">src/core/Controller.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L36">src/core/Controller.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="lethargy" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> lethargy</h3>
-					<div class="tsd-signature tsd-kind-icon">lethargy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = new Lethargy(7, 0, 0.05)</span></div>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> lethargy</h3>
+					<div class="tsd-signature tsd-kind-icon">lethargy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = new Lethargy( 7, 0, 0.05 )</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L179">src/core/Controller.ts:179</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="max" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> max</h3>
-					<div class="tsd-signature tsd-kind-icon">max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L178">src/core/Controller.ts:178</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="memdelta" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> mem<wbr>Delta</h3>
-					<div class="tsd-signature tsd-kind-icon">mem<wbr>Delta<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L177">src/core/Controller.ts:177</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L186">src/core/Controller.ts:186</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -219,7 +199,27 @@
 					<div class="tsd-signature tsd-kind-icon">renderer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderer</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L25">src/core/Controller.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L32">src/core/Controller.ts:32</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="trackpadmax" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> trackpad<wbr>Max</h3>
+					<div class="tsd-signature tsd-kind-icon">trackpad<wbr>Max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L185">src/core/Controller.ts:185</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="trackpadmemdelta" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> trackpad<wbr>Mem<wbr>Delta</h3>
+					<div class="tsd-signature tsd-kind-icon">trackpad<wbr>Mem<wbr>Delta<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L184">src/core/Controller.ts:184</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -236,7 +236,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L84">src/core/Controller.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L91">src/core/Controller.ts:91</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -259,24 +259,24 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L167">src/core/Controller.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L174">src/core/Controller.ts:174</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="onorientationdevice" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Orientation<wbr>Device</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3>on<wbr>Orientation<wbr>Device</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Orientation<wbr>Device<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L131">src/core/Controller.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L138">src/core/Controller.ts:138</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -293,7 +293,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L157">src/core/Controller.ts:157</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L164">src/core/Controller.ts:164</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -316,7 +316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L147">src/core/Controller.ts:147</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L154">src/core/Controller.ts:154</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -339,7 +339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L137">src/core/Controller.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L144">src/core/Controller.ts:144</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -362,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L181">src/core/Controller.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L188">src/core/Controller.ts:188</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -375,34 +375,34 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="onwindowresize" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> on<wbr>Window<wbr>Resize</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Window<wbr>Resize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">on<wbr>Window<wbr>Resize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L107">src/core/Controller.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L114">src/core/Controller.ts:114</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="tick" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tick</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> tick</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">tick<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L68">src/core/Controller.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L75">src/core/Controller.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -419,7 +419,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/2402143/src/core/Controller.ts#L94">src/core/Controller.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/core/Controller.ts#L101">src/core/Controller.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -438,6 +438,18 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="animator.html" class="tsd-kind-icon">Animator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="background.html" class="tsd-kind-icon">Background</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -458,17 +470,17 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="controller.html#gprops" class="tsd-kind-icon">g<wbr>Props</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="controller.html#lethargy" class="tsd-kind-icon">lethargy</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="controller.html#max" class="tsd-kind-icon">max</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="controller.html#memdelta" class="tsd-kind-icon">mem<wbr>Delta</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="controller.html#renderer" class="tsd-kind-icon">renderer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="controller.html#trackpadmax" class="tsd-kind-icon">trackpad<wbr>Max</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="controller.html#trackpadmemdelta" class="tsd-kind-icon">trackpad<wbr>Mem<wbr>Delta</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="controller.html#bindscene" class="tsd-kind-icon">bind<wbr>Scene</a>
@@ -476,7 +488,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="controller.html#onhover" class="tsd-kind-icon">on<wbr>Hover</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="controller.html#onorientationdevice" class="tsd-kind-icon">on<wbr>Orientation<wbr>Device</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -491,10 +503,10 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="controller.html#onwheel" class="tsd-kind-icon">on<wbr>Wheel</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="controller.html#onwindowresize" class="tsd-kind-icon">on<wbr>Window<wbr>Resize</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="controller.html#tick" class="tsd-kind-icon">tick</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -504,6 +516,96 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="cursor.html" class="tsd-kind-icon">Cursor</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dommesh.html" class="tsd-kind-icon">DOMMesh</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/animatorvaliableparams.html" class="tsd-kind-icon">Animator<wbr>Valiable<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/animatorvariable.html" class="tsd-kind-icon">Animator<wbr>Variable</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/easingset.html" class="tsd-kind-icon">Easing<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/lerpfunc.html" class="tsd-kind-icon">Lerp<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerautomoveparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Auto<wbr>Move<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerevent.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollereventargs.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersectionparams.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatoraddparams.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Add<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatorkeyframe.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Key<wbr>Frame</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatorvariable.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Variable</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#version" class="tsd-kind-icon">VERSION</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
