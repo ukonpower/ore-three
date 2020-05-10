@@ -71,8 +71,8 @@ export class ScrollManager {
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {
-			element: document.querySelector( '.link' ),
-			name: "link",
+			element: document.querySelector( '.face' ),
+			name: "face",
 			bottom: true,
 			stop: false
 		} ) );
@@ -89,27 +89,144 @@ export class ScrollManager {
 				keyframes: [
 					{
 						time: this.scroller.get( 'mainVis' ).timelinePercentage,
-						value: new THREE.Vector3( 0, 4, 15 )
+						value: new THREE.Vector3( 0, 1.5, 4 )
 					},
 					{
 						time: this.scroller.get( 'about' ).timelinePercentage,
-						value: new THREE.Vector3( - 2, 1.5, 7 )
+						value: new THREE.Vector3( - 1.2, 1.5, 4 )
 					},
 					{
 						time: this.scroller.get( 'about' ).timelinePercentage * 1.1,
-						value: new THREE.Vector3( - 2, 1.5, 7 )
+						value: new THREE.Vector3( - 1.2, 1.5, 4 )
 					},
 					{
 						time: this.scroller.get( 'usage' ).timelinePercentage,
-						value: new THREE.Vector3( 2, 1.5, 7 )
+						value: new THREE.Vector3( 1.3, 1.5, 4 )
 					},
 					{
 						time: this.scroller.get( 'usage' ).timelinePercentage * 1.1,
-						value: new THREE.Vector3( 2, 1.5, 7 )
+						value: new THREE.Vector3( 1.2, 1.5, 4 )
 					},
 					{
-						time: this.scroller.get( 'link' ).timelinePercentage,
-						value: new THREE.Vector3( 0, 4, 15 )
+						time: this.scroller.get( 'face' ).timelinePercentage,
+						value: new THREE.Vector3( 0, 0, 4 )
+					},
+				],
+				easing: {
+					func: ORE.Easings.sigmoid,
+					args: 4
+				}
+			},
+		);
+
+		this.timeline.add<THREE.Quaternion>(
+			{
+				name: 'camRot',
+				keyframes: [
+					{
+						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+					},
+					{
+						time: this.scroller.get( 'about' ).timelinePercentage,
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+					},
+					{
+						time: this.scroller.get( 'about' ).timelinePercentage * 1.1,
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+					},
+					{
+						time: this.scroller.get( 'usage' ).timelinePercentage,
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+					},
+					{
+						time: this.scroller.get( 'usage' ).timelinePercentage * 1.1,
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+					},
+					{
+						time: this.scroller.get( 'face' ).timelinePercentage,
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.0, 0, 0 ) )
+					},
+				],
+				easing: {
+					func: ORE.Easings.sigmoid,
+					args: 4
+				}
+			},
+		);
+
+		this.timeline.add<number>(
+			{
+				name: 'objTransform',
+				keyframes: [
+					{
+						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						value: 0.0
+					},
+					{
+						time: ( this.scroller.get( 'mainVis' ).timelinePercentage + this.scroller.get( 'about' ).timelinePercentage ) / 2,
+						value: 1.0
+					},
+					{
+						time: this.scroller.get( 'about' ).timelinePercentage,
+						value: 0.0
+					},
+					{
+						time: ( this.scroller.get( 'about' ).timelinePercentage + this.scroller.get( 'usage' ).timelinePercentage ) / 2,
+						value: 1.0
+					},
+					{
+						time: this.scroller.get( 'usage' ).timelinePercentage,
+						value: 0.0
+					},
+					{
+						time: ( this.scroller.get( 'usage' ).timelinePercentage + this.scroller.get( 'face' ).timelinePercentage ) / 2,
+						value: 1.0
+					},
+					{
+						time: this.scroller.get( 'face' ).timelinePercentage,
+						value: 0.2
+					},
+				],
+				easing: {
+					func: ORE.Easings.sigmoid,
+					args: 4
+				}
+			},
+		);
+
+
+		this.timeline.add<number>(
+			{
+				name: 'objSelector',
+				keyframes: [
+					{
+						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						value: 0.0
+					},
+					{
+						time: ( this.scroller.get( 'mainVis' ).timelinePercentage + this.scroller.get( 'about' ).timelinePercentage ) / 2,
+						value: 0.0
+					},
+					{
+						time: this.scroller.get( 'about' ).timelinePercentage,
+						value: 1.0
+					},
+					{
+						time: ( this.scroller.get( 'about' ).timelinePercentage + this.scroller.get( 'usage' ).timelinePercentage ) / 2,
+						value: 1.0
+					},
+					{
+						time: this.scroller.get( 'usage' ).timelinePercentage,
+						value: 2.0
+					},
+					{
+						time: ( this.scroller.get( 'usage' ).timelinePercentage + this.scroller.get( 'face' ).timelinePercentage ) / 2,
+						value: 2.0
+					},
+					{
+						time: this.scroller.get( 'face' ).timelinePercentage,
+						value: 3.0
 					},
 				],
 				easing: {

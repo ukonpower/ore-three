@@ -22,6 +22,7 @@ $sp-width: 800px;
 }
 
 html,body{
+	position: relative;
 	width: 100%;
 
 	[data-usescroller="true"] {
@@ -133,7 +134,7 @@ ul {
 			justify-content: center;
 			align-items: center;
 
-			font-size: 30px;
+			font-size: 20px;
 			&-item {
 				display: block;
 				margin-bottom: 30px;
@@ -267,7 +268,7 @@ ul {
 	
 	.section{
 		width: 80%;
-		min-height: 100vh;
+		min-height: 200vh;
 		margin: 0 auto;
 		padding: 70px 0;
 	}
@@ -424,12 +425,24 @@ ul {
 		}
 	}
 	
-	.link{
+	.face{
+	}
+}
 
-		padding-top: 150px;
+.footer{
+	position: absolute;
+	left: 0; bottom: 0;
+	width: 100%;
 
-		&-list{
-			
+	.copyright{
+		background-color: rgba($color: #000000, $alpha: 0.8);
+		width: 100%;
+		text-align: center;
+		font-size: 12px;
+		padding: 15px 0;
+		@include sp{
+			padding: 15px 0;
+			padding-bottom: 25px;
 		}
 	}
 }
@@ -437,16 +450,18 @@ ul {
 .examples {
 
 	&-container {
+		position: relative;
 		width: 90%;
 		max-width: 1200px;
-		margin: 70px auto;
-		margin-top: 120px;
+		margin: 120 auto;
+		margin-bottom: 0;
+		padding-bottom: 100px;
 
 		h1 {
 			font-size: 35px;
 
 			@include sp{
-				font-size: 40px;
+				font-size: 30px;
 			}
 		
 			margin-bottom: 40px;
@@ -473,7 +488,7 @@ ul {
 				width: 100%;
 			}
 			
-			a {
+			&-link{
 				display: block;
 				width: 100%;
 
@@ -502,6 +517,21 @@ ul {
 				padding: 10px;
 				border-radius: 5px;
 				background-color: rgba($color: #000000, $alpha: 0.8);
+			}
+			
+			&-code {
+				display: inline-block !important;
+				position: absolute;
+				right: 0; top: 0;
+				padding: 10px;
+				color: #FFF;
+				z-index: 20;
+				border-radius: 0 0 0 5px;
+
+				transition: .3s;
+				&:hover{
+					background-color: rgba($color: #FFF, $alpha: 0.3);
+				}
 			}
 			
 		}

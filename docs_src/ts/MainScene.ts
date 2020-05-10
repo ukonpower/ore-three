@@ -4,20 +4,39 @@ import * as ORE from '@ore-three-ts';
 import backgroundFrag from './shaders/background.fs';
 import MainObj from './MainObj';
 import { ScrollManager } from './ScrollManager';
+import { AssetManager } from './AssetManager';
 
 export class MainScene extends ORE.BaseScene {
 
 	private mainObj: MainObj;
 
 	private background: ORE.Background;
-	private uniforms: ORE.Uniforms;
+	private commonUniforms: ORE.Uniforms;
 
 	private scrollManager: ScrollManager;
 	private isExamplePage: boolean = false;
 
+	private assetManager: AssetManager;
+	private spWeight: number = 0.0;
+
 	constructor() {
 
 		super();
+
+		this.commonUniforms = {
+			time: {
+				value: 0
+			},
+			objTransform: {
+				value: 0
+			},
+			objSelector: {
+				value: 0
+			},
+			spWeight: {
+				value: 0
+			}
+		};
 
 		this.isExamplePage = window.location.href.indexOf( 'examples' ) != - 1;
 
@@ -25,9 +44,21 @@ export class MainScene extends ORE.BaseScene {
 
 			this.initScroller();
 
+			this.assetManager = new AssetManager( {
+				onMustAssetLoaded: () => {
+
+					this.initScene();
+
+				}
+			} );
+
+			window.assetManager = this.assetManager;
+
 		} else {
 
 			document.body.setAttribute( 'data-useScroller', 'false' );
+
+			this.initScene();
 
 		}
 
@@ -48,9 +79,6 @@ export class MainScene extends ORE.BaseScene {
 
 		super.onBind( gProps );
 
-		this.camera.position.set( 0, 4, 15 );
-		this.camera.lookAt( 0, 0.9, 0 );
-
 		let aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;
 		this.scene.add( aLight );
@@ -60,23 +88,22 @@ export class MainScene extends ORE.BaseScene {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
+	}
+
+	private initScene() {
+
 		if ( ! this.isExamplePage ) {
 
-			this.mainObj = new MainObj();
+			this.mainObj = new MainObj( this.commonUniforms );
 			this.scene.add( this.mainObj.obj );
 
 		}
 
-		this.uniforms = {
-			time: {
-				value: 0
-			},
-		};
-
 		this.background = new ORE.Background( {
 			fragmentShader: backgroundFrag,
-			uniforms: this.uniforms
+			uniforms: this.commonUniforms
 		} );
+		this.background.renderOrder = - 100;
 
 		this.scene.add( this.background );
 
@@ -90,14 +117,20 @@ export class MainScene extends ORE.BaseScene {
 
 	public animate( deltaTime: number ) {
 
-		this.uniforms.time.value = this.time;
+		this.commonUniforms.time.value = this.time;
 
-		if ( ! this.isExamplePage ) {
+		if ( ! this.isExamplePage && this.assetManager.isLoaded ) {
 
 			this.scrollManager.scroller.update( deltaTime );
 			this.scrollManager.timeline.update( this.scrollManager.scroller.scrollTimelinePercentage );
 
+			this.commonUniforms.objTransform.value = this.scrollManager.timeline.get<number>( 'objTransform' );
+			this.commonUniforms.objSelector.value = this.scrollManager.timeline.get<number>( 'objSelector' );
+
 			this.camera.position.copy( this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' ) );
+			this.camera.quaternion.copy( this.scrollManager.timeline.get<THREE.Quaternion>( 'camRot' ) );
+
+			this.camera.position.x *= this.spWeight;
 
 			this.mainObj.update( this.time );
 
@@ -111,7 +144,11 @@ export class MainScene extends ORE.BaseScene {
 
 		super.onResize( args );
 
-		this.background.resize( args );
+		this.spWeight = Math.min( 1.0, Math.max( 0.0, ( this.gProps.resizeArgs.windowSize.x - 500 ) / 1000 ) );
+
+		this.commonUniforms.spWeight.value = this.spWeight;
+
+		this.background && this.background.resize( args );
 
 	}
 

@@ -219,6 +219,7 @@ function watch() {
 	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/scss/*.scss', gulp.series( sassDev ) );
 	gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
+	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );
 
 }
 
