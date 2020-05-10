@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import * as ORE from '@ore-three-ts';
 import { PageScroller } from '.';
 
 export declare interface PageScrollerEventArgs {

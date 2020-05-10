@@ -13,7 +13,7 @@ const del = require( 'del' );
 const fs = require( 'fs' );
 const eslint = require( 'gulp-eslint' );
 const typedoc = require( 'gulp-typedoc' );
-
+const ts = require( 'gulp-typescript' );
 const options = minimist( process.argv.slice( 2 ), {
 	default: {
 		dev: 'untitle',
@@ -80,6 +80,12 @@ function buildPackages( cb ) {
 			name: info.packageName,
 			moduleResolution: "node"
 		} ) );
+
+	var tsProjectDts = ts.createProject( './webpack/tsconfig/build.json' );
+	//types
+	var tsResult = gulp.src( './src/**/*.ts' )
+		.pipe( tsProjectDts() );
+	tsResult.dts.pipe( gulp.dest( './types' ) );
 
 	cb();
 
