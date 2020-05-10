@@ -1,8 +1,8 @@
 # Ore Three
 [three.js]( https://github.com/mrdoob/three.js ) utils.
 
-[Documentation](https://ukonpower.github.io/ore-three-ts/)
-[Examples]( https://github.com/ukonpower/ore-three-ts/tree/master/examples/js )
+[Documentation](https:ore-three-ts.ukon.dev/documentation)
+[Examples]( https://ore-three-ts.ukon.dev/examples/ )
 
 
 ### install
