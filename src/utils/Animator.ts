@@ -1,6 +1,6 @@
 import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
-import { Uniforms } from "../shaders/shader";
+import { Uniforms } from "./Uniforms";
 
 declare interface AnimatorVariable<T>{
 	time: number;
@@ -20,69 +20,69 @@ export declare interface AnimatorValiableParams<T> {
 	customLerpFunc?: LerpFunc<T>;
 }
 
-export class Animator{
+export class Animator {
 
-	private variables: { [ key: string ]: AnimatorVariable<any> };
-	private _isAnimating: boolean = false;
-	private animatingCount: number = 0;
-	private dispatchEvents: Function[] = [];
+	protected variables: { [ key: string ]: AnimatorVariable<any> };
+	protected _isAnimating: boolean = false;
+	protected animatingCount: number = 0;
+	protected dispatchEvents: Function[] = [];
 
-	constructor(){
+	constructor() {
 
 		this.variables = {};
 
 	}
 
-	public get isAnimating(){
+	public get isAnimating() {
 
 		return this._isAnimating;
 
 	}
 
-	public add<T>( params: AnimatorValiableParams<T> ){
+	public add<T>( params: AnimatorValiableParams<T> ) {
 
 		let lerpFunc = params.customLerpFunc || Lerps.getLerpFunc( params.initValue );
-		
+
 		this.variables[ params.name ] = {
 			time: 1,
 			value: params.initValue,
 			startValue: params.initValue,
 			goalValue: null,
-			easing: params.easing || { func: Easings.sigmoid, variables: [ 6 ] },
+			easing: params.easing || { func: Easings.sigmoid, args: 6 },
 			lerpFunc: lerpFunc,
-		}
+		};
 
 	}
 
-	public setEasing( name: string, easing: EasingSet ){
+	public setEasing( name: string, easing: EasingSet ) {
 
 		let variable = this.variables[ name ];
 
-		if( variable ){
+		if ( variable ) {
 
 			variable.easing = easing;
 
-		}else{
+		} else {
 
 			console.warn( '"' + name + '"' + ' is not exist' );
-			
+
 		}
 
 	}
 
-	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function ){
+	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingSet ) {
 
-		let variable = this.variables[name];
+		let variable = this.variables[ name ];
 
-		if( variable ){
-			
+		if ( variable ) {
+
 			variable.duration = duration;
 
-			if( variable.time >= 1.0 ){
+			if ( variable.time >= 1.0 ) {
 
 				this._isAnimating = true;
-				this.animatingCount++;
-				
+				this.animatingCount ++;
+
 			}
 
 			variable.time = 0;
@@ -91,119 +91,129 @@ export class Animator{
 			variable.goalValue = goalValue;
 			variable.onAnimationFinished = callback;
 
-		}else{
+			if ( easing ) {
+
+				this.setEasing( name, easing );
+
+			}
+
+		} else {
 
 			console.warn( '"' + name + '"' + ' is not exist' );
-			
+
 		}
 
 	}
 
-	public setValue<T>( name: string, value: T ){
+	public setValue<T>( name: string, value: T ) {
 
-		if( this.variables[name] ){
+		if ( this.variables[ name ] ) {
 
-			this.variables[name].value = value;
+			this.variables[ name ].value = value;
 
-		}else{
+		} else {
 
 			console.warn( '"' + name + '"' + ' is not exist' );
 
 			return null;
 
 		}
-		
+
 	}
 
-	public get<T>( name: string ): T{
+	public get<T>( name: string ): T {
 
-		if( this.variables[name] ){
+		if ( this.variables[ name ] ) {
 
-			return this.variables[name].value;
+			return this.variables[ name ].value;
 
-		}else{
+		} else {
 
 			console.warn( '"' + name + '"' + ' is not exist' );
 
 			return null;
 
 		}
-		
+
 	}
 
-	public getVariableObject<T>( name: string ): AnimatorVariable<T>{
+	public getVariableObject<T>( name: string ): AnimatorVariable<T> {
 
-		if( this.variables[name] ){
+		if ( this.variables[ name ] ) {
 
-			return this.variables[name];
+			return this.variables[ name ];
 
-		}else{
+		} else {
 
 			console.warn( '"' + name + '"' + ' is not exist' );
 
 			return null;
 
 		}
-		
+
 	}
 
 	public applyToUniforms( uniforms: Uniforms ) {
 
 		let keys = Object.keys( this.variables );
 
-		for( let i = 0; i < keys.length; i++ ){
+		for ( let i = 0; i < keys.length; i ++ ) {
 
-			if( !uniforms[ keys[ i ] ] ) uniforms[ keys[ i ] ] = { value: null }
+			uniforms[ keys[ i ] ] = this.getVariableObject( keys[ i ] );
 
-			uniforms[ keys[ i ]  ].value = this.variables[ keys[ i ] ].value;
-			
 		}
 
 	}
-	
-	public update( deltaTime?: number ){
+
+	public update( deltaTime?: number ) {
+
+		if ( this.animatingCount == 0 ) {
+
+			this._isAnimating = false;
+
+		}
 
 		let keys = Object.keys( this.variables );
-		
-		for( let i = 0; i < keys.length; i++ ){
+
+		for ( let i = 0; i < keys.length; i ++ ) {
 
 			let variable = this.variables[ keys[ i ] ];
 
-			if( variable.time < 1.0 ){
+			if ( variable.time == 1.0 ) {
+
+				this.animatingCount --;
+
+				if ( variable.onAnimationFinished ) {
+
+					this.dispatchEvents.push( variable.onAnimationFinished );
+
+				}
+
+			}
+
+			if ( variable.time < 1.0 ) {
 
 				variable.time += ( deltaTime || 0.016 ) / variable.duration;
 
-				if( variable.duration == 0 || variable.time >= 1.0 ){
-					
+				if ( variable.duration == 0 || variable.time >= 1.0 ) {
+
 					variable.time = 1.0;
-					
+
 				}
 
 				let t = variable.time;
 
-				if( variable.easing ) {
+				if ( variable.easing ) {
 
-					t = variable.easing.func( t, variable.easing.variables );
-					
+					t = variable.easing.func( t, variable.easing.args );
+
 				}
 
 				variable.value = variable.lerpFunc( variable.startValue, variable.goalValue, t );
-				
-				if( variable.time == 1.0 ){
-					
-					this.animatingCount--;
 
-					if( this.animatingCount == 0 ){
+				if ( variable.time == 1.0 ) {
 
-						this._isAnimating = false;
-
-					}
-
-					if( variable.onAnimationFinished ){
-						
-						this.dispatchEvents.push( variable.onAnimationFinished );
-
-					}
+					variable.value = variable.goalValue;
 
 				}
 
@@ -211,10 +221,10 @@ export class Animator{
 
 		}
 
-		while( this.dispatchEvents.length != 0 ){
+		while ( this.dispatchEvents.length != 0 ) {
 
 			this.dispatchEvents.pop()();
-			
+
 		}
 
 	}

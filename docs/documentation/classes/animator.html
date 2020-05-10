@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Animator | ore-three</title>
+	<title>Animator | ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">ore-three</a>
+					<a href="../index.html" class="title">ore-three-ts</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -84,13 +84,13 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="animator.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animator.html#_isanimating" class="tsd-kind-icon">_is<wbr>Animating</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animator.html#animatingcount" class="tsd-kind-icon">animating<wbr>Count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animator.html#dispatchevents" class="tsd-kind-icon">dispatch<wbr>Events</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animator.html#variables" class="tsd-kind-icon">variables</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="animator.html#_isanimating" class="tsd-kind-icon">_is<wbr>Animating</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="animator.html#animatingcount" class="tsd-kind-icon">animating<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="animator.html#dispatchevents" class="tsd-kind-icon">dispatch<wbr>Events</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="animator.html#variables" class="tsd-kind-icon">variables</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -102,10 +102,13 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animator.html#addvariable" class="tsd-kind-icon">add<wbr>Variable</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animator.html#animate" class="tsd-kind-icon">animate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animator.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="animator.html#add" class="tsd-kind-icon">add</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="animator.html#animate" class="tsd-kind-icon">animate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animator.html#applytouniforms" class="tsd-kind-icon">apply<wbr>ToUniforms</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="animator.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="animator.html#getvariableobject" class="tsd-kind-icon">get<wbr>Variable<wbr>Object</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animator.html#seteasing" class="tsd-kind-icon">set<wbr>Easing</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="animator.html#setvalue" class="tsd-kind-icon">set<wbr>Value</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animator.html#update" class="tsd-kind-icon">update</a></li>
 							</ul>
 						</section>
@@ -124,7 +127,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L24">src/utils/Animator.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L28">src/utils/Animator.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="animator.html" class="tsd-signature-type">Animator</a></h4>
@@ -132,52 +135,52 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="_isanimating" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _is<wbr>Animating</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _is<wbr>Animating</h3>
 					<div class="tsd-signature tsd-kind-icon">_is<wbr>Animating<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L21">src/utils/Animator.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L26">src/utils/Animator.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="animatingcount" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> animating<wbr>Count</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> animating<wbr>Count</h3>
 					<div class="tsd-signature tsd-kind-icon">animating<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L22">src/utils/Animator.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L27">src/utils/Animator.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="dispatchevents" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> dispatch<wbr>Events</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> dispatch<wbr>Events</h3>
 					<div class="tsd-signature tsd-kind-icon">dispatch<wbr>Events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L24">src/utils/Animator.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L28">src/utils/Animator.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="variables" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> variables</h3>
-					<div class="tsd-signature tsd-kind-icon">variables<span class="tsd-signature-symbol">:</span></div>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> variables</h3>
+					<div class="tsd-signature tsd-kind-icon">variables<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L20">src/utils/Animator.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L25">src/utils/Animator.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../interfaces/variable.html" class="tsd-signature-type">variable</a></h5>
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../interfaces/animatorvariable.html" class="tsd-signature-type">AnimatorVariable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 							</li>
 						</ul>
 					</div>
@@ -195,7 +198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L32">src/utils/Animator.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L36">src/utils/Animator.ts:36</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -205,87 +208,154 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addvariable" class="tsd-anchor"></a>
-					<h3>add<wbr>Variable</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Variable<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, initValue<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, easing<span class="tsd-signature-symbol">?: </span><a href="../interfaces/animatoreasing.html" class="tsd-signature-type">AnimatorEasing</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="add" class="tsd-anchor"></a>
+					<h3>add</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">add&lt;T&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/animatorvaliableparams.html" class="tsd-signature-type">AnimatorValiableParams</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L38">src/utils/Animator.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L42">src/utils/Animator.ts:42</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> initValue: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> easing: <a href="../interfaces/animatoreasing.html" class="tsd-signature-type">AnimatorEasing</a></h5>
+									<h5>params: <a href="../interfaces/animatorvaliableparams.html" class="tsd-signature-type">AnimatorValiableParams</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="animate" class="tsd-anchor"></a>
 					<h3>animate</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">animate<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, goalValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, duration<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">animate&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, goalValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, duration<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Function</span>, easing<span class="tsd-signature-symbol">?: </span><a href="../interfaces/easingset.html" class="tsd-signature-type">EasingSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L85">src/utils/Animator.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L73">src/utils/Animator.ts:73</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>goalValue: <span class="tsd-signature-type">number</span></h5>
+									<h5>goalValue: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> duration: <span class="tsd-signature-type">number</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> duration: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">Function</span></h5>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> easing: <a href="../interfaces/easingset.html" class="tsd-signature-type">EasingSet</a></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getvalue" class="tsd-anchor"></a>
-					<h3>get<wbr>Value</h3>
+					<a name="applytouniforms" class="tsd-anchor"></a>
+					<h3>apply<wbr>ToUniforms</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">apply<wbr>ToUniforms<span class="tsd-signature-symbol">(</span>uniforms<span class="tsd-signature-symbol">: </span><a href="../interfaces/uniforms.html" class="tsd-signature-type">Uniforms</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L112">src/utils/Animator.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L156">src/utils/Animator.ts:156</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>uniforms: <a href="../interfaces/uniforms.html" class="tsd-signature-type">Uniforms</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="get" class="tsd-anchor"></a>
+					<h3>get</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L124">src/utils/Animator.ts:124</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="getvariableobject" class="tsd-anchor"></a>
+					<h3>get<wbr>Variable<wbr>Object</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Variable<wbr>Object&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/animatorvariable.html" class="tsd-signature-type">AnimatorVariable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L140">src/utils/Animator.ts:140</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/animatorvariable.html" class="tsd-signature-type">AnimatorVariable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -293,13 +363,13 @@
 					<a name="seteasing" class="tsd-anchor"></a>
 					<h3>set<wbr>Easing</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Easing<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, easing<span class="tsd-signature-symbol">: </span><a href="../interfaces/animatoreasing.html" class="tsd-signature-type">AnimatorEasing</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Easing<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, easing<span class="tsd-signature-symbol">: </span><a href="../interfaces/easingset.html" class="tsd-signature-type">EasingSet</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L69">src/utils/Animator.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L57">src/utils/Animator.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -308,10 +378,42 @@
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>easing: <a href="../interfaces/animatoreasing.html" class="tsd-signature-type">AnimatorEasing</a></h5>
+									<h5>easing: <a href="../interfaces/easingset.html" class="tsd-signature-type">EasingSet</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="setvalue" class="tsd-anchor"></a>
+					<h3>set<wbr>Value</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Value&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L108">src/utils/Animator.ts:108</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -325,7 +427,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/43b1694/src/utils/Animator.ts#L128">src/utils/Animator.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/82e104c/src/utils/Animator.ts#L168">src/utils/Animator.ts:168</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -358,32 +460,41 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="animator.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="animator.html#_isanimating" class="tsd-kind-icon">_is<wbr>Animating</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="animator.html#animatingcount" class="tsd-kind-icon">animating<wbr>Count</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="animator.html#dispatchevents" class="tsd-kind-icon">dispatch<wbr>Events</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="animator.html#variables" class="tsd-kind-icon">variables</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="animator.html#isanimating" class="tsd-kind-icon">is<wbr>Animating</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="animator.html#addvariable" class="tsd-kind-icon">add<wbr>Variable</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="animator.html#add" class="tsd-kind-icon">add</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="animator.html#animate" class="tsd-kind-icon">animate</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="animator.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a>
+								<a href="animator.html#applytouniforms" class="tsd-kind-icon">apply<wbr>ToUniforms</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="animator.html#get" class="tsd-kind-icon">get</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="animator.html#getvariableobject" class="tsd-kind-icon">get<wbr>Variable<wbr>Object</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="animator.html#seteasing" class="tsd-kind-icon">set<wbr>Easing</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="animator.html#setvalue" class="tsd-kind-icon">set<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="animator.html#update" class="tsd-kind-icon">update</a>
@@ -392,6 +503,108 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="background.html" class="tsd-kind-icon">Background</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="controller.html" class="tsd-kind-icon">Controller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="cursor.html" class="tsd-kind-icon">Cursor</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dommesh.html" class="tsd-kind-icon">DOMMesh</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/animatorvaliableparams.html" class="tsd-kind-icon">Animator<wbr>Valiable<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/animatorvariable.html" class="tsd-kind-icon">Animator<wbr>Variable</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/easingset.html" class="tsd-kind-icon">Easing<wbr>Set</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/lerpfunc.html" class="tsd-kind-icon">Lerp<wbr>Func</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerautomoveparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Auto<wbr>Move<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerevent.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollereventargs.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersectionparams.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatoraddparams.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Add<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatorkeyframe.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Key<wbr>Frame</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/timelineanimatorvariable.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Variable</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#version" class="tsd-kind-icon">VERSION</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

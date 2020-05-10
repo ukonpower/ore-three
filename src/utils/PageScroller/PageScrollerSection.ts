@@ -1,183 +1,104 @@
 import * as THREE from 'three';
+import * as ORE from '@ore-three-ts';
 import { PageScroller } from '.';
-import { EasingSet } from '../Easings';
 
-export declare interface PageScrollerSectionParam{
+export declare interface PageScrollerEventArgs {
+	scroller: PageScroller;
+	section: PageScrollerSection;
+	scrollMode: string;
+	scrollDelta: number;
+	scrollPower: number;
+}
+
+declare interface PageScrollerEvent {
+	common?: ( args: PageScrollerEventArgs ) => void | boolean;
+	up?: ( args: PageScrollerEventArgs ) => void | boolean;
+	down?: ( args: PageScrollerEventArgs ) => void | boolean;
+}
+
+declare interface PageScrollerEvents {
+	onStartScroll?: PageScrollerEvent
+	onArrivals?: [ {
+		percentage: number;
+		event: PageScrollerEvent;
+	} ]
+}
+
+export declare interface PageScrollerSectionParams {
 	name: string;
-	bottom?: Boolean;
-	element: Element | string;
+	element: HTMLElement;
 	events?: PageScrollerEvents;
 	stop?: boolean;
-	sectionEasings?: ScrollerSectionEasings;
-	threePosition?: THREE.Vector3;
-	threeRotation?: THREE.Quaternion;
+	startScrollUp?: number;
+	startScrollDown?: number;
+	bottom?: boolean;
 }
 
-export declare interface onArrivalEvent{
-	percentage: number;
-	event : ( args: ScrollEventArgs ) => void;
-}
-
-export declare interface PageScrollerEvents{
-	onStartScroll?: ( args: ScrollEventArgs ) => boolean;
-	onArrivals?: onArrivalEvent[];
-}
-
-declare interface ScrollEventArgs{
-	scroller: PageScroller
-	section: PageScrollerSection;
-	scrollVelocity: number;
-	scrollMode: string
-}
-
-export declare interface ScrollerSectionEasings{
-	position?: EasingSet,
-	rotation?: EasingSet
-}
-
-declare interface PageScrollerSectionRect{
+declare interface PageScrollerSectionRect {
+	x: number;
+	y: number;
 	width: number;
 	height: number;
-	top: number;
-	bottom: number;
 }
 
-export class PageScrollerSection{
+export class PageScrollerSection {
 
-	public threePosition?: THREE.Vector3;
-	public threeRotation?: THREE.Quaternion;
-	public sectionEasings?: ScrollerSectionEasings
-	public stop?: boolean;
-	public bottom?: Boolean;
-	public num: number;
-	public scrollPosition: number;
+	public name: string;
+	public element: HTMLElement;
+	public rect: PageScrollerSectionRect;
+	public stop: boolean;
+	public startScrollUp: number;
+	public startScrollDown: number;
+	public events: PageScrollerEvents;
+	public bottom: boolean;
+	public timelinePercentage: number = 0;
 
-	private _selector: string;
-	private _name: string
-	private _element: HTMLElement;
-	private _events: PageScrollerEvents;
-	private _rect: PageScrollerSectionRect;
-	
-	public get name(){
-		
-		return this._name;
+	constructor( params: PageScrollerSectionParams ) {
 
-	}
+		this.name = params.name;
+		this.element = params.element;
+		this.stop = params.stop;
+		this.events = params.events;
+		this.bottom = params.bottom;
+		this.startScrollDown = params.startScrollDown || 0;
+		this.startScrollUp = params.startScrollUp || 0;
 
-	public get element(){
-
-		return this._element;
+		this.updateRect( 0 );
 
 	}
 
-	public get events(){
+	public get isPageScrollerSection() {
 
-		return this._events;
-
-	}
-
-	public get rect(){
-
-		return this._rect;
+		return true;
 
 	}
 
-	public get selector() {
+	public updateRect( scrollPos: number ) {
 
-		return this._selector;
-		
-	}
-
-	constructor( param: PageScrollerSectionParam ){
-
-		if( !param.element ){
-
-			console.error( '"' + param.name + '"' + ' Element is null.' );
-			
-		}
-
-		let elm: Element;
-
-		if( typeof param.element == 'string' ) {
-			
-			elm = document.querySelector( param.element )
-			this._selector = param.element;
-
-		} else {
-
-			elm = param.element;
-			
-		}
-		
-		let clientRect  = ( elm as HTMLElement ).getBoundingClientRect();
-
-		let rect: PageScrollerSectionRect = {
-			top: clientRect.top,
-			bottom: clientRect.bottom,
-			width: clientRect.width,
-			height: clientRect.height,
-		}
-
-		this._name = param.name;
-		this._element = elm as HTMLElement;
-		this._rect = rect;
-		this.bottom = param.bottom || false;
-		this.stop = param.stop || false;
-		this.threePosition = param.threePosition || null;
-		this.threeRotation = param.threeRotation || null;
-
-		this._events = {
-			onStartScroll: null,
-			onArrivals: []
-		}
-
-		if( param.events ){
-		
-			this._events.onArrivals = param.events.onArrivals || [];
-			this._events.onStartScroll = param.events.onStartScroll || null;
-			
-		}
-
-		this.sectionEasings = {
-			position: null,
-			rotation: null
-		}
-
-		if( param.sectionEasings && param.sectionEasings.position ){
-
-			this.sectionEasings.position = {
-				func: param.sectionEasings.position.func || null,
-				variables: param.sectionEasings.position.variables || [],
-			}
-
-		}
-
-		if( param.sectionEasings && param.sectionEasings.rotation ){
-
-			this.sectionEasings.rotation = {
-				func: param.sectionEasings.rotation.func || null,
-				variables: param.sectionEasings.rotation.variables || [],
-			}
-
-		}
+		this.rect = {
+			x: this.element.offsetLeft,
+			y: this.element.offsetTop - scrollPos,
+			width: this.element.offsetWidth,
+			height: this.element.offsetHeight
+		};
 
 	}
 
-	public resize( pageOffset: number ){
+	public getScrollPercentage( offsetPos?: number ) {
 
-		let clientRect = this._element.getBoundingClientRect();
+		let bottomOffset = ( this.bottom ? this.rect.height - window.innerHeight : 0 );
+		let pos = ( this.rect.y + bottomOffset ) - ( offsetPos || 0 );
 
-		this.rect.bottom = clientRect.bottom + pageOffset;
-		this.rect.top = clientRect.top + pageOffset;
-		this.rect.width = clientRect.width;
-		this.rect.height = clientRect.height;
-			
+		let firstHalfHeight = this.bottom ? this.rect.height : window.innerHeight;
+		let firstHalf = Math.min( 1.0, 1.0 - ( pos / firstHalfHeight ) );
+
+		let secondHalfHeight = this.bottom ? window.innerHeight : this.rect.height;
+		let secondHalf = Math.max( 0.0, - pos / secondHalfHeight );
+
+		let percentage = firstHalf + secondHalf;
+
+		return percentage;
+
 	}
 
-	public addArrivalEvent( ...customEvents: onArrivalEvent[] ){
-		
-		Array.prototype.push.apply( this._events.onArrivals, customEvents );
-		
-	}
-	
 }

@@ -1,0 +1,60 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body,html{
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+	overflow:hidden;
+	font-family: sans-serif;
+	box-sizing: border-box;
+}
+
+.back{
+    position: absolute;
+    left: 5%;
+    top: 30px;
+    text-decoration: none;
+    color: white;
+	background-color: rgba(0, 0, 0, 0);
+	z-index: 99;
+}
+
+#canvas{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+
+.wrapper {
+	position: absolute;
+	width: 100%;
+	left: 0; top: 0;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.section {
+	position: relative;
+	width: 100%;
+	height: 200vh;
+	border: solid 5px white;
+}
+
+// .section1 {
+// 	background-color: #F00;
+// }
+
+// .section2 {
+// 	background-color: #FF0;
+// }
+
+// .section3 {
+// 	background-color: #F0F;
+// }
+
+// .section4 {
+// 	background-color: #FFF;
+// }
