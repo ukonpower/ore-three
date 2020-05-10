@@ -5,10 +5,13 @@ import backgroundFrag from './shaders/background.fs';
 import MainObj from './MainObj';
 import { ScrollManager } from './ScrollManager';
 import { AssetManager } from './AssetManager';
+import { PostProcessing } from './PostProcessing';
 
 export class MainScene extends ORE.BaseScene {
 
 	private mainObj: MainObj;
+
+	private pp: PostProcessing;
 
 	private background: ORE.Background;
 	private commonUniforms: ORE.Uniforms;
@@ -34,6 +37,9 @@ export class MainScene extends ORE.BaseScene {
 				value: 0
 			},
 			spWeight: {
+				value: 0
+			},
+			dark: {
 				value: 0
 			}
 		};
@@ -88,6 +94,8 @@ export class MainScene extends ORE.BaseScene {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
+		this.pp = new PostProcessing( this.renderer, this.commonUniforms );
+
 	}
 
 	private initScene() {
@@ -126,6 +134,7 @@ export class MainScene extends ORE.BaseScene {
 
 			this.commonUniforms.objTransform.value = this.scrollManager.timeline.get<number>( 'objTransform' );
 			this.commonUniforms.objSelector.value = this.scrollManager.timeline.get<number>( 'objSelector' );
+			this.commonUniforms.dark.value = this.scrollManager.timeline.get<number>( 'dark' );
 
 			this.camera.position.copy( this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' ) );
 			this.camera.quaternion.copy( this.scrollManager.timeline.get<THREE.Quaternion>( 'camRot' ) );
@@ -136,7 +145,15 @@ export class MainScene extends ORE.BaseScene {
 
 		}
 
-		this.renderer.render( this.scene, this.camera );
+		if ( this.pp ) {
+
+			this.pp.render( this.scene, this.camera );
+
+		} else {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 
@@ -149,6 +166,7 @@ export class MainScene extends ORE.BaseScene {
 		this.commonUniforms.spWeight.value = this.spWeight;
 
 		this.background && this.background.resize( args );
+		this.pp && this.pp.resize();
 
 	}
 

@@ -125,23 +125,23 @@ export class ScrollManager {
 				keyframes: [
 					{
 						time: this.scroller.get( 'mainVis' ).timelinePercentage,
-						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
 						time: this.scroller.get( 'about' ).timelinePercentage,
-						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
 						time: this.scroller.get( 'about' ).timelinePercentage * 1.1,
-						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
 						time: this.scroller.get( 'usage' ).timelinePercentage,
-						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
 						time: this.scroller.get( 'usage' ).timelinePercentage * 1.1,
-						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.3, 0, 0 ) )
+						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
 						time: this.scroller.get( 'face' ).timelinePercentage,
@@ -195,7 +195,6 @@ export class ScrollManager {
 			},
 		);
 
-
 		this.timeline.add<number>(
 			{
 				name: 'objSelector',
@@ -227,6 +226,34 @@ export class ScrollManager {
 					{
 						time: this.scroller.get( 'face' ).timelinePercentage,
 						value: 3.0
+					},
+				],
+				easing: {
+					func: ORE.Easings.sigmoid,
+					args: 4
+				}
+			},
+		);
+
+		this.timeline.add<number>(
+			{
+				name: 'dark',
+				keyframes: [
+					{
+						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						value: 0
+					},
+					{
+						time: this.scroller.get( 'about' ).timelinePercentage,
+						value: 1.0
+					},
+					{
+						time: this.scroller.get( 'usage' ).timelinePercentage,
+						value: 1.0
+					},
+					{
+						time: this.scroller.get( 'face' ).timelinePercentage,
+						value: 0
 					},
 				],
 				easing: {
