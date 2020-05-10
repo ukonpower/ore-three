@@ -2,7 +2,7 @@
 	"name": "ore-three-ts",
 	"version": "1.0.0",
 	"description": "",
-	"main": "build/ore-three.js",
+	"main": "build/ore-three-ts.js",
 	"author": "ukonpower",
 	"license": "MIT",
 	"repository": {
