@@ -496,7 +496,9 @@ export class PageScroller {
 
 		}, param.easing );
 
-		this.sumDelta = 0;
+		//onStartScroll内でAutoMoveしたとき、無限ループに陥るのを阻止
+		this.sumDelta = ( targetPos - this.sumDelta ) / Math.abs( targetPos - this.sumDelta ) * 0.00001;
+
 		this.isAutoMove = true;
 
 	}
