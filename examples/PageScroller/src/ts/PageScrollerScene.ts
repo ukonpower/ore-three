@@ -44,8 +44,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 					down: ( args ) => {
 
 						this.scroller.autoMove( {
-							target: 'sec2',
-							bottom: true
+							target: 'sec3',
 						} );
 
 					}
