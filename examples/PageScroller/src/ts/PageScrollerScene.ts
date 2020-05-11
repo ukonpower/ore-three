@@ -44,14 +44,22 @@ export class PageScrollerScene extends ORE.BaseScene {
 					down: ( args ) => {
 
 						this.scroller.autoMove( {
-							target: 'sec3'
+							target: 'sec2',
+							bottom: true
 						} );
 
 					}
-				}
+				},
+				onArrivals: [
+					{
+						percentage: 1,
+						event: {
+							common: () => {
+							}
+						}
+					}
+				]
 			},
-			startScrollDown: 20,
-			startScrollUp: 0
 		} ) );
 
 		this.scroller.add( new ORE.PageScrollerSection( {
@@ -59,11 +67,10 @@ export class PageScrollerScene extends ORE.BaseScene {
 			element: document.querySelector( '.section3' ),
 			stop: true,
 			bottom: false,
-			startScrollUp: 30,
 			events: {
 				onStartScroll: {
 					up: ( args ) => {
-
+						
 						this.scroller.autoMove( {
 							target: 'sec2',
 							bottom: true
@@ -117,8 +124,6 @@ export class PageScrollerScene extends ORE.BaseScene {
 		this.scroller.update( deltaTime );
 
 		this.camera.position.y = - this.scroller.scrollPercentageDelay * 5.0;
-
-		console.log( this.scroller.scrollTimelinePercentage );
 
 		this.renderer.render( this.scene, this.camera );
 
