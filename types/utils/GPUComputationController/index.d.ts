@@ -24,7 +24,7 @@ export declare class GPUComputationController {
     createData(textureParam: THREE.WebGLRenderTargetOptions): GPUcomputationData;
     createData(initializeTexture: THREE.DataTexture, textureParam: THREE.WebGLRenderTargetOptions): GPUcomputationData;
     createKernel(shader: string, uniforms?: Uniforms): GPUComputationKernel;
-    compute(kernel: GPUComputationKernel, data: GPUcomputationData): void;
+    compute(kernel: GPUComputationKernel, data: GPUcomputationData, camera?: THREE.Camera): void;
     protected swapBuffers(b1: GPUcomputationData, b2: GPUcomputationData): void;
     dispose(): void;
 }
