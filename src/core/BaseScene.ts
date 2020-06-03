@@ -85,6 +85,8 @@ export class BaseScene {
 
 	public onResize( args: ResizeArgs ) {
 
+		this.renderer.setSize( args.windowSize.x, args.windowSize.y );
+
 		this.camera.aspect = args.aspectRatio;
 		this.camera.updateProjectionMatrix();
 

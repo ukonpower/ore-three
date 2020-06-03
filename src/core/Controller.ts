@@ -115,8 +115,6 @@ export class Controller {
 
     	let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
-    	this.renderer.setSize( windowSize.x, windowSize.y );
-
     	let resizeArgs: ResizeArgs = {
     		aspectRatio: windowSize.x / windowSize.y,
     		pixelRatio: this.renderer.getPixelRatio(),
