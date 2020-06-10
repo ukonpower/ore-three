@@ -182,6 +182,7 @@ export class Animator {
 			if ( variable.time == 1.0 ) {
 
 				this.animatingCount --;
+				variable.time = 99;
 
 				if ( variable.onAnimationFinished ) {
 
