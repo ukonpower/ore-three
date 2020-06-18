@@ -84,6 +84,9 @@ export class Animator {
 
 				this.setValue( name, goalValue );
 
+				variable.time = 1.0;
+				variable.onAnimationFinished = callback;
+
 				return;
 
 			}
