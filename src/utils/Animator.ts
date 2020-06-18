@@ -43,7 +43,7 @@ export class Animator {
 
 		let lerpFunc = params.customLerpFunc || Lerps.getLerpFunc( params.initValue );
 
-		this.variables[ params.name ] = {
+		let variable = {
 			time: 1,
 			value: params.initValue,
 			startValue: params.initValue,
@@ -51,6 +51,10 @@ export class Animator {
 			easing: params.easing || { func: Easings.sigmoid, args: 6 },
 			lerpFunc: lerpFunc,
 		};
+
+		this.variables[ params.name ] = variable;
+
+		return variable;
 
 	}
 
@@ -75,6 +79,14 @@ export class Animator {
 		let variable = this.variables[ name ];
 
 		if ( variable ) {
+
+			if ( duration <= 0 ) {
+
+				this.setValue( name, goalValue );
+
+				return;
+
+			}
 
 			variable.duration = duration;
 
