@@ -130,8 +130,8 @@ export class Cursor {
 
 	protected _MouseEvent( type: string, event: MouseEvent | TouchEvent ) {
 
-		let x: number;
-		let y: number;
+		let x: number = this.position.x;
+		let y: number = this.position.y;
 
 		if ( "touches" in event ) {
 
