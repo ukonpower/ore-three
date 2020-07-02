@@ -1,5 +1,5 @@
 import { EasingSet } from "./Easings";
-import { LerpFunc } from "./Lerps";
+import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
 declare interface AnimatorVariable<T> {
     time: number;
@@ -26,7 +26,14 @@ export declare class Animator {
     protected dispatchEvents: Function[];
     constructor();
     get isAnimating(): boolean;
-    add<T>(params: AnimatorValiableParams<T>): void;
+    add<T>(params: AnimatorValiableParams<T>): {
+        time: number;
+        value: T;
+        startValue: T;
+        goalValue: any;
+        easing: EasingSet;
+        lerpFunc: typeof Lerps.number | typeof Lerps.numberArray | typeof Lerps.THREEVectors | typeof Lerps.THREEQuaternion | typeof Lerps.THREEEuler | LerpFunc<T>;
+    };
     setEasing(name: string, easing: EasingSet): void;
     animate<T>(name: string, goalValue: T, duration?: number, callback?: Function, easing?: EasingSet): void;
     setValue<T>(name: string, value: T): any;
