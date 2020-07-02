@@ -185,6 +185,7 @@ function cleanDevFiles( cb ) {
 function webpackDev() {
 
 	const conf = require( './webpack/build-example.config' );
+	conf.entry = {};
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.mode = options.P ? 'production' : 'development';
 

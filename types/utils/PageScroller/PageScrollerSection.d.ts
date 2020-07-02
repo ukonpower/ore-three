@@ -13,10 +13,10 @@ declare interface PageScrollerEvent {
 }
 declare interface PageScrollerEvents {
     onStartScroll?: PageScrollerEvent;
-    onArrivals?: [{
+    onArrivals?: {
         percentage: number;
         event: PageScrollerEvent;
-    }];
+    }[];
 }
 export declare interface PageScrollerSectionParams {
     name: string;

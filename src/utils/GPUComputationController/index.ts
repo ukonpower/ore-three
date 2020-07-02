@@ -171,7 +171,7 @@ export class GPUComputationController {
 
     }
 
-    public compute( kernel: GPUComputationKernel, data: GPUcomputationData ) {
+    public compute( kernel: GPUComputationKernel, data: GPUcomputationData, camera?: THREE.Camera ) {
 
     	let temp: GPUcomputationData;
 
@@ -191,7 +191,7 @@ export class GPUComputationController {
 
     	this.renderer.setRenderTarget( temp.buffer );
 
-    	this.renderer.render( this.scene, this.camera );
+    	this.renderer.render( this.scene, camera || this.camera );
 
     	this.swapBuffers( data, temp );
 

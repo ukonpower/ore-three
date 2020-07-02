@@ -186,6 +186,7 @@ export class PostProcessing {
 
     	}
 
+
     	this.resolution.copy( res );
 
     	this.readBuffer.setSize( this.resolution.x, this.resolution.y );

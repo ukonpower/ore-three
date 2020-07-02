@@ -1,11 +1,11 @@
 import * as ORE from '@ore-three-ts';
 
-import { DomMeshScene } from './DomMeshScene';
+import { DOMMeshScene } from './DOMMeshScene';
 
 export class APP {
 
 	private controller: ORE.Controller;
-	private scene: DomMeshScene;
+	private scene: DOMMeshScene;
 
 	constructor() {
 
@@ -14,7 +14,7 @@ export class APP {
 			retina: true,
 		} );
 
-		this.scene = new DomMeshScene();
+		this.scene = new DOMMeshScene();
 
 		this.controller.bindScene( this.scene );
 
