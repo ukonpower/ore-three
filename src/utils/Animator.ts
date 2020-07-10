@@ -44,7 +44,7 @@ export class Animator {
 		let lerpFunc = params.customLerpFunc || Lerps.getLerpFunc( params.initValue );
 
 		let variable = {
-			time: 1,
+			time: - 1,
 			value: params.initValue,
 			startValue: params.initValue,
 			goalValue: null,
@@ -91,9 +91,7 @@ export class Animator {
 
 			}
 
-			variable.duration = duration;
-
-			if ( variable.time >= 1.0 ) {
+			if ( variable.time == - 1 ) {
 
 				this._isAnimating = true;
 				this.animatingCount ++;
@@ -101,7 +99,7 @@ export class Animator {
 			}
 
 			variable.time = 0;
-			variable.duration = ( duration != null ) ? duration : 1;
+			variable.duration = duration;
 			variable.startValue = variable.value;
 			variable.goalValue = goalValue;
 			variable.onAnimationFinished = callback;
@@ -197,7 +195,7 @@ export class Animator {
 			if ( variable.time == 1.0 ) {
 
 				this.animatingCount --;
-				variable.time = 99;
+				variable.time = - 1;
 
 				if ( variable.onAnimationFinished ) {
 
@@ -207,7 +205,7 @@ export class Animator {
 
 			}
 
-			if ( variable.time < 1.0 ) {
+			if ( variable.time >= 0.0 && variable.time < 1.0 ) {
 
 				variable.time += ( deltaTime || 0.016 ) / variable.duration;
 
