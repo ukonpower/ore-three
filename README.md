@@ -104,13 +104,13 @@ export class MainScene extends ORE.BaseScene {
 	
 	public onTouchStart( cursor: Cursor, event: MouseEvent ) {}
 
-	public onTouchMove( cursor: Cursor, event: MouseEvent ) { }
+	public onTouchMove( cursor: Cursor, event: MouseEvent ) {}
 
-	public onTouchEnd( cursor: Cursor, event: MouseEvent ) { }
+	public onTouchEnd( cursor: Cursor, event: MouseEvent ) {}
 
 	public onHover( cursor: Cursor ) { }
 
-	public onWheel( event: WheelEvent, trackpadDelta: number ) { }
+	public onWheel( event: WheelEvent, trackpadDelta: number ) {}
 
 }
 ```

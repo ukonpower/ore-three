@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PageScrollerEvents | ore-three-ts</title>
+	<title>SPLayoutController | ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="pagescrollerevents.html">PageScrollerEvents</a>
+					<a href="splayoutcontroller.html">SPLayoutController</a>
 				</li>
 			</ul>
-			<h1>Interface PageScrollerEvents</h1>
+			<h1>Class SPLayoutController</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PageScrollerEvents</span>
+						<span class="target">SPLayoutController</span>
 					</li>
 				</ul>
 			</section>
@@ -79,36 +79,128 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="splayoutcontroller.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollerevents.html#onarrivals" class="tsd-kind-icon">on<wbr>Arrivals</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollerevents.html#onstartscroll" class="tsd-kind-icon">on<wbr>Start<wbr>Scroll</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="splayoutcontroller.html#basescale" class="tsd-kind-icon">base<wbr>Scale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="splayoutcontroller.html#basetransform" class="tsd-kind-icon">base<wbr>Transform</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="splayoutcontroller.html#obj" class="tsd-kind-icon">obj</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="splayoutcontroller.html#sptransform" class="tsd-kind-icon">sp<wbr>Transform</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="splayoutcontroller.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new SPLayout<wbr>Controller<span class="tsd-signature-symbol">(</span>object<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object3D</span>, spTransform<span class="tsd-signature-symbol">: </span><a href="../interfaces/transform.html" class="tsd-signature-type">Transform</a>, isAbsolutePosition<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="splayoutcontroller.html" class="tsd-signature-type">SPLayoutController</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/utils/SPLayoutController.ts:14</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>object: <span class="tsd-signature-type">Object3D</span></h5>
+								</li>
+								<li>
+									<h5>spTransform: <a href="../interfaces/transform.html" class="tsd-signature-type">Transform</a></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> isAbsolutePosition: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="splayoutcontroller.html" class="tsd-signature-type">SPLayoutController</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="onarrivals" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Arrivals</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Arrivals<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>event<span class="tsd-signature-symbol">: </span><a href="pagescrollerevent.html" class="tsd-signature-type">PageScrollerEvent</a><span class="tsd-signature-symbol">; </span>percentage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="basescale" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> base<wbr>Scale</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Scale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector3</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/486a8a4/src/utils/PageScroller/PageScrollerSection.ts#L20">src/utils/PageScroller/PageScrollerSection.ts:20</a></li>
+							<li>Defined in src/utils/SPLayoutController.ts:13</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="onstartscroll" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Start<wbr>Scroll</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Start<wbr>Scroll<span class="tsd-signature-symbol">:</span> <a href="pagescrollerevent.html" class="tsd-signature-type">PageScrollerEvent</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="basetransform" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> base<wbr>Transform</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Transform<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transform.html" class="tsd-signature-type">Transform</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/486a8a4/src/utils/PageScroller/PageScrollerSection.ts#L19">src/utils/PageScroller/PageScrollerSection.ts:19</a></li>
+							<li>Defined in src/utils/SPLayoutController.ts:12</li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="obj" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> obj</h3>
+					<div class="tsd-signature tsd-kind-icon">obj<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Object3D</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/utils/SPLayoutController.ts:11</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="sptransform" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> sp<wbr>Transform</h3>
+					<div class="tsd-signature tsd-kind-icon">sp<wbr>Transform<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transform.html" class="tsd-signature-type">Transform</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/utils/SPLayoutController.ts:14</li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updatetransform" class="tsd-anchor"></a>
+					<h3>update<wbr>Transform</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Transform<span class="tsd-signature-symbol">(</span>spWeight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/utils/SPLayoutController.ts:37</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spWeight: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -124,14 +216,26 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
+					<li class="current tsd-kind-class">
+						<a href="splayoutcontroller.html" class="tsd-kind-icon">SPLayout<wbr>Controller</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="pagescrollerevents.html#onarrivals" class="tsd-kind-icon">on<wbr>Arrivals</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="splayoutcontroller.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="pagescrollerevents.html#onstartscroll" class="tsd-kind-icon">on<wbr>Start<wbr>Scroll</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="splayoutcontroller.html#basescale" class="tsd-kind-icon">base<wbr>Scale</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="splayoutcontroller.html#basetransform" class="tsd-kind-icon">base<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="splayoutcontroller.html#obj" class="tsd-kind-icon">obj</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="splayoutcontroller.html#sptransform" class="tsd-kind-icon">sp<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="splayoutcontroller.html#updatetransform" class="tsd-kind-icon">update<wbr>Transform</a>
 							</li>
 						</ul>
 					</li>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PageScrollerEvents | ore-three-ts</title>
+	<title>Transform | ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="pagescrollerevents.html">PageScrollerEvents</a>
+					<a href="transform.html">Transform</a>
 				</li>
 			</ul>
-			<h1>Interface PageScrollerEvents</h1>
+			<h1>Interface Transform</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PageScrollerEvents</span>
+						<span class="target">Transform</span>
 					</li>
 				</ul>
 			</section>
@@ -81,8 +81,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollerevents.html#onarrivals" class="tsd-kind-icon">on<wbr>Arrivals</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pagescrollerevents.html#onstartscroll" class="tsd-kind-icon">on<wbr>Start<wbr>Scroll</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="transform.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="transform.html#rotation" class="tsd-kind-icon">rotation</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="transform.html#scale" class="tsd-kind-icon">scale</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,22 +92,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="onarrivals" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Arrivals</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Arrivals<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>event<span class="tsd-signature-symbol">: </span><a href="pagescrollerevent.html" class="tsd-signature-type">PageScrollerEvent</a><span class="tsd-signature-symbol">; </span>percentage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="position" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector3</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/486a8a4/src/utils/PageScroller/PageScrollerSection.ts#L20">src/utils/PageScroller/PageScrollerSection.ts:20</a></li>
+							<li>Defined in src/utils/SPLayoutController.ts:4</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="onstartscroll" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> on<wbr>Start<wbr>Scroll</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Start<wbr>Scroll<span class="tsd-signature-symbol">:</span> <a href="pagescrollerevent.html" class="tsd-signature-type">PageScrollerEvent</a></div>
+					<a name="rotation" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rotation</h3>
+					<div class="tsd-signature tsd-kind-icon">rotation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Quaternion</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/486a8a4/src/utils/PageScroller/PageScrollerSection.ts#L19">src/utils/PageScroller/PageScrollerSection.ts:19</a></li>
+							<li>Defined in src/utils/SPLayoutController.ts:5</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="scale" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> scale</h3>
+					<div class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/utils/SPLayoutController.ts:6</li>
 						</ul>
 					</aside>
 				</section>
@@ -125,13 +136,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
+						<a href="transform.html" class="tsd-kind-icon">Transform</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="pagescrollerevents.html#onarrivals" class="tsd-kind-icon">on<wbr>Arrivals</a>
+								<a href="transform.html#position" class="tsd-kind-icon">position</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="pagescrollerevents.html#onstartscroll" class="tsd-kind-icon">on<wbr>Start<wbr>Scroll</a>
+								<a href="transform.html#rotation" class="tsd-kind-icon">rotation</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="transform.html#scale" class="tsd-kind-icon">scale</a>
 							</li>
 						</ul>
 					</li>
