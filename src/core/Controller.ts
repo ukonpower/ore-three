@@ -16,7 +16,8 @@ export declare interface ResizeArgs{
 	aspectRatio: number,
 	pixelRatio: number,
 	windowSize: THREE.Vector2,
-	windowPixelSize: THREE.Vector2
+	windowPixelSize: THREE.Vector2,
+	spWeight: number;
 }
 
 export declare interface GlobalProperties{
@@ -119,7 +120,8 @@ export class Controller {
     		aspectRatio: windowSize.x / windowSize.y,
     		pixelRatio: this.renderer.getPixelRatio(),
     		windowSize: windowSize.clone(),
-    		windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() )
+    		windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() ),
+    		spWeight: Math.min( 1.0, Math.max( 0.0, 1.0 - ( ( windowSize.x / windowSize.y ) - 0.5 ) * 0.8 ) )
     	};
 
     	this.gProps.resizeArgs = resizeArgs;
