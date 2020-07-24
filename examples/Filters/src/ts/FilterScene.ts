@@ -3,7 +3,7 @@ import * as ORE from '@ore-three-ts';
 
 export class FilterScene extends ORE.BaseScene {
 
-	private bloomFilter: ORE.BloomFilter;
+	private filters: { [ key: string ] : any} = {};
 
 	private obj: THREE.Mesh;
 
@@ -35,14 +35,36 @@ export class FilterScene extends ORE.BaseScene {
 		} ) );
 		this.scene.add( this.obj );
 
-		this.bloomFilter = new ORE.BloomFilter( this.renderer, 0.3 );
+		/*------------------------
+			Create Filters
+		------------------------*/
 
-		this.filterType = ( document.querySelector( '#selector' ) as HTMLInputElement ).value;
+		this.filters.BloomFilter = new ORE.BloomFilter( this.renderer );
+		this.filters.SMAAFilter = new ORE.SMAAFilter( this.renderer );
+
+		/*------------------------
+			Init Selectors
+		------------------------*/
+
+		let keys = Object.keys( this.filters );
+
+		for ( let i = 0; i < keys.length; i ++ ) {
+
+			let option = document.createElement( 'option' );
+			option.value = keys[ i ];
+			option.text = keys[ i ];
+			document.querySelector( '#selector' ).appendChild( option );
+
+		}
+
 		document.querySelector( '#selector' ).addEventListener( 'input', ( e ) => {
 
 			this.filterType = ( e.target as HTMLInputElement ).value;
 
 		} );
+
+		this.filterType = ( document.querySelector( '#selector' ) as HTMLInputElement ).value;
+
 
 	}
 
@@ -50,13 +72,7 @@ export class FilterScene extends ORE.BaseScene {
 
 		this.obj.rotateY( 1.0 * deltaTime );
 
-		switch ( this.filterType ) {
-
-			case 'BloomFilter':
-				this.bloomFilter.render( this.scene, this.camera );
-				break;
-
-		}
+		this.filters[ this.filterType ].render( this.scene, this.camera );
 
 	}
 
@@ -64,7 +80,13 @@ export class FilterScene extends ORE.BaseScene {
 
 		super.onResize( args );
 
-		this.bloomFilter.resize();
+		let keys = Object.keys( this.filters );
+
+		for ( let i = 0; i < keys.length; i ++ ) {
+
+			this.filters[ keys[ i ] ].resize( args.windowPixelSize );
+
+		}
 
 	}
 

@@ -1,55 +1,86 @@
 import * as THREE from 'three';
-import bright from './shaders/bright.fs';
-import blur from './shaders/blur.fs';
-import bloom from './shaders/bloom.fs';
-import { PostProcessing } from '../../utils/PostProcessing';
-import { Uniforms, UniformsLib } from '../../utils/Uniforms';
+import * as ORE from '@ore-three-ts';
 
+import bright from './shaders/bloom_bright.fs';
+import blur from './shaders/bloom_blur.fs';
+import composite from './shaders/bloom_composite.fs';
 export class BloomFilter {
 
-	public scene: THREE.Scene;
-	public camera: THREE.Camera
-
-	//postprocessings
-	protected _brightPP: PostProcessing;
-	protected _blurPP: PostProcessing;
-	protected _bloomPP: PostProcessing;
+	//ORE.PostProcessings
+	protected bright: ORE.PostProcessing;
+	protected blur: ORE.PostProcessing[] = [];
+	protected composite: ORE.PostProcessing;
+	protected smaa: ORE.PostProcessing;
 
 	protected renderer: THREE.WebGLRenderer;
-
 	protected sceneRenderTarget: THREE.WebGLRenderTarget;
 
 	//uniforms
-	private _blurRange: number = 2;
-	public sceneTex: THREE.IUniform;
-	protected commonUniforms: Uniforms;
+	public inputTextures: ORE.Uniforms;
+	protected commonUniforms: ORE.Uniforms;
 
 	//parameters
 	public renderCount: number = 5;
-	protected resolution: THREE.Vector2;
-	protected lowResolution: THREE.Vector2;
-	protected blurResolution: THREE.Vector2;
-	protected textureResolutionRatio: number;
+	protected noPPRenderRes: THREE.Vector2;
+	protected bloomResolution: THREE.Vector2;
+	protected bloomResolutionRatio: number;
 
-	constructor( renderer: THREE.WebGLRenderer, textureResolutionRatio?: number, customResolution?: THREE.Vector2 ) {
+	constructor( renderer: THREE.WebGLRenderer, bloomResolutionRatio: number = 0.5, renderCount: number = 3 ) {
 
 		this.renderer = renderer;
+		this.bloomResolutionRatio = bloomResolutionRatio;
+		let resolution = this.renderer.getSize( new THREE.Vector2() ).multiplyScalar( this.renderer.getPixelRatio() );
 
-		this.textureResolutionRatio = textureResolutionRatio ? textureResolutionRatio : 0.1;
+		//uniforms
+		this.commonUniforms = {
+			threshold: {
+				value: 0.5,
+			},
+			brightness: {
+				value: 0.7
+			},
+			blurRange: {
+				value: 1.0
+			},
+			renderCount: {
+				value: this.renderCount
+			},
+			count: {
+				value: 0
+			},
+			SMAA_RT_METRICS: {
+				value: new THREE.Vector4( 1 / resolution.x, 1 / resolution.y, resolution.x, resolution.y )
+			}
+		};
 
-		this.resolution = new THREE.Vector2();
-		this.blurResolution = new THREE.Vector2();
+		this.inputTextures = {
+			sceneTex: {
+				value: null
+			},
+			blurTex: {
+				value: []
+			},
+			areaTex: {
+				value: null
+			},
+			searchTex: {
+				value: null
+			}
+		};
 
 		this.init();
-		this.resize( customResolution );
+		this.resize( resolution );
+
+		this.renderCount = renderCount;
+		this.brightness = 0.3;
+		this.blurRange = 2.0;
+		this.threshold = 0.1;
 
 	}
 
 	public set blurRange( value: number ) {
 
-		this._blurRange = value;
-
-		this.blurResolution.copy( this.lowResolution.clone().divideScalar( this._blurRange ) );
+		this.commonUniforms.blurRange.value = value;
 
 	}
 
@@ -67,130 +98,116 @@ export class BloomFilter {
 
 	protected init() {
 
-		this.sceneTex = {
-			value: null
-		};
+		/*------------------------
+			bright
+		------------------------*/
 
-		//uniforms
-		this.commonUniforms = {
-			resolution: {
-				value: this.blurResolution
-			},
-			threshold: {
-				value: 0.5,
-			},
-			brightness: {
-				value: 0.7
-			},
-		};
-
-		//postprocess params
-		let brightParam = [ {
+		let brightParam: ORE.PPParam[] = [ {
 			fragmentShader: bright,
-			uniforms: this.commonUniforms,
+			uniforms: ORE.UniformsLib.CopyUniforms( {
+			}, this.commonUniforms ),
 		} ];
 
-		let blurParam = [ {
+		this.bright = new ORE.PostProcessing( this.renderer, brightParam, null, {
+			depthBuffer: false,
+			stencilBuffer: false,
+			generateMipmaps: false
+		} );
+
+		/*------------------------
+			blur
+		------------------------*/
+
+		let blurParam: ORE.PPParam[] = [ {
 			fragmentShader: blur,
-			uniforms: UniformsLib.CopyUniforms( {
-				direction: { value: true }
+			uniforms: ORE.UniformsLib.CopyUniforms( {
+				direction: { value: true },
 			}, this.commonUniforms )
 		},
 		{
 			fragmentShader: blur,
-			uniforms: UniformsLib.CopyUniforms( {
-				direction: { value: false }
+			uniforms: ORE.UniformsLib.CopyUniforms( {
+				direction: { value: false },
 			}, this.commonUniforms )
 		} ];
 
-		let bloomParam = [ {
-			fragmentShader: bloom,
-			uniforms: UniformsLib.CopyUniforms( {
-				sceneTex: this.sceneTex,
-			}, this.commonUniforms )
-		} ];
+		for ( let i = 0; i < this.renderCount; i ++ ) {
 
-		//create post processings
-		this._brightPP = new PostProcessing( this.renderer, brightParam );
-		this._blurPP = new PostProcessing( this.renderer, blurParam );
-		this._bloomPP = new PostProcessing( this.renderer, bloomParam );
-		this.sceneRenderTarget = this._bloomPP.createRenderTarget();
-
-	}
-
-	public render( srcTexture: THREE.Texture, offscreenRendering?: boolean );
-
-	public render( scene: THREE.Scene, camera: THREE.Camera, offscreenRendering?: boolean );
-
-	public render( tex_scene: THREE.Texture | THREE.Scene = null, offscreen_camera: boolean | THREE.Camera = false, offscreenRendering: boolean = false ) {
-
-		let isInputedTexture: boolean = true;
-		let offsc = offscreen_camera as boolean;
-
-		//render scene
-		if ( 'isScene' in tex_scene ) {
-
-			isInputedTexture = false;
-			offsc = offscreenRendering;
-
-			this.renderer.setRenderTarget( this.sceneRenderTarget );
-			this.renderer.render( tex_scene as THREE.Scene, offscreen_camera as THREE.Camera );
-
-		} else if ( 'isTexture' in tex_scene ) {
-
-			this.resolution.set( tex_scene.image.width, tex_scene.image.height );
+			this.blur.push( new ORE.PostProcessing( this.renderer, blurParam, null, {
+				depthBuffer: false,
+				stencilBuffer: false,
+				generateMipmaps: false
+			} ) );
+			this.inputTextures.blurTex.value[ i ] = null;
 
 		}
 
-		this.sceneTex.value = isInputedTexture ? tex_scene : this.sceneRenderTarget.texture;
+		/*------------------------
+			composite
+		------------------------*/
+
+		let compositeParam:ORE.PPParam[] = [ {
+			fragmentShader: composite,
+			uniforms: ORE.UniformsLib.CopyUniforms( {
+				sceneTex: this.inputTextures.sceneTex,
+				blurTex: this.inputTextures.blurTex,
+			}, this.commonUniforms ),
+			defines: {
+				RENDER_COUNT: this.renderCount.toString()
+			}
+		} ];
+
+		this.composite = new ORE.PostProcessing( this.renderer, compositeParam, null, {
+			depthBuffer: false,
+			stencilBuffer: false,
+			generateMipmaps: false
+		} );
+
+		this.sceneRenderTarget = this.composite.createRenderTarget();
+
+	}
+
+	public render( scene: THREE.Scene, camera: THREE.Camera ) {
+
+		//render main scene
+		this.renderer.setRenderTarget( this.sceneRenderTarget );
+		this.renderer.render( scene, camera );
+		this.inputTextures.sceneTex.value = this.sceneRenderTarget.texture;
 
 		//render birightness part
-		this._brightPP.render( isInputedTexture ? tex_scene as THREE.Texture : this.sceneRenderTarget.texture, true );
-		let tex = this._brightPP.getResultTexture();
+		this.bright.render( this.inputTextures.sceneTex.value, true );
 
 		//render blur
+		let tex = this.bright.getResultTexture();
 		for ( let i = 0; i < this.renderCount; i ++ ) {
 
-			this._blurPP.render( tex, true );
-			tex = this._blurPP.getResultTexture();
+			this.commonUniforms.count.value = i;
+
+			this.blur[ i ].render( tex, true );
+			tex = this.blur[ i ].getResultTexture();
+			this.inputTextures.blurTex.value[ i ] = tex;
 
 		}
 
 		//composition bloom
-		this._bloomPP.render( tex, offsc );
-
-		return offsc ? this._bloomPP.getResultTexture() : null;
+		this.composite.render( this.inputTextures.sceneTex.value );
 
 	}
 
-	public resize( resolution?: THREE.Vector2 ) {
+	public resize( mainSceneRenderRes: THREE.Vector2 ) {
 
-		let res = new THREE.Vector2();
+		this.sceneRenderTarget.setSize( mainSceneRenderRes.x, mainSceneRenderRes.y );
 
-		if ( resolution ) {
+		this.bloomResolution = mainSceneRenderRes.clone().multiplyScalar( this.bloomResolutionRatio );
+		this.bright.resize( this.bloomResolution );
 
-			res.copy( resolution );
+		for ( let i = 0; i < this.blur.length; i ++ ) {
 
-		} else {
-
-			res.set( window.innerWidth, window.innerHeight );
-			res.multiplyScalar( this.renderer.getPixelRatio() );
+			this.blur[ i ].resize( this.bloomResolution.clone().divideScalar( i + 1 ) );
 
 		}
 
-		this.resolution.copy( res );
-
-		this.lowResolution = this.resolution.clone().multiplyScalar( this.textureResolutionRatio );
-
-		this.sceneRenderTarget.setSize( this.resolution.x, this.resolution.y );
-
-		this._brightPP.resize( this.lowResolution );
-
-		this._blurPP.resize( this.lowResolution );
-
-		this._bloomPP.resize( this.resolution );
-
-		this.blurRange = this._blurRange;
+		this.composite.resize( mainSceneRenderRes );
 
 	}
 
