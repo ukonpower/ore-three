@@ -123,7 +123,13 @@ function buildExamples( cb ) {
 
 		//webpack
 		webpackStream( conf, webpack )
+			.on( 'error', ( e ) => {
+
+				this.emit( 'end' );
+
+			} )
 			.pipe( gulp.dest( docsExDir ) )
+
 			.on( 'end', cb );
 
 	} );
@@ -190,6 +196,11 @@ function webpackDev() {
 	conf.mode = options.P ? 'production' : 'development';
 
 	return webpackStream( conf, webpack )
+		.on( 'error', function ( e ) {
+
+			this.emit( 'end' );
+
+		} )
 		.pipe( gulp.dest( distDir + "/js/" ) )
 		.on( 'end', browserSync.reload );
 
