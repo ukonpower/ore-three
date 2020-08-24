@@ -18,12 +18,17 @@ export declare interface ResizeArgs{
 	windowSize: THREE.Vector2,
 	windowPixelSize: THREE.Vector2,
 	spWeight: number;
+	spWeightClipped: number;
 }
 
 export declare interface GlobalProperties{
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
-    resizeArgs: ResizeArgs;
+	resizeArgs: ResizeArgs;
+	aspectsInfo: {
+		pcAspect: number;
+		spAspect: number;
+	}
 }
 
 export class Controller {
@@ -34,9 +39,9 @@ export class Controller {
     public cursor: Cursor;
     public clock: THREE.Clock;
 
-    public gProps: GlobalProperties;
+	public gProps: GlobalProperties;
 
-    constructor( parameter: ControllerParam ) {
+	constructor( parameter: ControllerParam ) {
 
     	if ( ! parameter.silent ) {
 
@@ -61,7 +66,11 @@ export class Controller {
     	this.gProps = {
     		renderer: this.renderer,
     		cursor: this.cursor,
-    		resizeArgs: null
+			resizeArgs: null,
+			aspectsInfo: {
+				pcAspect: 16 / 9,
+				spAspect: 1 / 2
+			}
     	};
 
     	window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
@@ -71,9 +80,9 @@ export class Controller {
 
     	this.tick();
 
-    }
+	}
 
-    protected tick() {
+	protected tick() {
 
     	let deltatime = this.clock.getDelta();
 
@@ -87,9 +96,9 @@ export class Controller {
 
     	requestAnimationFrame( this.tick.bind( this ) );
 
-    }
+	}
 
-    public bindScene( scene: BaseScene ) {
+	public bindScene( scene: BaseScene ) {
 
     	this.currentScene = scene;
 
@@ -97,9 +106,9 @@ export class Controller {
 
     	this.onWindowResize();
 
-    }
+	}
 
-    public unbindScene() {
+	public unbindScene() {
 
     	if ( this.currentScene ) {
 
@@ -110,19 +119,23 @@ export class Controller {
 
     	}
 
-    }
+	}
 
-    protected onWindowResize() {
+	protected onWindowResize() {
 
     	let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+
+		let spWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectsInfo.spAspect ) / ( this.gProps.aspectsInfo.pcAspect - this.gProps.aspectsInfo.spAspect );
+		let spWeightClipped = Math.min( 1.0, Math.max( 0.0, spWeight ) );
 
     	let resizeArgs: ResizeArgs = {
     		aspectRatio: windowSize.x / windowSize.y,
     		pixelRatio: this.renderer.getPixelRatio(),
     		windowSize: windowSize.clone(),
     		windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() ),
-    		spWeight: Math.min( 1.0, Math.max( 0.0, 1.0 - ( ( windowSize.x / windowSize.y ) - 0.5 ) * 0.8 ) )
-    	};
+			spWeight: spWeight,
+			spWeightClipped: spWeightClipped
+		};
 
     	this.gProps.resizeArgs = resizeArgs;
 
@@ -132,16 +145,16 @@ export class Controller {
 
     	}
 
-    }
+	}
 
 
-    public onOrientationDevice() {
+	public onOrientationDevice() {
 
     	this.onWindowResize();
 
-    }
+	}
 
-    public onTouchStart( e: MouseEvent ) {
+	public onTouchStart( e: MouseEvent ) {
 
     	if ( this.currentScene ) {
 
@@ -149,9 +162,9 @@ export class Controller {
 
     	}
 
-    }
+	}
 
-    public onTouchMove( e: MouseEvent ) {
+	public onTouchMove( e: MouseEvent ) {
 
     	if ( this.currentScene ) {
 
@@ -159,9 +172,9 @@ export class Controller {
 
     	}
 
-    }
+	}
 
-    public onTouchEnd( e: MouseEvent ) {
+	public onTouchEnd( e: MouseEvent ) {
 
     	if ( this.currentScene ) {
 
@@ -169,9 +182,9 @@ export class Controller {
 
     	}
 
-    }
+	}
 
-    public onHover( ) {
+	public onHover( ) {
 
     	if ( this.currentScene ) {
 
@@ -179,7 +192,7 @@ export class Controller {
 
     	}
 
-    }
+	}
 
     protected trackpadMemDelta = 0;
 	protected trackpadMax: boolean = false;
