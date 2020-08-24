@@ -26,7 +26,7 @@ export class EventDispatcher {
 
 			if ( event.type == this.events[ i ].type ) {
 
-				this.events[ i ].listener();
+				this.events[ i ].listener( event );
 
 			}
 
