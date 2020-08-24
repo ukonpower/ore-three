@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>TimelineAnimator | ore-three-ts</title>
+	<title>SMAAFilter | ore-three-ts</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="timelineanimator.html">TimelineAnimator</a>
+					<a href="smaafilter.html">SMAAFilter</a>
 				</li>
 			</ul>
-			<h1>Class TimelineAnimator</h1>
+			<h1>Class SMAAFilter</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">TimelineAnimator</span>
+						<span class="target">SMAAFilter</span>
 					</li>
 				</ul>
 			</section>
@@ -81,25 +81,28 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="timelineanimator.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="smaafilter.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="timelineanimator.html#defaulteasing" class="tsd-kind-icon">default<wbr>Easing</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="timelineanimator.html#time" class="tsd-kind-icon">time</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="timelineanimator.html#variables" class="tsd-kind-icon">variables</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="smaafilter.html#commonuniforms" class="tsd-kind-icon">common<wbr>Uniforms</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="smaafilter.html#inputtextures" class="tsd-kind-icon">input<wbr>Textures</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="smaafilter.html#renderer" class="tsd-kind-icon">renderer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="smaafilter.html#scenerendertarget" class="tsd-kind-icon">scene<wbr>Render<wbr>Target</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="smaafilter.html#smaa" class="tsd-kind-icon">smaa</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="timelineanimator.html#add" class="tsd-kind-icon">add</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="timelineanimator.html#calc" class="tsd-kind-icon">calc</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="timelineanimator.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="timelineanimator.html#getvariableobject" class="tsd-kind-icon">get<wbr>Variable<wbr>Object</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="timelineanimator.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="smaafilter.html#getareatexture" class="tsd-kind-icon">get<wbr>Area<wbr>Texture</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="smaafilter.html#getsearchtexture" class="tsd-kind-icon">get<wbr>Search<wbr>Texture</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="smaafilter.html#init" class="tsd-kind-icon">init</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="smaafilter.html#loadtextures" class="tsd-kind-icon">load<wbr>Textures</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smaafilter.html#render" class="tsd-kind-icon">render</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smaafilter.html#resize" class="tsd-kind-icon">resize</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,184 +114,192 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Timeline<wbr>Animator<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="timelineanimator.html" class="tsd-signature-type">TimelineAnimator</a></li>
+						<li class="tsd-signature tsd-kind-icon">new SMAAFilter<span class="tsd-signature-symbol">(</span>renderer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="smaafilter.html" class="tsd-signature-type">SMAAFilter</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L28">src/utils/TimelineAnimator/index.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L20">src/filters/SMAAFilter/index.ts:20</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="timelineanimator.html" class="tsd-signature-type">TimelineAnimator</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>renderer: <span class="tsd-signature-type">WebGLRenderer</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="smaafilter.html" class="tsd-signature-type">SMAAFilter</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="commonuniforms" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> common<wbr>Uniforms</h3>
+					<div class="tsd-signature tsd-kind-icon">common<wbr>Uniforms<span class="tsd-signature-symbol">:</span> <a href="../interfaces/uniforms.html" class="tsd-signature-type">Uniforms</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L20">src/filters/SMAAFilter/index.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="defaulteasing" class="tsd-anchor"></a>
-					<h3>default<wbr>Easing</h3>
-					<div class="tsd-signature tsd-kind-icon">default<wbr>Easing<span class="tsd-signature-symbol">:</span> <a href="../interfaces/easingset.html" class="tsd-signature-type">EasingSet</a></div>
+					<a name="inputtextures" class="tsd-anchor"></a>
+					<h3>input<wbr>Textures</h3>
+					<div class="tsd-signature tsd-kind-icon">input<wbr>Textures<span class="tsd-signature-symbol">:</span> <a href="../interfaces/uniforms.html" class="tsd-signature-type">Uniforms</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L28">src/utils/TimelineAnimator/index.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L19">src/filters/SMAAFilter/index.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="time" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> time</h3>
-					<div class="tsd-signature tsd-kind-icon">time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="renderer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> renderer</h3>
+					<div class="tsd-signature tsd-kind-icon">renderer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderer</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L27">src/utils/TimelineAnimator/index.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L13">src/filters/SMAAFilter/index.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="variables" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> variables</h3>
-					<div class="tsd-signature tsd-kind-icon">variables<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+					<a name="scenerendertarget" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> scene<wbr>Render<wbr>Target</h3>
+					<div class="tsd-signature tsd-kind-icon">scene<wbr>Render<wbr>Target<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderTarget</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L26">src/utils/TimelineAnimator/index.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L14">src/filters/SMAAFilter/index.ts:14</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../interfaces/timelineanimatorvariable.html" class="tsd-signature-type">TimelineAnimatorVariable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-							</li>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="smaa" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> smaa</h3>
+					<div class="tsd-signature tsd-kind-icon">smaa<span class="tsd-signature-symbol">:</span> <a href="postprocessing.html" class="tsd-signature-type">PostProcessing</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L16">src/filters/SMAAFilter/index.ts:16</a></li>
 						</ul>
-					</div>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="add" class="tsd-anchor"></a>
-					<h3>add</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add&lt;T&gt;<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><a href="../interfaces/timelineanimatoraddparams.html" class="tsd-signature-type">TimelineAnimatorAddParams</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getareatexture" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Area<wbr>Texture</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Area<wbr>Texture<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L36">src/utils/TimelineAnimator/index.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L169">src/filters/SMAAFilter/index.ts:169</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>params: <a href="../interfaces/timelineanimatoraddparams.html" class="tsd-signature-type">TimelineAnimatorAddParams</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="getsearchtexture" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> get<wbr>Search<wbr>Texture</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Search<wbr>Texture<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L175">src/filters/SMAAFilter/index.ts:175</a></li>
+								</ul>
+							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="calc" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> calc</h3>
+					<a name="init" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> init</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">calc<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L111">src/utils/TimelineAnimator/index.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L54">src/filters/SMAAFilter/index.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="get" class="tsd-anchor"></a>
-					<h3>get</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">get&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="loadtextures" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> load<wbr>Textures</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">load<wbr>Textures<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L71">src/utils/TimelineAnimator/index.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L109">src/filters/SMAAFilter/index.ts:109</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="getvariableobject" class="tsd-anchor"></a>
-					<h3>get<wbr>Variable<wbr>Object</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Variable<wbr>Object&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/timelineanimatorvariable.html" class="tsd-signature-type">TimelineAnimatorVariable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L87">src/utils/TimelineAnimator/index.ts:87</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/timelineanimatorvariable.html" class="tsd-signature-type">TimelineAnimatorVariable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
+					<a name="render" class="tsd-anchor"></a>
+					<h3>render</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>time<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>scene<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Scene</span>, camera<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Camera</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/TimelineAnimator/index.ts#L103">src/utils/TimelineAnimator/index.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L144">src/filters/SMAAFilter/index.ts:144</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>time: <span class="tsd-signature-type">number</span></h5>
+									<h5>scene: <span class="tsd-signature-type">Scene</span></h5>
+								</li>
+								<li>
+									<h5>camera: <span class="tsd-signature-type">Camera</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="resize" class="tsd-anchor"></a>
+					<h3>resize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">resize<span class="tsd-signature-symbol">(</span>mainSceneRenderRes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/filters/SMAAFilter/index.ts#L156">src/filters/SMAAFilter/index.ts:156</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>mainSceneRenderRes: <span class="tsd-signature-type">Vector2</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -310,34 +321,43 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a>
+						<a href="smaafilter.html" class="tsd-kind-icon">SMAAFilter</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="timelineanimator.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="smaafilter.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="smaafilter.html#commonuniforms" class="tsd-kind-icon">common<wbr>Uniforms</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="timelineanimator.html#defaulteasing" class="tsd-kind-icon">default<wbr>Easing</a>
+								<a href="smaafilter.html#inputtextures" class="tsd-kind-icon">input<wbr>Textures</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="timelineanimator.html#time" class="tsd-kind-icon">time</a>
+								<a href="smaafilter.html#renderer" class="tsd-kind-icon">renderer</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="timelineanimator.html#variables" class="tsd-kind-icon">variables</a>
+								<a href="smaafilter.html#scenerendertarget" class="tsd-kind-icon">scene<wbr>Render<wbr>Target</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="timelineanimator.html#add" class="tsd-kind-icon">add</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="smaafilter.html#smaa" class="tsd-kind-icon">smaa</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="smaafilter.html#getareatexture" class="tsd-kind-icon">get<wbr>Area<wbr>Texture</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="smaafilter.html#getsearchtexture" class="tsd-kind-icon">get<wbr>Search<wbr>Texture</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="timelineanimator.html#calc" class="tsd-kind-icon">calc</a>
+								<a href="smaafilter.html#init" class="tsd-kind-icon">init</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="timelineanimator.html#get" class="tsd-kind-icon">get</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="timelineanimator.html#getvariableobject" class="tsd-kind-icon">get<wbr>Variable<wbr>Object</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="smaafilter.html#loadtextures" class="tsd-kind-icon">load<wbr>Textures</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="timelineanimator.html#update" class="tsd-kind-icon">update</a>
+								<a href="smaafilter.html#render" class="tsd-kind-icon">render</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="smaafilter.html#resize" class="tsd-kind-icon">resize</a>
 							</li>
 						</ul>
 					</li>
