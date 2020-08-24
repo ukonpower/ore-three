@@ -90,6 +90,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="postprocessing.html#camera" class="tsd-kind-icon">camera</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="postprocessing.html#effectmaterials" class="tsd-kind-icon">effect<wbr>Materials</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="postprocessing.html#readbuffer" class="tsd-kind-icon">read<wbr>Buffer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="postprocessing.html#rendertargetoptions" class="tsd-kind-icon">render<wbr>Target<wbr>Options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="postprocessing.html#renderer" class="tsd-kind-icon">renderer</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="postprocessing.html#resolution" class="tsd-kind-icon">resolution</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="postprocessing.html#resultbuffer" class="tsd-kind-icon">result<wbr>Buffer</a></li>
@@ -118,13 +119,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Post<wbr>Processing<span class="tsd-signature-symbol">(</span>renderer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderer</span>, parameter<span class="tsd-signature-symbol">: </span><a href="../interfaces/ppparam.html" class="tsd-signature-type">PPParam</a><span class="tsd-signature-symbol">[]</span>, resolution<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="postprocessing.html" class="tsd-signature-type">PostProcessing</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Post<wbr>Processing<span class="tsd-signature-symbol">(</span>renderer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderer</span>, parameter<span class="tsd-signature-symbol">: </span><a href="../interfaces/ppparam.html" class="tsd-signature-type">PPParam</a><span class="tsd-signature-symbol">[]</span>, resolution<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Vector2</span>, bufferOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">WebGLRenderTargetOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="postprocessing.html" class="tsd-signature-type">PostProcessing</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L24">src/utils/PostProcessing/index.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L25">src/utils/PostProcessing/index.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -137,6 +138,9 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> resolution: <span class="tsd-signature-type">Vector2</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bufferOptions: <span class="tsd-signature-type">WebGLRenderTargetOptions</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="postprocessing.html" class="tsd-signature-type">PostProcessing</a></h4>
@@ -152,7 +156,7 @@
 					<div class="tsd-signature tsd-kind-icon">camera<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Camera</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L16">src/utils/PostProcessing/index.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L16">src/utils/PostProcessing/index.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -162,7 +166,7 @@
 					<div class="tsd-signature tsd-kind-icon">effect<wbr>Materials<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../interfaces/effectmaterial.html" class="tsd-signature-type">EffectMaterial</a><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L24">src/utils/PostProcessing/index.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L25">src/utils/PostProcessing/index.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -172,7 +176,17 @@
 					<div class="tsd-signature tsd-kind-icon">read<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderTarget</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L19">src/utils/PostProcessing/index.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L20">src/utils/PostProcessing/index.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="rendertargetoptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> render<wbr>Target<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">render<wbr>Target<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderTargetOptions</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L19">src/utils/PostProcessing/index.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -182,7 +196,7 @@
 					<div class="tsd-signature tsd-kind-icon">renderer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderer</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L14">src/utils/PostProcessing/index.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L14">src/utils/PostProcessing/index.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -192,7 +206,7 @@
 					<div class="tsd-signature tsd-kind-icon">resolution<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vector2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L22">src/utils/PostProcessing/index.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L23">src/utils/PostProcessing/index.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -202,7 +216,7 @@
 					<div class="tsd-signature tsd-kind-icon">result<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderTarget</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L21">src/utils/PostProcessing/index.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L22">src/utils/PostProcessing/index.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -212,7 +226,7 @@
 					<div class="tsd-signature tsd-kind-icon">scene<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Scene</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L15">src/utils/PostProcessing/index.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L15">src/utils/PostProcessing/index.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -222,7 +236,7 @@
 					<div class="tsd-signature tsd-kind-icon">screen<wbr>Mesh<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Mesh</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L17">src/utils/PostProcessing/index.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L17">src/utils/PostProcessing/index.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -232,7 +246,7 @@
 					<div class="tsd-signature tsd-kind-icon">write<wbr>Buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLRenderTarget</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L20">src/utils/PostProcessing/index.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L21">src/utils/PostProcessing/index.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -243,15 +257,21 @@
 					<a name="createrendertarget" class="tsd-anchor"></a>
 					<h3>create<wbr>Render<wbr>Target</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Render<wbr>Target<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderTarget</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Render<wbr>Target<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">WebGLRenderTargetOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderTarget</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L84">src/utils/PostProcessing/index.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L87">src/utils/PostProcessing/index.ts:87</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">WebGLRenderTargetOptions</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">WebGLRenderTarget</span></h4>
 						</li>
 					</ul>
@@ -266,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L169">src/utils/PostProcessing/index.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L172">src/utils/PostProcessing/index.ts:172</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Texture</span></h4>
@@ -283,7 +303,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L77">src/utils/PostProcessing/index.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L80">src/utils/PostProcessing/index.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -302,7 +322,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L98">src/utils/PostProcessing/index.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L101">src/utils/PostProcessing/index.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -316,7 +336,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L100">src/utils/PostProcessing/index.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L103">src/utils/PostProcessing/index.ts:103</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -333,7 +353,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L102">src/utils/PostProcessing/index.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L105">src/utils/PostProcessing/index.ts:105</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -362,7 +382,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L175">src/utils/PostProcessing/index.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L178">src/utils/PostProcessing/index.ts:178</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -385,7 +405,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/d571de6/src/utils/PostProcessing/index.ts#L90">src/utils/PostProcessing/index.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/347c791/src/utils/PostProcessing/index.ts#L93">src/utils/PostProcessing/index.ts:93</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -404,39 +424,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="animator.html" class="tsd-kind-icon">Animator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="background.html" class="tsd-kind-icon">Background</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="controller.html" class="tsd-kind-icon">Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="cursor.html" class="tsd-kind-icon">Cursor</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="dommesh.html" class="tsd-kind-icon">DOMMesh</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="gpucomputationcontroller.html" class="tsd-kind-icon">GPUComputation<wbr>Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="mouserotator.html" class="tsd-kind-icon">Mouse<wbr>Rotator</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="pagescroller.html" class="tsd-kind-icon">Page<wbr>Scroller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
@@ -453,6 +440,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="postprocessing.html#readbuffer" class="tsd-kind-icon">read<wbr>Buffer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="postprocessing.html#rendertargetoptions" class="tsd-kind-icon">render<wbr>Target<wbr>Options</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="postprocessing.html#renderer" class="tsd-kind-icon">renderer</a>
@@ -494,75 +484,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/animatorvaliableparams.html" class="tsd-kind-icon">Animator<wbr>Valiable<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/animatorvariable.html" class="tsd-kind-icon">Animator<wbr>Variable</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/easingset.html" class="tsd-kind-icon">Easing<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/gpucomputationkernel.html" class="tsd-kind-icon">GPUComputation<wbr>Kernel</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/lerpfunc.html" class="tsd-kind-icon">Lerp<wbr>Func</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/ppparam.html" class="tsd-kind-icon">PPParam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollerautomoveparam.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Auto<wbr>Move<wbr>Param</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollerevent.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollereventargs.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Event<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollerevents.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Events</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollersectionparams.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/timelineanimatoraddparams.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Add<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/timelineanimatorkeyframe.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Key<wbr>Frame</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="../interfaces/timelineanimatorvariable.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Variable</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#version" class="tsd-kind-icon">VERSION</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

@@ -45,7 +45,7 @@ export declare class PageScroller {
     protected checkUnlockStopScroll(scrollDelta: number): boolean;
     protected checkThrow(scrollDelta: number): number;
     protected checkThrowSectionEvents(section: PageScrollerSection, scrollDelta: number): number;
-    protected checkThrowLine(a: number, b: number, line: number): 1 | 0 | -1 | 2;
+    protected checkThrowLine(a: number, b: number, line: number): 1 | 2 | 0 | -1;
     protected calcScrollProperties(deltaTime: any): void;
     protected scrollPosToPerecntage(scrollPos: number): number;
     protected updateParentElement(): void;

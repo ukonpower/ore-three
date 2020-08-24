@@ -16,14 +16,15 @@ export class PostProcessing {
     protected camera: THREE.Camera;
     protected screenMesh: THREE.Mesh;
 
+	protected renderTargetOptions: THREE.WebGLRenderTargetOptions;
     protected readBuffer: THREE.WebGLRenderTarget;
     protected writeBuffer: THREE.WebGLRenderTarget;
-    public resultBuffer: THREE.WebGLRenderTarget;
+	public resultBuffer: THREE.WebGLRenderTarget;
     public resolution: THREE.Vector2;
 
     protected effectMaterials: [EffectMaterial];
 
-    constructor( renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: THREE.Vector2 ) {
+    constructor( renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: THREE.Vector2, bufferOptions?: THREE.WebGLRenderTargetOptions ) {
 
     	this.renderer = renderer;
 
@@ -32,6 +33,8 @@ export class PostProcessing {
     	this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
     	this.screenMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), null );
     	this.scene.add( this.screenMesh );
+
+    	this.renderTargetOptions = bufferOptions;
 
     	this.initRenderTargets();
 
@@ -76,14 +79,14 @@ export class PostProcessing {
 
     protected initRenderTargets() {
 
-    	this.readBuffer = this.createRenderTarget();
-    	this.writeBuffer = this.createRenderTarget();
+    	this.readBuffer = this.createRenderTarget( this.renderTargetOptions );
+    	this.writeBuffer = this.createRenderTarget( this.renderTargetOptions );
 
     }
 
-    public createRenderTarget() {
+    public createRenderTarget( options?: THREE.WebGLRenderTargetOptions ) {
 
-    	return new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y );
+    	return new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y, options );
 
     }
 

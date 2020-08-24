@@ -35,6 +35,9 @@ export class ControllerScene extends ORE.BaseScene {
 
 		super.onResize( args );
 
+		console.log( args.spWeight );
+
+
 	}
 
 }

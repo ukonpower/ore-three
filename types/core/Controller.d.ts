@@ -10,11 +10,17 @@ export declare interface ResizeArgs {
     pixelRatio: number;
     windowSize: THREE.Vector2;
     windowPixelSize: THREE.Vector2;
+    spWeight: number;
+    spWeightClipped: number;
 }
 export declare interface GlobalProperties {
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
     resizeArgs: ResizeArgs;
+    aspectsInfo: {
+        pcAspect: number;
+        spAspect: number;
+    };
 }
 export declare class Controller {
     currentScene: BaseScene;
