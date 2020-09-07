@@ -4,11 +4,11 @@ export declare interface Transform {
     rotation?: THREE.Quaternion;
     scale?: number;
 }
-export declare class SPLayoutController {
+export declare class LayoutController {
     protected obj: THREE.Object3D;
     protected baseTransform: Transform;
     protected baseScale: THREE.Vector3;
-    protected spTransform: Transform;
-    constructor(object: THREE.Object3D, spTransform: Transform, isAbsolutePosition?: boolean);
-    updateTransform(spWeight: number): void;
+    protected transform: Transform;
+    constructor(object: THREE.Object3D, transform: Transform, isAbsolutePosition?: boolean);
+    updateTransform(weight: number): void;
 }
