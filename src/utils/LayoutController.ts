@@ -34,23 +34,23 @@ export class LayoutController {
 
 	}
 
-	public updateTransform( spWeight: number ) {
+	public updateTransform( weight: number ) {
 
 		if ( this.transform.position ) {
 
-			this.obj.position.copy( this.baseTransform.position.clone().lerp( this.transform.position, spWeight ) );
+			this.obj.position.copy( this.baseTransform.position.clone().lerp( this.transform.position, weight ) );
 
 		}
 
 		if ( this.transform.rotation ) {
 
-			this.obj.quaternion.copy( this.baseTransform.rotation.clone().slerp( this.transform.rotation, spWeight ) );
+			this.obj.quaternion.copy( this.baseTransform.rotation.clone().slerp( this.transform.rotation, weight ) );
 
 		}
 
 		if ( this.transform.scale ) {
 
-			this.obj.scale.copy( this.baseScale.clone().multiplyScalar( this.transform.scale * ( spWeight ) + 1.0 - spWeight ) );
+			this.obj.scale.copy( this.baseScale.clone().multiplyScalar( this.transform.scale * ( weight ) + 1.0 - weight ) );
 
 		}
 
