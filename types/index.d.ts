@@ -11,7 +11,7 @@ export * from './utils/MouseRotator';
 export * from './utils/PostProcessing';
 export * from './utils/PageScroller';
 export * from './utils/PageScroller/PageScrollerSection';
-export * from './utils/SPLayoutController';
+export * from './utils/LayoutController';
 export * from './utils/TimelineAnimator';
 export * from './utils/Uniforms';
 export * from './utils/Lerps';
