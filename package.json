@@ -1,6 +1,6 @@
 {
 	"name": "ore-three-ts",
-	"version": "1.0.3-dev4",
+	"version": "1.0.3-dev5",
 	"description": "",
 	"main": "build/ore-three-ts.js",
 	"author": "ukonpower",
@@ -55,9 +55,7 @@
 		"webpack-stream": "^5.2.1"
 	},
 	"dependencies": {
-		"glsl-noise": "0.0.0",
 		"lethargy": "^1.0.9",
-		"raw-loader": "^4.0.0",
 		"to-px": "^1.1.0"
 	}
 }
