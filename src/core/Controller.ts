@@ -21,15 +21,17 @@ export declare interface ResizeArgs{
 	wideWeight: number;
 }
 
+export declare interface aspectInfo {
+	mainAspect: number;
+	portraitAspect: number;
+	wideAspect: number;
+}
+
 export declare interface GlobalProperties{
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
 	resizeArgs: ResizeArgs;
-	aspectsInfo: {
-		mainAspect: number;
-		portraitAspect: number;
-		wideAspect: number;
-	}
+	aspectInfo: aspectInfo
 }
 
 export class Controller {
@@ -68,7 +70,7 @@ export class Controller {
     		renderer: this.renderer,
     		cursor: this.cursor,
 			resizeArgs: null,
-			aspectsInfo: {
+			aspectInfo: {
 				mainAspect: 16 / 9,
 				portraitAspect: 1 / 2,
 				wideAspect: 5
@@ -127,12 +129,12 @@ export class Controller {
 
     	let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
-		let portraitWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectsInfo.portraitAspect ) / ( this.gProps.aspectsInfo.mainAspect - this.gProps.aspectsInfo.portraitAspect );
+		let portraitWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectInfo.portraitAspect ) / ( this.gProps.aspectInfo.mainAspect - this.gProps.aspectInfo.portraitAspect );
 		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
 
-		let wideWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectsInfo.wideAspect ) / ( this.gProps.aspectsInfo.mainAspect - this.gProps.aspectsInfo.wideAspect );
+		let wideWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectInfo.wideAspect ) / ( this.gProps.aspectInfo.mainAspect - this.gProps.aspectInfo.wideAspect );
 		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
-		
+
     	let resizeArgs: ResizeArgs = {
     		aspectRatio: windowSize.x / windowSize.y,
     		pixelRatio: this.renderer.getPixelRatio(),
