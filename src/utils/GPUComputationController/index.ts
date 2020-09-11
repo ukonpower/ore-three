@@ -139,7 +139,7 @@ export class GPUComputationController {
 
     		let initKernel = this.createKernel( passThroughFrag );
 
-    		initKernel.uniforms.texture = { value: initTex };
+    		initKernel.uniforms.tex = { value: initTex };
 
     		this.compute( initKernel, data );
 
