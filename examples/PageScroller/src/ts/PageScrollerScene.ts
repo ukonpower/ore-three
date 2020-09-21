@@ -69,7 +69,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 			events: {
 				onStartScroll: {
 					up: ( args ) => {
-						
+
 						this.scroller.autoMove( {
 							target: 'sec2',
 							bottom: true

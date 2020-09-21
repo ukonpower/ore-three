@@ -16,7 +16,8 @@ export interface GPUcomputationData{
 
 export class GPUComputationController {
 
-    protected renderer: THREE.WebGLRenderer;
+	protected renderer: THREE.WebGLRenderer;
+	public dataSize: THREE.Vector2;
 	protected uniforms: Uniforms;
 
     protected scene: THREE.Scene;
@@ -38,6 +39,7 @@ export class GPUComputationController {
     constructor( renderer: THREE.WebGLRenderer, dataSize: THREE.Vector2 ) {
 
     	this.renderer = renderer;
+    	this.dataSize = dataSize.clone();
 
     	this.uniforms = {
     		dataSize: {
