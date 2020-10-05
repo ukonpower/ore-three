@@ -1,17 +1,22 @@
-declare interface CustomEvent {
+export declare interface Event {
+	type: string;
+	[key:string]: any;
+}
+
+export declare interface EventListener {
 	type: string,
-	listener: Function,
+	listener: ( e: Event ) => void,
 }
 
 export class EventDispatcher {
 
-	private events: CustomEvent[] = [];
+	private events: EventListener[] = [];
 
 	constructor() {
 
 	}
 
-	public addEventListener( type: string, listener: Function ) {
+	public addEventListener( type: string, listener: ( e: Event ) => void ) {
 
 		this.events.push( {
 			type: type,
@@ -21,6 +26,8 @@ export class EventDispatcher {
 	}
 
 	public dispatchEvent( event: Event ) {
+
+		event.target = this;
 
 		for ( let i = 0; i < this.events.length; i ++ ) {
 

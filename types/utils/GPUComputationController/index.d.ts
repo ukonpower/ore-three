@@ -9,6 +9,7 @@ export interface GPUcomputationData {
 }
 export declare class GPUComputationController {
     protected renderer: THREE.WebGLRenderer;
+    dataSize: THREE.Vector2;
     protected uniforms: Uniforms;
     protected scene: THREE.Scene;
     protected camera: THREE.Camera;

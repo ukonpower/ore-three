@@ -13,15 +13,16 @@ export declare interface ResizeArgs {
     portraitWeight: number;
     wideWeight: number;
 }
+export declare interface aspectInfo {
+    mainAspect: number;
+    portraitAspect: number;
+    wideAspect: number;
+}
 export declare interface GlobalProperties {
     renderer: THREE.WebGLRenderer;
     cursor: Cursor;
     resizeArgs: ResizeArgs;
-    aspectsInfo: {
-        mainAspect: number;
-        portraitAspect: number;
-        wideAspect: number;
-    };
+    aspectInfo: aspectInfo;
 }
 export declare class Controller {
     currentScene: BaseScene;
