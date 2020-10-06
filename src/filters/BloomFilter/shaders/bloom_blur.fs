@@ -8,7 +8,7 @@ uniform float blurRange;
 uniform float renderCount;
 uniform float count;
 
-$guassBlur13
+#pragma glslify: blur13 = require( './gaussBlur13.glsl' );
 
 void main(){
 

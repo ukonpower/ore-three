@@ -10,3 +10,5 @@ mat4 qua2mat( vec4 q ){
 	return m;
 
 }
+
+#pragma glslify: export(qua2mat)

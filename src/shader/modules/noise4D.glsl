@@ -50,7 +50,7 @@ vec4 grad4(float j, vec4 ip)
 // (sqrt(5) - 1)/4 = F4, used once below
 #define F4 0.309016994374947451
 
-float snoise(vec4 v)
+float snoise4D(vec4 v)
   {
   const vec4  C = vec4( 0.138196601125011,  // (5 - sqrt(5))/20  G4
 						0.276393202250021,  // 2 * G4
@@ -127,3 +127,5 @@ float snoise(vec4 v)
 			   + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
 
   }
+
+#pragma glslify: export(snoise4D)

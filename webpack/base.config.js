@@ -20,18 +20,19 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.(glsl|vs|fs)$/,
+				test: /\.(vs|fs|glsl)$/,
+				exclude: /node_modules/,
 				use: [
+					'raw-loader',
 					{
-						loader: 'shader-loader',
+						loader: 'glslify-loader',
 						options: {
-							glsl: {
-								chunkPath: 'src/shader/modules/'
-							}
+							transform: [
+								[ 'glslify-hex' ],
+								[ 'glslify-import' ]
+							],
+							basedir: './src/shader/modules'
 						}
-					},
-					{
-						loader: 'glslify-loader'
 					}
 				]
 			}
