@@ -8,13 +8,13 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("three"));
+		module.exports = factory(require("THREE"));
 	else if(typeof define === 'function' && define.amd)
-		define(["three"], factory);
+		define(["THREE"], factory);
 	else if(typeof exports === 'object')
-		exports["ORE"] = factory(require("three"));
+		exports["ORE"] = factory(require("THREE"));
 	else
-		root["ORE"] = factory(root["three"]);
+		root["ORE"] = factory(root["THREE"]);
 })(self, function(__WEBPACK_EXTERNAL_MODULE_three__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
@@ -585,6 +585,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*!   other exports [not provided] [no usage info] */
 /*! export dependencies [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export lethargy [provided] [no usage info] [missing usage info prevents renaming] */
+/*!   export three [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export to-px [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   other exports [not provided] [no usage info] */
 /*! export description [provided] [no usage info] [missing usage info prevents renaming] */
@@ -612,7 +613,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*!   export gulp-typedoc [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export gulp-typescript [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export raw-loader [provided] [no usage info] [missing usage info prevents renaming] */
-/*!   export three [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export ts-loader [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export typedoc [provided] [no usage info] [missing usage info prevents renaming] */
 /*!   export typescript [provided] [no usage info] [missing usage info prevents renaming] */
@@ -645,13 +645,13 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((module) => {
 
 "use strict";
-eval("module.exports = JSON.parse(\"{\\\"name\\\":\\\"ore-three-ts\\\",\\\"version\\\":\\\"1.0.4\\\",\\\"description\\\":\\\"\\\",\\\"main\\\":\\\"build/ore-three-ts.js\\\",\\\"author\\\":\\\"ukonpower\\\",\\\"license\\\":\\\"MIT\\\",\\\"repository\\\":{\\\"type\\\":\\\"git\\\",\\\"url\\\":\\\"git@github.com:ukonpower/ore-three-ts.git\\\"},\\\"keywords\\\":[\\\"threejs\\\",\\\"webgl\\\"],\\\"types\\\":\\\"types/index.d.ts\\\",\\\"files\\\":[\\\"build\\\",\\\"src\\\",\\\"types\\\"],\\\"bugs\\\":{\\\"url\\\":\\\"https://github.com/ukonpower/ore-three-ts/issues\\\"},\\\"devDependencies\\\":{\\\"@types/offscreencanvas\\\":\\\"^2019.6.2\\\",\\\"@types/webgl2\\\":\\\"0.0.5\\\",\\\"@typescript-eslint/eslint-plugin\\\":\\\"^4.5.0\\\",\\\"@typescript-eslint/parser\\\":\\\"^4.5.0\\\",\\\"browser-sync\\\":\\\"^2.26.13\\\",\\\"copy-webpack-plugin\\\":\\\"^6.2.1\\\",\\\"del\\\":\\\"^6.0.0\\\",\\\"eslint\\\":\\\"^7.11.0\\\",\\\"eslint-config-mdcs\\\":\\\"^5.0.0\\\",\\\"glslify-hex\\\":\\\"^2.1.1\\\",\\\"glslify-import\\\":\\\"^3.1.0\\\",\\\"glslify-loader\\\":\\\"^2.0.0\\\",\\\"gulp\\\":\\\"^4.0.2\\\",\\\"gulp-autoprefixer\\\":\\\"^7.0.1\\\",\\\"gulp-cssmin\\\":\\\"^0.2.0\\\",\\\"gulp-eslint\\\":\\\"^6.0.0\\\",\\\"gulp-if\\\":\\\"^3.0.0\\\",\\\"gulp-plumber\\\":\\\"^1.2.1\\\",\\\"gulp-pug\\\":\\\"^4.0.1\\\",\\\"gulp-sass\\\":\\\"^4.1.0\\\",\\\"gulp-typedoc\\\":\\\"^2.2.5\\\",\\\"gulp-typescript\\\":\\\"^6.0.0-alpha.1\\\",\\\"raw-loader\\\":\\\"^4.0.2\\\",\\\"three\\\":\\\"^0.121.1\\\",\\\"ts-loader\\\":\\\"^8.0.6\\\",\\\"typedoc\\\":\\\"^0.19.2\\\",\\\"typescript\\\":\\\"^4.0.3\\\",\\\"webpack\\\":\\\"^5.1.3\\\",\\\"webpack-cli\\\":\\\"^4.1.0\\\",\\\"webpack-dev-server\\\":\\\"^3.11.0\\\",\\\"webpack-merge\\\":\\\"^5.2.0\\\",\\\"webpack-stream\\\":\\\"^6.1.0\\\"},\\\"dependencies\\\":{\\\"lethargy\\\":\\\"^1.0.9\\\",\\\"to-px\\\":\\\"^1.1.0\\\"}}\");\n\n//# sourceURL=webpack://ORE/./package.json?");
+eval("module.exports = JSON.parse(\"{\\\"name\\\":\\\"ore-three-ts\\\",\\\"version\\\":\\\"1.0.5-dev2\\\",\\\"description\\\":\\\"\\\",\\\"main\\\":\\\"build/ore-three-ts.js\\\",\\\"author\\\":\\\"ukonpower\\\",\\\"license\\\":\\\"MIT\\\",\\\"repository\\\":{\\\"type\\\":\\\"git\\\",\\\"url\\\":\\\"git@github.com:ukonpower/ore-three-ts.git\\\"},\\\"keywords\\\":[\\\"threejs\\\",\\\"webgl\\\"],\\\"types\\\":\\\"types/index.d.ts\\\",\\\"files\\\":[\\\"build\\\",\\\"src\\\",\\\"types\\\"],\\\"bugs\\\":{\\\"url\\\":\\\"https://github.com/ukonpower/ore-three-ts/issues\\\"},\\\"devDependencies\\\":{\\\"@types/offscreencanvas\\\":\\\"^2019.6.2\\\",\\\"@types/webgl2\\\":\\\"0.0.5\\\",\\\"@typescript-eslint/eslint-plugin\\\":\\\"^4.5.0\\\",\\\"@typescript-eslint/parser\\\":\\\"^4.5.0\\\",\\\"browser-sync\\\":\\\"^2.26.13\\\",\\\"copy-webpack-plugin\\\":\\\"^6.2.1\\\",\\\"del\\\":\\\"^6.0.0\\\",\\\"eslint\\\":\\\"^7.11.0\\\",\\\"eslint-config-mdcs\\\":\\\"^5.0.0\\\",\\\"glslify-hex\\\":\\\"^2.1.1\\\",\\\"glslify-import\\\":\\\"^3.1.0\\\",\\\"glslify-loader\\\":\\\"^2.0.0\\\",\\\"gulp\\\":\\\"^4.0.2\\\",\\\"gulp-autoprefixer\\\":\\\"^7.0.1\\\",\\\"gulp-cssmin\\\":\\\"^0.2.0\\\",\\\"gulp-eslint\\\":\\\"^6.0.0\\\",\\\"gulp-if\\\":\\\"^3.0.0\\\",\\\"gulp-plumber\\\":\\\"^1.2.1\\\",\\\"gulp-pug\\\":\\\"^4.0.1\\\",\\\"gulp-sass\\\":\\\"^4.1.0\\\",\\\"gulp-typedoc\\\":\\\"^2.2.5\\\",\\\"gulp-typescript\\\":\\\"^6.0.0-alpha.1\\\",\\\"raw-loader\\\":\\\"^4.0.2\\\",\\\"ts-loader\\\":\\\"^8.0.6\\\",\\\"typedoc\\\":\\\"^0.19.2\\\",\\\"typescript\\\":\\\"^4.0.3\\\",\\\"webpack\\\":\\\"^5.1.3\\\",\\\"webpack-cli\\\":\\\"^4.1.0\\\",\\\"webpack-dev-server\\\":\\\"^3.11.0\\\",\\\"webpack-merge\\\":\\\"^5.2.0\\\",\\\"webpack-stream\\\":\\\"^6.1.0\\\"},\\\"dependencies\\\":{\\\"lethargy\\\":\\\"^1.0.9\\\",\\\"three\\\":\\\"^0.121.1\\\",\\\"to-px\\\":\\\"^1.1.0\\\"}}\");\n\n//# sourceURL=webpack://ORE/./package.json?");
 
 /***/ }),
 
 /***/ "three":
 /*!************************!*\
-  !*** external "three" ***!
+  !*** external "THREE" ***!
   \************************/
 /*! dynamic exports */
 /*! export __esModule [maybe provided (runtime-defined)] [no usage info] [provision prevents renaming (no use info)] */
@@ -660,7 +660,7 @@ eval("module.exports = JSON.parse(\"{\\\"name\\\":\\\"ore-three-ts\\\",\\\"versi
 /***/ ((module) => {
 
 "use strict";
-eval("module.exports = __WEBPACK_EXTERNAL_MODULE_three__;\n\n//# sourceURL=webpack://ORE/external_%22three%22?");
+eval("module.exports = __WEBPACK_EXTERNAL_MODULE_three__;\n\n//# sourceURL=webpack://ORE/external_%22THREE%22?");
 
 /***/ })
 
