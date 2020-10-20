@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>ore-three-ts</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for ore-three-ts">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -78,32 +78,32 @@
 				<a href="#import" id="import" style="color: inherit; text-decoration: none;">
 					<h5>Import</h5>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">'ore-three-ts'</span>;</code></pre>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;</code></pre>
 				<a href="#create-controller" id="create-controller" style="color: inherit; text-decoration: none;">
 					<h3>Create Controller</h3>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">'ore-three-ts'</span>;
-<span class="hljs-keyword">import</span> { MainScene } <span class="hljs-keyword">from</span> <span class="hljs-string">'./scenes/MainScene'</span>;
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;
+<span class="hljs-keyword">import</span> { MainScene } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./scenes/MainScene&#x27;</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">APP</span> </span>{
 
-    <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
 
-        <span class="hljs-keyword">this</span>.controller = <span class="hljs-keyword">new</span> ORE.Controller( {
+        <span class="hljs-built_in">this</span>.controller = <span class="hljs-keyword">new</span> ORE.Controller( {
 
-            <span class="hljs-attr">canvas</span>: <span class="hljs-built_in">document</span>.querySelector( <span class="hljs-string">"#canvas"</span> ),
+            <span class="hljs-attr">canvas</span>: <span class="hljs-built_in">document</span>.querySelector( <span class="hljs-string">&quot;#canvas&quot;</span> ),
             <span class="hljs-attr">retina</span>: <span class="hljs-literal">true</span>,
             <span class="hljs-attr">alpha</span>: <span class="hljs-literal">true</span>,
 
         } );
 
-        <span class="hljs-keyword">this</span>.controller.bindScene( <span class="hljs-keyword">new</span> MainScene() );
+        <span class="hljs-built_in">this</span>.controller.bindScene( <span class="hljs-keyword">new</span> MainScene() );
 
     }
 
 }
 
-<span class="hljs-built_in">window</span>.addEventListener( <span class="hljs-string">'load'</span>, ()=&gt;{
+<span class="hljs-built_in">window</span>.addEventListener( <span class="hljs-string">&#x27;load&#x27;</span>, <span class="hljs-function">()=&gt;</span>{
 
     <span class="hljs-keyword">let</span> app = <span class="hljs-keyword">new</span> APP();
 
@@ -111,65 +111,65 @@
 				<a href="#create-scene" id="create-scene" style="color: inherit; text-decoration: none;">
 					<h3>Create Scene</h3>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">'ore-three-ts'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> THREE <span class="hljs-keyword">from</span> <span class="hljs-string">'three'</span>;
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> THREE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;three&#x27;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainScene</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ORE</span>.<span class="hljs-title">BaseScene</span> </span>{
 
-    <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
 
-        <span class="hljs-keyword">super</span>();
+        <span class="hljs-built_in">super</span>();
 
-        <span class="hljs-keyword">this</span>.name = <span class="hljs-string">"MainScene"</span>;
+        <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&quot;MainScene&quot;</span>;
 
     }
 
-    onBind( gProps ) {
+    <span class="hljs-function"><span class="hljs-title">onBind</span>(<span class="hljs-params"> gProps </span>)</span> {
 
-        <span class="hljs-keyword">super</span>.onBind( gProps );
+        <span class="hljs-built_in">super</span>.onBind( gProps );
 
-        <span class="hljs-keyword">this</span>.renderer = <span class="hljs-keyword">this</span>.gProps.renderer;
+        <span class="hljs-built_in">this</span>.renderer = <span class="hljs-built_in">this</span>.gProps.renderer;
 
-        <span class="hljs-keyword">this</span>.camera.position.set( <span class="hljs-number">0</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">3</span> );
-        <span class="hljs-keyword">this</span>.camera.lookAt( <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span> );
+        <span class="hljs-built_in">this</span>.camera.position.set( <span class="hljs-number">0</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">3</span> );
+        <span class="hljs-built_in">this</span>.camera.lookAt( <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span> );
 
         <span class="hljs-keyword">var</span> boxGeo = <span class="hljs-keyword">new</span> THREE.BoxGeometry( <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> );
         <span class="hljs-keyword">var</span> boXMat = <span class="hljs-keyword">new</span> THREE.MeshNormalMaterial();
-        <span class="hljs-keyword">this</span>.box = <span class="hljs-keyword">new</span> THREE.Mesh( boxGeo, boXMat );
-        <span class="hljs-keyword">this</span>.scene.add( <span class="hljs-keyword">this</span>.box );
+        <span class="hljs-built_in">this</span>.box = <span class="hljs-keyword">new</span> THREE.Mesh( boxGeo, boXMat );
+        <span class="hljs-built_in">this</span>.scene.add( <span class="hljs-built_in">this</span>.box );
 
-        <span class="hljs-keyword">this</span>.light = <span class="hljs-keyword">new</span> THREE.DirectionalLight();
-        <span class="hljs-keyword">this</span>.light.position.y = <span class="hljs-number">10</span>;
-        <span class="hljs-keyword">this</span>.scene.add( <span class="hljs-keyword">this</span>.light );        
+        <span class="hljs-built_in">this</span>.light = <span class="hljs-keyword">new</span> THREE.DirectionalLight();
+        <span class="hljs-built_in">this</span>.light.position.y = <span class="hljs-number">10</span>;
+        <span class="hljs-built_in">this</span>.scene.add( <span class="hljs-built_in">this</span>.light );        
 
     }
 
     <span class="hljs-comment">//Animation Loop!!</span>
 
-    animate( deltaTime ) {
+    <span class="hljs-function"><span class="hljs-title">animate</span>(<span class="hljs-params"> deltaTime </span>)</span> {
 
-        <span class="hljs-keyword">this</span>.box.rotateY( <span class="hljs-number">0.01</span> );
-        <span class="hljs-keyword">this</span>.renderer.render( <span class="hljs-keyword">this</span>.scene, <span class="hljs-keyword">this</span>.camera );
+        <span class="hljs-built_in">this</span>.box.rotateY( <span class="hljs-number">0.01</span> );
+        <span class="hljs-built_in">this</span>.renderer.render( <span class="hljs-built_in">this</span>.scene, <span class="hljs-built_in">this</span>.camera );
 
     }
 
     <span class="hljs-comment">//You can use any events!!</span>
 
-    onResize( args ) {
+    <span class="hljs-function"><span class="hljs-title">onResize</span>(<span class="hljs-params"> args </span>)</span> {
 
-        <span class="hljs-keyword">super</span>.onResize( args );
+        <span class="hljs-built_in">super</span>.onResize( args );
 
     }
 
-    public onTouchStart( cursor: Cursor, <span class="hljs-attr">event</span>: MouseEvent ) {}
+    public <span class="hljs-function"><span class="hljs-title">onTouchStart</span>(<span class="hljs-params"> cursor: Cursor, event: MouseEvent </span>)</span> {}
 
-    public onTouchMove( cursor: Cursor, <span class="hljs-attr">event</span>: MouseEvent ) {}
+    public <span class="hljs-function"><span class="hljs-title">onTouchMove</span>(<span class="hljs-params"> cursor: Cursor, event: MouseEvent </span>)</span> {}
 
-    public onTouchEnd( cursor: Cursor, <span class="hljs-attr">event</span>: MouseEvent ) {}
+    public <span class="hljs-function"><span class="hljs-title">onTouchEnd</span>(<span class="hljs-params"> cursor: Cursor, event: MouseEvent </span>)</span> {}
 
-    public onHover( cursor: Cursor ) { }
+    public <span class="hljs-function"><span class="hljs-title">onHover</span>(<span class="hljs-params"> cursor: Cursor </span>)</span> { }
 
-    public onWheel( event: WheelEvent, <span class="hljs-attr">trackpadDelta</span>: number ) {}
+    public <span class="hljs-function"><span class="hljs-title">onWheel</span>(<span class="hljs-params"> event: WheelEvent, trackpadDelta: number </span>)</span> {}
 
 }</code></pre>
 			</div>
@@ -180,13 +180,13 @@
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class=" tsd-kind-namespace">
 						<a href="modules/easings.html">Easings</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class=" tsd-kind-namespace">
 						<a href="modules/lerps.html">Lerps</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class=" tsd-kind-namespace">
 						<a href="modules/uniformslib.html">Uniforms<wbr>Lib</a>
 					</li>
 				</ul>
@@ -329,57 +329,24 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 		</div>
 	</div>
@@ -389,6 +356,5 @@
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
