@@ -1,6 +1,6 @@
 {
 	"name": "ore-three-ts",
-	"version": "1.0.4",
+	"version": "1.0.5-dev1",
 	"description": "",
 	"main": "build/ore-three-ts.js",
 	"author": "ukonpower",
