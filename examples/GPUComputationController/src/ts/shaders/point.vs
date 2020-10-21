@@ -4,7 +4,7 @@ uniform sampler2D velTex;
 varying vec2 vUv;
 varying vec4 vColor;
 
-$constants
+#pragma glslify: import( './constants' )
 
 void main( void ) {
 	

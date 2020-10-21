@@ -268,4 +268,6 @@ const develop = gulp.series(
 exports.default = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
 exports.lint = gulp.series( esLint );
 exports.docs = gulp.series( setDevDocumentsPath, develop );
+// exports.build = gulp.series( cleanBuildFiles, buildPackages );
 exports.build = gulp.series( cleanBuildFiles, buildPackages, buildExamples, setDevDocumentsPath, develop );
+

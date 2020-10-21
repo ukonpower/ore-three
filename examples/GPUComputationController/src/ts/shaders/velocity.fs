@@ -9,8 +9,9 @@ varying vec2 vUv;
 #define NOISE_SCALE 1.5
 #define TIME_SCALE 2.5
 
-$noise4D
-$random
+
+#pragma glslify: snoise = require( './noise4D.glsl' );
+#pragma glslify: random = require( './random.glsl' );
 
 vec3 snoise3D( vec3 p ){
 	return vec3(

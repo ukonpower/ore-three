@@ -118,11 +118,29 @@ export class Animator {
 
 	}
 
+	public cancelAnimate( name: string ) {
+
+		let variable = this.variables[ name ];
+
+		if ( variable ) {
+
+			variable.time = 1.0;
+			variable.onAnimationFinished = null;
+
+		} else {
+
+			console.warn( '"' + name + '"' + ' is not exist' );
+
+		}
+
+	}
+
 	public setValue<T>( name: string, value: T ) {
 
 		if ( this.variables[ name ] ) {
 
 			this.variables[ name ].value = value;
+			this.cancelAnimate( name );
 
 		} else {
 
