@@ -36,6 +36,7 @@ export declare class Animator {
     };
     setEasing(name: string, easing: EasingSet): void;
     animate<T>(name: string, goalValue: T, duration?: number, callback?: Function, easing?: EasingSet): void;
+    cancelAnimate(name: string): void;
     setValue<T>(name: string, value: T): any;
     get<T>(name: string): T;
     getVariableObject<T>(name: string): AnimatorVariable<T>;

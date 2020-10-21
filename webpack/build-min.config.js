@@ -10,6 +10,6 @@ module.exports = merge( baseConfig, {
 		libraryTarget: 'window'
 	},
 	externals: {
-		'three': 'THREE'
+		'THREE': 'three'
 	},
 } );

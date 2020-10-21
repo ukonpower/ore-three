@@ -10,6 +10,6 @@ module.exports = merge( baseConfig, {
 		libraryTarget: 'umd'
 	},
 	externals: {
-		'three': 'THREE'
+		'THREE': 'three'
 	},
 } );
