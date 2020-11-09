@@ -77,44 +77,59 @@ export class Animator {
 	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingSet ) {
 
 		let variable = this.variables[ name ];
+		let promise = new Promise( resolve => {
 
-		if ( variable ) {
+			if ( variable ) {
 
-			if ( duration <= 0 ) {
+				if ( duration <= 0 ) {
 
-				this.setValue( name, goalValue );
+					this.setValue( name, goalValue );
 
-				variable.time = 1.0;
-				variable.onAnimationFinished = callback;
+					variable.time = 1.0;
+					variable.onAnimationFinished = () => {
 
-				return;
+						callback && callback();
+						resolve();
+
+					};
+
+					return;
+
+				}
+
+				if ( variable.time == - 1 ) {
+
+					this._isAnimating = true;
+					this.animatingCount ++;
+
+				}
+
+				variable.time = 0;
+				variable.duration = duration;
+				variable.startValue = variable.value;
+				variable.goalValue = goalValue;
+				variable.onAnimationFinished = () => {
+
+					callback && callback();
+					resolve();
+
+				};
+
+				if ( easing ) {
+
+					this.setEasing( name, easing );
+
+				}
+
+			} else {
+
+				console.warn( '"' + name + '"' + ' is not exist' );
 
 			}
 
-			if ( variable.time == - 1 ) {
+		} );
 
-				this._isAnimating = true;
-				this.animatingCount ++;
-
-			}
-
-			variable.time = 0;
-			variable.duration = duration;
-			variable.startValue = variable.value;
-			variable.goalValue = goalValue;
-			variable.onAnimationFinished = callback;
-
-			if ( easing ) {
-
-				this.setEasing( name, easing );
-
-			}
-
-		} else {
-
-			console.warn( '"' + name + '"' + ' is not exist' );
-
-		}
+		return promise;
 
 	}
 
