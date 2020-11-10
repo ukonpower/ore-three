@@ -2,7 +2,7 @@ import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
 
-declare interface AnimatorVariable<T>{
+export declare interface AnimatorVariable<T>{
 	time: number;
 	duration?: number;
 	value: T;
@@ -183,7 +183,7 @@ export class Animator {
 
 	}
 
-	public getVariableObject<T>( name: string ): AnimatorVariable<T> {
+	public getVariableObject<T>( name: string, mute: boolean = false ): AnimatorVariable<T> {
 
 		if ( this.variables[ name ] ) {
 
@@ -191,7 +191,11 @@ export class Animator {
 
 		} else {
 
-			console.warn( '"' + name + '"' + ' is not exist' );
+			if ( ! mute ) {
+
+				console.warn( '"' + name + '"' + ' is not exist' );
+
+			}
 
 			return null;
 
