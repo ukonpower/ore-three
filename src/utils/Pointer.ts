@@ -1,11 +1,8 @@
 import * as THREE from "three";
 import { Controller } from "../core/Controller";
 
-export class Cursor {
+export class Pointer extends THREE.EventDispatcher {
 
-	public onTouchStart: Function;
-	public onTouchMove: Function;
-	public onTouchEnd: Function;
 	public onHover: Function;
 	public onWheel: Function;
 	public attenuation: number = 0.9;
@@ -31,6 +28,8 @@ export class Cursor {
 
 	constructor() {
 
+		super();
+
 		this._position = new THREE.Vector2( NaN, NaN );
 		this._delta = new THREE.Vector2( NaN, NaN );
 
@@ -42,25 +41,25 @@ export class Cursor {
 
 			window.addEventListener(
 				"touchstart",
-				this._MouseEvent.bind( this, "start" )
+				this.touchEvent.bind( this, "start" )
 			);
 
 			window.addEventListener(
 				"touchmove",
-				this._MouseEvent.bind( this, "move" ),
+				this.touchEvent.bind( this, "move" ),
 				{ passive: false }
 			);
-			window.addEventListener( "touchend", this._MouseEvent.bind( this, "end" ) );
+			window.addEventListener( "touchend", this.touchEvent.bind( this, "end" ) );
 
 		} else {
 
 			window.addEventListener(
 				"mousedown",
-				this._MouseEvent.bind( this, "start" )
+				this.touchEvent.bind( this, "start" )
 			);
-			window.addEventListener( "mousemove", this._MouseEvent.bind( this, "move" ) );
-			window.addEventListener( "mouseup", this._MouseEvent.bind( this, "end" ) );
-			window.addEventListener( "dragend", this._MouseEvent.bind( this, "end" ) );
+			window.addEventListener( "mousemove", this.touchEvent.bind( this, "move" ) );
+			window.addEventListener( "mouseup", this.touchEvent.bind( this, "end" ) );
+			window.addEventListener( "dragend", this.touchEvent.bind( this, "end" ) );
 			window.addEventListener( "wheel", this.wheel.bind( this ), {
 				passive: false
 			} );
@@ -128,7 +127,7 @@ export class Cursor {
 
 	}
 
-	protected _MouseEvent( type: string, event: MouseEvent | TouchEvent ) {
+	protected touchEvent( type: string, event: MouseEvent | TouchEvent ) {
 
 		let x: number = this.position.x;
 		let y: number = this.position.y;
@@ -159,37 +158,21 @@ export class Cursor {
 
 			this.setPos( x, y );
 
-			if ( this.onTouchStart ) {
-
-				this.onTouchStart( event );
-
-			}
 
 		} else if ( type == "move" ) {
 
 			this.setPos( x, y );
 
-			if ( this._touchDown ) {
-
-				if ( this.onTouchMove ) {
-
-					this.onTouchMove( event );
-
-				}
-
-			}
-
 		} else if ( type == "end" ) {
 
 			this._touchDown = false;
 
-			if ( this.onTouchEnd ) {
-
-				this.onTouchEnd( event );
-
-			}
-
 		}
+
+		this.dispatchEvent( {
+			type: 'update',
+			eventType: type
+		} );
 
 	}
 
@@ -209,7 +192,11 @@ export class Cursor {
 
 		if ( this.onHover && ! this.isSP ) {
 
-			this.onHover();
+			// this.onHover();
+			this.dispatchEvent( {
+				type: 'update',
+				eventType: 'hover'
+			} );
 
 		}
 

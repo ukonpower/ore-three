@@ -7,7 +7,7 @@ import { ScrollManager } from './ScrollManager';
 import { AssetManager } from './AssetManager';
 import { PostProcessing } from './PostProcessing';
 
-export class MainScene extends ORE.BaseScene {
+export class MainScene extends ORE.BaseLayer {
 
 	private mainObj: MainObj;
 
@@ -81,7 +81,7 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -157,11 +157,11 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 
-		this.spWeight = Math.min( 1.0, Math.max( 0.0, ( this.gProps.resizeArgs.windowSize.x - 500 ) / 1000 ) );
+		this.spWeight = Math.min( 1.0, Math.max( 0.0, ( this.info.size.windowSize.x - 500 ) / 1000 ) );
 
 		this.commonUniforms.spWeight.value = this.spWeight;
 
@@ -176,19 +176,19 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
-	public onTouchStart( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchStart( cursor: ORE.Pointer, e: MouseEvent ) {
 
 		this.scrollManager && this.scrollManager.scroller.catch();
 
 	}
 
-	public onTouchMove( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchMove( cursor: ORE.Pointer, e: MouseEvent ) {
 
 		this.scrollManager && this.scrollManager.scroller.drag( - cursor.delta.y );
 
 	}
 
-	public onTouchEnd( cursor: ORE.Cursor ) {
+	public onTouchEnd( cursor: ORE.Pointer ) {
 
 		this.scrollManager && this.scrollManager.scroller.release();
 

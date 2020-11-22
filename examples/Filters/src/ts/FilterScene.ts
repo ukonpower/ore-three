@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class FilterScene extends ORE.BaseScene {
+export class FilterScene extends ORE.BaseLayer {
 
 	private filters: { [ key: string ] : any} = {};
 
@@ -15,7 +15,7 @@ export class FilterScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -76,7 +76,7 @@ export class FilterScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

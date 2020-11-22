@@ -5,7 +5,7 @@ import domMeshFrag1 from './shaders/domMesh1.fs';
 import domMeshFrag2 from './shaders/domMesh2.fs';
 import domMeshFrag3 from './shaders/domMesh3.fs';
 
-export class DOMMeshScene extends ORE.BaseScene {
+export class DOMMeshScene extends ORE.BaseLayer {
 
 	private domMesh: ORE.DOMMesh[] = [];
 	private uniforms: ORE.Uniforms;
@@ -16,7 +16,7 @@ export class DOMMeshScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -69,7 +69,7 @@ export class DOMMeshScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

@@ -9,14 +9,14 @@ export class APP {
 
 	constructor() {
 
-		this.controller = new ORE.Controller( {
-			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-			retina: true,
-		} );
+		this.controller = new ORE.Controller();
 
 		this.scene = new AnimatorScene();
 
-		this.controller.bindScene( this.scene );
+		this.controller.addLayer( this.scene, {
+			name: 'Main',
+			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
+		} );
 
 	}
 

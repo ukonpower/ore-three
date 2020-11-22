@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class MouseRotatorScene extends ORE.BaseScene {
+export class MouseRotatorScene extends ORE.BaseLayer {
 
 	private rotator: ORE.MouseRotator;
 
@@ -13,7 +13,7 @@ export class MouseRotatorScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -35,13 +35,13 @@ export class MouseRotatorScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 
 	}
 
-	public onTouchMove( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchMove( cursor: ORE.Pointer, e: MouseEvent ) {
 
 		this.rotator.addVelocity( cursor.delta );
 

@@ -1,12 +1,32 @@
 import * as THREE from 'three';
-import { Cursor } from '../utils/Cursor';
-import { GlobalProperties, ResizeArgs } from '../core/Controller';
+import { Pointer } from '../utils/Pointer';
+import { Controller } from './Controller';
 
-export class BaseScene {
+export declare interface AspectInfo {
+	mainAspect: number;
+	portraitAspect: number;
+	wideAspect: number;
+}
 
-	public gProps: GlobalProperties;
+export declare interface LayerSize {
+	aspectRatio: number;
+	windowSize: THREE.Vector2;
+	canvasSize: THREE.Vector2;
+	canvasPixelSize: THREE.Vector2;
+	portraitWeight: number;
+	wideWeight: number;
+}
 
-	public name: string
+export declare interface LayerInfo extends THREE.WebGLRendererParameters {
+	name: string;
+	canvas: HTMLCanvasElement;
+	size?: LayerSize;
+	aspect?: AspectInfo;
+}
+
+export class BaseLayer extends THREE.EventDispatcher {
+
+	public info: LayerInfo;
 
 	public renderer: THREE.WebGLRenderer;
 	public scene: THREE.Scene;
@@ -16,7 +36,7 @@ export class BaseScene {
 
 	constructor() {
 
-		this.name = "";
+		super();
 
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
@@ -31,13 +51,15 @@ export class BaseScene {
 
 	}
 
-	public animate( deltaTime: number ) { }
+	public animate( deltaTime: number ) {}
 
-	public onBind( gProps: GlobalProperties ) {
+	public onBind( layerInfo: LayerInfo ) {
 
-		this.gProps = gProps;
+		this.info = layerInfo;
 
-		this.renderer = gProps.renderer;
+		this.renderer = new THREE.WebGLRenderer( this.info );
+    	this.renderer.debug.checkShaderErrors = true;
+    	this.renderer.setSize( window.innerWidth, window.innerHeight );
 
 	}
 
@@ -83,7 +105,7 @@ export class BaseScene {
 
 	}
 
-	public onResize( args: ResizeArgs ) {
+	public onResize( args: LayerSize ) {
 
 		this.renderer.setSize( args.windowSize.x, args.windowSize.y );
 
@@ -92,13 +114,19 @@ export class BaseScene {
 
 	}
 
-	public onTouchStart( cursor: Cursor, event: MouseEvent ) { }
+	public touchEvent( e: any ) {
 
-	public onTouchMove( cursor: Cursor, event: MouseEvent ) { }
+		// console.log( e );
 
-	public onTouchEnd( cursor: Cursor, event: MouseEvent ) { }
+	}
 
-	public onHover( cursor: Cursor ) { }
+	public onTouchStart( cursor: Pointer, event: MouseEvent ) { }
+
+	public onTouchMove( cursor: Pointer, event: MouseEvent ) { }
+
+	public onTouchEnd( cursor: Pointer, event: MouseEvent ) { }
+
+	public onHover( cursor: Pointer ) { }
 
 	public onWheel( event: WheelEvent, trackpadDelta: number ) { }
 

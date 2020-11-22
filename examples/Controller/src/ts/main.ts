@@ -5,18 +5,16 @@ import { ControllerScene } from './ControllerScene';
 export class APP {
 
 	private controller: ORE.Controller;
-	private scene: ControllerScene;
+	private layer: ControllerScene;
 
 	constructor() {
 
-		this.controller = new ORE.Controller( {
+		this.controller = new ORE.Controller();
+
+		this.controller.addLayer( new ControllerScene(), {
+			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-			retina: true,
 		} );
-
-		this.scene = new ControllerScene();
-
-		this.controller.bindScene( this.scene );
 
 	}
 

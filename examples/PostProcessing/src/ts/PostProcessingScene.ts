@@ -4,7 +4,7 @@ import * as ORE from '@ore-three-ts';
 import pp1Frag from './shaders/pp1.fs';
 import pp2Frag from './shaders/pp2.fs';
 
-export class PostProcessingScene extends ORE.BaseScene {
+export class PostProcessingScene extends ORE.BaseLayer {
 
 	private postProcessing: ORE.PostProcessing;
 	private ppUniforms: ORE.Uniforms;
@@ -17,7 +17,7 @@ export class PostProcessingScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -56,7 +56,7 @@ export class PostProcessingScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

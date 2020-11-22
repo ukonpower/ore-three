@@ -20,7 +20,7 @@ declare interface Datas{
     position: ORE.GPUcomputationData
 }
 
-export class GPUComputationControllerScene extends ORE.BaseScene {
+export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 	private commonUniforms: ORE.Uniforms;
 	private pointUni: ORE.Uniforms;
@@ -45,7 +45,7 @@ export class GPUComputationControllerScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -180,7 +180,7 @@ export class GPUComputationControllerScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

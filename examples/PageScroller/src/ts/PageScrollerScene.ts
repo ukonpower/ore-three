@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class PageScrollerScene extends ORE.BaseScene {
+export class PageScrollerScene extends ORE.BaseLayer {
 
 	private scroller: ORE.PageScroller;
 
@@ -11,7 +11,7 @@ export class PageScrollerScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -134,13 +134,13 @@ export class PageScrollerScene extends ORE.BaseScene {
 
 	}
 
-	public onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
+	public onTouchStart( cursor: ORE.Pointer, event: MouseEvent ) {
 
 		this.scroller.catch();
 
 	}
 
-	public onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
+	public onTouchMove( cursor: ORE.Pointer, event: MouseEvent ) {
 
 		this.scroller.drag( - cursor.delta.y * 1.0 );
 
@@ -148,13 +148,13 @@ export class PageScrollerScene extends ORE.BaseScene {
 
 	}
 
-	public onTouchEnd( cursor: ORE.Cursor, event: MouseEvent ) {
+	public onTouchEnd( cursor: ORE.Pointer, event: MouseEvent ) {
 
 		this.scroller.release();
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

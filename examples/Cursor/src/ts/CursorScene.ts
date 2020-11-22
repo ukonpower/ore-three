@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class CursorScene extends ORE.BaseScene {
+export class CursorScene extends ORE.BaseLayer {
 
 	private box: THREE.Mesh;
 
@@ -13,7 +13,7 @@ export class CursorScene extends ORE.BaseScene {
 
 	private weight: number = 5;
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -33,15 +33,15 @@ export class CursorScene extends ORE.BaseScene {
 
 	}
 
-	public onTouchStart( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchStart( cursor: ORE.Pointer, e: MouseEvent ) {
 
 		this.box.scale.setScalar( 1.5 );
 
 	}
 
-	public onTouchMove( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchMove( cursor: ORE.Pointer, e: MouseEvent ) {
 
-		let cursorPos = cursor.getNormalizePosition( this.gProps.resizeArgs.windowSize );
+		let cursorPos = cursor.getNormalizePosition( this.info.size.windowSize );
 
 		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
 
@@ -49,21 +49,21 @@ export class CursorScene extends ORE.BaseScene {
 
 	}
 
-	public onTouchEnd( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchEnd( cursor: ORE.Pointer, e: MouseEvent ) {
 
 		this.box.scale.setScalar( 1.0 );
 
 	}
 
-	public onHover( cursor: ORE.Cursor ) {
+	public onHover( cursor: ORE.Pointer ) {
 
-		let cursorPos = cursor.getNormalizePosition( this.gProps.resizeArgs.windowSize );
+		let cursorPos = cursor.getNormalizePosition( this.info.size.windowSize );
 
 		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

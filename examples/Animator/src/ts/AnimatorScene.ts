@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class AnimatorScene extends ORE.BaseScene {
+export class AnimatorScene extends ORE.BaseLayer {
 
 	private animator: ORE.Animator;
 
@@ -14,7 +14,7 @@ export class AnimatorScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -86,7 +86,7 @@ export class AnimatorScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 

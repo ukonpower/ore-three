@@ -1,81 +1,35 @@
 import * as THREE from 'three';
-import { Cursor } from '../utils/Cursor';
-import { BaseScene } from '../core/BaseScene';
+import { Pointer } from '../utils/Pointer';
+import { BaseLayer, LayerInfo, LayerSize } from './BaseLayer';
 
 import { Lethargy } from 'lethargy';
 import toPx from 'to-px';
 
-const VERSION = require( "../../package.json" ).version;
-
-export declare interface ControllerParam extends THREE.WebGLRendererParameters{
-    retina?: boolean;
+export declare interface ControllerParam {
     silent?: boolean;
 }
 
-export declare interface ResizeArgs{
-	aspectRatio: number;
-	pixelRatio: number;
-	windowSize: THREE.Vector2;
-	windowPixelSize: THREE.Vector2;
-	portraitWeight: number;
-	wideWeight: number;
-}
+export class Controller extends THREE.EventDispatcher {
 
-export declare interface aspectInfo {
-	mainAspect: number;
-	portraitAspect: number;
-	wideAspect: number;
-}
-
-export declare interface GlobalProperties{
-    renderer: THREE.WebGLRenderer;
-    cursor: Cursor;
-	resizeArgs: ResizeArgs;
-	aspectInfo: aspectInfo
-}
-
-export class Controller {
-
-    public currentScene: BaseScene;
-
-    public renderer: THREE.WebGLRenderer;
-    public cursor: Cursor;
+	private layers: BaseLayer[] = [];
+    public pointer: Pointer;
     public clock: THREE.Clock;
 
-	public gProps: GlobalProperties;
+    constructor( parameter?: ControllerParam ) {
 
-	constructor( parameter: ControllerParam ) {
+    	super();
 
-    	if ( ! parameter.silent ) {
+    	if ( ! ( parameter && parameter.silent ) ) {
 
-    		console.log( "%c- ore-three " + VERSION + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
+    		console.log( "%c- ore-three " + require( "../../package.json" ).version + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
 
     	}
 
-    	this.renderer = new THREE.WebGLRenderer( parameter );
-    	this.renderer.debug.checkShaderErrors = true;
-    	this.renderer.setSize( window.innerWidth, window.innerHeight );
-    	this.renderer.setPixelRatio( parameter.retina ? window.devicePixelRatio : 1 );
-
-    	this.cursor = new Cursor();
-    	this.cursor.onTouchStart = this.onTouchStart.bind( this );
-    	this.cursor.onTouchMove = this.onTouchMove.bind( this );
-    	this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
-    	this.cursor.onHover = this.onHover.bind( this );
-    	this.cursor.onWheel = this.onWheel.bind( this );
+    	this.pointer = new Pointer();
+    	this.pointer.addEventListener( 'update', this.touchEvent.bind( this ) );
+    	this.pointer.addEventListener( 'onwheel', this.onWheel.bind( this ) );
 
     	this.clock = new THREE.Clock();
-
-    	this.gProps = {
-    		renderer: this.renderer,
-    		cursor: this.cursor,
-			resizeArgs: null,
-			aspectInfo: {
-				mainAspect: 16 / 9,
-				portraitAspect: 1 / 2,
-				wideAspect: 5
-			}
-    	};
 
     	window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
     	window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
@@ -84,122 +38,111 @@ export class Controller {
 
     	this.tick();
 
-	}
+    }
 
-	protected tick() {
+    protected tick() {
 
-    	let deltatime = this.clock.getDelta();
+    	let deltaTime = this.clock.getDelta();
 
-    	this.cursor.update();
+    	this.pointer.update();
 
-    	if ( this.currentScene ) {
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.currentScene.tick( deltatime );
+    		this.layers[ i ].tick( deltaTime );
 
     	}
 
     	requestAnimationFrame( this.tick.bind( this ) );
 
-	}
+    }
 
-	public bindScene( scene: BaseScene ) {
+    public getLayer( layerName: string ) {
 
-    	this.currentScene = scene;
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    	this.currentScene.onBind( this.gProps );
+    		if ( this.layers[ i ].info.name == layerName ) return this.layers[ i ];
+
+    	}
+
+    	return null;
+
+    }
+
+    public addLayer( layer: BaseLayer, layerInfo: LayerInfo ) {
+
+    	while ( this.getLayer( layerInfo.name ) ) {
+
+    		layerInfo.name += '_';
+
+    	}
+
+    	layer.onBind( layerInfo );
+    	this.layers.push( layer );
+
+    }
+
+    public removeLayer( layerNmae: string ) {
+
+    	for ( let i = this.layers.length; i >= 0; i -- ) {
+
+    		let layer = this.layers[ i ];
+
+    		if ( layer.info.name == layerNmae ) {
+
+    			this.layers.splice( i, 1 );
+
+    		}
+
+    	}
+
+    }
+
+    protected onWindowResize() {
+
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
+
+    		let layer = this.layers[ i ];
+
+    		let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+    		let canvasSize = new THREE.Vector2( layer.info.canvas.clientWidth, layer.info.canvas.clientWidth );
+
+    		let portraitWeight = 1.0 - ( ( canvasSize.x / canvasSize.y ) - layer.info.aspect.portraitAspect ) / ( layer.info.aspect.mainAspect - layer.info.aspect.portraitAspect );
+    		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
+
+    		let wideWeight = 1.0 - ( ( canvasSize.x / canvasSize.y ) - layer.info.aspect.wideAspect ) / ( layer.info.aspect.mainAspect - layer.info.aspect.wideAspect );
+    		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
+
+    		let layerSize: LayerSize = {
+    			windowSize: windowSize.clone(),
+    			canvasSize: canvasSize,
+    			canvasPixelSize: canvasSize.clone().multiplyScalar( layer.renderer.getPixelRatio() ),
+    			aspectRatio: canvasSize.x / canvasSize.y,
+    			portraitWeight: portraitWeight,
+    			wideWeight: wideWeight,
+    		};
+
+    		this.layers[ i ].onResize( layerSize );
+
+    	}
+
+    }
+
+
+    public onOrientationDevice() {
 
     	this.onWindowResize();
 
-	}
+    }
 
-	public unbindScene() {
+    public touchEvent( e: any ) {
 
-    	if ( this.currentScene ) {
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.currentScene.onUnbind();
-    		this.currentScene = null;
-
-    		this.renderer.renderLists.dispose();
+    		this.layers[ i ].touchEvent( e );
 
     	}
 
-	}
-
-	protected onWindowResize() {
-
-    	let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
-
-		let portraitWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectInfo.portraitAspect ) / ( this.gProps.aspectInfo.mainAspect - this.gProps.aspectInfo.portraitAspect );
-		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
-
-		let wideWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectInfo.wideAspect ) / ( this.gProps.aspectInfo.mainAspect - this.gProps.aspectInfo.wideAspect );
-		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
-
-    	let resizeArgs: ResizeArgs = {
-    		aspectRatio: windowSize.x / windowSize.y,
-    		pixelRatio: this.renderer.getPixelRatio(),
-    		windowSize: windowSize.clone(),
-    		windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() ),
-			portraitWeight: portraitWeight,
-			wideWeight: wideWeight,
-		};
-
-    	this.gProps.resizeArgs = resizeArgs;
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onResize( resizeArgs );
-
-    	}
-
-	}
-
-
-	public onOrientationDevice() {
-
-    	this.onWindowResize();
-
-	}
-
-	public onTouchStart( e: MouseEvent ) {
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onTouchStart( this.cursor, e );
-
-    	}
-
-	}
-
-	public onTouchMove( e: MouseEvent ) {
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onTouchMove( this.cursor, e );
-
-    	}
-
-	}
-
-	public onTouchEnd( e: MouseEvent ) {
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onTouchEnd( this.cursor, e );
-
-    	}
-
-	}
-
-	public onHover( ) {
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onHover( this.cursor );
-
-    	}
-
-	}
+    }
 
     protected trackpadMemDelta = 0;
 	protected trackpadMax: boolean = false;
@@ -255,9 +198,9 @@ export class Controller {
 
 		}
 
-		if ( this.currentScene ) {
+		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-			this.currentScene.onWheel( e, trackpadDelta );
+			this.layers[ i ].onWheel( e, trackpadDelta );
 
 		}
 

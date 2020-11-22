@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class ControllerScene extends ORE.BaseScene {
+export class ControllerScene extends ORE.BaseLayer {
 
 	private box: THREE.Mesh;
 
@@ -11,7 +11,7 @@ export class ControllerScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -31,7 +31,7 @@ export class ControllerScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize( args: ORE.LayerSize ) {
 
 		super.onResize( args );
 
