@@ -55,20 +55,18 @@ function esLint( cb ) {
 
 function buildPackages( cb ) {
 
-	//min build
-	const confMin = require( './webpack/build-min.config' );
+	//eslint
+	gulp.series( esLint );
 
-	webpackStream( confMin, webpack )
-		.pipe( gulp.dest( './build/' ) );
-
-	//module build
-	const confModule = require( './webpack/build-module.config' );
-
+	//develop build
+	const confModule = require( './config/webpack/umd.webpack.config' );
 	webpackStream( confModule, webpack )
 		.pipe( gulp.dest( './build/' ) );
 
-	//eslint
-	gulp.series( esLint );
+	//production build
+	const confMin = require( './config/webpack/umd-min.webpack.config' );
+	webpackStream( confMin, webpack )
+		.pipe( gulp.dest( './build/' ) );
 
 	//typedoc
 	gulp.src( './src' )
@@ -81,7 +79,8 @@ function buildPackages( cb ) {
 			moduleResolution: "node"
 		} ) );
 
-	var tsProjectDts = ts.createProject( './webpack/tsconfig/build.json' );
+	var tsProjectDts = ts.createProject( './config/typescript/base.tsconfig.json' );
+
 	//types
 	var tsResult = gulp.src( './src/**/*.ts' )
 		.pipe( tsProjectDts() );
@@ -97,7 +96,7 @@ function buildExamples( cb ) {
 
 		if ( err ) throw err;
 
-		const conf = require( './webpack/build-example.config' );
+		const conf = require( './webpack/build-example.webpack.config.js' );
 		conf.mode = 'production';
 
 		for ( let i = 0; i < files.length; i ++ ) {
@@ -190,7 +189,7 @@ function cleanDevFiles( cb ) {
 
 function webpackDev() {
 
-	const conf = require( './webpack/build-example.config' );
+	const conf = require( './config/webpack/build-example.webpack.config.js' );
 	conf.entry = {};
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.mode = options.P ? 'production' : 'development';
@@ -268,6 +267,5 @@ const develop = gulp.series(
 exports.default = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
 exports.lint = gulp.series( esLint );
 exports.docs = gulp.series( setDevDocumentsPath, develop );
-// exports.build = gulp.series( cleanBuildFiles, buildPackages );
 exports.build = gulp.series( cleanBuildFiles, buildPackages, buildExamples, setDevDocumentsPath, develop );
 

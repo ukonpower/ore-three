@@ -2,7 +2,7 @@ import * as ORE from '../../';
 import * as THREE from 'three';
 
 import vert from './shaders/background.vs';
-import { ResizeArgs } from '../../core/Controller';
+import { LayerSize as LayerSizeInfo } from '../../core/BaseLayer';
 
 export class Background extends THREE.Mesh {
 
@@ -50,7 +50,7 @@ export class Background extends THREE.Mesh {
 
 	}
 
-	public resize( args: ResizeArgs ) {
+	public resize( args: LayerSizeInfo ) {
 
 		this.uniforms.resolution = { value: args.windowSize };
 		this.uniforms.aspectRatio = { value: args.aspectRatio };

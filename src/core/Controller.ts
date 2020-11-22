@@ -6,7 +6,7 @@ import { Lethargy } from 'lethargy';
 import toPx from 'to-px';
 
 export declare interface ControllerParam {
-    silent?: boolean;
+	silent?: boolean;
 }
 
 export class Controller extends THREE.EventDispatcher {
@@ -101,27 +101,7 @@ export class Controller extends THREE.EventDispatcher {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		let layer = this.layers[ i ];
-
-    		let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
-    		let canvasSize = new THREE.Vector2( layer.info.canvas.clientWidth, layer.info.canvas.clientWidth );
-
-    		let portraitWeight = 1.0 - ( ( canvasSize.x / canvasSize.y ) - layer.info.aspect.portraitAspect ) / ( layer.info.aspect.mainAspect - layer.info.aspect.portraitAspect );
-    		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
-
-    		let wideWeight = 1.0 - ( ( canvasSize.x / canvasSize.y ) - layer.info.aspect.wideAspect ) / ( layer.info.aspect.mainAspect - layer.info.aspect.wideAspect );
-    		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
-
-    		let layerSize: LayerSize = {
-    			windowSize: windowSize.clone(),
-    			canvasSize: canvasSize,
-    			canvasPixelSize: canvasSize.clone().multiplyScalar( layer.renderer.getPixelRatio() ),
-    			aspectRatio: canvasSize.x / canvasSize.y,
-    			portraitWeight: portraitWeight,
-    			wideWeight: wideWeight,
-    		};
-
-    		this.layers[ i ].onResize( layerSize );
+    		this.layers[ i ].onResize();
 
     	}
 

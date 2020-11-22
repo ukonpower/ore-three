@@ -9,7 +9,7 @@ export class ControllerScene extends ORE.BaseLayer {
 
 		super();
 
-	}
+	}t
 
 	public onBind( gProps: ORE.LayerInfo ) {
 
@@ -31,9 +31,9 @@ export class ControllerScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
 	}
 

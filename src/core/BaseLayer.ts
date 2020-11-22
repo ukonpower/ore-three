@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
-import { Controller } from './Controller';
 
 export declare interface AspectInfo {
 	mainAspect: number;
@@ -16,12 +15,15 @@ export declare interface LayerSize {
 	portraitWeight: number;
 	wideWeight: number;
 }
+export declare interface LayerInfo extends LayerBindParam {
+	size?: LayerSize;
+}
 
-export declare interface LayerInfo extends THREE.WebGLRendererParameters {
+export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	name: string;
 	canvas: HTMLCanvasElement;
-	size?: LayerSize;
 	aspect?: AspectInfo;
+	wrapperElement?: HTMLElement;
 }
 
 export class BaseLayer extends THREE.EventDispatcher {
@@ -38,6 +40,25 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		super();
 
+		this.info = {
+			name: '',
+			canvas: null,
+			wrapperElement: null,
+			aspect: {
+				mainAspect: 16 / 9,
+				wideAspect: 10 / 1,
+				portraitAspect: 1 / 2
+			},
+			size: {
+				windowSize: new THREE.Vector2(),
+				canvasSize: new THREE.Vector2(),
+				canvasPixelSize: new THREE.Vector2(),
+				aspectRatio: 1.0,
+				portraitWeight: 0.0,
+				wideWeight: 0.0,
+			}
+		};
+
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
 
@@ -53,9 +74,12 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public animate( deltaTime: number ) {}
 
-	public onBind( layerInfo: LayerInfo ) {
+	public onBind( layerInfo: LayerBindParam ) {
 
-		this.info = layerInfo;
+		this.info.name = layerInfo.name;
+		this.info.canvas = layerInfo.canvas;
+		this.info.wrapperElement = layerInfo.wrapperElement;
+		this.info.aspect = layerInfo.aspect || this.info.aspect;
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
     	this.renderer.debug.checkShaderErrors = true;
@@ -105,11 +129,36 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	}
 
-	public onResize( args: LayerSize ) {
+	public onResize() {
 
-		this.renderer.setSize( args.windowSize.x, args.windowSize.y );
+		let newWindowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+		let newCanvasSize = new THREE.Vector2();
 
-		this.camera.aspect = args.aspectRatio;
+		if ( this.info.wrapperElement ) {
+
+			newCanvasSize.set( this.info.wrapperElement.clientWidth, this.info.wrapperElement.clientHeight );
+
+		} else {
+
+			newCanvasSize.copy( newWindowSize );
+
+		}
+
+		let portraitWeight = 1.0 - ( ( newCanvasSize.x / newCanvasSize.y ) - this.info.aspect.portraitAspect ) / ( this.info.aspect.mainAspect - this.info.aspect.portraitAspect );
+		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
+
+		let wideWeight = 1.0 - ( ( newCanvasSize.x / newCanvasSize.y ) - this.info.aspect.wideAspect ) / ( this.info.aspect.mainAspect - this.info.aspect.wideAspect );
+		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
+
+		this.info.size.windowSize.copy( newWindowSize );
+		this.info.size.canvasSize.copy( newCanvasSize );
+		this.info.size.canvasPixelSize.copy( newCanvasSize.clone().multiplyScalar( this.renderer.getPixelRatio() ) );
+		this.info.size.aspectRatio = newCanvasSize.x / newCanvasSize.y,
+		this.info.size.portraitWeight = portraitWeight,
+		this.info.size.wideWeight = wideWeight,
+
+		this.renderer.setSize( this.info.size.canvasSize.x, this.info.size.canvasSize.y );
+		this.camera.aspect = this.info.size.aspectRatio;
 		this.camera.updateProjectionMatrix();
 
 	}

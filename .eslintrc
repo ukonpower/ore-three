@@ -9,7 +9,7 @@
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"sourceType": "module",
-		"project": "./tsconfig.json"
+		"project": "./config/typescript/base.tsconfig.json"
 	},
 	"rules": {
 	}

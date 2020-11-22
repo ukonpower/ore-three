@@ -89,7 +89,7 @@ export class Animator {
 					variable.onAnimationFinished = () => {
 
 						callback && callback();
-						resolve();
+						resolve( null );
 
 					};
 
@@ -111,7 +111,7 @@ export class Animator {
 				variable.onAnimationFinished = () => {
 
 					callback && callback();
-					resolve();
+					resolve( null );
 
 				};
 
