@@ -165,8 +165,6 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public touchEvent( e: any ) {
 
-		// console.log( e );
-
 	}
 
 	public onTouchStart( cursor: Pointer, event: MouseEvent ) { }

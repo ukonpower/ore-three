@@ -27,7 +27,7 @@ export class Controller extends THREE.EventDispatcher {
 
     	this.pointer = new Pointer();
     	this.pointer.addEventListener( 'update', this.touchEvent.bind( this ) );
-    	this.pointer.addEventListener( 'onwheel', this.onWheel.bind( this ) );
+    	this.pointer.addEventListener( 'wheel', this.onWheel.bind( this ) );
 
     	this.clock = new THREE.Clock();
 
