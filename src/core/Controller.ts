@@ -1,9 +1,13 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
-import { BaseLayer, LayerInfo, LayerSize } from './BaseLayer';
+import { BaseLayer, LayerInfo } from './BaseLayer';
 
-import { Lethargy } from 'lethargy';
-import toPx from 'to-px';
+export declare interface PointerEventArgs {
+	pointerEvent: PointerEvent;
+	pointerEventType: string;
+	position: THREE.Vector2;
+	delta: THREE.Vector2;
+}
 
 export declare interface ControllerParam {
 	silent?: boolean;
@@ -25,16 +29,14 @@ export class Controller extends THREE.EventDispatcher {
 
     	}
 
+    	this.clock = new THREE.Clock();
+
     	this.pointer = new Pointer();
     	this.pointer.addEventListener( 'update', this.touchEvent.bind( this ) );
     	this.pointer.addEventListener( 'wheel', this.onWheel.bind( this ) );
 
-    	this.clock = new THREE.Clock();
-
     	window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
     	window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
-
-    	this.onWindowResize();
 
     	this.tick();
 
@@ -107,83 +109,30 @@ export class Controller extends THREE.EventDispatcher {
 
     }
 
-
-    public onOrientationDevice() {
+    protected onOrientationDevice() {
 
     	this.onWindowResize();
 
     }
 
-    public touchEvent( e: any ) {
+    protected touchEvent( e: PointerEventArgs ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.layers[ i ].touchEvent( e );
+    		this.layers[ i ].pointerEvent( e );
 
     	}
 
     }
 
-    protected trackpadMemDelta = 0;
-	protected trackpadMax: boolean = false;
-	protected lethargy = new Lethargy( 7, 0, 0.05 );
+    private onWheel( e: { wheelEvent: WheelEvent, trackpadDelta: number } ) {
 
-	public onWheel( e: WheelEvent ) {
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-		let delta = e.deltaY;
-		let trackpadDelta = 0;
+    		this.layers[ i ].onWheel( e.wheelEvent, e.trackpadDelta );
 
-		switch ( e.deltaMode ) {
+    	}
 
-			case e.DOM_DELTA_LINE:
-				delta *= toPx( 'ex', window ) * 2.5;
-				break;
-
-			case e.DOM_DELTA_PAGE:
-				delta *= window.innerHeight;
-				break;
-
-		}
-
-		if ( this.lethargy.check( e ) ) {
-
-			trackpadDelta = delta;
-
-		} else {
-
-			let d = delta - this.trackpadMemDelta;
-
-			if ( Math.abs( d ) > 50 ) {
-
-				this.trackpadMemDelta = d;
-				trackpadDelta = delta;
-
-				this.trackpadMax = true;
-
-			} else if ( d == 0 ) {
-
-				if ( this.trackpadMax ) {
-
-					trackpadDelta = delta;
-
-				}
-
-			} else if ( d < 0 ) {
-
-				this.trackpadMax = false;
-
-			}
-
-			this.trackpadMemDelta = ( delta );
-
-		}
-
-		for ( let i = 0; i < this.layers.length; i ++ ) {
-
-			this.layers[ i ].onWheel( e, trackpadDelta );
-
-		}
-
-	}
+    }
 
 }

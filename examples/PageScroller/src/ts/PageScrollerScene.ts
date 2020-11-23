@@ -134,21 +134,21 @@ export class PageScrollerScene extends ORE.BaseLayer {
 
 	}
 
-	public onTouchStart( cursor: ORE.Pointer, event: MouseEvent ) {
+	public onTouchStart( args: ORE.TouchEventArgs ) {
 
 		this.scroller.catch();
 
 	}
 
-	public onTouchMove( cursor: ORE.Pointer, event: MouseEvent ) {
+	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		this.scroller.drag( - cursor.delta.y * 1.0 );
+		this.scroller.drag( - args.delta.y * 1.0 );
 
 		event.preventDefault();
 
 	}
 
-	public onTouchEnd( cursor: ORE.Pointer, event: MouseEvent ) {
+	public onTouchEnd( args: ORE.TouchEventArgs ) {
 
 		this.scroller.release();
 

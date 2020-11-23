@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import * as ORE from '@ore-three-ts';
+
+import { PostProcessing, PPParam } from '../../utils/PostProcessing';
+import { Uniforms, UniformsLib } from '../../utils/Uniforms';
 
 import edgeDetectionVert from './shaders/smaa_edgeDetection.vs';
 import edgeDetectionFrag from './shaders/smaa_edgeDetection.fs';
@@ -13,11 +15,11 @@ export class SMAAFilter {
 	protected renderer: THREE.WebGLRenderer;
 	protected sceneRenderTarget: THREE.WebGLRenderTarget;
 
-	protected smaa: ORE.PostProcessing;
+	protected smaa: PostProcessing;
 
 	//uniforms
-	public inputTextures: ORE.Uniforms;
-	protected commonUniforms: ORE.Uniforms;
+	public inputTextures: Uniforms;
+	protected commonUniforms: Uniforms;
 
 	constructor( renderer: THREE.WebGLRenderer ) {
 
@@ -70,16 +72,16 @@ export class SMAAFilter {
 			"SMAA_AREATEX_SELECT(sample)": "sample.rg",
 		};
 
-		let smaaParam:ORE.PPParam[] = [ {
+		let smaaParam:PPParam[] = [ {
 			vertexShader: edgeDetectionVert,
 			fragmentShader: edgeDetectionFrag,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 			}, this.commonUniforms ),
 			defines: defines
 		}, {
 			vertexShader: blendingWeightCalculationVert,
 			fragmentShader: blendingWeightCalculationFrag,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 				areaTex: this.inputTextures.areaTex,
 				searchTex: this.inputTextures.searchTex,
 			}, this.commonUniforms ),
@@ -88,14 +90,14 @@ export class SMAAFilter {
 		{
 			vertexShader: neiborhoodBlendingVert,
 			fragmentShader: neiborhoodBlendingFrag,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 				sceneTex: this.inputTextures.sceneTex,
 			}, this.commonUniforms ),
 			defines: defines
 		}
 		];
 
-		this.smaa = new ORE.PostProcessing( this.renderer, smaaParam, null, {
+		this.smaa = new PostProcessing( this.renderer, smaaParam, null, {
 			depthBuffer: false,
 			stencilBuffer: false,
 			generateMipmaps: false,

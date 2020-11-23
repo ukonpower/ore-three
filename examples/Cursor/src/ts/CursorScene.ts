@@ -33,31 +33,30 @@ export class CursorScene extends ORE.BaseLayer {
 
 	}
 
-	public onTouchStart( cursor: ORE.Pointer, e: MouseEvent ) {
+	public onTouchStart( args: ORE.TouchEventArgs ) {
 
 		this.box.scale.setScalar( 1.5 );
 
 	}
 
-	public onTouchMove( cursor: ORE.Pointer, e: MouseEvent ) {
+	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = cursor.getNormalizePosition( this.info.size.windowSize );
-
+		let cursorPos = args.normalizedPosition;
 		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
 
-		e.preventDefault();
+		args.event.preventDefault();
 
 	}
 
-	public onTouchEnd( cursor: ORE.Pointer, e: MouseEvent ) {
+	public onTouchEnd( args: ORE.TouchEventArgs ) {
 
 		this.box.scale.setScalar( 1.0 );
 
 	}
 
-	public onHover( cursor: ORE.Pointer ) {
+	public onHover( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = cursor.getNormalizePosition( this.info.size.windowSize );
+		let cursorPos = args.normalizedPosition;
 
 		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
 

@@ -35,39 +35,65 @@ function isFixed( file ) {
 
 }
 
-function esLint( cb ) {
+async function esLint( cb ) {
 
 	let paths = [ './src/', './examples/' ];
+	let promiseArray = [];
 
 	for ( let i = 0; i < paths.length; i ++ ) {
 
-		gulp.src( paths[ i ] + '**/*.ts' )
-			.pipe( eslint( { useEslintrc: true, fix: true } ) ) // .eslintrc を参照
-			.pipe( eslint.format() )
-			.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
-			.pipe( eslint.failAfterError() );
+		let promise = new Promise( resolve => {
+
+			gulp.src( paths[ i ] + '**/*.ts' )
+				.pipe( eslint( { useEslintrc: true, fix: true } ) )
+				.pipe( eslint.format() )
+				.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
+				.on( 'end', () => { resolve() } )
+				.pipe( eslint.failAfterError() )
+
+		} );
+
+		promiseArray.push( promise );
 
 	}
 
-	cb();
+	await Promise.all( promiseArray ).then( () => {
+
+		cb();
+		
+	});
 
 }
 
 function buildPackages( cb ) {
-
-	//eslint
-	gulp.series( esLint );
-
+	
 	//develop build
-	const confModule = require( './config/webpack/umd.webpack.config' );
-	webpackStream( confModule, webpack )
-		.pipe( gulp.dest( './build/' ) );
-
-	//production build
+	const conf = require( './config/webpack/umd.webpack.config' );
 	const confMin = require( './config/webpack/umd-min.webpack.config' );
-	webpackStream( confMin, webpack )
-		.pipe( gulp.dest( './build/' ) );
 
+	webpackStream( conf, webpack )
+		.pipe( gulp.dest( './build/' ) ) 
+		.unpipe(
+	webpackStream( confMin, webpack )
+		.pipe( gulp.dest( './build/' ) )
+		.on( 'end', cb ) );
+
+}
+
+function buildTypes( cb ) {
+
+	var tsProjectDts = ts.createProject( './config/typescript/base.tsconfig.json' );
+
+	//types
+	gulp.src( './src/**/*.ts' )
+		.pipe( tsProjectDts() ).dts
+		.pipe( gulp.dest( './types' ) )
+		.on( 'end', cb );
+
+}
+
+function buildTypeDoc( cb ) {
+	
 	//typedoc
 	gulp.src( './src' )
 		.pipe( typedoc( {
@@ -77,17 +103,8 @@ function buildPackages( cb ) {
 			mode: "file",
 			name: info.packageName,
 			moduleResolution: "node"
-		} ) );
-
-	var tsProjectDts = ts.createProject( './config/typescript/base.tsconfig.json' );
-
-	//types
-	var tsResult = gulp.src( './src/**/*.ts' )
-		.pipe( tsProjectDts() );
-	tsResult.dts.pipe( gulp.dest( './types' ) );
-
-	cb();
-
+		} ) )
+		.on( 'end', cb );
 }
 
 function buildExamples( cb ) {
@@ -122,13 +139,12 @@ function buildExamples( cb ) {
 
 		//webpack
 		webpackStream( conf, webpack )
-			.on( 'error', ( e ) => {
+			.on( 'error', function ( e ) {
 
 				this.emit( 'end' );
 
 			} )
 			.pipe( gulp.dest( docsExDir ) )
-
 			.on( 'end', cb );
 
 	} );
@@ -267,5 +283,5 @@ const develop = gulp.series(
 exports.default = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
 exports.lint = gulp.series( esLint );
 exports.docs = gulp.series( setDevDocumentsPath, develop );
-exports.build = gulp.series( cleanBuildFiles, buildPackages, buildExamples, setDevDocumentsPath, develop );
+exports.build = gulp.series( cleanBuildFiles, esLint, buildPackages, buildTypes, buildTypeDoc, buildExamples, setDevDocumentsPath, develop );
 

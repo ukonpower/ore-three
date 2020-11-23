@@ -176,19 +176,19 @@ export class MainScene extends ORE.BaseLayer {
 
 	}
 
-	public onTouchStart( cursor: ORE.Pointer, e: MouseEvent ) {
+	public onTouchStart( args: ORE.TouchEventArgs ) {
 
 		this.scrollManager && this.scrollManager.scroller.catch();
 
 	}
 
-	public onTouchMove( cursor: ORE.Pointer, e: MouseEvent ) {
+	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		this.scrollManager && this.scrollManager.scroller.drag( - cursor.delta.y );
+		this.scrollManager && this.scrollManager.scroller.drag( - args.delta.y );
 
 	}
 
-	public onTouchEnd( cursor: ORE.Pointer ) {
+	public onTouchEnd( args: ORE.TouchEventArgs ) {
 
 		this.scrollManager && this.scrollManager.scroller.release();
 

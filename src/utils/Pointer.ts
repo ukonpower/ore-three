@@ -1,6 +1,7 @@
 import * as THREE from "three";
-import { Controller } from "../core/Controller";
 
+import { Lethargy } from 'lethargy';
+import toPx from 'to-px';
 export class Pointer extends THREE.EventDispatcher {
 
 	protected isSP: boolean;
@@ -17,7 +18,7 @@ export class Pointer extends THREE.EventDispatcher {
 		this.delta = new THREE.Vector2( NaN, NaN );
 
 		let userAgent = navigator.userAgent;
-		this.isSP = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined )
+		this.isSP = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined );
 
 		window.addEventListener( 'pointerdown', this.touchEvent.bind( this, "start" ) );
 		window.addEventListener( 'pointermove', this.touchEvent.bind( this, "move" ) );
@@ -85,29 +86,16 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	protected touchEvent( type: string, event: MouseEvent | TouchEvent ) {
+	protected touchEvent( type: string, e: PointerEvent ) {
 
 		let dispatch = false;
 		let x: number = this.position.x;
 		let y: number = this.position.y;
 
-		if ( "touches" in event ) {
+		if ( e.button == 0 ) {
 
-			if ( event.touches.length > 0 ) {
-
-				x = event.touches[ 0 ].clientX;
-				y = event.touches[ 0 ].clientY;
-
-			}
-
-		} else {
-
-			if ( event.button == 0 ) {
-
-				x = event.pageX - window.pageXOffset;
-				y = event.pageY - window.pageYOffset;
-
-			}
+			x = e.pageX - window.pageXOffset;
+			y = e.pageY - window.pageYOffset;
 
 		}
 
@@ -121,7 +109,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 		} else if ( type == "move" ) {
 
-			if( this.isTouching ) {
+			if ( this.isTouching ) {
 
 				this.setPos( x, y );
 
@@ -132,26 +120,83 @@ export class Pointer extends THREE.EventDispatcher {
 		} else if ( type == "end" ) {
 
 			this.isTouching = false;
-			
+
 			dispatch = true;
 
 		}
 
-		if( dispatch ) {
+		if ( dispatch ) {
 
 			this.dispatchEvent( {
 				type: 'update',
-				eventType: type
+				pointerEvent: e,
+				eventType: type,
+				position: this.position.clone(),
+				delta: this.delta.clone()
 			} );
-	
+
 		}
-		
+
 	}
 
-	protected wheel( e: MouseWheelEvent ) {
+	protected trackpadMemDelta = 0;
+	protected trackpadMax: boolean = false;
+	protected lethargy = new Lethargy( 7, 0, 0.05 );
+
+	protected wheel( e: WheelEvent ) {
+
+		let delta = e.deltaY;
+		let trackpadDelta = 0;
+
+		switch ( e.deltaMode ) {
+
+			case e.DOM_DELTA_LINE:
+				delta *= toPx( 'ex', window ) * 2.5;
+				break;
+
+			case e.DOM_DELTA_PAGE:
+				delta *= window.innerHeight;
+				break;
+
+		}
+
+		if ( this.lethargy.check( e ) ) {
+
+			trackpadDelta = delta;
+
+		} else {
+
+			let d = delta - this.trackpadMemDelta;
+
+			if ( Math.abs( d ) > 50 ) {
+
+				this.trackpadMemDelta = d;
+				trackpadDelta = delta;
+
+				this.trackpadMax = true;
+
+			} else if ( d == 0 ) {
+
+				if ( this.trackpadMax ) {
+
+					trackpadDelta = delta;
+
+				}
+
+			} else if ( d < 0 ) {
+
+				this.trackpadMax = false;
+
+			}
+
+			this.trackpadMemDelta = ( delta );
+
+		}
 
 		this.dispatchEvent( {
-			type: 'wheel'
+			type: 'wheel',
+			wheelEvent: e,
+			trackpadDelta: trackpadDelta
 		} );
 
 	}
@@ -162,7 +207,10 @@ export class Pointer extends THREE.EventDispatcher {
 
 			this.dispatchEvent( {
 				type: 'update',
-				eventType: 'hover'
+				pointerEvent: null,
+				eventType: 'hover',
+				position: this.position.clone(),
+				delta: this.delta.clone()
 			} );
 
 		}

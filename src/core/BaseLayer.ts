@@ -1,10 +1,16 @@
 import * as THREE from 'three';
-import { Pointer } from '../utils/Pointer';
+import { PointerEventArgs } from './Controller';
 
-export declare interface AspectInfo {
-	mainAspect: number;
-	portraitAspect: number;
-	wideAspect: number;
+export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
+	name: string;
+	canvas: HTMLCanvasElement;
+	aspect?: AspectInfo;
+	wrapperElement?: HTMLElement;
+	wrapperElementRect?: DOMRect;
+}
+
+export declare interface LayerInfo extends LayerBindParam {
+	size?: LayerSize;
 }
 
 export declare interface LayerSize {
@@ -16,15 +22,19 @@ export declare interface LayerSize {
 	portraitWeight: number;
 	wideWeight: number;
 }
-export declare interface LayerInfo extends LayerBindParam {
-	size?: LayerSize;
+
+export declare interface AspectInfo {
+	mainAspect: number;
+	portraitAspect: number;
+	wideAspect: number;
 }
 
-export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
-	name: string;
-	canvas: HTMLCanvasElement;
-	aspect?: AspectInfo;
-	wrapperElement?: HTMLElement;
+export declare interface TouchEventArgs {
+	event?: PointerEvent;
+	position: THREE.Vector2;
+	delta: THREE.Vector2;
+	normalizedPosition: THREE.Vector2;
+	windowPosition: THREE.Vector2;
 }
 
 export class BaseLayer extends THREE.EventDispatcher {
@@ -45,6 +55,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 			name: '',
 			canvas: null,
 			wrapperElement: null,
+			wrapperElementRect: null,
 			aspect: {
 				mainAspect: 16 / 9,
 				wideAspect: 10 / 1,
@@ -81,6 +92,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.name = layerInfo.name;
 		this.info.canvas = layerInfo.canvas;
 		this.info.wrapperElement = layerInfo.wrapperElement;
+		this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
 		this.info.aspect = layerInfo.aspect || this.info.aspect;
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
@@ -166,19 +178,64 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.camera.aspect = this.info.size.canvasAspectRatio;
 		this.camera.updateProjectionMatrix();
 
+		if ( this.info.wrapperElement ) {
+
+			this.info.wrapperElementRect = this.info.wrapperElement.getBoundingClientRect();
+
+		}
+
 	}
 
-	public touchEvent( e: any ) {
+	public pointerEvent( e: PointerEventArgs ) {
+
+		let canvasPosition = e.position.clone();
+
+		if ( this.info.wrapperElementRect ) {
+
+			canvasPosition.x -= this.info.wrapperElementRect.x;
+			canvasPosition.y -= this.info.wrapperElementRect.y;
+
+		}
+
+		let normalizedPosition = canvasPosition.clone();
+		normalizedPosition.divide( this.info.size.canvasSize );
+
+		let args: TouchEventArgs = {
+			event: e.pointerEvent,
+			windowPosition: e.position.clone(),
+			delta: e.delta.clone(),
+			position: canvasPosition.clone(),
+			normalizedPosition: normalizedPosition.clone()
+		};
+
+
+		if ( e.pointerEventType == 'hover' ) {
+
+			this.onHover( args );
+
+		} else if ( e.pointerEventType == 'start' ) {
+
+			this.onTouchStart( args );
+
+		} else if ( e.pointerEventType == 'move' ) {
+
+			this.onTouchMove( args );
+
+		} else if ( e.pointerEventType == 'end' ) {
+
+			this.onTouchEnd( args );
+
+		}
 
 	}
 
-	public onTouchStart( cursor: Pointer, event: MouseEvent ) { }
+	public onTouchStart( args: TouchEventArgs ) { }
 
-	public onTouchMove( cursor: Pointer, event: MouseEvent ) { }
+	public onTouchMove( args: TouchEventArgs ) { }
 
-	public onTouchEnd( cursor: Pointer, event: MouseEvent ) { }
+	public onTouchEnd( args: TouchEventArgs ) { }
 
-	public onHover( cursor: Pointer ) { }
+	public onHover( args: TouchEventArgs ) { }
 
 	public onWheel( event: WheelEvent, trackpadDelta: number ) { }
 

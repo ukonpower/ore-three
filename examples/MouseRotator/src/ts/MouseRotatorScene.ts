@@ -35,9 +35,9 @@ export class MouseRotatorScene extends ORE.BaseLayer {
 
 	}
 
-	public onTouchMove( cursor: ORE.Pointer, e: MouseEvent ) {
+	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		this.rotator.addVelocity( cursor.delta );
+		this.rotator.addVelocity( args.delta );
 
 	}
 

@@ -1,23 +1,25 @@
 import * as THREE from 'three';
-import * as ORE from '@ore-three-ts';
+
+import { PostProcessing, PPParam } from '../../utils/PostProcessing';
+import { Uniforms, UniformsLib } from '../../utils/Uniforms';
 
 import bright from './shaders/bloom_bright.fs';
 import blur from './shaders/bloom_blur.fs';
 import composite from './shaders/bloom_composite.fs';
 export class BloomFilter {
 
-	//ORE.PostProcessings
-	protected bright: ORE.PostProcessing;
-	protected blur: ORE.PostProcessing[] = [];
-	protected composite: ORE.PostProcessing;
-	protected smaa: ORE.PostProcessing;
+	//PostProcessings
+	protected bright: PostProcessing;
+	protected blur: PostProcessing[] = [];
+	protected composite: PostProcessing;
+	protected smaa: PostProcessing;
 
 	protected renderer: THREE.WebGLRenderer;
 	protected sceneRenderTarget: THREE.WebGLRenderTarget;
 
 	//uniforms
-	public inputTextures: ORE.Uniforms;
-	protected commonUniforms: ORE.Uniforms;
+	public inputTextures: Uniforms;
+	protected commonUniforms: Uniforms;
 
 	//parameters
 	public renderCount: number = 5;
@@ -102,13 +104,13 @@ export class BloomFilter {
 			bright
 		------------------------*/
 
-		let brightParam: ORE.PPParam[] = [ {
+		let brightParam: PPParam[] = [ {
 			fragmentShader: bright,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 			}, this.commonUniforms ),
 		} ];
 
-		this.bright = new ORE.PostProcessing( this.renderer, brightParam, null, {
+		this.bright = new PostProcessing( this.renderer, brightParam, null, {
 			depthBuffer: false,
 			stencilBuffer: false,
 			generateMipmaps: false
@@ -118,22 +120,22 @@ export class BloomFilter {
 			blur
 		------------------------*/
 
-		let blurParam: ORE.PPParam[] = [ {
+		let blurParam: PPParam[] = [ {
 			fragmentShader: blur,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 				direction: { value: true },
 			}, this.commonUniforms )
 		},
 		{
 			fragmentShader: blur,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 				direction: { value: false },
 			}, this.commonUniforms )
 		} ];
 
 		for ( let i = 0; i < this.renderCount; i ++ ) {
 
-			this.blur.push( new ORE.PostProcessing( this.renderer, blurParam, null, {
+			this.blur.push( new PostProcessing( this.renderer, blurParam, null, {
 				depthBuffer: false,
 				stencilBuffer: false,
 				generateMipmaps: false
@@ -146,9 +148,9 @@ export class BloomFilter {
 			composite
 		------------------------*/
 
-		let compositeParam:ORE.PPParam[] = [ {
+		let compositeParam:PPParam[] = [ {
 			fragmentShader: composite,
-			uniforms: ORE.UniformsLib.CopyUniforms( {
+			uniforms: UniformsLib.CopyUniforms( {
 				sceneTex: this.inputTextures.sceneTex,
 				blurTex: this.inputTextures.blurTex,
 			}, this.commonUniforms ),
@@ -157,7 +159,7 @@ export class BloomFilter {
 			}
 		} ];
 
-		this.composite = new ORE.PostProcessing( this.renderer, compositeParam, null, {
+		this.composite = new PostProcessing( this.renderer, compositeParam, null, {
 			depthBuffer: false,
 			stencilBuffer: false,
 			generateMipmaps: false
