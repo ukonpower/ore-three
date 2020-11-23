@@ -202,16 +202,17 @@ export class BaseLayer extends THREE.EventDispatcher {
 		}
 
 		let normalizedPosition = canvasPosition.clone();
-		normalizedPosition.divide( this.info.size.canvasSize );
+		normalizedPosition.divide( this.info.size.canvasSize )
+		normalizedPosition.y = 1.0 - normalizedPosition.y;
+		normalizedPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
 
 		let args: TouchEventArgs = {
 			event: e.pointerEvent,
-			windowPosition: e.position.clone(),
-			delta: e.delta.clone(),
 			position: canvasPosition.clone(),
-			normalizedPosition: normalizedPosition.clone()
+			delta: e.delta.clone(),
+			normalizedPosition: normalizedPosition.clone(),
+			windowPosition: e.position.clone()
 		};
-
 
 		if ( e.pointerEventType == 'hover' ) {
 

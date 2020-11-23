@@ -32,7 +32,7 @@ export class Controller extends THREE.EventDispatcher {
     	this.clock = new THREE.Clock();
 
     	this.pointer = new Pointer();
-    	this.pointer.addEventListener( 'update', this.touchEvent.bind( this ) );
+    	this.pointer.addEventListener( 'update', this.pointerEvent.bind( this ) );
     	this.pointer.addEventListener( 'wheel', this.onWheel.bind( this ) );
 
     	window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
@@ -115,7 +115,7 @@ export class Controller extends THREE.EventDispatcher {
 
     }
 
-    protected touchEvent( e: PointerEventArgs ) {
+    protected pointerEvent( e: PointerEventArgs ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 

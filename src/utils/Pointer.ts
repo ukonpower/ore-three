@@ -89,15 +89,9 @@ export class Pointer extends THREE.EventDispatcher {
 	protected touchEvent( type: string, e: PointerEvent ) {
 
 		let dispatch = false;
-		let x: number = this.position.x;
-		let y: number = this.position.y;
 
-		if ( e.button == 0 ) {
-
-			x = e.pageX - window.pageXOffset;
-			y = e.pageY - window.pageYOffset;
-
-		}
+		let x = e.pageX - window.pageXOffset;
+		let y = e.pageY - window.pageYOffset;
 
 		if ( type == "start" ) {
 
@@ -109,9 +103,9 @@ export class Pointer extends THREE.EventDispatcher {
 
 		} else if ( type == "move" ) {
 
-			if ( this.isTouching ) {
+			this.setPos( x, y );
 
-				this.setPos( x, y );
+			if ( this.isTouching ) {
 
 				dispatch = true;
 
@@ -130,7 +124,23 @@ export class Pointer extends THREE.EventDispatcher {
 			this.dispatchEvent( {
 				type: 'update',
 				pointerEvent: e,
-				eventType: type,
+				pointerEventType: type,
+				position: this.position.clone(),
+				delta: this.delta.clone()
+			} );
+
+		}
+
+	}
+
+	public update() {
+
+		if ( ! this.isSP ) {
+
+			this.dispatchEvent( {
+				type: 'update',
+				pointerEvent: null,
+				pointerEventType: 'hover',
 				position: this.position.clone(),
 				delta: this.delta.clone()
 			} );
@@ -198,22 +208,6 @@ export class Pointer extends THREE.EventDispatcher {
 			wheelEvent: e,
 			trackpadDelta: trackpadDelta
 		} );
-
-	}
-
-	public update() {
-
-		if ( ! this.isSP ) {
-
-			this.dispatchEvent( {
-				type: 'update',
-				pointerEvent: null,
-				eventType: 'hover',
-				position: this.position.clone(),
-				delta: this.delta.clone()
-			} );
-
-		}
 
 	}
 
