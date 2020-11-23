@@ -12,9 +12,9 @@ export class TimelineAnimatorScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		this.camera.position.set( 0, 1.5, 6 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -137,12 +137,6 @@ export class TimelineAnimatorScene extends ORE.BaseLayer {
 		this.box.scale.setScalar( this.timelineAnimator.get( 'size' ) );
 
 		this.renderer.render( this.scene, this.camera );
-
-	}
-
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
 
 	}
 

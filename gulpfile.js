@@ -96,7 +96,7 @@ function buildExamples( cb ) {
 
 		if ( err ) throw err;
 
-		const conf = require( './webpack/build-example.webpack.config.js' );
+		const conf = require( './config/webpack/build-example.webpack.config.js' );
 		conf.mode = 'production';
 
 		for ( let i = 0; i < files.length; i ++ ) {

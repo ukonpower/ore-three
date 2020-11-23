@@ -16,9 +16,9 @@ export class DOMMeshScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		this.uniforms = {
 			time: {
@@ -66,12 +66,6 @@ export class DOMMeshScene extends ORE.BaseLayer {
 		}
 
 		this.renderer.render( this.scene, this.camera );
-
-	}
-
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
 
 	}
 

@@ -157,15 +157,15 @@ export class MainScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
 		this.spWeight = Math.min( 1.0, Math.max( 0.0, ( this.info.size.windowSize.x - 500 ) / 1000 ) );
 
 		this.commonUniforms.spWeight.value = this.spWeight;
 
-		this.background && this.background.resize( args );
+		this.background && this.background.resize( this.info.size );
 		this.pp && this.pp.resize();
 
 	}

@@ -180,10 +180,4 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
-
-	}
-
 }

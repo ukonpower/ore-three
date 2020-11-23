@@ -8,8 +8,9 @@ export declare interface AspectInfo {
 }
 
 export declare interface LayerSize {
-	aspectRatio: number;
+	canvasAspectRatio: number;
 	windowSize: THREE.Vector2;
+	windowAspectRatio: number;
 	canvasSize: THREE.Vector2;
 	canvasPixelSize: THREE.Vector2;
 	portraitWeight: number;
@@ -51,16 +52,17 @@ export class BaseLayer extends THREE.EventDispatcher {
 			},
 			size: {
 				windowSize: new THREE.Vector2(),
+				windowAspectRatio: 1.0,
 				canvasSize: new THREE.Vector2(),
 				canvasPixelSize: new THREE.Vector2(),
-				aspectRatio: 1.0,
+				canvasAspectRatio: 1.0,
 				portraitWeight: 0.0,
 				wideWeight: 0.0,
 			}
 		};
 
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 1000 );
+		this.camera = new THREE.PerspectiveCamera( 50, 1, 0.1, 1000 );
 
 	}
 
@@ -83,7 +85,9 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
     	this.renderer.debug.checkShaderErrors = true;
-    	this.renderer.setSize( window.innerWidth, window.innerHeight );
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
+
+		this.onResize();
 
 	}
 
@@ -151,14 +155,15 @@ export class BaseLayer extends THREE.EventDispatcher {
 		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
 
 		this.info.size.windowSize.copy( newWindowSize );
+		this.info.size.windowAspectRatio = newWindowSize.x / newWindowSize.y;
 		this.info.size.canvasSize.copy( newCanvasSize );
 		this.info.size.canvasPixelSize.copy( newCanvasSize.clone().multiplyScalar( this.renderer.getPixelRatio() ) );
-		this.info.size.aspectRatio = newCanvasSize.x / newCanvasSize.y,
+		this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y,
 		this.info.size.portraitWeight = portraitWeight,
 		this.info.size.wideWeight = wideWeight,
 
 		this.renderer.setSize( this.info.size.canvasSize.x, this.info.size.canvasSize.y );
-		this.camera.aspect = this.info.size.aspectRatio;
+		this.camera.aspect = this.info.size.canvasAspectRatio;
 		this.camera.updateProjectionMatrix();
 
 	}

@@ -31,10 +31,4 @@ export class ControllerScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize() {
-
-		super.onResize();
-
-	}
-
 }

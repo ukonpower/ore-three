@@ -17,9 +17,9 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -56,11 +56,11 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
-		this.postProcessing.resize( args.windowPixelSize );
+		this.postProcessing.resize( this.info.size.canvasPixelSize );
 
 	}
 

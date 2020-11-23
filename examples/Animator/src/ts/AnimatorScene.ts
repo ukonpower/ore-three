@@ -86,10 +86,4 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
-
-	}
-
 }

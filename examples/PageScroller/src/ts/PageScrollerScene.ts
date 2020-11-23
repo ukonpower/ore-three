@@ -11,9 +11,9 @@ export class PageScrollerScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		this.camera.position.set( 0, 0, 4 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -151,12 +151,6 @@ export class PageScrollerScene extends ORE.BaseLayer {
 	public onTouchEnd( cursor: ORE.Pointer, event: MouseEvent ) {
 
 		this.scroller.release();
-
-	}
-
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
 
 	}
 

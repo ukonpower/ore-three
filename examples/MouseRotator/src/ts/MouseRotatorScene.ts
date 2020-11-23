@@ -13,9 +13,9 @@ export class MouseRotatorScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -32,12 +32,6 @@ export class MouseRotatorScene extends ORE.BaseLayer {
 		this.rotator.update();
 
 		this.renderer.render( this.scene, this.camera );
-
-	}
-
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
 
 	}
 

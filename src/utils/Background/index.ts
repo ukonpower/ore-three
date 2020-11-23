@@ -52,8 +52,8 @@ export class Background extends THREE.Mesh {
 
 	public resize( args: LayerSizeInfo ) {
 
-		this.uniforms.resolution = { value: args.windowSize };
-		this.uniforms.aspectRatio = { value: args.aspectRatio };
+		this.uniforms.resolution = { value: args.canvasSize };
+		this.uniforms.aspectRatio = { value: args.canvasAspectRatio };
 
 	}
 

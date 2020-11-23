@@ -50,11 +50,11 @@ export class BackgroundScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
-		this.background.resize( args );
+		this.background.resize( this.info.size );
 
 	}
 

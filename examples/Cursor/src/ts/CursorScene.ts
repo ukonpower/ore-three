@@ -63,10 +63,4 @@ export class CursorScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
-
-		super.onResize( args );
-
-	}
-
 }

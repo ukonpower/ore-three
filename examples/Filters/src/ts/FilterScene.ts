@@ -76,15 +76,15 @@ export class FilterScene extends ORE.BaseLayer {
 
 	}
 
-	public onResize( args: ORE.LayerSize ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
 		let keys = Object.keys( this.filters );
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
-			this.filters[ keys[ i ] ].resize( args.windowPixelSize );
+			this.filters[ keys[ i ] ].resize( this.info.size.canvasPixelSize );
 
 		}
 
