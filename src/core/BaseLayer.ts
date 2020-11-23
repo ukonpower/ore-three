@@ -99,7 +99,11 @@ export class BaseLayer extends THREE.EventDispatcher {
     	this.renderer.debug.checkShaderErrors = true;
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-		this.onResize();
+		setTimeout( () => {
+
+			this.onResize();
+
+		}, 0 );
 
 	}
 
