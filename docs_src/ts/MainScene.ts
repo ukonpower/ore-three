@@ -54,7 +54,7 @@ export class MainScene extends ORE.BaseLayer {
 				}
 			} );
 
-			window.assetManager = this.assetManager;
+			window.oreDocsAssetManager = this.assetManager;
 
 		} else {
 
@@ -86,7 +86,7 @@ export class MainScene extends ORE.BaseLayer {
 		this.scene.add( dLight );
 
 		this.renderPipeline = new RenderPipeline( this.renderer );
-		
+
 	}
 
 	private initScene() {

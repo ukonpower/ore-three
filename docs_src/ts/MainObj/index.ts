@@ -36,7 +36,7 @@ export class MainObj {
 
 		this.obj = new THREE.Object3D();
 
-		let cubeGeo = ( window.assetManager.gltfScene.getObjectByName( 'Cube' ) as THREE.Mesh ).geometry.clone();
+		let cubeGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Cube' ) as THREE.Mesh ).geometry.clone();
 
 		let cubeUni = ORE.UniformsLib.CopyUniforms( {
 			num: {
@@ -55,7 +55,7 @@ export class MainObj {
 		this.obj.add( cube );
 
 
-		let hatenaGeo = ( window.assetManager.gltfScene.getObjectByName( 'Hatena' ) as THREE.Mesh ).geometry.clone();
+		let hatenaGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Hatena' ) as THREE.Mesh ).geometry.clone();
 
 		let hatenaUni = ORE.UniformsLib.CopyUniforms( {
 			num: {
@@ -74,8 +74,7 @@ export class MainObj {
 		this.obj.add( hatena );
 
 
-		let installGeo = ( window.assetManager.gltfScene.getObjectByName( 'Install' ) as THREE.Mesh ).geometry.clone();
-
+		let installGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Install' ) as THREE.Mesh ).geometry.clone();
 		let installUni = ORE.UniformsLib.CopyUniforms( {
 			num: {
 				value: 2
@@ -92,8 +91,7 @@ export class MainObj {
 		let install = new THREE.Mesh( installGeo, installMat );
 		this.obj.add( install );
 
-		let faceGeo = ( window.assetManager.gltfScene.getObjectByName( 'Face' ) as THREE.Mesh ).geometry.clone();
-
+		let faceGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Face' ) as THREE.Mesh ).geometry.clone();
 		let faceUni = ORE.UniformsLib.CopyUniforms( {
 			num: {
 				value: 3
@@ -115,8 +113,6 @@ export class MainObj {
 	public update( time: number ) {
 
 		this.commonUniforms.time.value = time;
-
-		// this.obj.rotation.set( 0, time, 0 );
 
 	}
 

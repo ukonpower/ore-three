@@ -5,7 +5,7 @@ import { AssetManager } from './AssetManager';
 
 declare global {
 	interface Window {
-	  assetManager: AssetManager;
+		oreDocsAssetManager: AssetManager;
 	}
   }
 
