@@ -22,7 +22,6 @@ declare interface Datas{
 
 export class GPUComputationControllerScene extends ORE.BaseLayer {
 
-	private commonUniforms: ORE.Uniforms;
 	private pointUni: ORE.Uniforms;
 
 	private gCon: ORE.GPUComputationController;
@@ -34,14 +33,14 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 		super();
 
-		this.commonUniforms = {
+		this.commonUniforms = ORE.UniformsLib.CopyUniforms( this.commonUniforms, {
 			time: {
 				value: 0
 			},
 			seed: {
 				value: Math.random() * 1000.0
 			}
-		};
+		} );
 
 	}
 

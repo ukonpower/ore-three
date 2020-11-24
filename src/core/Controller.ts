@@ -15,11 +15,11 @@ export declare interface ControllerParam {
 
 export class Controller extends THREE.EventDispatcher {
 
-	private layers: BaseLayer[] = [];
     public pointer: Pointer;
-    public clock: THREE.Clock;
+	public clock: THREE.Clock;
+	protected layers: BaseLayer[] = [];
 
-    constructor( parameter?: ControllerParam ) {
+	constructor( parameter?: ControllerParam ) {
 
     	super();
 
@@ -40,9 +40,9 @@ export class Controller extends THREE.EventDispatcher {
 
     	this.tick();
 
-    }
+	}
 
-    protected tick() {
+	protected tick() {
 
     	let deltaTime = this.clock.getDelta();
 
@@ -56,9 +56,9 @@ export class Controller extends THREE.EventDispatcher {
 
     	requestAnimationFrame( this.tick.bind( this ) );
 
-    }
+	}
 
-    public getLayer( layerName: string ) {
+	public getLayer( layerName: string ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
@@ -68,9 +68,9 @@ export class Controller extends THREE.EventDispatcher {
 
     	return null;
 
-    }
+	}
 
-    public addLayer( layer: BaseLayer, layerInfo: LayerInfo ) {
+	public addLayer( layer: BaseLayer, layerInfo: LayerInfo ) {
 
     	while ( this.getLayer( layerInfo.name ) ) {
 
@@ -81,9 +81,9 @@ export class Controller extends THREE.EventDispatcher {
     	layer.onBind( layerInfo );
     	this.layers.push( layer );
 
-    }
+	}
 
-    public removeLayer( layerNmae: string ) {
+	public removeLayer( layerNmae: string ) {
 
     	for ( let i = this.layers.length; i >= 0; i -- ) {
 
@@ -97,9 +97,9 @@ export class Controller extends THREE.EventDispatcher {
 
     	}
 
-    }
+	}
 
-    protected onWindowResize() {
+	protected onWindowResize() {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
@@ -107,15 +107,15 @@ export class Controller extends THREE.EventDispatcher {
 
     	}
 
-    }
+	}
 
-    protected onOrientationDevice() {
+	protected onOrientationDevice() {
 
     	this.onWindowResize();
 
-    }
+	}
 
-    protected pointerEvent( e: PointerEventArgs ) {
+	protected pointerEvent( e: PointerEventArgs ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
@@ -123,9 +123,9 @@ export class Controller extends THREE.EventDispatcher {
 
     	}
 
-    }
+	}
 
-    private onWheel( e: { wheelEvent: WheelEvent, trackpadDelta: number } ) {
+	protected onWheel( e: { wheelEvent: WheelEvent, trackpadDelta: number } ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
@@ -133,6 +133,6 @@ export class Controller extends THREE.EventDispatcher {
 
     	}
 
-    }
+	}
 
 }

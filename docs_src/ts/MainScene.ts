@@ -5,17 +5,12 @@ import backgroundFrag from './shaders/background.fs';
 import MainObj from './MainObj';
 import { ScrollManager } from './ScrollManager';
 import { AssetManager } from './AssetManager';
-import { PostProcessing } from './PostProcessing';
 
 export class MainScene extends ORE.BaseLayer {
 
 	private mainObj: MainObj;
 
-	private pp: PostProcessing;
-
 	private background: ORE.Background;
-	private commonUniforms: ORE.Uniforms;
-
 	private scrollManager: ScrollManager;
 	private isExamplePage: boolean = false;
 
@@ -26,10 +21,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		super();
 
-		this.commonUniforms = {
-			time: {
-				value: 0
-			},
+		this.commonUniforms = ORE.UniformsLib.CopyUniforms( this.commonUniforms, {
 			objTransform: {
 				value: 0
 			},
@@ -42,7 +34,7 @@ export class MainScene extends ORE.BaseLayer {
 			dark: {
 				value: 0
 			}
-		};
+		} );
 
 		this.isExamplePage = window.location.href.indexOf( 'examples' ) != - 1;
 
@@ -94,8 +86,6 @@ export class MainScene extends ORE.BaseLayer {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
-		this.pp = new PostProcessing( this.renderer, this.commonUniforms );
-
 	}
 
 	private initScene() {
@@ -125,8 +115,6 @@ export class MainScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		this.commonUniforms.time.value = this.time;
-
 		if ( ! this.isExamplePage && this.assetManager.isLoaded ) {
 
 			this.scrollManager.scroller.update( deltaTime );
@@ -145,15 +133,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		}
 
-		if ( this.pp ) {
-
-			this.pp.render( this.scene, this.camera );
-
-		} else {
-
-			this.renderer.render( this.scene, this.camera );
-
-		}
+		this.renderer.render( this.scene, this.camera );
 
 	}
 
@@ -166,7 +146,6 @@ export class MainScene extends ORE.BaseLayer {
 		this.commonUniforms.spWeight.value = this.spWeight;
 
 		this.background && this.background.resize( this.info.size );
-		this.pp && this.pp.resize();
 
 	}
 

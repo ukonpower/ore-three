@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+
+import { Uniforms } from '../utils/Uniforms';
 import { PointerEventArgs } from './Controller';
 
 export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
@@ -42,10 +44,13 @@ export class BaseLayer extends THREE.EventDispatcher {
 	public info: LayerInfo;
 
 	public renderer: THREE.WebGLRenderer;
+
 	public scene: THREE.Scene;
 	public camera: THREE.PerspectiveCamera;
 
+	protected readyAnimate: boolean = false;
 	public time: number = 0;
+	public commonUniforms: Uniforms;
 
 	constructor() {
 
@@ -72,6 +77,12 @@ export class BaseLayer extends THREE.EventDispatcher {
 			}
 		};
 
+		this.commonUniforms = {
+			time: {
+				value: 0
+			}
+		};
+
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera( 50, 1, 0.1, 1000 );
 
@@ -81,7 +92,13 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.time += deltaTime;
 
-		this.animate( deltaTime );
+		this.commonUniforms.time.value = this.time;
+
+		if ( this.readyAnimate ) {
+
+			this.animate( deltaTime );
+
+		}
 
 	}
 
@@ -102,6 +119,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		setTimeout( () => {
 
 			this.onResize();
+			this.readyAnimate = true;
 
 		}, 0 );
 
@@ -110,6 +128,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 	public onUnbind() {
 
 		this.removeChildrens( this.scene );
+
+		this.readyAnimate = false;
 
 	}
 
@@ -202,7 +222,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		}
 
 		let normalizedPosition = canvasPosition.clone();
-		normalizedPosition.divide( this.info.size.canvasSize )
+		normalizedPosition.divide( this.info.size.canvasSize );
 		normalizedPosition.y = 1.0 - normalizedPosition.y;
 		normalizedPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
 
