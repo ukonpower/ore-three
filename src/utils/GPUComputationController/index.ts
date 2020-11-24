@@ -153,8 +153,8 @@ export class GPUComputationController {
 
     public createKernel( shader: string, uniforms?: Uniforms ): GPUComputationKernel {
 
-    	let uni: Uniforms = UniformsLib.CopyUniforms( {}, uniforms );
-    	uni = UniformsLib.CopyUniforms( uni, this.uniforms );
+    	let uni: Uniforms = UniformsLib.CopyUniforms( uniforms, {} );
+    	uni = UniformsLib.CopyUniforms( this.uniforms, uni );
 
     	let mat = new THREE.ShaderMaterial( {
     		vertexShader: vert,
