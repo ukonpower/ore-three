@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-import backgroundFrag from './shaders/background.fs';
-import MainObj from './MainObj';
+import { MainObj } from './MainObj';
 import { ScrollManager } from './ScrollManager';
 import { AssetManager } from './AssetManager';
+import { RenderPipeline } from './RenderPipeline';
+
+import backgroundFrag from './shaders/background.fs';
 
 export class MainScene extends ORE.BaseLayer {
 
@@ -16,6 +18,8 @@ export class MainScene extends ORE.BaseLayer {
 
 	private assetManager: AssetManager;
 	private spWeight: number = 0.0;
+
+	private renderPipeline: RenderPipeline;
 
 	constructor() {
 
@@ -66,16 +70,11 @@ export class MainScene extends ORE.BaseLayer {
 
 		} );
 
-		// this.scrollManager.scroller.autoMove( {
-		// 	target: 'usage',
-		// 	duration: 0.01
-		// } );
-
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		let aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;
@@ -86,6 +85,8 @@ export class MainScene extends ORE.BaseLayer {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
+		this.renderPipeline = new RenderPipeline( this.renderer );
+		
 	}
 
 	private initScene() {
@@ -133,7 +134,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		}
 
-		this.renderer.render( this.scene, this.camera );
+		this.renderPipeline.render( this.scene, this.camera );
 
 	}
 
@@ -146,6 +147,8 @@ export class MainScene extends ORE.BaseLayer {
 		this.commonUniforms.spWeight.value = this.spWeight;
 
 		this.background && this.background.resize( this.info.size );
+
+		this.renderPipeline.resize( this.info.size.canvasPixelSize );
 
 	}
 

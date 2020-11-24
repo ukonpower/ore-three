@@ -4,7 +4,7 @@ import * as ORE from '@ore-three-ts';
 import vert from './shaders/mainobj.vs';
 import frag from './shaders/mainobj.fs';
 
-export default class MainObj {
+export class MainObj {
 
 	public obj: THREE.Object3D;
 	private commonUniforms: ORE.Uniforms;

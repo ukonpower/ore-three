@@ -16,7 +16,7 @@ const typedoc = require( 'gulp-typedoc' );
 const ts = require( 'gulp-typescript' );
 const options = minimist( process.argv.slice( 2 ), {
 	default: {
-		dev: 'untitle',
+		ex: 'Controller',
 		P: false,
 	}
 } );
@@ -258,8 +258,8 @@ function watch() {
 
 function setDevLibraryPath( cb ) {
 
-	srcDir = './examples/' + options.dev + '/src';
-	distDir = './examples/' + options.dev + '/public';
+	srcDir = './examples/' + options.ex + '/src';
+	distDir = './examples/' + options.ex + '/public';
 
 	cb();
 
@@ -280,8 +280,8 @@ const develop = gulp.series(
 	gulp.parallel( brSync, watch )
 );
 
-exports.default = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
 exports.lint = gulp.series( esLint );
-exports.docs = gulp.series( setDevDocumentsPath, develop );
+exports.default = gulp.series( setDevDocumentsPath, develop );
+exports.dev = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
 exports.build = gulp.series( cleanBuildFiles, esLint, buildPackages, buildTypes, buildTypeDoc, buildExamples, setDevDocumentsPath, develop );
 

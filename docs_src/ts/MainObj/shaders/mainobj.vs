@@ -9,8 +9,9 @@ uniform float spWeight;
 uniform float num;
 uniform float objSelector;
 
-$noise4D
-$rotate
+#pragma glslify: snoise = require('./noise4D.glsl' )
+#pragma glslify: rotate = require('./rotate.glsl' )
+#pragma glslify: import('./constants.glsl' )
 
 vec3 snoise3D( vec4 p ) {
 
