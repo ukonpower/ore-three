@@ -86,13 +86,16 @@ export class GPUComputationController {
 
     public createData( initTex_texParam?: any, textureParam? : THREE.WebGLRenderTargetOptions ): GPUcomputationData {
 
+    	let userAgent = navigator.userAgent;
+    	let isiOS = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined );
+
     	let param: THREE.WebGLRenderTargetOptions = {
     		wrapS: THREE.ClampToEdgeWrapping,
     		wrapT: THREE.ClampToEdgeWrapping,
     		minFilter: THREE.NearestFilter,
     		magFilter: THREE.NearestFilter,
     		format: THREE.RGBAFormat,
-    		type: ( /(iPad|iPhone|iPod)/g.test( navigator.userAgent ) ) ? THREE.HalfFloatType : THREE.FloatType,
+    		type: isiOS ? THREE.HalfFloatType : THREE.FloatType,
     		stencilBuffer: false,
     		depthBuffer: false
     	};
