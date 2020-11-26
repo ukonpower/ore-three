@@ -30,5 +30,5 @@ export class ControllerScene extends ORE.BaseLayer {
 		this.renderer.render( this.scene, this.camera );
 
 	}
-
+	
 }

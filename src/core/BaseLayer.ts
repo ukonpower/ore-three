@@ -21,14 +21,14 @@ export declare interface LayerSize {
 	windowAspectRatio: number;
 	canvasSize: THREE.Vector2;
 	canvasPixelSize: THREE.Vector2;
-	portraitWeight: number;
-	wideWeight: number;
 }
 
 export declare interface AspectInfo {
 	mainAspect: number;
 	portraitAspect: number;
 	wideAspect: number;
+	portraitWeight: number;
+	wideWeight: number;
 }
 
 export declare interface TouchEventArgs {
@@ -64,16 +64,16 @@ export class BaseLayer extends THREE.EventDispatcher {
 			aspect: {
 				mainAspect: 16 / 9,
 				wideAspect: 10 / 1,
-				portraitAspect: 1 / 2
+				portraitAspect: 1 / 2,
+				portraitWeight: 0.0,
+				wideWeight: 0.0
 			},
 			size: {
 				windowSize: new THREE.Vector2(),
 				windowAspectRatio: 1.0,
 				canvasSize: new THREE.Vector2(),
 				canvasPixelSize: new THREE.Vector2(),
-				canvasAspectRatio: 1.0,
-				portraitWeight: 0.0,
-				wideWeight: 0.0,
+				canvasAspectRatio: 1.0
 			}
 		};
 
@@ -195,8 +195,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.size.canvasSize.copy( newCanvasSize );
 		this.info.size.canvasPixelSize.copy( newCanvasSize.clone().multiplyScalar( this.renderer.getPixelRatio() ) );
 		this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y,
-		this.info.size.portraitWeight = portraitWeight,
-		this.info.size.wideWeight = wideWeight,
+		this.info.aspect.portraitWeight = portraitWeight,
+		this.info.aspect.wideWeight = wideWeight,
 
 		this.renderer.setSize( this.info.size.canvasSize.x, this.info.size.canvasSize.y );
 		this.camera.aspect = this.info.size.canvasAspectRatio;
