@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { EasingSet } from '../Easings';
-import { Lerps, LerpFunc } from '../Lerps';
+import { EasingSet } from './Easings';
+import { Lerps, LerpFunc } from './Lerps';
 
 export declare interface TimelineAnimatorKeyFrame<T> {
 	time: number;
