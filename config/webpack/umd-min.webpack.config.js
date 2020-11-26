@@ -10,6 +10,11 @@ module.exports = merge( baseConfig, {
 		libraryTarget: 'umd'
 	},
 	externals: {
-		'three': 'THREE'
+		'three': {
+			commonjs: 'three',
+			commonjs2: 'three',
+			amd: 'three',
+			root: 'THREE'
+		}
 	},
 } );
