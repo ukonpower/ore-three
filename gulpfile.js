@@ -48,8 +48,12 @@ async function esLint( cb ) {
 				.pipe( eslint( { useEslintrc: true, fix: true } ) )
 				.pipe( eslint.format() )
 				.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
-				.on( 'end', () => { resolve() } )
-				.pipe( eslint.failAfterError() )
+				.on( 'end', () => {
+
+					resolve();
+
+				} )
+				.pipe( eslint.failAfterError() );
 
 		} );
 
@@ -60,23 +64,23 @@ async function esLint( cb ) {
 	await Promise.all( promiseArray ).then( () => {
 
 		cb();
-		
-	});
+
+	} );
 
 }
 
 function buildPackages( cb ) {
-	
+
 	//develop build
 	const conf = require( './config/webpack/umd.webpack.config' );
 	const confMin = require( './config/webpack/umd-min.webpack.config' );
 
 	webpackStream( conf, webpack )
-		.pipe( gulp.dest( './build/' ) ) 
-		.unpipe(
-	webpackStream( confMin, webpack )
 		.pipe( gulp.dest( './build/' ) )
-		.on( 'end', cb ) );
+		.unpipe(
+			webpackStream( confMin, webpack )
+				.pipe( gulp.dest( './build/' ) )
+				.on( 'end', cb ) );
 
 }
 
@@ -93,7 +97,7 @@ function buildTypes( cb ) {
 }
 
 function buildTypeDoc( cb ) {
-	
+
 	//typedoc
 	gulp.src( './src' )
 		.pipe( typedoc( {
@@ -105,6 +109,7 @@ function buildTypeDoc( cb ) {
 			moduleResolution: "node"
 		} ) )
 		.on( 'end', cb );
+
 }
 
 function buildExamples( cb ) {

@@ -59,45 +59,45 @@ export class RenderPipeline {
 
 		this.renderTargets = {
 			rt1: new THREE.WebGLRenderTarget( 0, 0, {
-					stencilBuffer: false,
-					generateMipmaps: false,
-					depthBuffer: true,
-					minFilter: THREE.LinearFilter,
-					magFilter: THREE.LinearFilter
-				} ),
+				stencilBuffer: false,
+				generateMipmaps: false,
+				depthBuffer: true,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter
+			} ),
 			rt2: new THREE.WebGLRenderTarget( 0, 0, {
-					depthBuffer: false,
-					stencilBuffer: false,
-					generateMipmaps: false,
-					minFilter: THREE.LinearFilter,
-					magFilter: THREE.LinearFilter
-				} ),
+				depthBuffer: false,
+				stencilBuffer: false,
+				generateMipmaps: false,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter
+			} ),
 			rt3: new THREE.WebGLRenderTarget( 0, 0, {
-					depthBuffer: false,
-					stencilBuffer: false,
-					generateMipmaps: false,
-					minFilter: THREE.LinearFilter,
-					magFilter: THREE.LinearFilter
-				} ),
+				depthBuffer: false,
+				stencilBuffer: false,
+				generateMipmaps: false,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter
+			} ),
 		};
 
 		for ( let i = 0; i < this.bloomRenderCount; i ++ ) {
 
-			this.renderTargets[ 'rtBlur' + i.toString() + '_0' ] =  new THREE.WebGLRenderTarget( 0, 0, {
-					depthBuffer: false,
-					stencilBuffer: false,
-					generateMipmaps: false,
-					minFilter: THREE.LinearFilter,
-					magFilter: THREE.LinearFilter
-				} );
+			this.renderTargets[ 'rtBlur' + i.toString() + '_0' ] = new THREE.WebGLRenderTarget( 0, 0, {
+				depthBuffer: false,
+				stencilBuffer: false,
+				generateMipmaps: false,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter
+			} );
 
-			this.renderTargets[ 'rtBlur' + i.toString() + '_1' ] =  new THREE.WebGLRenderTarget( 0, 0, {
-					depthBuffer: false,
-					stencilBuffer: false,
-					generateMipmaps: false,
-					minFilter: THREE.LinearFilter,
-					magFilter: THREE.LinearFilter
-				} );
+			this.renderTargets[ 'rtBlur' + i.toString() + '_1' ] = new THREE.WebGLRenderTarget( 0, 0, {
+				depthBuffer: false,
+				stencilBuffer: false,
+				generateMipmaps: false,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter
+			} );
 
 		}
 
@@ -237,7 +237,7 @@ export class RenderPipeline {
 			fragmentShader: compo,
 			uniforms: ORE.UniformsLib.CopyUniforms( {
 				brightness: {
-					value: 0.1
+					value: 0.08
 				},
 			}, this.commonUniforms ),
 			defines: {
@@ -328,7 +328,7 @@ export class RenderPipeline {
 		this.renderer.autoClear = true;
 
 	}
-	
+
 	public resize( pixelWindowSize: THREE.Vector2 ) {
 
 		this.smaaCommonUni.SMAA_RT_METRICS.value.set( 1 / pixelWindowSize.x, 1 / pixelWindowSize.y, pixelWindowSize.x, pixelWindowSize.y );

@@ -24,10 +24,11 @@ $sp-width: 800px;
 html,body{
 	position: relative;
 	width: 100%;
-
-	[data-usescroller="true"] {
-		height: 100%;
-		overflow: hidden;
+	height: 100%;
+	overflow: hidden;
+	&:not([data-usescroller="true"]) {
+		height: unset;
+		overflow: unset;
 	}
 }
 

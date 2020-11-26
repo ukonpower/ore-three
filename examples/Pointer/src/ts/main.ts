@@ -1,17 +1,17 @@
 import * as ORE from "@ore-three-ts";
 
-import { CursorScene } from "./CursorScene";
+import { PointerScene } from "./PointerScene";
 
 export class APP {
 
 	private controller: ORE.Controller;
-	private scene: CursorScene;
+	private scene: PointerScene;
 
 	constructor() {
 
 		this.controller = new ORE.Controller();
 
-		this.scene = new CursorScene();
+		this.scene = new PointerScene();
 
 		this.controller.addLayer( this.scene, {
 			name: 'Main',

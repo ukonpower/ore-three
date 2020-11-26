@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class CursorScene extends ORE.BaseLayer {
+export class PointerScene extends ORE.BaseLayer {
 
 	private box: THREE.Mesh;
 
@@ -57,6 +57,8 @@ export class CursorScene extends ORE.BaseLayer {
 	public onHover( args: ORE.TouchEventArgs ) {
 
 		let cursorPos = args.normalizedPosition;
+
+		if ( cursorPos.x != cursorPos.x ) return;
 
 		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
 
