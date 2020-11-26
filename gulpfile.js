@@ -86,7 +86,7 @@ function buildPackages( cb ) {
 
 function buildTypes( cb ) {
 
-	var tsProjectDts = ts.createProject( './config/typescript/base.tsconfig.json' );
+	var tsProjectDts = ts.createProject( './config/typescript/types.tsconfig.json' );
 
 	//types
 	gulp.src( './src/**/*.ts' )
