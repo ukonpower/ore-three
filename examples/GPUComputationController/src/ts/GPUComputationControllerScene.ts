@@ -68,7 +68,10 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 			dataVel: { value: null },
 		}, this.commonUniforms );
 
-		let posKernel = this.gCon.createKernel( positionFrag, posUni );
+		let posKernel = this.gCon.createKernel( {
+			fragmentShader: positionFrag,
+			uniforms: posUni
+		} );
 
 		//create computing velocity kernel
 		let velUni = ORE.UniformsLib.CopyUniforms( {
@@ -76,7 +79,10 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 			dataVel: { value: null },
 		}, this.commonUniforms );
 
-		let velKernel = this.gCon.createKernel( velocityFrag, velUni );
+		let velKernel = this.gCon.createKernel( {
+			fragmentShader: velocityFrag,
+			uniforms: velUni
+		} );
 
 		this.kernels = {
 			position: posKernel,
