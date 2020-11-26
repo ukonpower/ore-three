@@ -20,29 +20,29 @@ import * as ORE from 'ore-three-ts';
 
 ### Create Controller
 
-```javascript
+```typescript
 import * as ORE from 'ore-three-ts';
-import { MainScene } from './scenes/MainScene';
 
-class APP {
+import { ControllerScene } from './ControllerScene';
+
+export class APP {
+
+	private controller: ORE.Controller;
 
 	constructor() {
-		
-		this.controller = new ORE.Controller( {
 
-			canvas: document.querySelector( "#canvas" ),
-			retina: true,
-			alpha: true,
+		this.controller = new ORE.Controller();
 
+		this.controller.addLayer( new ControllerScene(), {
+			name: 'Main',
+			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
 		} );
-
-		this.controller.bindScene( new MainScene() );
 
 	}
 
 }
 
-window.addEventListener( 'load', ()=>{
+window.addEventListener( 'load', () => {
 
 	let app = new APP();
 
@@ -51,66 +51,66 @@ window.addEventListener( 'load', ()=>{
 
 ### Create Scene
 
-```javascript
-import * as ORE from 'ore-three-ts';
+```typescript
 import * as THREE from 'three';
+import * as ORE from 'ore-three-ts';
 
-export class MainScene extends ORE.BaseScene {
+export class ControllerScene extends ORE.BaseLayer {
+
+	private box: THREE.Mesh;
 
 	constructor() {
-		
+
 		super();
 
-		this.name = "MainScene";
+	}t
 
-	}
+	public onBind( info: ORE.LayerInfo ) {
 
-	onBind( gProps ) {
+		super.onBind( info );
 
-		super.onBind( gProps );
-
-		this.renderer = this.gProps.renderer;
-
-		this.camera.position.set( 0, 1.5, 3 );
+		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
 
-		var boxGeo = new THREE.BoxGeometry( 1, 1, 1 );
-		var boXMat = new THREE.MeshNormalMaterial();
-		this.box = new THREE.Mesh( boxGeo, boXMat );
+		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
-
-		this.light = new THREE.DirectionalLight();
-		this.light.position.y = 10;
-		this.scene.add( this.light );		
 
 	}
 
-	//Animation Loop!!
+	public animate( deltaTime: number ) {
 
-	animate( deltaTime ) {
-		
-		this.box.rotateY( 0.01 );
+		this.box.rotateY( 1.0 * deltaTime );
+
 		this.renderer.render( this.scene, this.camera );
 
 	}
 
-	//You can use any events!!
+	public onResize() {
 
-	onResize( args ) {
-
-		super.onResize( args );
+		super.onResize();
 
 	}
-	
-	public onTouchStart( cursor: Cursor, event: MouseEvent ) {}
 
-	public onTouchMove( cursor: Cursor, event: MouseEvent ) {}
+	public onTouchStart( args: ORE.TouchEventArgs ) {
 
-	public onTouchEnd( cursor: Cursor, event: MouseEvent ) {}
+	}
 
-	public onHover( cursor: Cursor ) { }
+	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-	public onWheel( event: WheelEvent, trackpadDelta: number ) {}
+	}
+
+	public onTouchEnd( args: ORE.TouchEventArgs ) {
+
+	}
+
+	public onHover( args: ORE.TouchEventArgs ) {
+
+	}
+
+	public onWheel( event: WheelEvent, trackpadDelta: number ) {
+
+	}
+
 
 }
 ```
