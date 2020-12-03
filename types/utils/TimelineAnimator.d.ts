@@ -1,5 +1,5 @@
-import { EasingSet } from '../Easings';
-import { LerpFunc } from '../Lerps';
+import { EasingSet } from './Easings';
+import { LerpFunc } from './Lerps';
 export declare interface TimelineAnimatorKeyFrame<T> {
     time: number;
     value: T;

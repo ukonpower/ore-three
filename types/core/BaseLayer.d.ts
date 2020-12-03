@@ -17,13 +17,13 @@ export declare interface LayerSize {
     windowAspectRatio: number;
     canvasSize: THREE.Vector2;
     canvasPixelSize: THREE.Vector2;
-    portraitWeight: number;
-    wideWeight: number;
 }
 export declare interface AspectInfo {
     mainAspect: number;
     portraitAspect: number;
     wideAspect: number;
+    portraitWeight: number;
+    wideWeight: number;
 }
 export declare interface TouchEventArgs {
     event?: PointerEvent;

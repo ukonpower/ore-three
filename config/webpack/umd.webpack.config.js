@@ -4,10 +4,11 @@ const baseConfig = require( './base.webpack.config' );
 
 module.exports = merge( baseConfig, {
 	mode: 'development',
+	devtool: 'inline-source-map',
 	output: {
 		filename: info.packageFileName + '.js',
 		library: info.packageBuildName,
-		libraryTarget: 'umd'
+		libraryTarget: 'umd',
 	},
 	externals: {
 		'three': {
