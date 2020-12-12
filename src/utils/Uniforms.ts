@@ -4,17 +4,18 @@ export interface Uniforms{ [ key: string ] : THREE.IUniform }
 
 export namespace UniformsLib {
 
-  	export function CopyUniforms( uni1: Uniforms, uni2: Uniforms ) {
+	export function mergeUniforms( ...uniforms: Uniforms[] ) : Uniforms {
 
-  		if ( ! uni1 || ! uni2 ) return uni1 || uni2;
+		let res = {};
 
-  		let res: Uniforms = {};
+		for ( let i = 0; i < uniforms.length; i ++ ) {
 
-  		Object.assign( res, uni1 );
-  		Object.assign( res, uni2 );
+			Object.assign( res, uniforms[ i ] );
 
-  		return res;
+		}
 
-  	}
+		return res;
+
+	}
 
 }

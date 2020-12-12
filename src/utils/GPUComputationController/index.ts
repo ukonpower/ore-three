@@ -159,8 +159,8 @@ export class GPUComputationController {
 
 	public createKernel( param: THREE.ShaderMaterialParameters ): GPUComputationKernel {
 
-    	let uni: Uniforms = UniformsLib.CopyUniforms( param.uniforms, {} );
-    	uni = UniformsLib.CopyUniforms( this.uniforms, uni );
+    	let uni: Uniforms = UniformsLib.mergeUniforms( param.uniforms, {} );
+    	uni = UniformsLib.mergeUniforms( this.uniforms, uni );
 
 		param.vertexShader = param.vertexShader || vert;
 

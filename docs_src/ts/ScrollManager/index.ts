@@ -13,9 +13,9 @@ export class ScrollManager {
 
 		this.mainScene = scene;
 
-		this.commonUniforms = ORE.UniformsLib.CopyUniforms( {
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( parentUniforms, {
 
-		}, parentUniforms );
+		} );
 
 		this.initScroller();
 		this.initTimeline();

@@ -25,7 +25,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		super();
 
-		this.commonUniforms = ORE.UniformsLib.CopyUniforms( this.commonUniforms, {
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			objTransform: {
 				value: 0
 			},

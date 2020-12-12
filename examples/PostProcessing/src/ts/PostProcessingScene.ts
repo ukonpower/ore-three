@@ -22,7 +22,7 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 		super.onBind( info );
 
-		this.commonUniforms = ORE.UniformsLib.CopyUniforms( this.commonUniforms, {
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 		} );
 
 		this.initScene();
@@ -52,13 +52,13 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 		this.pass1 = new ORE.PostProcessing( this.renderer, {
 			fragmentShader: pp1Frag,
-			uniforms: ORE.UniformsLib.CopyUniforms( this.commonUniforms, {
+			uniforms: ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			} )
 		} );
 
 		this.pass2 = new ORE.PostProcessing( this.renderer, {
 			fragmentShader: pp2Frag,
-			uniforms: ORE.UniformsLib.CopyUniforms( this.commonUniforms, {
+			uniforms: ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			} )
 		} );
 
