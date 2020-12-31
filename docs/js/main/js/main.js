@@ -56898,17 +56898,17 @@ var MainObj = /** @class */ (function () {
         };
         var std = three__WEBPACK_IMPORTED_MODULE_0__.ShaderLib.standard;
         this.commonUniforms = three__WEBPACK_IMPORTED_MODULE_0__.UniformsUtils.merge([customUni, std.uniforms]);
-        this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms(this.commonUniforms, parentUniforms);
+        this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, parentUniforms);
         this.createMesh();
     }
     MainObj.prototype.createMesh = function () {
         this.obj = new three__WEBPACK_IMPORTED_MODULE_0__.Object3D();
         var cubeGeo = window.oreDocsAssetManager.gltfScene.getObjectByName('Cube').geometry.clone();
-        var cubeUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+        var cubeUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, {
             num: {
                 value: 0
             }
-        }, this.commonUniforms);
+        });
         var mat = new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial({
             uniforms: cubeUni,
             fragmentShader: _shaders_mainobj_fs__WEBPACK_IMPORTED_MODULE_3__.default,
@@ -56918,7 +56918,7 @@ var MainObj = /** @class */ (function () {
         var cube = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(cubeGeo, mat);
         this.obj.add(cube);
         var hatenaGeo = window.oreDocsAssetManager.gltfScene.getObjectByName('Hatena').geometry.clone();
-        var hatenaUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+        var hatenaUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms({
             num: {
                 value: 1
             }
@@ -56932,7 +56932,7 @@ var MainObj = /** @class */ (function () {
         var hatena = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(hatenaGeo, hatenaMat);
         this.obj.add(hatena);
         var installGeo = window.oreDocsAssetManager.gltfScene.getObjectByName('Install').geometry.clone();
-        var installUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+        var installUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms({
             num: {
                 value: 2
             }
@@ -56946,7 +56946,7 @@ var MainObj = /** @class */ (function () {
         var install = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(installGeo, installMat);
         this.obj.add(install);
         var faceGeo = window.oreDocsAssetManager.gltfScene.getObjectByName('Face').geometry.clone();
-        var faceUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+        var faceUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms({
             num: {
                 value: 3
             }
@@ -57022,7 +57022,7 @@ var MainScene = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.isExamplePage = false;
         _this.spWeight = 0.0;
-        _this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms(_this.commonUniforms, {
+        _this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(_this.commonUniforms, {
             objTransform: {
                 value: 0
             },
@@ -57168,7 +57168,7 @@ var RenderPipeline = /** @class */ (function () {
         this.renderer = renderer;
         this.bloomResolutionRatio = bloomResolutionRatio;
         this.bloomRenderCount = bloomRenderCount;
-        this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({}, parentUniforms);
+        this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(parentUniforms, {});
         this.initRenderTargets();
         this.initInputTextures();
         this.initPostProcessings();
@@ -57249,15 +57249,15 @@ var RenderPipeline = /** @class */ (function () {
         ------------------------*/
         this.bloomBrightPP = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PostProcessing(this.renderer, {
             fragmentShader: _shaders_bloomBright_fs__WEBPACK_IMPORTED_MODULE_3__.default,
-            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, {
                 threshold: {
                     value: 0.5,
                 },
-            }, this.commonUniforms),
+            }),
         });
         this.bloomBlurPP = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PostProcessing(this.renderer, {
             fragmentShader: _shaders_bloomBlur_fs__WEBPACK_IMPORTED_MODULE_2__.default,
-            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, {
                 backbuffer: {
                     value: null
                 },
@@ -57271,7 +57271,7 @@ var RenderPipeline = /** @class */ (function () {
                     value: 0
                 },
                 direction: { value: false },
-            }, this.commonUniforms),
+            }),
         });
         /*------------------------
             SMAA
@@ -57288,30 +57288,30 @@ var RenderPipeline = /** @class */ (function () {
             "SMAA_SEARCHTEX_SELECT(sample)": "sample.g",
             "SMAA_AREATEX_SELECT(sample)": "sample.rg",
         };
-        this.smaaCommonUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+        this.smaaCommonUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, {
             SMAA_RT_METRICS: {
                 value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector4()
             }
-        }, this.commonUniforms);
+        });
         this.smaaEdgePP = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PostProcessing(this.renderer, {
             vertexShader: _shaders_smaa_edgeDetection_vs__WEBPACK_IMPORTED_MODULE_4__.default,
             fragmentShader: _shaders_smaa_edgeDetection_fs__WEBPACK_IMPORTED_MODULE_5__.default,
-            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({}, this.smaaCommonUni),
+            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.smaaCommonUni, {}),
             defines: defines
         });
         this.smaaCalcWeighttPP = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PostProcessing(this.renderer, {
             vertexShader: _shaders_smaa_blendingWeightCalculation_vs__WEBPACK_IMPORTED_MODULE_6__.default,
             fragmentShader: _shaders_smaa_blendingWeightCalculation_fs__WEBPACK_IMPORTED_MODULE_7__.default,
-            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.smaaCommonUni, {
                 areaTex: this.inputTextures.areaTex,
                 searchTex: this.inputTextures.searchTex,
-            }, this.smaaCommonUni),
+            }),
             defines: defines,
         });
         this.smaaBlendingPP = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PostProcessing(this.renderer, {
             vertexShader: _shaders_smaa_neiborhoodBlending_vs__WEBPACK_IMPORTED_MODULE_8__.default,
             fragmentShader: _shaders_smaa_neiborhoodBlending_fs__WEBPACK_IMPORTED_MODULE_9__.default,
-            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({}, this.smaaCommonUni),
+            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.smaaCommonUni, {}),
             defines: defines
         });
         /*------------------------
@@ -57320,11 +57320,11 @@ var RenderPipeline = /** @class */ (function () {
         var compo = _shaders_composite_fs__WEBPACK_IMPORTED_MODULE_10__.default.replace(/RENDER_COUNT/g, this.bloomRenderCount.toString());
         this.compositePP = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PostProcessing(this.renderer, {
             fragmentShader: compo,
-            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({
+            uniforms: _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, {
                 brightness: {
                     value: 0.08
                 },
-            }, this.commonUniforms),
+            }),
             defines: {
                 RENDER_COUNT: this.bloomRenderCount.toString()
             }
@@ -57428,7 +57428,7 @@ __webpack_require__.r(__webpack_exports__);
 var ScrollManager = /** @class */ (function () {
     function ScrollManager(scene, parentUniforms) {
         this.mainScene = scene;
-        this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.CopyUniforms({}, parentUniforms);
+        this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(parentUniforms, {});
         this.initScroller();
         this.initTimeline();
     }
@@ -58352,7 +58352,7 @@ var DOMMesh = /** @class */ (function (_super) {
         var _this = this;
         var geo = new three__WEBPACK_IMPORTED_MODULE_0__.PlaneBufferGeometry(2, 2);
         parameter.vertexShader = _domMesh_vs__WEBPACK_IMPORTED_MODULE_1__.default;
-        var uni = _Uniforms__WEBPACK_IMPORTED_MODULE_2__.UniformsLib.CopyUniforms({
+        var uni = _Uniforms__WEBPACK_IMPORTED_MODULE_2__.UniformsLib.mergeUniforms(parameter.uniforms, {
             domPos: {
                 value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector2()
             },
@@ -58365,7 +58365,7 @@ var DOMMesh = /** @class */ (function (_super) {
             aspectRatio: {
                 value: 1.0
             }
-        }, parameter.uniforms);
+        });
         parameter.uniforms = uni;
         var mat = new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial(parameter);
         _this = _super.call(this, geo, mat) || this;
@@ -58664,8 +58664,8 @@ var GPUComputationController = /** @class */ (function () {
         return data;
     };
     GPUComputationController.prototype.createKernel = function (param) {
-        var uni = _Uniforms__WEBPACK_IMPORTED_MODULE_3__.UniformsLib.CopyUniforms(param.uniforms, {});
-        uni = _Uniforms__WEBPACK_IMPORTED_MODULE_3__.UniformsLib.CopyUniforms(this.uniforms, uni);
+        var uni = _Uniforms__WEBPACK_IMPORTED_MODULE_3__.UniformsLib.mergeUniforms(param.uniforms, {});
+        uni = _Uniforms__WEBPACK_IMPORTED_MODULE_3__.UniformsLib.mergeUniforms(this.uniforms, uni);
         param.vertexShader = param.vertexShader || _shaders_passThrough_vs__WEBPACK_IMPORTED_MODULE_1__.default;
         var mat = new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial(param);
         this.materials.push(mat);
@@ -59642,15 +59642,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 var UniformsLib;
 (function (UniformsLib) {
-    function CopyUniforms(uni1, uni2) {
-        if (!uni1 || !uni2)
-            return uni1 || uni2;
+    function mergeUniforms() {
+        var uniforms = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            uniforms[_i] = arguments[_i];
+        }
         var res = {};
-        Object.assign(res, uni1);
-        Object.assign(res, uni2);
+        for (var i = 0; i < uniforms.length; i++) {
+            Object.assign(res, uniforms[i]);
+        }
         return res;
     }
-    UniformsLib.CopyUniforms = CopyUniforms;
+    UniformsLib.mergeUniforms = mergeUniforms;
 })(UniformsLib || (UniformsLib = {}));
 
 
@@ -59728,7 +59731,7 @@ var UniformsLib;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev6 \",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
+module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev7\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
 
 /***/ })
 
