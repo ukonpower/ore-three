@@ -88,6 +88,8 @@ export class Pointer extends THREE.EventDispatcher {
 
 	protected touchEvent( type: string, e: PointerEvent ) {
 
+		if ( e.button > 0 ) return;
+
 		let dispatch = false;
 
 		let x = e.pageX - window.pageXOffset;
@@ -173,33 +175,6 @@ export class Pointer extends THREE.EventDispatcher {
 		if ( this.lethargy.check( e ) ) {
 
 			trackpadDelta = delta;
-
-		} else {
-
-			let d = delta - this.trackpadMemDelta;
-
-			if ( Math.abs( d ) > 50 ) {
-
-				this.trackpadMemDelta = d;
-				trackpadDelta = delta;
-
-				this.trackpadMax = true;
-
-			} else if ( d == 0 ) {
-
-				if ( this.trackpadMax ) {
-
-					trackpadDelta = delta;
-
-				}
-
-			} else if ( d < 0 ) {
-
-				this.trackpadMax = false;
-
-			}
-
-			this.trackpadMemDelta = ( delta );
 
 		}
 
