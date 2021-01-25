@@ -203,6 +203,28 @@ export class Animator {
 
 	}
 
+	public isAnimatingVariable( name: string, mute: boolean = false ) {
+
+		if ( this.variables[ name ] ) {
+
+			let time = this.variables[ name ].time;
+
+			return time != - 1.0;
+
+		} else {
+
+			if ( ! mute ) {
+
+				console.warn( '"' + name + '"' + ' is not exist' );
+
+			}
+
+			return null;
+
+		}
+
+	}
+
 	public applyToUniforms( uniforms: Uniforms ) {
 
 		let keys = Object.keys( this.variables );
