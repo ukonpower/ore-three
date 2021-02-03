@@ -20,10 +20,14 @@ export class Pointer extends THREE.EventDispatcher {
 		let userAgent = navigator.userAgent;
 		this.isSP = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined );
 
-		window.addEventListener( 'pointerdown', this.touchEvent.bind( this, "start" ) );
-		window.addEventListener( 'pointermove', this.touchEvent.bind( this, "move" ) );
-		window.addEventListener( 'pointerup', this.touchEvent.bind( this, "end" ) );
-		window.addEventListener( "dragend", this.touchEvent.bind( this, "end" ) );
+		window.addEventListener( 'touchstart', this.onTouch.bind( this, "start" ), { passive: false } );
+		window.addEventListener( 'touchmove', this.onTouch.bind( this, "move" ), { passive: false } );
+		window.addEventListener( 'touchend', this.onTouch.bind( this, "end" ), { passive: false } );
+
+		window.addEventListener( 'pointerdown', this.onPointer.bind( this, "start" ) );
+		window.addEventListener( 'pointermove', this.onPointer.bind( this, "move" ) );
+		window.addEventListener( 'pointerup', this.onPointer.bind( this, "end" ) );
+		window.addEventListener( "dragend", this.onPointer.bind( this, "end" ) );
 		window.addEventListener( "wheel", this.wheel.bind( this ), { passive: false } );
 
 		this.position.set( NaN, NaN );
@@ -86,20 +90,50 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	protected touchEvent( type: string, e: PointerEvent ) {
+	protected onTouch( type: string, e: TouchEvent ) {
 
-		if ( e.button > 0 ) return;
+		let touch = e.touches[ 0 ];
+
+		if ( touch ) {
+
+			this.touchEventHandler( touch.pageX, touch.pageY, type, e );
+
+		} else {
+
+			if ( type == 'end' ) {
+
+				this.touchEventHandler( NaN, NaN, type, e );
+
+			}
+
+		}
+
+	}
+
+	protected onPointer( type: string, e: PointerEvent ) {
+
+		if ( e.pointerType == 'mouse' && ( e.button == - 1 || e.button == 0 ) ) {
+
+			this.touchEventHandler( e.pageX, e.pageY, type, e );
+
+		}
+
+	}
+
+	protected touchEventHandler( posX: number, posY: number, type: string, e: Event ) {
 
 		let dispatch = false;
 
-		let x = e.pageX - window.pageXOffset;
-		let y = e.pageY - window.pageYOffset;
+		let x = posX - window.pageXOffset;
+		let y = posY - window.pageYOffset;
 
 		if ( type == "start" ) {
 
 			this.isTouching = true;
 
 			this.setPos( x, y );
+
+			this.delta.set( 0, 0 );
 
 			dispatch = true;
 
