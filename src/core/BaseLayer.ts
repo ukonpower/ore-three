@@ -113,6 +113,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.aspect = layerInfo.aspect || this.info.aspect;
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
+		this.renderer.setPixelRatio( window.devicePixelRatio );
     	this.renderer.debug.checkShaderErrors = true;
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 
