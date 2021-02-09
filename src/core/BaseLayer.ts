@@ -115,7 +115,6 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.renderer = new THREE.WebGLRenderer( this.info );
 		this.renderer.setPixelRatio( window.devicePixelRatio );
     	this.renderer.debug.checkShaderErrors = true;
-		this.renderer.setSize( window.innerWidth, window.innerHeight );
 
 		setTimeout( () => {
 
@@ -174,6 +173,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		let newWindowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
 		let newCanvasSize = new THREE.Vector2();
+
+		console.log( window.innerWidth );
 
 		if ( this.info.wrapperElement ) {
 
