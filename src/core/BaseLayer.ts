@@ -174,8 +174,6 @@ export class BaseLayer extends THREE.EventDispatcher {
 		let newWindowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
 		let newCanvasSize = new THREE.Vector2();
 
-		console.log( window.innerWidth );
-
 		if ( this.info.wrapperElement ) {
 
 			newCanvasSize.set( this.info.wrapperElement.clientWidth, this.info.wrapperElement.clientHeight );
