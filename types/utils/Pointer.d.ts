@@ -8,7 +8,9 @@ export declare class Pointer extends THREE.EventDispatcher {
     getNormalizePosition(windowSize: THREE.Vector2): THREE.Vector2;
     getRelativePosition(elm: HTMLElement, normalize?: boolean): THREE.Vector2;
     protected setPos(x: number, y: number): void;
-    protected touchEvent(type: string, e: PointerEvent): void;
+    protected onTouch(type: string, e: TouchEvent): void;
+    protected onPointer(type: string, e: PointerEvent): void;
+    protected touchEventHandler(posX: number, posY: number, type: string, e: Event): void;
     update(): void;
     protected trackpadMemDelta: number;
     protected trackpadMax: boolean;

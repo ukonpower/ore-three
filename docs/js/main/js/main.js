@@ -57770,8 +57770,8 @@ var BaseLayer = /** @class */ (function (_super) {
         this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
             this.info.aspect = layerInfo.aspect || this.info.aspect;
         this.renderer = new three__WEBPACK_IMPORTED_MODULE_0__.WebGLRenderer(this.info);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.debug.checkShaderErrors = true;
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
         setTimeout(function () {
             _this.onResize();
             _this.readyAnimate = true;
@@ -58073,16 +58073,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Animator": () => /* binding */ Animator
 /* harmony export */ });
-/* harmony import */ var _Easings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Easings */ "./src/utils/Easings.ts");
-/* harmony import */ var _Lerps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Lerps */ "./src/utils/Lerps.ts");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _Easings__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Easings */ "./src/utils/Easings.ts");
+/* harmony import */ var _Lerps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lerps */ "./src/utils/Lerps.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 
 
-var Animator = /** @class */ (function () {
+
+var Animator = /** @class */ (function (_super) {
+    __extends(Animator, _super);
     function Animator() {
-        this._isAnimating = false;
-        this.animatingCount = 0;
-        this.dispatchEvents = [];
-        this.variables = {};
+        var _this = _super.call(this) || this;
+        _this._isAnimating = false;
+        _this.animatingCount = 0;
+        _this.dispatchEvents = [];
+        _this.variables = {};
+        return _this;
     }
     Object.defineProperty(Animator.prototype, "isAnimating", {
         get: function () {
@@ -58092,13 +58110,13 @@ var Animator = /** @class */ (function () {
         configurable: true
     });
     Animator.prototype.add = function (params) {
-        var lerpFunc = params.customLerpFunc || _Lerps__WEBPACK_IMPORTED_MODULE_1__.Lerps.getLerpFunc(params.initValue);
+        var lerpFunc = params.customLerpFunc || _Lerps__WEBPACK_IMPORTED_MODULE_2__.Lerps.getLerpFunc(params.initValue);
         var variable = {
             time: -1,
             value: params.initValue,
             startValue: params.initValue,
             goalValue: null,
-            easing: params.easing || { func: _Easings__WEBPACK_IMPORTED_MODULE_0__.Easings.sigmoid, args: 6 },
+            easing: params.easing || { func: _Easings__WEBPACK_IMPORTED_MODULE_1__.Easings.sigmoid, args: 6 },
             lerpFunc: lerpFunc,
         };
         this.variables[params.name] = variable;
@@ -58191,6 +58209,19 @@ var Animator = /** @class */ (function () {
             return null;
         }
     };
+    Animator.prototype.isAnimatingVariable = function (name, mute) {
+        if (mute === void 0) { mute = false; }
+        if (this.variables[name]) {
+            var time = this.variables[name].time;
+            return time != -1.0;
+        }
+        else {
+            if (!mute) {
+                console.warn('"' + name + '"' + ' is not exist');
+            }
+            return null;
+        }
+    };
     Animator.prototype.applyToUniforms = function (uniforms) {
         var keys = Object.keys(this.variables);
         for (var i = 0; i < keys.length; i++) {
@@ -58229,9 +58260,15 @@ var Animator = /** @class */ (function () {
         while (this.dispatchEvents.length != 0) {
             this.dispatchEvents.pop()();
         }
+        if (this._isAnimating) {
+            this.dispatchEvent({
+                type: 'update',
+                deltaTime: deltaTime
+            });
+        }
     };
     return Animator;
-}());
+}(three__WEBPACK_IMPORTED_MODULE_0__.EventDispatcher));
 
 
 
@@ -59311,10 +59348,13 @@ var Pointer = /** @class */ (function (_super) {
         _this.delta = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(NaN, NaN);
         var userAgent = navigator.userAgent;
         _this.isSP = userAgent.indexOf('iPhone') >= 0 || userAgent.indexOf('iPad') >= 0 || userAgent.indexOf('Android') >= 0 || navigator.platform == "iPad" || (navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && navigator.standalone !== undefined);
-        window.addEventListener('pointerdown', _this.touchEvent.bind(_this, "start"));
-        window.addEventListener('pointermove', _this.touchEvent.bind(_this, "move"));
-        window.addEventListener('pointerup', _this.touchEvent.bind(_this, "end"));
-        window.addEventListener("dragend", _this.touchEvent.bind(_this, "end"));
+        window.addEventListener('touchstart', _this.onTouch.bind(_this, "start"), { passive: false });
+        window.addEventListener('touchmove', _this.onTouch.bind(_this, "move"), { passive: false });
+        window.addEventListener('touchend', _this.onTouch.bind(_this, "end"), { passive: false });
+        window.addEventListener('pointerdown', _this.onPointer.bind(_this, "start"));
+        window.addEventListener('pointermove', _this.onPointer.bind(_this, "move"));
+        window.addEventListener('pointerup', _this.onPointer.bind(_this, "end"));
+        window.addEventListener("dragend", _this.onPointer.bind(_this, "end"));
         window.addEventListener("wheel", _this.wheel.bind(_this), { passive: false });
         _this.position.set(NaN, NaN);
         _this.isTouching = false;
@@ -59352,13 +59392,30 @@ var Pointer = /** @class */ (function (_super) {
         }
         this.position.set(x, y);
     };
-    Pointer.prototype.touchEvent = function (type, e) {
+    Pointer.prototype.onTouch = function (type, e) {
+        var touch = e.touches[0];
+        if (touch) {
+            this.touchEventHandler(touch.pageX, touch.pageY, type, e);
+        }
+        else {
+            if (type == 'end') {
+                this.touchEventHandler(NaN, NaN, type, e);
+            }
+        }
+    };
+    Pointer.prototype.onPointer = function (type, e) {
+        if (e.pointerType == 'mouse' && (e.button == -1 || e.button == 0)) {
+            this.touchEventHandler(e.pageX, e.pageY, type, e);
+        }
+    };
+    Pointer.prototype.touchEventHandler = function (posX, posY, type, e) {
         var dispatch = false;
-        var x = e.pageX - window.pageXOffset;
-        var y = e.pageY - window.pageYOffset;
+        var x = posX - window.pageXOffset;
+        var y = posY - window.pageYOffset;
         if (type == "start") {
             this.isTouching = true;
             this.setPos(x, y);
+            this.delta.set(0, 0);
             dispatch = true;
         }
         else if (type == "move") {
@@ -59405,23 +59462,6 @@ var Pointer = /** @class */ (function (_super) {
         }
         if (this.lethargy.check(e)) {
             trackpadDelta = delta;
-        }
-        else {
-            var d = delta - this.trackpadMemDelta;
-            if (Math.abs(d) > 50) {
-                this.trackpadMemDelta = d;
-                trackpadDelta = delta;
-                this.trackpadMax = true;
-            }
-            else if (d == 0) {
-                if (this.trackpadMax) {
-                    trackpadDelta = delta;
-                }
-            }
-            else if (d < 0) {
-                this.trackpadMax = false;
-            }
-            this.trackpadMemDelta = (delta);
         }
         this.dispatchEvent({
             type: 'wheel',
@@ -59731,7 +59771,7 @@ var UniformsLib;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev7\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
+module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev8\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
 
 /***/ })
 

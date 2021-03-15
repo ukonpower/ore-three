@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
@@ -20,7 +21,7 @@ export declare interface AnimatorValiableParams<T> {
 	customLerpFunc?: LerpFunc<T>;
 }
 
-export class Animator {
+export class Animator extends THREE.EventDispatcher {
 
 	protected variables: { [ key: string ]: AnimatorVariable<any> };
 	protected _isAnimating: boolean = false;
@@ -28,6 +29,8 @@ export class Animator {
 	protected dispatchEvents: Function[] = [];
 
 	constructor() {
+
+		super();
 
 		this.variables = {};
 
@@ -297,6 +300,15 @@ export class Animator {
 		while ( this.dispatchEvents.length != 0 ) {
 
 			this.dispatchEvents.pop()();
+
+		}
+
+		if ( this._isAnimating ) {
+
+			this.dispatchEvent( {
+				type: 'update',
+				deltaTime: deltaTime
+			} );
 
 		}
 

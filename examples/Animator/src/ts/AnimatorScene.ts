@@ -45,6 +45,12 @@ export class AnimatorScene extends ORE.BaseLayer {
 		this.startPosAnimation();
 		this.startRotAnimation();
 
+		this.animator.addEventListener( 'update', ( deltaTime ) => {
+
+			console.log( 'update', this.animator.get( 'pos' ) );
+
+		} );
+
 	}
 
 	private startPosAnimation() {
@@ -53,7 +59,7 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 			this.animator.animate( 'pos', new THREE.Vector3( - 1.0, 0.0, 0.0 ), 1.0, () => {
 
-				this.startPosAnimation();
+				// this.startPosAnimation();
 
 			} );
 
@@ -67,7 +73,7 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 			this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0.0 ) ), 1.0, () => {
 
-				this.startRotAnimation();
+				// this.startRotAnimation();
 
 			} );
 
