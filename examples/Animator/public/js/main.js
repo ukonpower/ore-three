@@ -52705,15 +52705,15 @@ var AnimatorScene = /** @class */ (function (_super) {
         });
         this.startPosAnimation();
         this.startRotAnimation();
-        this.animator.addEventListener('update', function (deltaTime) {
-            console.log('update', _this.animator.get('pos'));
+        this.animator.addEventListener('update/rot', function (deltaTime) {
+            console.log('update/rot', _this.animator.get('rot'));
         });
     };
     AnimatorScene.prototype.startPosAnimation = function () {
         var _this = this;
         this.animator.animate('pos', new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(1.0, 0.0, 0.0), 1.0, function () {
             _this.animator.animate('pos', new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(-1.0, 0.0, 0.0), 1.0, function () {
-                // this.startPosAnimation();
+                _this.startPosAnimation();
             });
         });
     };
@@ -52721,7 +52721,7 @@ var AnimatorScene = /** @class */ (function (_super) {
         var _this = this;
         this.animator.animate('rot', new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(0, 0, -Math.PI)), 1.0, function () {
             _this.animator.animate('rot', new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(0, 0, 0.0)), 1.0, function () {
-                // this.startRotAnimation();
+                _this.startRotAnimation();
             });
         });
     };
@@ -53339,6 +53339,10 @@ var Animator = /** @class */ (function (_super) {
                     t = variable.easing.func(t, variable.easing.args);
                 }
                 variable.value = variable.lerpFunc(variable.startValue, variable.goalValue, t);
+                this.dispatchEvent({
+                    type: 'update/' + keys[i],
+                    deltaTime: deltaTime
+                });
                 if (variable.time == 1.0) {
                     variable.value = variable.goalValue;
                 }
@@ -54858,7 +54862,7 @@ var UniformsLib;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev7\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
+module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev8\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
 
 /***/ })
 
