@@ -3,13 +3,14 @@ import { Uniforms } from '../utils/Uniforms';
 import { PointerEventArgs } from './Controller';
 export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
     name: string;
-    canvas: HTMLCanvasElement;
+    canvas?: HTMLCanvasElement;
     aspect?: AspectInfo;
     wrapperElement?: HTMLElement;
     wrapperElementRect?: DOMRect;
 }
 export declare interface LayerInfo extends LayerBindParam {
-    size?: LayerSize;
+    size: LayerSize;
+    aspect: AspectInfo;
 }
 export declare interface LayerSize {
     canvasAspectRatio: number;
@@ -26,7 +27,7 @@ export declare interface AspectInfo {
     wideWeight: number;
 }
 export declare interface TouchEventArgs {
-    event?: PointerEvent;
+    event: PointerEvent;
     position: THREE.Vector2;
     delta: THREE.Vector2;
     normalizedPosition: THREE.Vector2;
@@ -34,7 +35,7 @@ export declare interface TouchEventArgs {
 }
 export declare class BaseLayer extends THREE.EventDispatcher {
     info: LayerInfo;
-    renderer: THREE.WebGLRenderer;
+    renderer?: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
     protected readyAnimate: boolean;

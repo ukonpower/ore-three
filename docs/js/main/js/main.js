@@ -56791,6 +56791,7 @@ var AssetManager = /** @class */ (function () {
         var _this = this;
         this.mustAssetsLoaded = false;
         this.subAssetsLoaded = false;
+        this.onMustAssetsLoaded = null;
         this.textures = {};
         this.mustLoadingManager = new three__WEBPACK_IMPORTED_MODULE_0__.LoadingManager(function () {
             _this.mustAssetsLoaded = true;
@@ -56841,18 +56842,26 @@ var AssetManager = /** @class */ (function () {
             var loader = new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader(manager);
             loader.crossOrigin = 'use-credentials';
             loader.load(info.path, function (tex) {
-                if (info.param) {
-                    var keys = Object.keys(info.param);
-                    for (var i_1 = 0; i_1 < keys.length; i_1++) {
-                        tex[keys[i_1]] = info.param[keys[i_1]];
-                    }
-                }
+                _this.applyParam(tex, info.param);
                 _this.textures[info.name].value = tex;
             });
         };
         var this_1 = this;
         for (var i = 0; i < infos.length; i++) {
             _loop_1(i);
+        }
+    };
+    AssetManager.prototype.applyParam = function (tex, param) {
+        if (param) {
+            tex.mapping = param.mapping || three__WEBPACK_IMPORTED_MODULE_0__.Texture.DEFAULT_MAPPING;
+            tex.wrapS = param.wrapS || three__WEBPACK_IMPORTED_MODULE_0__.ClampToEdgeWrapping;
+            tex.wrapT = param.wrapT || three__WEBPACK_IMPORTED_MODULE_0__.ClampToEdgeWrapping;
+            tex.magFilter = param.magFilter || three__WEBPACK_IMPORTED_MODULE_0__.LinearFilter;
+            tex.minFilter = param.minFilter || three__WEBPACK_IMPORTED_MODULE_0__.LinearFilter;
+            tex.format = param.format || three__WEBPACK_IMPORTED_MODULE_0__.RGBAFormat;
+            tex.type = param.type || three__WEBPACK_IMPORTED_MODULE_0__.UnsignedByteType;
+            tex.anisotropy = param.anisotropy || 1;
+            tex.encoding = param.encoding || three__WEBPACK_IMPORTED_MODULE_0__.LinearEncoding;
         }
     };
     return AssetManager;
@@ -56887,7 +56896,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var MainObj = /** @class */ (function () {
     function MainObj(parentUniforms) {
-        this.obj;
         var customUni = {
             time: {
                 value: 0
@@ -56899,10 +56907,9 @@ var MainObj = /** @class */ (function () {
         var std = three__WEBPACK_IMPORTED_MODULE_0__.ShaderLib.standard;
         this.commonUniforms = three__WEBPACK_IMPORTED_MODULE_0__.UniformsUtils.merge([customUni, std.uniforms]);
         this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, parentUniforms);
-        this.createMesh();
-    }
-    MainObj.prototype.createMesh = function () {
         this.obj = new three__WEBPACK_IMPORTED_MODULE_0__.Object3D();
+        if (window.oreDocsAssetManager.gltfScene == null)
+            return;
         var cubeGeo = window.oreDocsAssetManager.gltfScene.getObjectByName('Cube').geometry.clone();
         var cubeUni = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(this.commonUniforms, {
             num: {
@@ -56959,13 +56966,15 @@ var MainObj = /** @class */ (function () {
         });
         var face = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(faceGeo, faceMat);
         this.obj.add(face);
-    };
+    }
     MainObj.prototype.update = function (time) {
         this.commonUniforms.time.value = time;
     };
     MainObj.prototype.setPointer = function (point) {
-        var p = point.sub(this.obj.position);
-        this.commonUniforms.pointer.value = p;
+        if (this.obj) {
+            var p = point.sub(this.obj.position);
+            this.commonUniforms.pointer.value = p;
+        }
     };
     return MainObj;
 }());
@@ -57050,9 +57059,12 @@ var MainScene = /** @class */ (function (_super) {
             document.body.setAttribute('data-useScroller', 'false');
             _this.initScene();
         }
-        document.querySelector('.ui-menu-button').addEventListener('click', function (e) {
-            document.body.setAttribute('data-menu-open', document.body.getAttribute('data-menu-open') == 'true' ? 'false' : 'true');
-        });
+        var menuButtonElm = document.querySelector('.ui-menu-button');
+        if (menuButtonElm) {
+            menuButtonElm.addEventListener('click', function (e) {
+                document.body.setAttribute('data-menu-open', document.body.getAttribute('data-menu-open') == 'true' ? 'false' : 'true');
+            });
+        }
         return _this;
     }
     MainScene.prototype.onBind = function (info) {
@@ -57064,7 +57076,9 @@ var MainScene = /** @class */ (function (_super) {
         dLight.intensity = 0.7;
         dLight.position.set(0.1, 10, 2);
         this.scene.add(dLight);
-        this.renderPipeline = new _RenderPipeline__WEBPACK_IMPORTED_MODULE_5__.RenderPipeline(this.renderer);
+        if (this.renderer) {
+            this.renderPipeline = new _RenderPipeline__WEBPACK_IMPORTED_MODULE_5__.RenderPipeline(this.renderer);
+        }
     };
     MainScene.prototype.initScene = function () {
         if (!this.isExamplePage) {
@@ -57082,25 +57096,39 @@ var MainScene = /** @class */ (function (_super) {
         this.scrollManager = new _ScrollManager__WEBPACK_IMPORTED_MODULE_3__.ScrollManager(this);
     };
     MainScene.prototype.animate = function (deltaTime) {
-        if (!this.isExamplePage && this.assetManager.isLoaded) {
-            this.scrollManager.scroller.update(deltaTime);
-            this.scrollManager.timeline.update(this.scrollManager.scroller.scrollTimelinePercentage);
-            this.commonUniforms.objTransform.value = this.scrollManager.timeline.get('objTransform');
-            this.commonUniforms.objSelector.value = this.scrollManager.timeline.get('objSelector');
-            this.commonUniforms.dark.value = this.scrollManager.timeline.get('dark');
-            this.camera.position.copy(this.scrollManager.timeline.get('camPos'));
-            this.camera.quaternion.copy(this.scrollManager.timeline.get('camRot'));
-            this.camera.position.x *= this.spWeight;
-            this.mainObj.update(this.time);
+        if (!this.isExamplePage) {
+            if (this.assetManager && this.assetManager.isLoaded) {
+                if (this.scrollManager && this.scrollManager.scroller && this.scrollManager.timeline) {
+                    this.scrollManager.scroller.update(deltaTime);
+                    this.scrollManager.timeline.update(this.scrollManager.scroller.scrollTimelinePercentage);
+                    this.commonUniforms.objTransform.value = this.scrollManager.timeline.get('objTransform');
+                    this.commonUniforms.objSelector.value = this.scrollManager.timeline.get('objSelector');
+                    this.commonUniforms.dark.value = this.scrollManager.timeline.get('dark');
+                    var pos = this.scrollManager.timeline.get('camPos');
+                    var rot = this.scrollManager.timeline.get('camRot');
+                    if (pos && rot) {
+                        this.camera.position.copy(pos);
+                        this.camera.quaternion.copy(rot);
+                    }
+                }
+                this.camera.position.x *= this.spWeight;
+                if (this.mainObj) {
+                    this.mainObj.update(this.time);
+                }
+            }
         }
-        this.renderPipeline.render(this.scene, this.camera);
+        if (this.renderPipeline) {
+            this.renderPipeline.render(this.scene, this.camera);
+        }
     };
     MainScene.prototype.onResize = function () {
         _super.prototype.onResize.call(this);
         this.spWeight = Math.min(1.0, Math.max(0.0, (this.info.size.windowSize.x - 500) / 1000));
         this.commonUniforms.spWeight.value = this.spWeight;
         this.background && this.background.resize(this.info.size);
-        this.renderPipeline.resize(this.info.size.canvasPixelSize);
+        if (this.renderPipeline) {
+            this.renderPipeline.resize(this.info.size.canvasPixelSize);
+        }
     };
     MainScene.prototype.onWheel = function (e, trackPadDelta) {
         this.scrollManager && this.scrollManager.scroller.scroll(trackPadDelta);
@@ -57163,17 +57191,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var RenderPipeline = /** @class */ (function () {
     function RenderPipeline(renderer, bloomResolutionRatio, bloomRenderCount, parentUniforms) {
+        var _this = this;
         if (bloomResolutionRatio === void 0) { bloomResolutionRatio = 0.5; }
         if (bloomRenderCount === void 0) { bloomRenderCount = 5; }
         this.renderer = renderer;
         this.bloomResolutionRatio = bloomResolutionRatio;
         this.bloomRenderCount = bloomRenderCount;
         this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(parentUniforms, {});
-        this.initRenderTargets();
-        this.initInputTextures();
-        this.initPostProcessings();
-    }
-    RenderPipeline.prototype.initRenderTargets = function () {
         this.renderTargets = {
             rt1: new three__WEBPACK_IMPORTED_MODULE_0__.WebGLRenderTarget(0, 0, {
                 stencilBuffer: false,
@@ -57213,9 +57237,6 @@ var RenderPipeline = /** @class */ (function () {
                 magFilter: three__WEBPACK_IMPORTED_MODULE_0__.LinearFilter
             });
         }
-    };
-    RenderPipeline.prototype.initInputTextures = function () {
-        var _this = this;
         this.inputTextures = {
             areaTex: {
                 value: null
@@ -57242,8 +57263,6 @@ var RenderPipeline = /** @class */ (function () {
             tex.flipY = false;
             _this.inputTextures.searchTex.value = tex;
         });
-    };
-    RenderPipeline.prototype.initPostProcessings = function () {
         /*------------------------
             Bloom
         ------------------------*/
@@ -57329,7 +57348,7 @@ var RenderPipeline = /** @class */ (function () {
                 RENDER_COUNT: this.bloomRenderCount.toString()
             }
         });
-    };
+    }
     RenderPipeline.prototype.render = function (scene, camera) {
         /*------------------------
             Scene
@@ -57377,13 +57396,11 @@ var RenderPipeline = /** @class */ (function () {
         ------------------------*/
         var compositeInputRenderTargets = {
             sceneTex: this.renderTargets.rt2.texture,
-            bloomTexs: null
+            bloomTexs: []
         };
-        var bloomTexArray = [];
         for (var i = 0; i < this.bloomRenderCount; i++) {
-            bloomTexArray.push(this.renderTargets['rtBlur' + i.toString() + '_1'].texture);
+            compositeInputRenderTargets.bloomTexs.push(this.renderTargets['rtBlur' + i.toString() + '_1'].texture);
         }
-        compositeInputRenderTargets.bloomTexs = bloomTexArray;
         this.compositePP.render(compositeInputRenderTargets, null);
         this.renderer.autoClear = true;
     };
@@ -57429,13 +57446,14 @@ var ScrollManager = /** @class */ (function () {
     function ScrollManager(scene, parentUniforms) {
         this.mainScene = scene;
         this.commonUniforms = _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.UniformsLib.mergeUniforms(parentUniforms, {});
-        this.initScroller();
-        this.initTimeline();
-    }
-    ScrollManager.prototype.initScroller = function () {
-        this.scroller = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScroller(document.querySelector('.transform-container'));
-        this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
-            element: document.querySelector('.mainVis'),
+        var container = document.querySelector('.transform-container');
+        var mainVisElm = document.querySelector('.mainVis');
+        var about = document.querySelector('.about');
+        var usage = document.querySelector('.usage');
+        var face = document.querySelector('.face');
+        this.scroller = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScroller(container);
+        var secMain = this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
+            element: mainVisElm,
             name: "mainVis",
             events: {
                 onArrivals: [
@@ -57459,50 +57477,48 @@ var ScrollManager = /** @class */ (function () {
             },
             stop: true
         }));
-        this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
-            element: document.querySelector('.about'),
+        var secAbout = this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
+            element: about,
             name: "about",
             stop: false
         }));
-        this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
-            element: document.querySelector('.usage'),
+        var secUsage = this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
+            element: usage,
             name: "usage",
             stop: false
         }));
-        this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
-            element: document.querySelector('.face'),
+        var secFace = this.scroller.add(new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.PageScrollerSection({
+            element: face,
             name: "face",
             bottom: true,
             stop: false
         }));
-    };
-    ScrollManager.prototype.initTimeline = function () {
         this.timeline = new _ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.TimelineAnimator();
         this.timeline.add({
             name: 'camPos',
             keyframes: [
                 {
-                    time: this.scroller.get('mainVis').timelinePercentage,
+                    time: secMain.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(0, 1.5, 4)
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage,
+                    time: secAbout.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(-1.2, 1.5, 4)
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage * 1.1,
+                    time: secAbout.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(-1.2, 1.5, 4)
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage,
+                    time: secUsage.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(1.3, 1.5, 4)
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage * 1.1,
+                    time: secUsage.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(1.2, 1.5, 4)
                 },
                 {
-                    time: this.scroller.get('face').timelinePercentage,
+                    time: secFace.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(0, 0, 4)
                 },
             ],
@@ -57515,27 +57531,27 @@ var ScrollManager = /** @class */ (function () {
             name: 'camRot',
             keyframes: [
                 {
-                    time: this.scroller.get('mainVis').timelinePercentage,
+                    time: secMain.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(-0.32, 0, 0))
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage,
+                    time: secAbout.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(-0.32, 0, 0))
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage * 1.1,
+                    time: secAbout.timelinePercentage * 1.1,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(-0.32, 0, 0))
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage,
+                    time: secUsage.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(-0.32, 0, 0))
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage * 1.1,
+                    time: secUsage.timelinePercentage * 1.1,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(-0.32, 0, 0))
                 },
                 {
-                    time: this.scroller.get('face').timelinePercentage,
+                    time: secFace.timelinePercentage,
                     value: new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(-0.0, 0, 0))
                 },
             ],
@@ -57548,31 +57564,31 @@ var ScrollManager = /** @class */ (function () {
             name: 'objTransform',
             keyframes: [
                 {
-                    time: this.scroller.get('mainVis').timelinePercentage,
+                    time: secMain.timelinePercentage,
                     value: 0.0
                 },
                 {
-                    time: (this.scroller.get('mainVis').timelinePercentage + this.scroller.get('about').timelinePercentage) / 2,
+                    time: (secMain.timelinePercentage + secAbout.timelinePercentage) / 2,
                     value: 1.0
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage,
+                    time: secAbout.timelinePercentage,
                     value: 0.0
                 },
                 {
-                    time: (this.scroller.get('about').timelinePercentage + this.scroller.get('usage').timelinePercentage) / 2,
+                    time: (secAbout.timelinePercentage + secUsage.timelinePercentage) / 2,
                     value: 1.0
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage,
+                    time: secUsage.timelinePercentage,
                     value: 0.0
                 },
                 {
-                    time: (this.scroller.get('usage').timelinePercentage + this.scroller.get('face').timelinePercentage) / 2,
+                    time: (secUsage.timelinePercentage + secFace.timelinePercentage) / 2,
                     value: 1.0
                 },
                 {
-                    time: this.scroller.get('face').timelinePercentage,
+                    time: secFace.timelinePercentage,
                     value: 0.2
                 },
             ],
@@ -57585,31 +57601,31 @@ var ScrollManager = /** @class */ (function () {
             name: 'objSelector',
             keyframes: [
                 {
-                    time: this.scroller.get('mainVis').timelinePercentage,
+                    time: secMain.timelinePercentage,
                     value: 0.0
                 },
                 {
-                    time: (this.scroller.get('mainVis').timelinePercentage + this.scroller.get('about').timelinePercentage) / 2,
+                    time: (secMain.timelinePercentage + secAbout.timelinePercentage) / 2,
                     value: 0.0
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage,
+                    time: secAbout.timelinePercentage,
                     value: 1.0
                 },
                 {
-                    time: (this.scroller.get('about').timelinePercentage + this.scroller.get('usage').timelinePercentage) / 2,
+                    time: (secAbout.timelinePercentage + secUsage.timelinePercentage) / 2,
                     value: 1.0
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage,
+                    time: secUsage.timelinePercentage,
                     value: 2.0
                 },
                 {
-                    time: (this.scroller.get('usage').timelinePercentage + this.scroller.get('face').timelinePercentage) / 2,
+                    time: (secUsage.timelinePercentage + secFace.timelinePercentage) / 2,
                     value: 2.0
                 },
                 {
-                    time: this.scroller.get('face').timelinePercentage,
+                    time: secFace.timelinePercentage,
                     value: 3.0
                 },
             ],
@@ -57622,19 +57638,19 @@ var ScrollManager = /** @class */ (function () {
             name: 'dark',
             keyframes: [
                 {
-                    time: this.scroller.get('mainVis').timelinePercentage,
+                    time: secMain.timelinePercentage,
                     value: 0
                 },
                 {
-                    time: this.scroller.get('about').timelinePercentage,
+                    time: secAbout.timelinePercentage,
                     value: 1.0
                 },
                 {
-                    time: this.scroller.get('usage').timelinePercentage,
+                    time: secUsage.timelinePercentage,
                     value: 1.0
                 },
                 {
-                    time: this.scroller.get('face').timelinePercentage,
+                    time: secFace.timelinePercentage,
                     value: 0
                 },
             ],
@@ -57643,7 +57659,7 @@ var ScrollManager = /** @class */ (function () {
                 args: 4
             }
         });
-    };
+    }
     return ScrollManager;
 }());
 
@@ -57727,9 +57743,6 @@ var BaseLayer = /** @class */ (function (_super) {
         _this.time = 0;
         _this.info = {
             name: '',
-            canvas: null,
-            wrapperElement: null,
-            wrapperElementRect: null,
             aspect: {
                 mainAspect: 16 / 9,
                 wideAspect: 10 / 1,
@@ -57769,6 +57782,7 @@ var BaseLayer = /** @class */ (function (_super) {
         this.info.wrapperElement = layerInfo.wrapperElement;
         this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
             this.info.aspect = layerInfo.aspect || this.info.aspect;
+        this.info.alpha = layerInfo.alpha;
         this.renderer = new three__WEBPACK_IMPORTED_MODULE_0__.WebGLRenderer(this.info);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.debug.checkShaderErrors = true;
@@ -57785,8 +57799,8 @@ var BaseLayer = /** @class */ (function (_super) {
         var length = object.children.length;
         for (var i = length - 1; i >= 0; i--) {
             this.removeChildrens(object.children[i]);
-            var geo = void 0;
-            var mat = void 0;
+            var geo = undefined;
+            var mat = undefined;
             if (object.children[i].isMesh) {
                 geo = object.children[i].geometry;
                 mat = object.children[i].material;
@@ -57801,6 +57815,8 @@ var BaseLayer = /** @class */ (function (_super) {
         }
     };
     BaseLayer.prototype.onResize = function () {
+        if (this.renderer == null)
+            return;
         var newWindowSize = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(window.innerWidth, window.innerHeight);
         var newCanvasSize = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
         if (this.info.wrapperElement) {
@@ -57817,10 +57833,10 @@ var BaseLayer = /** @class */ (function (_super) {
         this.info.size.windowAspectRatio = newWindowSize.x / newWindowSize.y;
         this.info.size.canvasSize.copy(newCanvasSize);
         this.info.size.canvasPixelSize.copy(newCanvasSize.clone().multiplyScalar(this.renderer.getPixelRatio()));
-        this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y,
-            this.info.aspect.portraitWeight = portraitWeight,
-            this.info.aspect.wideWeight = wideWeight,
-            this.renderer.setSize(this.info.size.canvasSize.x, this.info.size.canvasSize.y);
+        this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y;
+        this.info.aspect.portraitWeight = portraitWeight;
+        this.info.aspect.wideWeight = wideWeight;
+        this.renderer.setSize(this.info.size.canvasSize.x, this.info.size.canvasSize.y);
         this.camera.aspect = this.info.size.canvasAspectRatio;
         this.camera.updateProjectionMatrix();
         if (this.info.wrapperElement) {
@@ -58225,7 +58241,10 @@ var Animator = /** @class */ (function (_super) {
     Animator.prototype.applyToUniforms = function (uniforms) {
         var keys = Object.keys(this.variables);
         for (var i = 0; i < keys.length; i++) {
-            uniforms[keys[i]] = this.getVariableObject(keys[i]);
+            var variable = this.getVariableObject(keys[i]);
+            if (variable) {
+                uniforms[keys[i]] = variable;
+            }
         }
     };
     Animator.prototype.update = function (deltaTime) {
@@ -58235,34 +58254,43 @@ var Animator = /** @class */ (function (_super) {
         var keys = Object.keys(this.variables);
         for (var i = 0; i < keys.length; i++) {
             var variable = this.variables[keys[i]];
-            if (variable.time == 1.0) {
+            var time = variable.time;
+            if (time == 1.0) {
                 this.animatingCount--;
-                variable.time = -1;
+                time = -1;
                 if (variable.onAnimationFinished) {
                     this.dispatchEvents.push(variable.onAnimationFinished);
                 }
             }
-            if (variable.time >= 0.0 && variable.time < 1.0) {
-                variable.time += (deltaTime || 0.016) / variable.duration;
-                if (variable.duration == 0 || variable.time >= 1.0) {
-                    variable.time = 1.0;
+            if (time >= 0.0 && time < 1.0) {
+                var duration = variable.duration;
+                var easing = variable.easing;
+                var lerpFunc = variable.lerpFunc;
+                if (duration) {
+                    time += (deltaTime || 0.016) / duration;
+                    if (duration == 0 || time >= 1.0) {
+                        time = 1.0;
+                    }
                 }
-                var t = variable.time;
-                if (variable.easing) {
-                    t = variable.easing.func(t, variable.easing.args);
+                var t = time;
+                t = easing.func(t, easing.args);
+                if (lerpFunc) {
+                    variable.value = lerpFunc(variable.startValue, variable.goalValue, t);
                 }
-                variable.value = variable.lerpFunc(variable.startValue, variable.goalValue, t);
                 this.dispatchEvent({
                     type: 'update/' + keys[i],
                     deltaTime: deltaTime
                 });
-                if (variable.time == 1.0) {
+                if (time == 1.0) {
                     variable.value = variable.goalValue;
                 }
             }
         }
         while (this.dispatchEvents.length != 0) {
-            this.dispatchEvents.pop()();
+            var func = this.dispatchEvents.pop();
+            if (func) {
+                func();
+            }
         }
         if (this._isAnimating) {
             this.dispatchEvent({
@@ -58669,8 +58697,8 @@ var GPUComputationController = /** @class */ (function () {
             stencilBuffer: false,
             depthBuffer: false
         };
-        var initTex;
-        var customParam;
+        var initTex = null;
+        var customParam = null;
         if (initTex_texParam) {
             if (initTex_texParam.isDataTexture) {
                 initTex = initTex_texParam;
@@ -58781,8 +58809,8 @@ var LayoutController = /** @class */ (function () {
         this.baseTransform = {
             position: this.obj.position.clone(),
             rotation: this.obj.quaternion.clone(),
+            scale: this.obj.scale.clone()
         };
-        this.baseScale = this.obj.scale.clone();
         this.transform = transform;
         if (!isAbsolutePosition) {
             this.transform.position && this.transform.position.add(this.obj.position);
@@ -58797,7 +58825,7 @@ var LayoutController = /** @class */ (function () {
             this.obj.quaternion.copy(this.baseTransform.rotation.clone().slerp(this.transform.rotation, weight));
         }
         if (this.transform.scale) {
-            this.obj.scale.copy(this.baseScale.clone().multiplyScalar(this.transform.scale * (weight) + 1.0 - weight));
+            this.obj.scale.copy(this.baseTransform.scale.clone().multiplyScalar(this.transform.scale * (weight) + 1.0 - weight));
         }
     };
     return LayoutController;
@@ -58941,6 +58969,7 @@ var PageScrollerSection = /** @class */ (function () {
         this.timelinePercentage = 0;
         this.name = params.name;
         this.element = params.element;
+        this.rect = this.element.getBoundingClientRect();
         this.stop = params.stop;
         this.events = params.events;
         this.bottom = params.bottom;
@@ -59001,6 +59030,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var PageScroller = /** @class */ (function () {
     function PageScroller(parentElement) {
+        this.isAutoMove = false;
         this.delaySpeed = 0.1;
         this.dragDelaySpeed = 0.4;
         this.isTouching = false;
@@ -59008,16 +59038,19 @@ var PageScroller = /** @class */ (function () {
         this.scrollReady = false;
         this.sumDelta = 0;
         this._scrollPos = 0;
+        this._scrollPosMem = 0;
         this._scrollPercentage = 0;
         this._scrollPosDelay = 0;
         this._scrollPercentageDelay = 0;
         this.dragStop = false;
         this.dragUnlockReady = true;
         this.parentElement = parentElement;
+        this.parentElementHeight = parentElement.getBoundingClientRect().height;
         this.sections = [];
-        this.initAnimator();
-    }
-    PageScroller.prototype.initAnimator = function () {
+        this.caughtSection = null;
+        /*------------------------
+            init Animator
+        ------------------------*/
         this.animator = new _Animator__WEBPACK_IMPORTED_MODULE_1__.Animator();
         this.animator.add({
             name: 'scrollPos',
@@ -59027,7 +59060,7 @@ var PageScroller = /** @class */ (function () {
                 args: 4
             }
         });
-    };
+    }
     Object.defineProperty(PageScroller.prototype, "scrollPos", {
         get: function () {
             return this._scrollPos;
@@ -59078,6 +59111,7 @@ var PageScroller = /** @class */ (function () {
     PageScroller.prototype.add = function (section) {
         this.sections.push(section);
         this.sortSections();
+        return section;
     };
     PageScroller.prototype.sortSections = function () {
         this.sections.sort(function (a, b) {
@@ -59109,7 +59143,10 @@ var PageScroller = /** @class */ (function () {
     PageScroller.prototype.updateAutoMove = function (deltaTime) {
         this.animator.update(deltaTime);
         if (this.isAutoMove) {
-            this.sumDelta = this.animator.get('scrollPos') - this.scrollPos;
+            var pos = this.animator.get('scrollPos');
+            if (pos) {
+                this.sumDelta = pos - this.scrollPos;
+            }
         }
     };
     PageScroller.prototype.addScrollPos = function () {
@@ -59194,17 +59231,18 @@ var PageScroller = /** @class */ (function () {
                 scrollDelta: scrollDelta,
                 scrollPower: Math.abs(scrollDelta),
             };
-            var arrivalEvents = section.events.onArrivals && section.events.onArrivals.length || 0;
-            for (var i = 0; i < arrivalEvents; i++) {
-                var arrivalEvent = section.events.onArrivals[i];
-                var isThrow = this.checkThrowLine(percentage, movedPercentage, arrivalEvent.percentage);
-                if (isThrow != 0) {
-                    arrivalEvent.event.common && arrivalEvent.event.common(args);
-                    if (isThrow < 0) {
-                        arrivalEvent.event.up && arrivalEvent.event.up(args);
-                    }
-                    else {
-                        arrivalEvent.event.down && arrivalEvent.event.down(args);
+            if (section.events.onArrivals) {
+                for (var i = 0; i < section.events.onArrivals.length; i++) {
+                    var arrivalEvent = section.events.onArrivals[i];
+                    var isThrow = this.checkThrowLine(percentage, movedPercentage, arrivalEvent.percentage);
+                    if (isThrow != 0) {
+                        arrivalEvent.event.common && arrivalEvent.event.common(args);
+                        if (isThrow < 0) {
+                            arrivalEvent.event.up && arrivalEvent.event.up(args);
+                        }
+                        else {
+                            arrivalEvent.event.down && arrivalEvent.event.down(args);
+                        }
                     }
                 }
             }
@@ -59274,7 +59312,7 @@ var PageScroller = /** @class */ (function () {
     };
     PageScroller.prototype.autoMove = function (param) {
         var _this = this;
-        var targetPos;
+        var targetPos = 0;
         if (param.target.isPageScrollerSection) {
             var target = param.target;
             var bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
@@ -59282,8 +59320,10 @@ var PageScroller = /** @class */ (function () {
         }
         else if (typeof param.target == 'string') {
             var target = this.get(param.target);
-            var bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
-            targetPos = target.element.offsetTop + bottomOffset;
+            if (target) {
+                var bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
+                targetPos = target.element.offsetTop + bottomOffset;
+            }
         }
         else if (typeof param.target == 'number') {
             targetPos = param.target;
@@ -59312,7 +59352,7 @@ var PageScroller = /** @class */ (function () {
 /*! namespace exports */
 /*! export Pointer [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -59321,10 +59361,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Pointer": () => /* binding */ Pointer
 /* harmony export */ });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var lethargy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lethargy */ "./node_modules/lethargy/lethargy.js");
-/* harmony import */ var lethargy__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lethargy__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var to_px__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! to-px */ "./node_modules/to-px/browser.js");
-/* harmony import */ var to_px__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(to_px__WEBPACK_IMPORTED_MODULE_2__);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -59339,15 +59375,15 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
-
-
+var Lethargy = __webpack_require__(/*! lethargy */ "./node_modules/lethargy/lethargy.js").Lethargy;
+var toPx = __webpack_require__(/*! to-px */ "./node_modules/to-px/browser.js");
 var Pointer = /** @class */ (function (_super) {
     __extends(Pointer, _super);
     function Pointer() {
         var _this = _super.call(this) || this;
         _this.trackpadMemDelta = 0;
         _this.trackpadMax = false;
-        _this.lethargy = new lethargy__WEBPACK_IMPORTED_MODULE_1__.Lethargy(7, 0, 0.05);
+        _this.lethargy = new Lethargy(7, 0, 0.05);
         _this.position = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(NaN, NaN);
         _this.delta = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(NaN, NaN);
         var userAgent = navigator.userAgent;
@@ -59376,9 +59412,8 @@ var Pointer = /** @class */ (function (_super) {
     };
     Pointer.prototype.getRelativePosition = function (elm, normalize) {
         var rect = elm.getClientRects()[0];
-        var pos;
-        var x = pos.x - rect.left;
-        var y = pos.y - rect.top;
+        var x = this.position.x - rect.left;
+        var y = this.position.y - rect.top;
         if (normalize) {
             x /= rect.width;
             y /= rect.height;
@@ -59408,7 +59443,13 @@ var Pointer = /** @class */ (function (_super) {
         }
     };
     Pointer.prototype.onPointer = function (type, e) {
-        if (e.pointerType == 'mouse' && (e.button == -1 || e.button == 0)) {
+        var pointerType = e.pointerType;
+        if (pointerType != null) {
+            if (pointerType == 'mouse' && (e.button == -1 || e.button == 0)) {
+                this.touchEventHandler(e.pageX, e.pageY, type, e);
+            }
+        }
+        else {
             this.touchEventHandler(e.pageX, e.pageY, type, e);
         }
     };
@@ -59458,7 +59499,7 @@ var Pointer = /** @class */ (function (_super) {
         var trackpadDelta = 0;
         switch (e.deltaMode) {
             case e.DOM_DELTA_LINE:
-                delta *= to_px__WEBPACK_IMPORTED_MODULE_2___default()('ex', window) * 2.5;
+                delta *= toPx('ex', window) * 2.5;
                 break;
             case e.DOM_DELTA_PAGE:
                 delta *= window.innerHeight;
@@ -59500,26 +59541,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var PostProcessing = /** @class */ (function () {
-    function PostProcessing(renderer, material) {
+    function PostProcessing(renderer, ppParam) {
         this.renderer = renderer;
         this.scene = new three__WEBPACK_IMPORTED_MODULE_0__.Scene();
         this.camera = new three__WEBPACK_IMPORTED_MODULE_0__.OrthographicCamera(-1.0, 1.0, 1.0, -1.0);
         this.screen = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(new three__WEBPACK_IMPORTED_MODULE_0__.PlaneBufferGeometry(2, 2));
         this.scene.add(this.screen);
-        this.createMaterials(material);
-    }
-    PostProcessing.prototype.createMaterials = function (params) {
-        var param = params;
-        param.vertexShader = param.vertexShader || _shaders_passThrow_vs__WEBPACK_IMPORTED_MODULE_1__.default;
-        param.uniforms = param.uniforms || {};
-        param.uniforms.resolution = {
+        ppParam.vertexShader = ppParam.vertexShader || _shaders_passThrow_vs__WEBPACK_IMPORTED_MODULE_1__.default;
+        ppParam.uniforms = ppParam.uniforms || {};
+        ppParam.uniforms.resolution = {
             value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector2()
         };
         this.effect = {
-            material: new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial(param),
+            material: new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial(ppParam),
         };
-    };
+    }
     PostProcessing.prototype.render = function (inputRenderTargets, renderTarget) {
+        if (renderTarget === void 0) { renderTarget = null; }
         var renderTargetMem = this.renderer.getRenderTarget();
         var effect = this.effect;
         var material = effect.material;
@@ -59624,10 +59662,10 @@ var TimelineAnimator = /** @class */ (function () {
         for (var i = 0; i < keys.length; i++) {
             var valiable = this.variables[keys[i]];
             var kfs = valiable.keyframes;
-            var a = void 0;
-            var b = void 0;
+            var a = null;
+            var b = null;
             var t = Math.max(kfs[0].time, Math.min(kfs[kfs.length - 1].time, this.time));
-            var easing = void 0;
+            var easing = null;
             if (kfs.length == 1) {
                 t = kfs[0].time;
                 a = b = kfs[0];
@@ -59640,7 +59678,9 @@ var TimelineAnimator = /** @class */ (function () {
                     if (a.time <= t && t <= b.time)
                         break;
                 }
-                t = (t - a.time) / (b.time - a.time);
+                if (a != null && b != null) {
+                    t = (t - a.time) / (b.time - a.time);
+                }
             }
             if (easing) {
                 t = easing.func(t, easing.args);
@@ -59652,7 +59692,9 @@ var TimelineAnimator = /** @class */ (function () {
                 t = this.defaultEasing.func(t, this.defaultEasing.args);
             }
             if (valiable.lerpFunc) {
-                valiable.value = valiable.lerpFunc(a.value, b.value, t);
+                if (a != null && b != null) {
+                    valiable.value = valiable.lerpFunc(a.value, b.value, t);
+                }
                 if (valiable.value === false) {
                     console.log('error at ' + '"' + keys[i] + '"');
                 }
@@ -59693,7 +59735,9 @@ var UniformsLib;
         }
         var res = {};
         for (var i = 0; i < uniforms.length; i++) {
-            Object.assign(res, uniforms[i]);
+            if (uniforms[i] != undefined) {
+                Object.assign(res, uniforms[i]);
+            }
         }
         return res;
     }
@@ -59805,18 +59849,6 @@ module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.1\",\"
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

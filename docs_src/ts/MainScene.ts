@@ -10,16 +10,15 @@ import backgroundFrag from './shaders/background.fs';
 
 export class MainScene extends ORE.BaseLayer {
 
-	private mainObj: MainObj;
-
-	private background: ORE.Background;
-	private scrollManager: ScrollManager;
 	private isExamplePage: boolean = false;
 
-	private assetManager: AssetManager;
+	private scrollManager?: ScrollManager;
+	private assetManager?: AssetManager;
+	private mainObj?: MainObj;
+	private background?: ORE.Background;
 	private spWeight: number = 0.0;
 
-	private renderPipeline: RenderPipeline;
+	private renderPipeline?: RenderPipeline;
 
 	constructor() {
 
@@ -64,11 +63,17 @@ export class MainScene extends ORE.BaseLayer {
 
 		}
 
-		document.querySelector( '.ui-menu-button' ).addEventListener( 'click', ( e ) => {
+		let menuButtonElm = document.querySelector( '.ui-menu-button' ) as HTMLElement;
 
-			document.body.setAttribute( 'data-menu-open', document.body.getAttribute( 'data-menu-open' ) == 'true' ? 'false' : 'true' );
+		if ( menuButtonElm ) {
 
-		} );
+			menuButtonElm.addEventListener( 'click', ( e ) => {
+
+				document.body.setAttribute( 'data-menu-open', document.body.getAttribute( 'data-menu-open' ) == 'true' ? 'false' : 'true' );
+
+			} );
+
+		}
 
 	}
 
@@ -85,7 +90,11 @@ export class MainScene extends ORE.BaseLayer {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
-		this.renderPipeline = new RenderPipeline( this.renderer );
+		if ( this.renderer ) {
+
+			this.renderPipeline = new RenderPipeline( this.renderer );
+
+		}
 
 	}
 
@@ -116,25 +125,52 @@ export class MainScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		if ( ! this.isExamplePage && this.assetManager.isLoaded ) {
+		if ( ! this.isExamplePage ) {
 
-			this.scrollManager.scroller.update( deltaTime );
-			this.scrollManager.timeline.update( this.scrollManager.scroller.scrollTimelinePercentage );
+			if ( this.assetManager && this.assetManager.isLoaded ) {
 
-			this.commonUniforms.objTransform.value = this.scrollManager.timeline.get<number>( 'objTransform' );
-			this.commonUniforms.objSelector.value = this.scrollManager.timeline.get<number>( 'objSelector' );
-			this.commonUniforms.dark.value = this.scrollManager.timeline.get<number>( 'dark' );
+				if ( this.scrollManager && this.scrollManager.scroller && this.scrollManager.timeline ) {
 
-			this.camera.position.copy( this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' ) );
-			this.camera.quaternion.copy( this.scrollManager.timeline.get<THREE.Quaternion>( 'camRot' ) );
+					this.scrollManager.scroller.update( deltaTime );
+					this.scrollManager.timeline.update( this.scrollManager.scroller.scrollTimelinePercentage );
 
-			this.camera.position.x *= this.spWeight;
+					this.commonUniforms.objTransform.value = this.scrollManager.timeline.get<number>( 'objTransform' );
+					this.commonUniforms.objSelector.value = this.scrollManager.timeline.get<number>( 'objSelector' );
+					this.commonUniforms.dark.value = this.scrollManager.timeline.get<number>( 'dark' );
 
-			this.mainObj.update( this.time );
+					let pos = this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' );
+					let rot = this.scrollManager.timeline.get<THREE.Quaternion>( 'camRot' );
+
+					if ( pos && rot ) {
+
+						this.camera.position.copy( pos );
+						this.camera.quaternion.copy( rot );
+
+					}
+
+				}
+
+
+				this.camera.position.x *= this.spWeight;
+
+				if ( this.mainObj ) {
+
+					this.mainObj.update( this.time );
+
+				}
+
+			}
+
+
 
 		}
 
-		this.renderPipeline.render( this.scene, this.camera );
+		if ( this.renderPipeline ) {
+
+			this.renderPipeline.render( this.scene, this.camera );
+
+		}
+
 
 	}
 
@@ -148,7 +184,11 @@ export class MainScene extends ORE.BaseLayer {
 
 		this.background && this.background.resize( this.info.size );
 
-		this.renderPipeline.resize( this.info.size.canvasPixelSize );
+		if ( this.renderPipeline ) {
+
+			this.renderPipeline.resize( this.info.size.canvasPixelSize );
+
+		}
 
 	}
 

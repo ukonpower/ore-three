@@ -3,13 +3,13 @@ import * as ORE from '@ore-three-ts';
 
 export class ControllerScene extends ORE.BaseLayer {
 
-	private box: THREE.Mesh;
+	private box?: THREE.Mesh;
 
 	constructor() {
 
 		super();
 
-	}t
+	}
 
 	public onBind( info: ORE.LayerInfo ) {
 
@@ -21,13 +21,23 @@ export class ControllerScene extends ORE.BaseLayer {
 		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
 
+		let geo = new THREE.PlaneBufferGeometry();
+
 	}
 
 	public animate( deltaTime: number ) {
 
-		this.box.rotateY( 1.0 * deltaTime );
+		if ( this.box ) {
 
-		this.renderer.render( this.scene, this.camera );
+			this.box.rotateY( 1.0 * deltaTime );
+
+		}
+
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 

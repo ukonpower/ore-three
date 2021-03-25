@@ -5,13 +5,19 @@ import backgroundFrag from './shaders/background.fs';
 
 export class BackgroundScene extends ORE.BaseLayer {
 
-	private box: THREE.Mesh;
-	private background: ORE.Background;
+	private box?: THREE.Mesh;
+	private background?: ORE.Background;
 	private uniforms: ORE.Uniforms;
 
 	constructor() {
 
 		super();
+
+		this.uniforms = {
+			time: {
+				value: 0
+			},
+		};
 
 	}
 
@@ -25,11 +31,7 @@ export class BackgroundScene extends ORE.BaseLayer {
 		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
 
-		this.uniforms = {
-			time: {
-				value: 0
-			},
-		};
+
 
 		this.background = new ORE.Background( {
 			fragmentShader: backgroundFrag,
@@ -42,11 +44,19 @@ export class BackgroundScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		this.box.rotateY( 1.0 * deltaTime );
+		if ( this.box ) {
+
+			this.box.rotateY( 1.0 * deltaTime );
+
+		}
 
 		this.uniforms.time.value = this.time;
 
-		this.renderer.render( this.scene, this.camera );
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 
@@ -54,7 +64,11 @@ export class BackgroundScene extends ORE.BaseLayer {
 
 		super.onResize();
 
-		this.background.resize( this.info.size );
+		if ( this.background ) {
+
+			this.background.resize( this.info.size );
+
+		}
 
 	}
 

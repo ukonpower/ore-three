@@ -3,6 +3,18 @@ import * as ORE from '@ore-three-ts';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
+declare interface TextureParam {
+	mapping?: THREE.Mapping
+	wrapS?: THREE.Wrapping
+	wrapT?: THREE.Wrapping
+	magFilter?: THREE.TextureFilter
+	minFilter?: THREE.TextureFilter
+	format?: THREE.PixelFormat
+	type?: THREE.TextureDataType
+	anisotropy?: number
+	encoding?: THREE.TextureEncoding
+}
+
 export declare interface SliderInfo {
 	texture?: THREE.Texture;
 	texPath: string;
@@ -28,12 +40,10 @@ export class AssetManager {
 	public mustAssetsLoaded: boolean = false;
 	public subAssetsLoaded: boolean = false;
 
-	public onMustAssetsLoaded: Function;
+	public onMustAssetsLoaded: ( () => void )| null = null;
 
-	public gltfScene: THREE.Group;
+	public gltfScene?: THREE.Group;
 	public textures: ORE.Uniforms = {};
-
-	public animator: ORE.Animator;
 
 	constructor( param: { onMustAssetLoaded?: Function, onSubAssetsLoaded?: Function } ) {
 
@@ -120,21 +130,29 @@ export class AssetManager {
 			loader.crossOrigin = 'use-credentials';
 			loader.load( info.path, ( tex ) => {
 
-				if ( info.param ) {
-
-					let keys = Object.keys( info.param );
-
-					for ( let i = 0; i < keys.length; i ++ ) {
-
-						tex[ keys[ i ] ] = info.param[ keys[ i ] ];
-
-					}
-
-				}
+				this.applyParam( tex, info.param );
 
 				this.textures[ info.name ].value = tex;
 
 			} );
+
+		}
+
+	}
+
+	private applyParam( tex: THREE.Texture, param?: TextureParam ) {
+
+		if ( param ) {
+
+			tex.mapping = param.mapping || THREE.Texture.DEFAULT_MAPPING;
+			tex.wrapS = param.wrapS || THREE.ClampToEdgeWrapping;
+			tex.wrapT = param.wrapT || THREE.ClampToEdgeWrapping;
+			tex.magFilter = param.magFilter || THREE.LinearFilter;
+			tex.minFilter = param.minFilter || THREE.LinearFilter;
+			tex.format = param.format || THREE.RGBAFormat;
+			tex.type = param.type || THREE.UnsignedByteType;
+			tex.anisotropy = param.anisotropy || 1;
+			tex.encoding = param.encoding || THREE.LinearEncoding;
 
 		}
 

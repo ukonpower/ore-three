@@ -17,17 +17,16 @@ export class ScrollManager {
 
 		} );
 
-		this.initScroller();
-		this.initTimeline();
+		let container = document.querySelector( '.transform-container' ) as HTMLElement;
+		let mainVisElm = document.querySelector( '.mainVis' ) as HTMLElement;
+		let about = document.querySelector( '.about' ) as HTMLElement;
+		let usage = document.querySelector( '.usage' ) as HTMLElement;
+		let face = document.querySelector( '.face' ) as HTMLElement;
 
-	}
+		this.scroller = new ORE.PageScroller( container );
 
-	protected initScroller() {
-
-		this.scroller = new ORE.PageScroller( document.querySelector( '.transform-container' ) );
-
-		this.scroller.add( new ORE.PageScrollerSection( {
-			element: document.querySelector( '.mainVis' ),
+		let secMain = this.scroller.add( new ORE.PageScrollerSection( {
+			element: mainVisElm,
 			name: "mainVis",
 			events: {
 				onArrivals: [
@@ -58,28 +57,25 @@ export class ScrollManager {
 			stop: true
 		} ) );
 
-		this.scroller.add( new ORE.PageScrollerSection( {
-			element: document.querySelector( '.about' ),
+		let secAbout = this.scroller.add( new ORE.PageScrollerSection( {
+			element: about,
 			name: "about",
 			stop: false
 		} ) );
 
-		this.scroller.add( new ORE.PageScrollerSection( {
-			element: document.querySelector( '.usage' ),
+		let secUsage = this.scroller.add( new ORE.PageScrollerSection( {
+			element: usage,
 			name: "usage",
 			stop: false
 		} ) );
 
-		this.scroller.add( new ORE.PageScrollerSection( {
-			element: document.querySelector( '.face' ),
+		let secFace = this.scroller.add( new ORE.PageScrollerSection( {
+			element: face,
 			name: "face",
 			bottom: true,
 			stop: false
 		} ) );
 
-	}
-
-	protected initTimeline() {
 
 		this.timeline = new ORE.TimelineAnimator();
 
@@ -88,27 +84,27 @@ export class ScrollManager {
 				name: 'camPos',
 				keyframes: [
 					{
-						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						time: secMain.timelinePercentage,
 						value: new THREE.Vector3( 0, 1.5, 4 )
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage,
+						time: secAbout.timelinePercentage,
 						value: new THREE.Vector3( - 1.2, 1.5, 4 )
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage * 1.1,
+						time: secAbout.timelinePercentage,
 						value: new THREE.Vector3( - 1.2, 1.5, 4 )
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage,
+						time: secUsage.timelinePercentage,
 						value: new THREE.Vector3( 1.3, 1.5, 4 )
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage * 1.1,
+						time: secUsage.timelinePercentage,
 						value: new THREE.Vector3( 1.2, 1.5, 4 )
 					},
 					{
-						time: this.scroller.get( 'face' ).timelinePercentage,
+						time: secFace.timelinePercentage,
 						value: new THREE.Vector3( 0, 0, 4 )
 					},
 				],
@@ -124,27 +120,27 @@ export class ScrollManager {
 				name: 'camRot',
 				keyframes: [
 					{
-						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						time: secMain.timelinePercentage,
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage,
+						time: secAbout.timelinePercentage,
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage * 1.1,
+						time: secAbout.timelinePercentage * 1.1,
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage,
+						time: secUsage.timelinePercentage,
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage * 1.1,
+						time: secUsage.timelinePercentage * 1.1,
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.32, 0, 0 ) )
 					},
 					{
-						time: this.scroller.get( 'face' ).timelinePercentage,
+						time: secFace.timelinePercentage,
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.0, 0, 0 ) )
 					},
 				],
@@ -160,31 +156,31 @@ export class ScrollManager {
 				name: 'objTransform',
 				keyframes: [
 					{
-						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						time: secMain.timelinePercentage,
 						value: 0.0
 					},
 					{
-						time: ( this.scroller.get( 'mainVis' ).timelinePercentage + this.scroller.get( 'about' ).timelinePercentage ) / 2,
+						time: ( secMain.timelinePercentage + secAbout.timelinePercentage ) / 2,
 						value: 1.0
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage,
+						time: secAbout.timelinePercentage,
 						value: 0.0
 					},
 					{
-						time: ( this.scroller.get( 'about' ).timelinePercentage + this.scroller.get( 'usage' ).timelinePercentage ) / 2,
+						time: ( secAbout.timelinePercentage + secUsage.timelinePercentage ) / 2,
 						value: 1.0
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage,
+						time: secUsage.timelinePercentage,
 						value: 0.0
 					},
 					{
-						time: ( this.scroller.get( 'usage' ).timelinePercentage + this.scroller.get( 'face' ).timelinePercentage ) / 2,
+						time: ( secUsage.timelinePercentage + secFace.timelinePercentage ) / 2,
 						value: 1.0
 					},
 					{
-						time: this.scroller.get( 'face' ).timelinePercentage,
+						time: secFace.timelinePercentage,
 						value: 0.2
 					},
 				],
@@ -200,31 +196,31 @@ export class ScrollManager {
 				name: 'objSelector',
 				keyframes: [
 					{
-						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						time: secMain.timelinePercentage,
 						value: 0.0
 					},
 					{
-						time: ( this.scroller.get( 'mainVis' ).timelinePercentage + this.scroller.get( 'about' ).timelinePercentage ) / 2,
+						time: ( secMain.timelinePercentage + secAbout.timelinePercentage ) / 2,
 						value: 0.0
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage,
+						time: secAbout.timelinePercentage,
 						value: 1.0
 					},
 					{
-						time: ( this.scroller.get( 'about' ).timelinePercentage + this.scroller.get( 'usage' ).timelinePercentage ) / 2,
+						time: ( secAbout.timelinePercentage + secUsage.timelinePercentage ) / 2,
 						value: 1.0
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage,
+						time: secUsage.timelinePercentage,
 						value: 2.0
 					},
 					{
-						time: ( this.scroller.get( 'usage' ).timelinePercentage + this.scroller.get( 'face' ).timelinePercentage ) / 2,
+						time: ( secUsage.timelinePercentage + secFace.timelinePercentage ) / 2,
 						value: 2.0
 					},
 					{
-						time: this.scroller.get( 'face' ).timelinePercentage,
+						time: secFace.timelinePercentage,
 						value: 3.0
 					},
 				],
@@ -240,19 +236,19 @@ export class ScrollManager {
 				name: 'dark',
 				keyframes: [
 					{
-						time: this.scroller.get( 'mainVis' ).timelinePercentage,
+						time: secMain.timelinePercentage,
 						value: 0
 					},
 					{
-						time: this.scroller.get( 'about' ).timelinePercentage,
+						time: secAbout.timelinePercentage,
 						value: 1.0
 					},
 					{
-						time: this.scroller.get( 'usage' ).timelinePercentage,
+						time: secUsage.timelinePercentage,
 						value: 1.0
 					},
 					{
-						time: this.scroller.get( 'face' ).timelinePercentage,
+						time: secFace.timelinePercentage,
 						value: 0
 					},
 				],

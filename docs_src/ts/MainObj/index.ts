@@ -11,8 +11,6 @@ export class MainObj {
 
 	constructor( parentUniforms: ORE.Uniforms ) {
 
-		this.obj;
-
 		let customUni = {
 			time: {
 				value: 0
@@ -25,16 +23,11 @@ export class MainObj {
 		let std = THREE.ShaderLib.standard;
 
 		this.commonUniforms = THREE.UniformsUtils.merge( [ customUni, std.uniforms ] );
-
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, parentUniforms );
 
-		this.createMesh();
-
-	}
-
-	private createMesh() {
-
 		this.obj = new THREE.Object3D();
+
+		if ( window.oreDocsAssetManager.gltfScene == null ) return;
 
 		let cubeGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Cube' ) as THREE.Mesh ).geometry.clone();
 
@@ -53,7 +46,6 @@ export class MainObj {
 
 		let cube = new THREE.Mesh( cubeGeo, mat );
 		this.obj.add( cube );
-
 
 		let hatenaGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Hatena' ) as THREE.Mesh ).geometry.clone();
 
@@ -118,8 +110,12 @@ export class MainObj {
 
 	public setPointer( point: THREE.Vector3 ) {
 
-		let p = point.sub( this.obj.position );
-		this.commonUniforms.pointer.value = p;
+		if ( this.obj ) {
+
+			let p = point.sub( this.obj.position );
+			this.commonUniforms.pointer.value = p;
+
+		}
 
 	}
 

@@ -45,17 +45,18 @@ export class PageScrollerSection {
 	public name: string;
 	public element: HTMLElement;
 	public rect: PageScrollerSectionRect;
-	public stop: boolean;
 	public startScrollUp: number;
 	public startScrollDown: number;
-	public events: PageScrollerEvents;
-	public bottom: boolean;
+	public stop?: boolean;
+	public events?: PageScrollerEvents;
+	public bottom?: boolean;
 	public timelinePercentage: number = 0;
 
 	constructor( params: PageScrollerSectionParams ) {
 
 		this.name = params.name;
 		this.element = params.element;
+		this.rect = this.element.getBoundingClientRect();
 		this.stop = params.stop;
 		this.events = params.events;
 		this.bottom = params.bottom;

@@ -3,9 +3,8 @@ import * as ORE from '@ore-three-ts';
 
 export class MouseRotatorScene extends ORE.BaseLayer {
 
-	private rotator: ORE.MouseRotator;
-
-	private box: THREE.Mesh;
+	private rotator?: ORE.MouseRotator;
+	private box?: THREE.Mesh;
 
 	constructor() {
 
@@ -29,15 +28,27 @@ export class MouseRotatorScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		this.rotator.update();
+		if ( this.rotator ) {
 
-		this.renderer.render( this.scene, this.camera );
+			this.rotator.update();
+
+		}
+
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		this.rotator.addVelocity( args.delta );
+		if ( this.rotator ) {
+
+			this.rotator.addVelocity( args.delta );
+
+		}
 
 	}
 

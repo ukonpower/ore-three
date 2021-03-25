@@ -22,12 +22,12 @@ declare interface Datas{
 
 export class GPUComputationControllerScene extends ORE.BaseLayer {
 
-	private pointUni: ORE.Uniforms;
+	private pointUni?: ORE.Uniforms;
 
-	private gCon: ORE.GPUComputationController;
-	private kernels: Kernels;
-	private datas: Datas;
-	private points: THREE.Points;
+	private gCon?: ORE.GPUComputationController;
+	private kernels?: Kernels;
+	private datas?: Datas;
+	private points?: THREE.Points;
 
 	constructor() {
 
@@ -59,6 +59,8 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 	}
 
 	private initGPUComputationController( size: THREE.Vector2 ) {
+
+		if ( this.renderer == null ) return;
 
 		this.gCon = new ORE.GPUComputationController( this.renderer, size );
 
@@ -167,21 +169,29 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 		this.commonUniforms.time.value = this.time;
 
 		//update velocity
-		this.kernels.velocity.uniforms.dataPos.value = this.datas.position.buffer.texture;
-		this.kernels.velocity.uniforms.dataVel.value = this.datas.velocity.buffer.texture;
+		if ( this.kernels && this.datas && this.pointUni && this.gCon ) {
 
-		this.gCon.compute( this.kernels.velocity, this.datas.velocity );
+			this.kernels.velocity.uniforms.dataPos.value = this.datas.position.buffer.texture;
+			this.kernels.velocity.uniforms.dataVel.value = this.datas.velocity.buffer.texture;
 
-		//update position
-		this.kernels.position.uniforms.dataPos.value = this.datas.position.buffer.texture;
-		this.kernels.position.uniforms.dataVel.value = this.datas.velocity.buffer.texture;
+			this.gCon.compute( this.kernels.velocity, this.datas.velocity );
 
-		this.gCon.compute( this.kernels.position, this.datas.position );
+			//update position
+			this.kernels.position.uniforms.dataPos.value = this.datas.position.buffer.texture;
+			this.kernels.position.uniforms.dataVel.value = this.datas.velocity.buffer.texture;
 
-		this.pointUni.posTex.value = this.datas.position.buffer.texture;
-		this.pointUni.velTex.value = this.datas.velocity.buffer.texture;
+			this.gCon.compute( this.kernels.position, this.datas.position );
 
-		this.renderer.render( this.scene, this.camera );
+			this.pointUni.posTex.value = this.datas.position.buffer.texture;
+			this.pointUni.velTex.value = this.datas.velocity.buffer.texture;
+
+		}
+
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 

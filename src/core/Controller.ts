@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
-import { BaseLayer, LayerInfo } from './BaseLayer';
+import { BaseLayer, LayerBindParam } from './BaseLayer';
 
 export declare interface PointerEventArgs {
 	pointerEvent: PointerEvent;
@@ -70,7 +70,7 @@ export class Controller extends THREE.EventDispatcher {
 
 	}
 
-	public addLayer( layer: BaseLayer, layerInfo: LayerInfo ) {
+	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
 
     	while ( this.getLayer( layerInfo.name ) ) {
 
@@ -115,17 +115,17 @@ export class Controller extends THREE.EventDispatcher {
 
 	}
 
-	protected pointerEvent( e: PointerEventArgs ) {
+	protected pointerEvent( e: THREE.Event ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.layers[ i ].pointerEvent( e );
+    		this.layers[ i ].pointerEvent( e as unknown as PointerEventArgs );
 
     	}
 
 	}
 
-	protected onWheel( e: { wheelEvent: WheelEvent, trackpadDelta: number } ) {
+	protected onWheel( e: THREE.Event ) {
 
     	for ( let i = 0; i < this.layers.length; i ++ ) {
 

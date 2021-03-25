@@ -5,14 +5,15 @@ import { PointerEventArgs } from './Controller';
 
 export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	name: string;
-	canvas: HTMLCanvasElement;
+	canvas?: HTMLCanvasElement;
 	aspect?: AspectInfo;
 	wrapperElement?: HTMLElement;
 	wrapperElementRect?: DOMRect;
 }
 
 export declare interface LayerInfo extends LayerBindParam {
-	size?: LayerSize;
+	size: LayerSize;
+	aspect: AspectInfo;
 }
 
 export declare interface LayerSize {
@@ -32,7 +33,7 @@ export declare interface AspectInfo {
 }
 
 export declare interface TouchEventArgs {
-	event?: PointerEvent;
+	event: PointerEvent;
 	position: THREE.Vector2;
 	delta: THREE.Vector2;
 	normalizedPosition: THREE.Vector2;
@@ -43,13 +44,13 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public info: LayerInfo;
 
-	public renderer: THREE.WebGLRenderer;
+	public renderer?: THREE.WebGLRenderer;
 
 	public scene: THREE.Scene;
 	public camera: THREE.PerspectiveCamera;
 
-	protected readyAnimate: boolean = false;
-	public time: number = 0;
+	protected readyAnimate = false;
+	public time = 0;
 	public commonUniforms: Uniforms;
 
 	constructor() {
@@ -58,9 +59,6 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.info = {
 			name: '',
-			canvas: null,
-			wrapperElement: null,
-			wrapperElementRect: null,
 			aspect: {
 				mainAspect: 16 / 9,
 				wideAspect: 10 / 1,
@@ -111,6 +109,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.wrapperElement = layerInfo.wrapperElement;
 		this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
 		this.info.aspect = layerInfo.aspect || this.info.aspect;
+		this.info.alpha = layerInfo.alpha;
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
 		this.renderer.setPixelRatio( window.devicePixelRatio );
@@ -141,8 +140,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 			this.removeChildrens( object.children[ i ] );
 
-			let geo: THREE.Geometry | THREE.BufferGeometry;
-			let mat: THREE.Material;
+			let geo: THREE.Geometry | THREE.BufferGeometry | undefined = undefined;
+			let mat: THREE.Material | undefined = undefined;
 
 			if ( ( object.children[ i ] as THREE.Mesh ).isMesh ) {
 
@@ -171,8 +170,10 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public onResize() {
 
-		let newWindowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
-		let newCanvasSize = new THREE.Vector2();
+		if ( this.renderer == null ) return;
+
+		const newWindowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+		const newCanvasSize = new THREE.Vector2();
 
 		if ( this.info.wrapperElement ) {
 
@@ -194,9 +195,9 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.size.windowAspectRatio = newWindowSize.x / newWindowSize.y;
 		this.info.size.canvasSize.copy( newCanvasSize );
 		this.info.size.canvasPixelSize.copy( newCanvasSize.clone().multiplyScalar( this.renderer.getPixelRatio() ) );
-		this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y,
-		this.info.aspect.portraitWeight = portraitWeight,
-		this.info.aspect.wideWeight = wideWeight,
+		this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y;
+		this.info.aspect.portraitWeight = portraitWeight;
+		this.info.aspect.wideWeight = wideWeight;
 
 		this.renderer.setSize( this.info.size.canvasSize.x, this.info.size.canvasSize.y );
 		this.camera.aspect = this.info.size.canvasAspectRatio;
@@ -212,7 +213,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public pointerEvent( e: PointerEventArgs ) {
 
-		let canvasPosition = e.position.clone();
+		const canvasPosition = e.position.clone();
 
 		if ( this.info.wrapperElementRect ) {
 
@@ -221,12 +222,12 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		}
 
-		let normalizedPosition = canvasPosition.clone();
+		const normalizedPosition = canvasPosition.clone();
 		normalizedPosition.divide( this.info.size.canvasSize );
 		normalizedPosition.y = 1.0 - normalizedPosition.y;
 		normalizedPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
 
-		let args: TouchEventArgs = {
+		const args: TouchEventArgs = {
 			event: e.pointerEvent,
 			position: canvasPosition.clone(),
 			delta: e.delta.clone(),

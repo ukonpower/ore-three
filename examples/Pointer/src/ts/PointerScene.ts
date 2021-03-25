@@ -3,7 +3,7 @@ import * as ORE from '@ore-three-ts';
 
 export class PointerScene extends ORE.BaseLayer {
 
-	private box: THREE.Mesh;
+	private box?: THREE.Mesh;
 
 	constructor() {
 
@@ -29,20 +29,31 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
+		if ( this.renderer == null ) return;
+
 		this.renderer.render( this.scene, this.camera );
 
 	}
 
 	public onTouchStart( args: ORE.TouchEventArgs ) {
 
-		this.box.scale.setScalar( 1.5 );
+		if ( this.box ) {
+
+			this.box.scale.setScalar( 1.5 );
+
+		}
 
 	}
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
 
 		let cursorPos = args.normalizedPosition;
-		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
+
+		if ( this.box ) {
+
+			this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
+
+		}
 
 		args.event.preventDefault();
 
@@ -50,7 +61,11 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onTouchEnd( args: ORE.TouchEventArgs ) {
 
-		this.box.scale.setScalar( 1.0 );
+		if ( this.box ) {
+
+			this.box.scale.setScalar( 1.0 );
+
+		}
 
 	}
 
@@ -60,7 +75,11 @@ export class PointerScene extends ORE.BaseLayer {
 
 		if ( cursorPos.x != cursorPos.x ) return;
 
-		this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
+		if ( this.box ) {
+
+			this.box.position.set( cursorPos.x * this.weight, cursorPos.y * this.weight, 0 );
+
+		}
 
 	}
 

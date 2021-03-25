@@ -9,8 +9,8 @@ export declare interface AnimatorVariable<T>{
 	value: T;
 	startValue: T;
 	goalValue: T;
-	onAnimationFinished?: Function;
-	lerpFunc: LerpFunc<T>;
+	onAnimationFinished?: Function | null;
+	lerpFunc?: LerpFunc<T>;
 	easing: EasingSet;
 }
 
@@ -170,7 +170,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public get<T>( name: string ): T {
+	public get<T>( name: string ): T | null {
 
 		if ( this.variables[ name ] ) {
 
@@ -186,7 +186,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public getVariableObject<T>( name: string, mute: boolean = false ): AnimatorVariable<T> {
+	public getVariableObject<T>( name: string, mute: boolean = false ): AnimatorVariable<T> | null {
 
 		if ( this.variables[ name ] ) {
 
@@ -234,7 +234,13 @@ export class Animator extends THREE.EventDispatcher {
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
-			uniforms[ keys[ i ] ] = this.getVariableObject( keys[ i ] );
+			let variable = this.getVariableObject( keys[ i ] );
+
+			if ( variable ) {
+
+				uniforms[ keys[ i ] ] = variable;
+
+			}
 
 		}
 
@@ -253,11 +259,12 @@ export class Animator extends THREE.EventDispatcher {
 		for ( let i = 0; i < keys.length; i ++ ) {
 
 			let variable = this.variables[ keys[ i ] ];
+			let time = variable.time;
 
-			if ( variable.time == 1.0 ) {
+			if ( time == 1.0 ) {
 
 				this.animatingCount --;
-				variable.time = - 1;
+				time = - 1;
 
 				if ( variable.onAnimationFinished ) {
 
@@ -267,32 +274,39 @@ export class Animator extends THREE.EventDispatcher {
 
 			}
 
-			if ( variable.time >= 0.0 && variable.time < 1.0 ) {
+			if ( time >= 0.0 && time < 1.0 ) {
 
-				variable.time += ( deltaTime || 0.016 ) / variable.duration;
+				let duration = variable.duration;
+				let easing = variable.easing;
+				let lerpFunc = variable.lerpFunc;
 
-				if ( variable.duration == 0 || variable.time >= 1.0 ) {
+				if ( duration ) {
 
-					variable.time = 1.0;
+					time += ( deltaTime || 0.016 ) / duration;
+
+					if ( duration == 0 || time >= 1.0 ) {
+
+						time = 1.0;
+
+					}
 
 				}
 
-				let t = variable.time;
+				let t = time;
+				t = easing.func( t, easing.args );
 
-				if ( variable.easing ) {
+				if ( lerpFunc ) {
 
-					t = variable.easing.func( t, variable.easing.args );
+					variable.value = lerpFunc( variable.startValue, variable.goalValue, t );
 
 				}
-
-				variable.value = variable.lerpFunc( variable.startValue, variable.goalValue, t );
 
 				this.dispatchEvent( {
 					type: 'update/' + keys[ i ],
 					deltaTime: deltaTime
 				} );
 
-				if ( variable.time == 1.0 ) {
+				if ( time == 1.0 ) {
 
 					variable.value = variable.goalValue;
 
@@ -304,7 +318,13 @@ export class Animator extends THREE.EventDispatcher {
 
 		while ( this.dispatchEvents.length != 0 ) {
 
-			this.dispatchEvents.pop()();
+			let func = this.dispatchEvents.pop();
+
+			if ( func ) {
+
+				func();
+
+			}
 
 		}
 

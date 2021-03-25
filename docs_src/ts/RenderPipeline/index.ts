@@ -49,13 +49,6 @@ export class RenderPipeline {
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( parentUniforms, {
 		} );
 
-		this.initRenderTargets();
-		this.initInputTextures();
-		this.initPostProcessings();
-
-	}
-
-	private initRenderTargets() {
 
 		this.renderTargets = {
 			rt1: new THREE.WebGLRenderTarget( 0, 0, {
@@ -101,10 +94,6 @@ export class RenderPipeline {
 
 		}
 
-	}
-
-	private initInputTextures() {
-
 		this.inputTextures = {
 			areaTex: {
 				value: null
@@ -137,10 +126,6 @@ export class RenderPipeline {
 			this.inputTextures.searchTex.value = tex;
 
 		} );
-
-	}
-
-	private initPostProcessings() {
 
 		/*------------------------
 			Bloom
@@ -308,20 +293,19 @@ export class RenderPipeline {
 		/*------------------------
 			Composite
 		------------------------*/
-		let compositeInputRenderTargets = {
+		let compositeInputRenderTargets: {
+			sceneTex: THREE.Texture,
+			bloomTexs: THREE.Texture[]
+		} = {
 			sceneTex: this.renderTargets.rt2.texture,
-			bloomTexs: null
+			bloomTexs: []
 		};
-
-		let bloomTexArray: THREE.Texture[] = [];
 
 		for ( let i = 0; i < this.bloomRenderCount; i ++ ) {
 
-			bloomTexArray.push( this.renderTargets[ 'rtBlur' + i.toString() + '_1' ].texture );
+			compositeInputRenderTargets.bloomTexs.push( this.renderTargets[ 'rtBlur' + i.toString() + '_1' ].texture );
 
 		}
-
-		compositeInputRenderTargets.bloomTexs = bloomTexArray;
 
 		this.compositePP.render( compositeInputRenderTargets, null );
 
