@@ -1,7 +1,8 @@
+import * as THREE from 'three';
 import { EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
-declare interface AnimatorVariable<T> {
+export declare interface AnimatorVariable<T> {
     time: number;
     duration?: number;
     value: T;
@@ -17,7 +18,7 @@ export declare interface AnimatorValiableParams<T> {
     easing?: EasingSet;
     customLerpFunc?: LerpFunc<T>;
 }
-export declare class Animator {
+export declare class Animator extends THREE.EventDispatcher {
     protected variables: {
         [key: string]: AnimatorVariable<any>;
     };
@@ -35,12 +36,12 @@ export declare class Animator {
         lerpFunc: typeof Lerps.number | typeof Lerps.numberArray | typeof Lerps.THREEVectors | typeof Lerps.THREEQuaternion | typeof Lerps.THREEEuler | LerpFunc<T>;
     };
     setEasing(name: string, easing: EasingSet): void;
-    animate<T>(name: string, goalValue: T, duration?: number, callback?: Function, easing?: EasingSet): void;
+    animate<T>(name: string, goalValue: T, duration?: number, callback?: Function, easing?: EasingSet): Promise<unknown>;
     cancelAnimate(name: string): void;
     setValue<T>(name: string, value: T): any;
     get<T>(name: string): T;
-    getVariableObject<T>(name: string): AnimatorVariable<T>;
+    getVariableObject<T>(name: string, mute?: boolean): AnimatorVariable<T>;
+    isAnimatingVariable(name: string, mute?: boolean): boolean;
     applyToUniforms(uniforms: Uniforms): void;
     update(deltaTime?: number): void;
 }
-export {};

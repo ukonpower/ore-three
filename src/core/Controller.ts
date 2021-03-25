@@ -1,86 +1,42 @@
 import * as THREE from 'three';
-import { Cursor } from '../utils/Cursor';
-import { BaseScene } from '../core/BaseScene';
+import { Pointer } from '../utils/Pointer';
+import { BaseLayer, LayerInfo } from './BaseLayer';
 
-import { Lethargy } from 'lethargy';
-import toPx from 'to-px';
-
-const VERSION = require( "../../package.json" ).version;
-
-export declare interface ControllerParam extends THREE.WebGLRendererParameters{
-    retina?: boolean;
-    silent?: boolean;
+export declare interface PointerEventArgs {
+	pointerEvent: PointerEvent;
+	pointerEventType: string;
+	position: THREE.Vector2;
+	delta: THREE.Vector2;
 }
 
-export declare interface ResizeArgs{
-	aspectRatio: number;
-	pixelRatio: number;
-	windowSize: THREE.Vector2;
-	windowPixelSize: THREE.Vector2;
-	portraitWeight: number;
-	wideWeight: number;
+export declare interface ControllerParam {
+	silent?: boolean;
 }
 
-export declare interface aspectInfo {
-	mainAspect: number;
-	portraitAspect: number;
-	wideAspect: number;
-}
+export class Controller extends THREE.EventDispatcher {
 
-export declare interface GlobalProperties{
-    renderer: THREE.WebGLRenderer;
-    cursor: Cursor;
-	resizeArgs: ResizeArgs;
-	aspectInfo: aspectInfo
-}
+    public pointer: Pointer;
+	public clock: THREE.Clock;
+	protected layers: BaseLayer[] = [];
 
-export class Controller {
+	constructor( parameter?: ControllerParam ) {
 
-    public currentScene: BaseScene;
+    	super();
 
-    public renderer: THREE.WebGLRenderer;
-    public cursor: Cursor;
-    public clock: THREE.Clock;
+    	if ( ! ( parameter && parameter.silent ) ) {
 
-	public gProps: GlobalProperties;
-
-	constructor( parameter: ControllerParam ) {
-
-    	if ( ! parameter.silent ) {
-
-    		console.log( "%c- ore-three " + VERSION + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
+    		console.log( "%c- ore-three " + require( "../../package.json" ).version + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
 
     	}
 
-    	this.renderer = new THREE.WebGLRenderer( parameter );
-    	this.renderer.debug.checkShaderErrors = true;
-    	this.renderer.setSize( window.innerWidth, window.innerHeight );
-    	this.renderer.setPixelRatio( parameter.retina ? window.devicePixelRatio : 1 );
-
-    	this.cursor = new Cursor();
-    	this.cursor.onTouchStart = this.onTouchStart.bind( this );
-    	this.cursor.onTouchMove = this.onTouchMove.bind( this );
-    	this.cursor.onTouchEnd = this.onTouchEnd.bind( this );
-    	this.cursor.onHover = this.onHover.bind( this );
-    	this.cursor.onWheel = this.onWheel.bind( this );
-
     	this.clock = new THREE.Clock();
 
-    	this.gProps = {
-    		renderer: this.renderer,
-    		cursor: this.cursor,
-			resizeArgs: null,
-			aspectInfo: {
-				mainAspect: 16 / 9,
-				portraitAspect: 1 / 2,
-				wideAspect: 5
-			}
-    	};
+    	this.pointer = new Pointer();
+    	this.pointer.addEventListener( 'update', this.pointerEvent.bind( this ) );
+    	this.pointer.addEventListener( 'wheel', this.onWheel.bind( this ) );
 
     	window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
     	window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
-
-    	this.onWindowResize();
 
     	this.tick();
 
@@ -88,13 +44,13 @@ export class Controller {
 
 	protected tick() {
 
-    	let deltatime = this.clock.getDelta();
+    	let deltaTime = this.clock.getDelta();
 
-    	this.cursor.update();
+    	this.pointer.update();
 
-    	if ( this.currentScene ) {
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.currentScene.tick( deltatime );
+    		this.layers[ i ].tick( deltaTime );
 
     	}
 
@@ -102,24 +58,42 @@ export class Controller {
 
 	}
 
-	public bindScene( scene: BaseScene ) {
+	public getLayer( layerName: string ) {
 
-    	this.currentScene = scene;
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    	this.currentScene.onBind( this.gProps );
+    		if ( this.layers[ i ].info.name == layerName ) return this.layers[ i ];
 
-    	this.onWindowResize();
+    	}
+
+    	return null;
 
 	}
 
-	public unbindScene() {
+	public addLayer( layer: BaseLayer, layerInfo: LayerInfo ) {
 
-    	if ( this.currentScene ) {
+    	while ( this.getLayer( layerInfo.name ) ) {
 
-    		this.currentScene.onUnbind();
-    		this.currentScene = null;
+    		layerInfo.name += '_';
 
-    		this.renderer.renderLists.dispose();
+    	}
+
+    	layer.onBind( layerInfo );
+    	this.layers.push( layer );
+
+	}
+
+	public removeLayer( layerNmae: string ) {
+
+    	for ( let i = this.layers.length; i >= 0; i -- ) {
+
+    		let layer = this.layers[ i ];
+
+    		if ( layer.info.name == layerNmae ) {
+
+    			this.layers.splice( i, 1 );
+
+    		}
 
     	}
 
@@ -127,139 +101,37 @@ export class Controller {
 
 	protected onWindowResize() {
 
-    	let windowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-		let portraitWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectInfo.portraitAspect ) / ( this.gProps.aspectInfo.mainAspect - this.gProps.aspectInfo.portraitAspect );
-		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
-
-		let wideWeight = 1.0 - ( ( windowSize.x / windowSize.y ) - this.gProps.aspectInfo.wideAspect ) / ( this.gProps.aspectInfo.mainAspect - this.gProps.aspectInfo.wideAspect );
-		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
-
-    	let resizeArgs: ResizeArgs = {
-    		aspectRatio: windowSize.x / windowSize.y,
-    		pixelRatio: this.renderer.getPixelRatio(),
-    		windowSize: windowSize.clone(),
-    		windowPixelSize: windowSize.clone().multiplyScalar( this.renderer.getPixelRatio() ),
-			portraitWeight: portraitWeight,
-			wideWeight: wideWeight,
-		};
-
-    	this.gProps.resizeArgs = resizeArgs;
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onResize( resizeArgs );
+    		this.layers[ i ].onResize();
 
     	}
 
 	}
 
-
-	public onOrientationDevice() {
+	protected onOrientationDevice() {
 
     	this.onWindowResize();
 
 	}
 
-	public onTouchStart( e: MouseEvent ) {
+	protected pointerEvent( e: PointerEventArgs ) {
 
-    	if ( this.currentScene ) {
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.currentScene.onTouchStart( this.cursor, e );
-
-    	}
-
-	}
-
-	public onTouchMove( e: MouseEvent ) {
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onTouchMove( this.cursor, e );
+    		this.layers[ i ].pointerEvent( e );
 
     	}
 
 	}
 
-	public onTouchEnd( e: MouseEvent ) {
+	protected onWheel( e: { wheelEvent: WheelEvent, trackpadDelta: number } ) {
 
-    	if ( this.currentScene ) {
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.currentScene.onTouchEnd( this.cursor, e );
-
-    	}
-
-	}
-
-	public onHover( ) {
-
-    	if ( this.currentScene ) {
-
-    		this.currentScene.onHover( this.cursor );
+    		this.layers[ i ].onWheel( e.wheelEvent, e.trackpadDelta );
 
     	}
-
-	}
-
-    protected trackpadMemDelta = 0;
-	protected trackpadMax: boolean = false;
-	protected lethargy = new Lethargy( 7, 0, 0.05 );
-
-	public onWheel( e: WheelEvent ) {
-
-		let delta = e.deltaY;
-		let trackpadDelta = 0;
-
-		switch ( e.deltaMode ) {
-
-			case e.DOM_DELTA_LINE:
-				delta *= toPx( 'ex', window ) * 2.5;
-				break;
-
-			case e.DOM_DELTA_PAGE:
-				delta *= window.innerHeight;
-				break;
-
-		}
-
-		if ( this.lethargy.check( e ) ) {
-
-			trackpadDelta = delta;
-
-		} else {
-
-			let d = delta - this.trackpadMemDelta;
-
-			if ( Math.abs( d ) > 50 ) {
-
-				this.trackpadMemDelta = d;
-				trackpadDelta = delta;
-
-				this.trackpadMax = true;
-
-			} else if ( d == 0 ) {
-
-				if ( this.trackpadMax ) {
-
-					trackpadDelta = delta;
-
-				}
-
-			} else if ( d < 0 ) {
-
-				this.trackpadMax = false;
-
-			}
-
-			this.trackpadMemDelta = ( delta );
-
-		}
-
-		if ( this.currentScene ) {
-
-			this.currentScene.onWheel( e, trackpadDelta );
-
-		}
 
 	}
 

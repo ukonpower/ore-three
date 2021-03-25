@@ -82,28 +82,28 @@
 				<a href="#create-controller" id="create-controller" style="color: inherit; text-decoration: none;">
 					<h3>Create Controller</h3>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;
-<span class="hljs-keyword">import</span> { MainScene } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./scenes/MainScene&#x27;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">APP</span> </span>{
+<span class="hljs-keyword">import</span> { ControllerScene } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./ControllerScene&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">APP</span> </span>{
+
+    <span class="hljs-keyword">private</span> controller: ORE.Controller;
 
     <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
 
-        <span class="hljs-built_in">this</span>.controller = <span class="hljs-keyword">new</span> ORE.Controller( {
+        <span class="hljs-built_in">this</span>.controller = <span class="hljs-keyword">new</span> ORE.Controller();
 
-            <span class="hljs-attr">canvas</span>: <span class="hljs-built_in">document</span>.querySelector( <span class="hljs-string">&quot;#canvas&quot;</span> ),
-            <span class="hljs-attr">retina</span>: <span class="hljs-literal">true</span>,
-            <span class="hljs-attr">alpha</span>: <span class="hljs-literal">true</span>,
-
+        <span class="hljs-built_in">this</span>.controller.addLayer( <span class="hljs-keyword">new</span> ControllerScene(), {
+            <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Main&#x27;</span>,
+            <span class="hljs-attr">canvas</span>: <span class="hljs-built_in">document</span>.querySelector( <span class="hljs-string">&#x27;#canvas&#x27;</span> ) <span class="hljs-keyword">as</span> HTMLCanvasElement,
         } );
-
-        <span class="hljs-built_in">this</span>.controller.bindScene( <span class="hljs-keyword">new</span> MainScene() );
 
     }
 
 }
 
-<span class="hljs-built_in">window</span>.addEventListener( <span class="hljs-string">&#x27;load&#x27;</span>, <span class="hljs-function">()=&gt;</span>{
+<span class="hljs-built_in">window</span>.addEventListener( <span class="hljs-string">&#x27;load&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
 
     <span class="hljs-keyword">let</span> app = <span class="hljs-keyword">new</span> APP();
 
@@ -111,65 +111,65 @@
 				<a href="#create-scene" id="create-scene" style="color: inherit; text-decoration: none;">
 					<h3>Create Scene</h3>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> THREE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;three&#x27;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> THREE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;three&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> ORE <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ore-three-ts&#x27;</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainScene</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ORE</span>.<span class="hljs-title">BaseScene</span> </span>{
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ControllerScene</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ORE</span>.<span class="hljs-title">BaseLayer</span> </span>{
+
+    <span class="hljs-keyword">private</span> box: THREE.Mesh;
 
     <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
 
         <span class="hljs-built_in">super</span>();
 
-        <span class="hljs-built_in">this</span>.name = <span class="hljs-string">&quot;MainScene&quot;</span>;
+    }t
 
-    }
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onBind</span>(<span class="hljs-params"> info: ORE.LayerInfo </span>)</span> {
 
-    <span class="hljs-function"><span class="hljs-title">onBind</span>(<span class="hljs-params"> gProps </span>)</span> {
+        <span class="hljs-built_in">super</span>.onBind( info );
 
-        <span class="hljs-built_in">super</span>.onBind( gProps );
-
-        <span class="hljs-built_in">this</span>.renderer = <span class="hljs-built_in">this</span>.gProps.renderer;
-
-        <span class="hljs-built_in">this</span>.camera.position.set( <span class="hljs-number">0</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">3</span> );
+        <span class="hljs-built_in">this</span>.camera.position.set( <span class="hljs-number">0</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">4</span> );
         <span class="hljs-built_in">this</span>.camera.lookAt( <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span> );
 
-        <span class="hljs-keyword">var</span> boxGeo = <span class="hljs-keyword">new</span> THREE.BoxGeometry( <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> );
-        <span class="hljs-keyword">var</span> boXMat = <span class="hljs-keyword">new</span> THREE.MeshNormalMaterial();
-        <span class="hljs-built_in">this</span>.box = <span class="hljs-keyword">new</span> THREE.Mesh( boxGeo, boXMat );
+        <span class="hljs-built_in">this</span>.box = <span class="hljs-keyword">new</span> THREE.Mesh( <span class="hljs-keyword">new</span> THREE.BoxGeometry(), <span class="hljs-keyword">new</span> THREE.MeshNormalMaterial() );
         <span class="hljs-built_in">this</span>.scene.add( <span class="hljs-built_in">this</span>.box );
-
-        <span class="hljs-built_in">this</span>.light = <span class="hljs-keyword">new</span> THREE.DirectionalLight();
-        <span class="hljs-built_in">this</span>.light.position.y = <span class="hljs-number">10</span>;
-        <span class="hljs-built_in">this</span>.scene.add( <span class="hljs-built_in">this</span>.light );        
 
     }
 
-    <span class="hljs-comment">//Animation Loop!!</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">animate</span>(<span class="hljs-params"> deltaTime: <span class="hljs-built_in">number</span> </span>)</span> {
 
-    <span class="hljs-function"><span class="hljs-title">animate</span>(<span class="hljs-params"> deltaTime </span>)</span> {
+        <span class="hljs-built_in">this</span>.box.rotateY( <span class="hljs-number">1.0</span> * deltaTime );
 
-        <span class="hljs-built_in">this</span>.box.rotateY( <span class="hljs-number">0.01</span> );
         <span class="hljs-built_in">this</span>.renderer.render( <span class="hljs-built_in">this</span>.scene, <span class="hljs-built_in">this</span>.camera );
 
     }
 
-    <span class="hljs-comment">//You can use any events!!</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onResize</span>(<span class="hljs-params"></span>)</span> {
 
-    <span class="hljs-function"><span class="hljs-title">onResize</span>(<span class="hljs-params"> args </span>)</span> {
-
-        <span class="hljs-built_in">super</span>.onResize( args );
+        <span class="hljs-built_in">super</span>.onResize();
 
     }
 
-    public <span class="hljs-function"><span class="hljs-title">onTouchStart</span>(<span class="hljs-params"> cursor: Cursor, event: MouseEvent </span>)</span> {}
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onTouchStart</span>(<span class="hljs-params"> args: ORE.TouchEventArgs </span>)</span> {
 
-    public <span class="hljs-function"><span class="hljs-title">onTouchMove</span>(<span class="hljs-params"> cursor: Cursor, event: MouseEvent </span>)</span> {}
+    }
 
-    public <span class="hljs-function"><span class="hljs-title">onTouchEnd</span>(<span class="hljs-params"> cursor: Cursor, event: MouseEvent </span>)</span> {}
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onTouchMove</span>(<span class="hljs-params"> args: ORE.TouchEventArgs </span>)</span> {
 
-    public <span class="hljs-function"><span class="hljs-title">onHover</span>(<span class="hljs-params"> cursor: Cursor </span>)</span> { }
+    }
 
-    public <span class="hljs-function"><span class="hljs-title">onWheel</span>(<span class="hljs-params"> event: WheelEvent, trackpadDelta: number </span>)</span> {}
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onTouchEnd</span>(<span class="hljs-params"> args: ORE.TouchEventArgs </span>)</span> {
+
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onHover</span>(<span class="hljs-params"> args: ORE.TouchEventArgs </span>)</span> {
+
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">onWheel</span>(<span class="hljs-params"> event: WheelEvent, trackpadDelta: <span class="hljs-built_in">number</span> </span>)</span> {
+
+    }
+
 
 }</code></pre>
 			</div>
@@ -200,16 +200,10 @@
 						<a href="classes/background.html" class="tsd-kind-icon">Background</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/basescene.html" class="tsd-kind-icon">Base<wbr>Scene</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/bloomfilter.html" class="tsd-kind-icon">Bloom<wbr>Filter</a>
+						<a href="classes/baselayer.html" class="tsd-kind-icon">Base<wbr>Layer</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/controller.html" class="tsd-kind-icon">Controller</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/cursor.html" class="tsd-kind-icon">Cursor</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/dommesh.html" class="tsd-kind-icon">DOMMesh</a>
@@ -233,10 +227,10 @@
 						<a href="classes/pagescrollersection.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
+						<a href="classes/pointer.html" class="tsd-kind-icon">Pointer</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/smaafilter.html" class="tsd-kind-icon">SMAAFilter</a>
+						<a href="classes/postprocessing.html" class="tsd-kind-icon">Post<wbr>Processing</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/timelineanimator.html" class="tsd-kind-icon">Timeline<wbr>Animator</a>
@@ -248,13 +242,13 @@
 						<a href="interfaces/animatorvariable.html" class="tsd-kind-icon">Animator<wbr>Variable</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/aspectinfo.html" class="tsd-kind-icon">Aspect<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/controllerparam.html" class="tsd-kind-icon">Controller<wbr>Param</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/easingset.html" class="tsd-kind-icon">Easing<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/effectmaterial.html" class="tsd-kind-icon">Effect<wbr>Material</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/event.html" class="tsd-kind-icon">Event</a>
@@ -269,7 +263,13 @@
 						<a href="interfaces/gpucomputationdata.html" class="tsd-kind-icon">GPUcomputation<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/globalproperties.html" class="tsd-kind-icon">Global<wbr>Properties</a>
+						<a href="interfaces/layerbindparam.html" class="tsd-kind-icon">Layer<wbr>Bind<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/layerinfo.html" class="tsd-kind-icon">Layer<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/layersize.html" class="tsd-kind-icon">Layer<wbr>Size</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/lerpfunc.html" class="tsd-kind-icon">Lerp<wbr>Func</a>
@@ -296,7 +296,7 @@
 						<a href="interfaces/pagescrollersectionrect.html" class="tsd-kind-icon">Page<wbr>Scroller<wbr>Section<wbr>Rect</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/resizeargs.html" class="tsd-kind-icon">Resize<wbr>Args</a>
+						<a href="interfaces/pointereventargs.html" class="tsd-kind-icon">Pointer<wbr>Event<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/timelineanimatoraddparams.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Add<wbr>Params</a>
@@ -308,16 +308,16 @@
 						<a href="interfaces/timelineanimatorvariable.html" class="tsd-kind-icon">Timeline<wbr>Animator<wbr>Variable</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/toucheventargs.html" class="tsd-kind-icon">Touch<wbr>Event<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/transform.html" class="tsd-kind-icon">Transform</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/uniforms.html" class="tsd-kind-icon">Uniforms</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/aspectinfo.html" class="tsd-kind-icon">aspect<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#version" class="tsd-kind-icon">VERSION</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#inputrendertarget" class="tsd-kind-icon">Input<wbr>Render<wbr>Target</a>
 					</li>
 				</ul>
 			</nav>

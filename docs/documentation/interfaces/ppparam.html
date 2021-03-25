@@ -83,7 +83,7 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#alphatest" class="tsd-kind-icon">alpha<wbr>Test</a></li>
@@ -109,6 +109,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#fog" class="tsd-kind-icon">fog</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#fragmentshader" class="tsd-kind-icon">fragment<wbr>Shader</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#glslversion" class="tsd-kind-icon">glsl<wbr>Version</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ppparam.html#inputrendertargets" class="tsd-kind-icon">input<wbr>Render<wbr>Targets</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#lights" class="tsd-kind-icon">lights</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#linewidth" class="tsd-kind-icon">linewidth</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#morphnormals" class="tsd-kind-icon">morph<wbr>Normals</a></li>
@@ -133,6 +134,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#tonemapped" class="tsd-kind-icon">tone<wbr>Mapped</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#transparent" class="tsd-kind-icon">transparent</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#uniforms" class="tsd-kind-icon">uniforms</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#userdata" class="tsd-kind-icon">user<wbr>Data</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#vertexcolors" class="tsd-kind-icon">vertex<wbr>Colors</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#vertexshader" class="tsd-kind-icon">vertex<wbr>Shader</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ppparam.html#visible" class="tsd-kind-icon">visible</a></li>
@@ -143,7 +145,7 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="alphatest" class="tsd-anchor"></a>
@@ -412,6 +414,16 @@
 						<p>Inherited from <a href="ppparam.html">PPParam</a>.<a href="ppparam.html#glslversion">glslVersion</a></p>
 						<ul>
 							<li>Defined in node_modules/three/src/materials/ShaderMaterial.d.ts:23</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="inputrendertargets" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> input<wbr>Render<wbr>Targets</h3>
+					<div class="tsd-signature tsd-kind-icon">input<wbr>Render<wbr>Targets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ukonpower/ore-three-ts/blob/160b212/src/utils/PostProcessing/index.ts#L8">src/utils/PostProcessing/index.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -688,6 +700,17 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="userdata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> user<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">user<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="ppparam.html">PPParam</a>.<a href="ppparam.html#userdata">userData</a></p>
+						<ul>
+							<li>Defined in node_modules/three/src/materials/Material.d.ts:56</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="vertexcolors" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> vertex<wbr>Colors</h3>
 					<div class="tsd-signature tsd-kind-icon">vertex<wbr>Colors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -828,6 +851,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ppparam.html#glslversion" class="tsd-kind-icon">glsl<wbr>Version</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ppparam.html#inputrendertargets" class="tsd-kind-icon">input<wbr>Render<wbr>Targets</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ppparam.html#lights" class="tsd-kind-icon">lights</a>
 							</li>
@@ -899,6 +925,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ppparam.html#uniforms" class="tsd-kind-icon">uniforms</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="ppparam.html#userdata" class="tsd-kind-icon">user<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ppparam.html#vertexcolors" class="tsd-kind-icon">vertex<wbr>Colors</a>

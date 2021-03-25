@@ -1,201 +1,103 @@
 import * as THREE from 'three';
-import { Uniforms } from '../Uniforms';
+
+import passThrowVert from './shaders/passThrow.vs';
+
+type InputRenderTarget = { [key:string]: THREE.Texture | THREE.Texture[] };
 
 export interface PPParam extends THREE.ShaderMaterialParameters{
-}
-
-export interface EffectMaterial {
-    material: THREE.ShaderMaterial,
-    uniforms: any
+	inputRenderTargets?: string
 }
 
 export class PostProcessing {
 
-    protected renderer: THREE.WebGLRenderer;
-    protected scene: THREE.Scene;
-    protected camera: THREE.Camera;
-    protected screenMesh: THREE.Mesh;
+	private renderer: THREE.WebGLRenderer;
+	private scene: THREE.Scene;
+	private camera: THREE.OrthographicCamera;
+	private screen: THREE.Mesh;
 
-	protected renderTargetOptions: THREE.WebGLRenderTargetOptions;
-    protected readBuffer: THREE.WebGLRenderTarget;
-    protected writeBuffer: THREE.WebGLRenderTarget;
-	public resultBuffer: THREE.WebGLRenderTarget;
-    public resolution: THREE.Vector2;
+	public effect: {
+		material: THREE.ShaderMaterial,
+	};
 
-    protected effectMaterials: [EffectMaterial];
+	constructor( renderer: THREE.WebGLRenderer, material: PPParam ) {
 
-    constructor( renderer: THREE.WebGLRenderer, parameter: PPParam[], resolution?: THREE.Vector2, bufferOptions?: THREE.WebGLRenderTargetOptions ) {
+		this.renderer = renderer;
+		this.scene = new THREE.Scene();
+		this.camera = new THREE.OrthographicCamera( - 1.0, 1.0, 1.0, - 1.0 );
 
-    	this.renderer = renderer;
+		this.screen = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
+		this.scene.add( this.screen );
 
-    	this.resolution = new THREE.Vector2();
-    	this.scene = new THREE.Scene();
-    	this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-    	this.screenMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), null );
-    	this.scene.add( this.screenMesh );
+		this.createMaterials( material );
 
-    	this.renderTargetOptions = bufferOptions;
+	}
 
-    	this.initRenderTargets();
+	private createMaterials( params: PPParam ) {
 
-    	this.resize( resolution );
+		let param = params;
 
-    	parameter.forEach( ( param ) => {
+		param.vertexShader = param.vertexShader || passThrowVert;
+		param.uniforms = param.uniforms || {};
+		param.uniforms.resolution = {
+			value: new THREE.Vector2()
+		};
 
-    		if ( ! param.uniforms ) param.uniforms = {};
+		this.effect = {
+			material: new THREE.ShaderMaterial( param ),
+		};
 
-    		if ( ! param.uniforms.backbuffer ) {
+	}
 
-    			param.uniforms.backbuffer = { value: null };
+	public render( inputRenderTargets: InputRenderTarget, renderTarget: THREE.WebGLRenderTarget ) {
 
-    		}
+		let renderTargetMem = this.renderer.getRenderTarget();
 
-    		if ( ! param.uniforms.resolution ) {
+		let effect = this.effect;
+		let material = effect.material;
+		let uniforms = material.uniforms;
 
-    			param.uniforms.resolution = { value: this.resolution };
+		if ( inputRenderTargets ) {
 
-    		}
+			let keys = Object.keys( inputRenderTargets );
 
-    		param.vertexShader = param.vertexShader || param.vertexShader || "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); } ";
-    		param.depthTest = false;
+			for ( let j = 0; j < keys.length; j ++ ) {
 
-    		let mat = new THREE.ShaderMaterial( param );
+				if ( uniforms[ keys[ j ] ] ) {
 
-    		let effectMaterial = { material: mat, uniforms: param.uniforms };
+					uniforms[ keys[ j ] ].value = inputRenderTargets[ keys[ j ] ];
 
-    		if ( ! this.effectMaterials ) {
+				} else {
 
-    			this.effectMaterials = [ effectMaterial ];
+					uniforms[ keys[ j ] ] = { value: inputRenderTargets[ keys[ j ] ] };
 
-    		} else {
+					effect.material.needsUpdate = true;
 
-    			this.effectMaterials.push( effectMaterial );
+					effect.material.uniforms = uniforms;
 
-    		}
+				}
 
-    	} );
+			}
 
-    }
+		}
 
-    protected initRenderTargets() {
+		if ( renderTarget ) {
 
-    	this.readBuffer = this.createRenderTarget( this.renderTargetOptions );
-    	this.writeBuffer = this.createRenderTarget( this.renderTargetOptions );
+			uniforms.resolution.value.set( renderTarget.width, renderTarget.height );
 
-    }
+		} else {
 
-    public createRenderTarget( options?: THREE.WebGLRenderTargetOptions ) {
+			this.renderer.getSize( uniforms.resolution.value );
 
-    	return new THREE.WebGLRenderTarget( this.resolution.x, this.resolution.y, options );
+		}
 
-    }
+		this.screen.material = material;
 
-    protected swapBuffers() {
+		this.renderer.setRenderTarget( renderTarget );
 
-    	let tmp = this.writeBuffer;
-    	this.writeBuffer = this.readBuffer;
-    	this.readBuffer = tmp;
+		this.renderer.render( this.scene, this.camera );
 
-    }
+		this.renderer.setRenderTarget( renderTargetMem );
 
-    public render( offScreenRendering: boolean );
-
-    public render( srcTexture?: THREE.Texture, offScreenRendering?: boolean );
-
-    public render( scene: THREE.Scene, camera: THREE.Camera, offScreenRendering?: boolean );
-
-    public render( scene_srcTexture_offScreen: any = false, camera_offScreenRendering: any = false, offScreenRendering: boolean = false ) {
-
-    	let isOffscreen = false;
-    	let skipSetBackBuffer = false;
-
-    	let currentRenderTarget = this.renderer.getRenderTarget();
-
-    	if ( scene_srcTexture_offScreen.type == 'Scene' ) {
-
-    		this.renderer.setRenderTarget( this.readBuffer );
-
-    		this.renderer.clear();
-
-    		this.renderer.render( scene_srcTexture_offScreen, camera_offScreenRendering );
-
-    		isOffscreen = offScreenRendering;
-
-    	} else {
-
-    		if ( typeof ( scene_srcTexture_offScreen ) == 'boolean' ) {
-
-    			isOffscreen = scene_srcTexture_offScreen;
-
-    		} else {
-
-    			this.effectMaterials[ 0 ].uniforms.backbuffer.value = scene_srcTexture_offScreen;
-    			skipSetBackBuffer = true;
-    			isOffscreen = camera_offScreenRendering;
-
-    		}
-
-    	}
-
-    	this.effectMaterials.forEach( ( mat, i ) => {
-
-    		this.screenMesh.material = mat.material;
-
-    		if ( ! skipSetBackBuffer || i > 0 ) {
-
-    			mat.uniforms[ "backbuffer" ].value = this.readBuffer.texture;
-
-    		}
-
-    		if ( i < this.effectMaterials.length - 1 || isOffscreen ) {
-
-    			this.renderer.setRenderTarget( this.writeBuffer );
-
-    		} else {
-
-    			this.renderer.setRenderTarget( null );
-
-    		}
-
-    		this.renderer.render( this.scene, this.camera );
-
-    		this.swapBuffers();
-
-    	} );
-
-    	this.resultBuffer = isOffscreen ? this.readBuffer : null;
-
-    	this.renderer.setRenderTarget( currentRenderTarget );
-
-    }
-
-    public getResultTexture(): THREE.Texture {
-
-    	return this.resultBuffer ? this.resultBuffer.texture : null;
-
-    }
-
-    public resize( resolution?: THREE.Vector2 ) {
-
-    	let res = new THREE.Vector2();
-
-    	if ( resolution ) {
-
-    		res.copy( resolution );
-
-    	} else {
-
-    		this.renderer.getSize( res ).multiplyScalar( this.renderer.getPixelRatio() );
-
-    	}
-
-
-    	this.resolution.copy( res );
-
-    	this.readBuffer.setSize( this.resolution.x, this.resolution.y );
-
-    	this.writeBuffer.setSize( this.resolution.x, this.resolution.y );
-
-    }
+	}
 
 }

@@ -13,7 +13,7 @@ export class DOMMesh extends THREE.Mesh {
 
 		parameter.vertexShader = vert;
 
-		let uni = UniformsLib.CopyUniforms( {
+		let uni = UniformsLib.mergeUniforms( parameter.uniforms, {
 			domPos: {
 				value: new THREE.Vector2()
 			},
@@ -26,7 +26,7 @@ export class DOMMesh extends THREE.Mesh {
 			aspectRatio: {
 				value: 1.0
 			}
-		}, parameter.uniforms );
+		} );
 
 		parameter.uniforms = uni;
 

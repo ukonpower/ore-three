@@ -4,7 +4,7 @@ import * as ORE from '@ore-three-ts';
 import vert from './shaders/mainobj.vs';
 import frag from './shaders/mainobj.fs';
 
-export default class MainObj {
+export class MainObj {
 
 	public obj: THREE.Object3D;
 	private commonUniforms: ORE.Uniforms;
@@ -26,7 +26,7 @@ export default class MainObj {
 
 		this.commonUniforms = THREE.UniformsUtils.merge( [ customUni, std.uniforms ] );
 
-		this.commonUniforms = ORE.UniformsLib.CopyUniforms( this.commonUniforms, parentUniforms );
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, parentUniforms );
 
 		this.createMesh();
 
@@ -36,13 +36,13 @@ export default class MainObj {
 
 		this.obj = new THREE.Object3D();
 
-		let cubeGeo = ( window.assetManager.gltfScene.getObjectByName( 'Cube' ) as THREE.Mesh ).geometry.clone();
+		let cubeGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Cube' ) as THREE.Mesh ).geometry.clone();
 
-		let cubeUni = ORE.UniformsLib.CopyUniforms( {
+		let cubeUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			num: {
 				value: 0
 			}
-		}, this.commonUniforms );
+		} );
 
 		let mat = new THREE.ShaderMaterial( {
 			uniforms: cubeUni,
@@ -55,9 +55,9 @@ export default class MainObj {
 		this.obj.add( cube );
 
 
-		let hatenaGeo = ( window.assetManager.gltfScene.getObjectByName( 'Hatena' ) as THREE.Mesh ).geometry.clone();
+		let hatenaGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Hatena' ) as THREE.Mesh ).geometry.clone();
 
-		let hatenaUni = ORE.UniformsLib.CopyUniforms( {
+		let hatenaUni = ORE.UniformsLib.mergeUniforms( {
 			num: {
 				value: 1
 			}
@@ -74,9 +74,8 @@ export default class MainObj {
 		this.obj.add( hatena );
 
 
-		let installGeo = ( window.assetManager.gltfScene.getObjectByName( 'Install' ) as THREE.Mesh ).geometry.clone();
-
-		let installUni = ORE.UniformsLib.CopyUniforms( {
+		let installGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Install' ) as THREE.Mesh ).geometry.clone();
+		let installUni = ORE.UniformsLib.mergeUniforms( {
 			num: {
 				value: 2
 			}
@@ -92,9 +91,8 @@ export default class MainObj {
 		let install = new THREE.Mesh( installGeo, installMat );
 		this.obj.add( install );
 
-		let faceGeo = ( window.assetManager.gltfScene.getObjectByName( 'Face' ) as THREE.Mesh ).geometry.clone();
-
-		let faceUni = ORE.UniformsLib.CopyUniforms( {
+		let faceGeo = ( window.oreDocsAssetManager.gltfScene.getObjectByName( 'Face' ) as THREE.Mesh ).geometry.clone();
+		let faceUni = ORE.UniformsLib.mergeUniforms( {
 			num: {
 				value: 3
 			}
@@ -115,8 +113,6 @@ export default class MainObj {
 	public update( time: number ) {
 
 		this.commonUniforms.time.value = time;
-
-		// this.obj.rotation.set( 0, time, 0 );
 
 	}
 

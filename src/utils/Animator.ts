@@ -1,8 +1,9 @@
+import * as THREE from 'three';
 import { Easings, EasingSet } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
 
-declare interface AnimatorVariable<T>{
+export declare interface AnimatorVariable<T>{
 	time: number;
 	duration?: number;
 	value: T;
@@ -20,7 +21,7 @@ export declare interface AnimatorValiableParams<T> {
 	customLerpFunc?: LerpFunc<T>;
 }
 
-export class Animator {
+export class Animator extends THREE.EventDispatcher {
 
 	protected variables: { [ key: string ]: AnimatorVariable<any> };
 	protected _isAnimating: boolean = false;
@@ -28,6 +29,8 @@ export class Animator {
 	protected dispatchEvents: Function[] = [];
 
 	constructor() {
+
+		super();
 
 		this.variables = {};
 
@@ -77,44 +80,59 @@ export class Animator {
 	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingSet ) {
 
 		let variable = this.variables[ name ];
+		let promise = new Promise( resolve => {
 
-		if ( variable ) {
+			if ( variable ) {
 
-			if ( duration <= 0 ) {
+				if ( duration <= 0 ) {
 
-				this.setValue( name, goalValue );
+					this.setValue( name, goalValue );
 
-				variable.time = 1.0;
-				variable.onAnimationFinished = callback;
+					variable.time = 1.0;
+					variable.onAnimationFinished = () => {
 
-				return;
+						callback && callback();
+						resolve( null );
+
+					};
+
+					return;
+
+				}
+
+				if ( variable.time == - 1 ) {
+
+					this._isAnimating = true;
+					this.animatingCount ++;
+
+				}
+
+				variable.time = 0;
+				variable.duration = duration;
+				variable.startValue = variable.value;
+				variable.goalValue = goalValue;
+				variable.onAnimationFinished = () => {
+
+					callback && callback();
+					resolve( null );
+
+				};
+
+				if ( easing ) {
+
+					this.setEasing( name, easing );
+
+				}
+
+			} else {
+
+				console.warn( '"' + name + '"' + ' is not exist' );
 
 			}
 
-			if ( variable.time == - 1 ) {
+		} );
 
-				this._isAnimating = true;
-				this.animatingCount ++;
-
-			}
-
-			variable.time = 0;
-			variable.duration = duration;
-			variable.startValue = variable.value;
-			variable.goalValue = goalValue;
-			variable.onAnimationFinished = callback;
-
-			if ( easing ) {
-
-				this.setEasing( name, easing );
-
-			}
-
-		} else {
-
-			console.warn( '"' + name + '"' + ' is not exist' );
-
-		}
+		return promise;
 
 	}
 
@@ -168,7 +186,7 @@ export class Animator {
 
 	}
 
-	public getVariableObject<T>( name: string ): AnimatorVariable<T> {
+	public getVariableObject<T>( name: string, mute: boolean = false ): AnimatorVariable<T> {
 
 		if ( this.variables[ name ] ) {
 
@@ -176,7 +194,33 @@ export class Animator {
 
 		} else {
 
-			console.warn( '"' + name + '"' + ' is not exist' );
+			if ( ! mute ) {
+
+				console.warn( '"' + name + '"' + ' is not exist' );
+
+			}
+
+			return null;
+
+		}
+
+	}
+
+	public isAnimatingVariable( name: string, mute: boolean = false ) {
+
+		if ( this.variables[ name ] ) {
+
+			let time = this.variables[ name ].time;
+
+			return time != - 1.0;
+
+		} else {
+
+			if ( ! mute ) {
+
+				console.warn( '"' + name + '"' + ' is not exist' );
+
+			}
 
 			return null;
 
@@ -243,6 +287,11 @@ export class Animator {
 
 				variable.value = variable.lerpFunc( variable.startValue, variable.goalValue, t );
 
+				this.dispatchEvent( {
+					type: 'update/' + keys[ i ],
+					deltaTime: deltaTime
+				} );
+
 				if ( variable.time == 1.0 ) {
 
 					variable.value = variable.goalValue;
@@ -256,6 +305,15 @@ export class Animator {
 		while ( this.dispatchEvents.length != 0 ) {
 
 			this.dispatchEvents.pop()();
+
+		}
+
+		if ( this._isAnimating ) {
+
+			this.dispatchEvent( {
+				type: 'update',
+				deltaTime: deltaTime
+			} );
 
 		}
 

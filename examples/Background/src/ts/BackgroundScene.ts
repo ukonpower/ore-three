@@ -3,7 +3,7 @@ import * as ORE from '@ore-three-ts';
 
 import backgroundFrag from './shaders/background.fs';
 
-export class BackgroundScene extends ORE.BaseScene {
+export class BackgroundScene extends ORE.BaseLayer {
 
 	private box: THREE.Mesh;
 	private background: ORE.Background;
@@ -15,7 +15,7 @@ export class BackgroundScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -50,11 +50,11 @@ export class BackgroundScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
-		this.background.resize( args );
+		this.background.resize( this.info.size );
 
 	}
 

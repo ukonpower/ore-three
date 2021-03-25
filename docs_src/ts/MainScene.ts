@@ -1,35 +1,31 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-import backgroundFrag from './shaders/background.fs';
-import MainObj from './MainObj';
+import { MainObj } from './MainObj';
 import { ScrollManager } from './ScrollManager';
 import { AssetManager } from './AssetManager';
-import { PostProcessing } from './PostProcessing';
+import { RenderPipeline } from './RenderPipeline';
 
-export class MainScene extends ORE.BaseScene {
+import backgroundFrag from './shaders/background.fs';
+
+export class MainScene extends ORE.BaseLayer {
 
 	private mainObj: MainObj;
 
-	private pp: PostProcessing;
-
 	private background: ORE.Background;
-	private commonUniforms: ORE.Uniforms;
-
 	private scrollManager: ScrollManager;
 	private isExamplePage: boolean = false;
 
 	private assetManager: AssetManager;
 	private spWeight: number = 0.0;
 
+	private renderPipeline: RenderPipeline;
+
 	constructor() {
 
 		super();
 
-		this.commonUniforms = {
-			time: {
-				value: 0
-			},
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			objTransform: {
 				value: 0
 			},
@@ -42,7 +38,7 @@ export class MainScene extends ORE.BaseScene {
 			dark: {
 				value: 0
 			}
-		};
+		} );
 
 		this.isExamplePage = window.location.href.indexOf( 'examples' ) != - 1;
 
@@ -58,7 +54,7 @@ export class MainScene extends ORE.BaseScene {
 				}
 			} );
 
-			window.assetManager = this.assetManager;
+			window.oreDocsAssetManager = this.assetManager;
 
 		} else {
 
@@ -74,16 +70,11 @@ export class MainScene extends ORE.BaseScene {
 
 		} );
 
-		// this.scrollManager.scroller.autoMove( {
-		// 	target: 'usage',
-		// 	duration: 0.01
-		// } );
-
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		let aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;
@@ -94,7 +85,7 @@ export class MainScene extends ORE.BaseScene {
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
 
-		this.pp = new PostProcessing( this.renderer, this.commonUniforms );
+		this.renderPipeline = new RenderPipeline( this.renderer );
 
 	}
 
@@ -125,8 +116,6 @@ export class MainScene extends ORE.BaseScene {
 
 	public animate( deltaTime: number ) {
 
-		this.commonUniforms.time.value = this.time;
-
 		if ( ! this.isExamplePage && this.assetManager.isLoaded ) {
 
 			this.scrollManager.scroller.update( deltaTime );
@@ -145,28 +134,21 @@ export class MainScene extends ORE.BaseScene {
 
 		}
 
-		if ( this.pp ) {
-
-			this.pp.render( this.scene, this.camera );
-
-		} else {
-
-			this.renderer.render( this.scene, this.camera );
-
-		}
+		this.renderPipeline.render( this.scene, this.camera );
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
-		this.spWeight = Math.min( 1.0, Math.max( 0.0, ( this.gProps.resizeArgs.windowSize.x - 500 ) / 1000 ) );
+		this.spWeight = Math.min( 1.0, Math.max( 0.0, ( this.info.size.windowSize.x - 500 ) / 1000 ) );
 
 		this.commonUniforms.spWeight.value = this.spWeight;
 
-		this.background && this.background.resize( args );
-		this.pp && this.pp.resize();
+		this.background && this.background.resize( this.info.size );
+
+		this.renderPipeline.resize( this.info.size.canvasPixelSize );
 
 	}
 
@@ -176,19 +158,19 @@ export class MainScene extends ORE.BaseScene {
 
 	}
 
-	public onTouchStart( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchStart( args: ORE.TouchEventArgs ) {
 
 		this.scrollManager && this.scrollManager.scroller.catch();
 
 	}
 
-	public onTouchMove( cursor: ORE.Cursor, e: MouseEvent ) {
+	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		this.scrollManager && this.scrollManager.scroller.drag( - cursor.delta.y );
+		this.scrollManager && this.scrollManager.scroller.drag( - args.delta.y );
 
 	}
 
-	public onTouchEnd( cursor: ORE.Cursor ) {
+	public onTouchEnd( args: ORE.TouchEventArgs ) {
 
 		this.scrollManager && this.scrollManager.scroller.release();
 

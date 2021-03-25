@@ -5,7 +5,7 @@ import { AssetManager } from './AssetManager';
 
 declare global {
 	interface Window {
-	  assetManager: AssetManager;
+		oreDocsAssetManager: AssetManager;
 	}
   }
 
@@ -16,14 +16,14 @@ export class APP {
 
 	constructor() {
 
-		this.controller = new ORE.Controller( {
-			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-			retina: true,
-		} );
+		this.controller = new ORE.Controller();
 
 		this.scene = new MainScene();
 
-		this.controller.bindScene( this.scene );
+		this.controller.addLayer( this.scene, {
+			name: 'Main',
+			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
+		} );
 
 	}
 

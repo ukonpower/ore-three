@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class ControllerScene extends ORE.BaseScene {
+export class ControllerScene extends ORE.BaseLayer {
 
 	private box: THREE.Mesh;
 
@@ -9,11 +9,11 @@ export class ControllerScene extends ORE.BaseScene {
 
 		super();
 
-	}
+	}t
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( info: ORE.LayerInfo ) {
 
-		super.onBind( gProps );
+		super.onBind( info );
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -31,10 +31,31 @@ export class ControllerScene extends ORE.BaseScene {
 
 	}
 
-	public onResize( args: ORE.ResizeArgs ) {
+	public onResize() {
 
-		super.onResize( args );
+		super.onResize();
 
 	}
+
+	public onTouchStart( args: ORE.TouchEventArgs ) {
+
+	}
+
+	public onTouchMove( args: ORE.TouchEventArgs ) {
+
+	}
+
+	public onTouchEnd( args: ORE.TouchEventArgs ) {
+
+	}
+
+	public onHover( args: ORE.TouchEventArgs ) {
+
+	}
+
+	public onWheel( event: WheelEvent, trackpadDelta: number ) {
+
+	}
+
 
 }

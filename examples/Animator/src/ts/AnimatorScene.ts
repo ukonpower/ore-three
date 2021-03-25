@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
 
-export class AnimatorScene extends ORE.BaseScene {
+export class AnimatorScene extends ORE.BaseLayer {
 
 	private animator: ORE.Animator;
 
@@ -14,7 +14,7 @@ export class AnimatorScene extends ORE.BaseScene {
 
 	}
 
-	public onBind( gProps: ORE.GlobalProperties ) {
+	public onBind( gProps: ORE.LayerInfo ) {
 
 		super.onBind( gProps );
 
@@ -44,6 +44,12 @@ export class AnimatorScene extends ORE.BaseScene {
 
 		this.startPosAnimation();
 		this.startRotAnimation();
+
+		this.animator.addEventListener( 'update/rot', ( deltaTime ) => {
+
+			console.log( 'update/rot', this.animator.get( 'rot' ) );
+
+		} );
 
 	}
 
@@ -83,12 +89,6 @@ export class AnimatorScene extends ORE.BaseScene {
 		this.box.quaternion.copy( this.animator.get( 'rot' ) );
 
 		this.renderer.render( this.scene, this.camera );
-
-	}
-
-	public onResize( args: ORE.ResizeArgs ) {
-
-		super.onResize( args );
 
 	}
 

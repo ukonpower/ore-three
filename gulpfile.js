@@ -16,7 +16,7 @@ const typedoc = require( 'gulp-typedoc' );
 const ts = require( 'gulp-typescript' );
 const options = minimist( process.argv.slice( 2 ), {
 	default: {
-		dev: 'untitle',
+		ex: 'Controller',
 		P: false,
 	}
 } );
@@ -35,40 +35,68 @@ function isFixed( file ) {
 
 }
 
-function esLint( cb ) {
+async function esLint( cb ) {
 
 	let paths = [ './src/', './examples/' ];
+	let promiseArray = [];
 
 	for ( let i = 0; i < paths.length; i ++ ) {
 
-		gulp.src( paths[ i ] + '**/*.ts' )
-			.pipe( eslint( { useEslintrc: true, fix: true } ) ) // .eslintrc を参照
-			.pipe( eslint.format() )
-			.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
-			.pipe( eslint.failAfterError() );
+		let promise = new Promise( resolve => {
+
+			gulp.src( paths[ i ] + '**/*.ts' )
+				.pipe( eslint( { useEslintrc: true, fix: true } ) )
+				.pipe( eslint.format() )
+				.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
+				.on( 'end', () => {
+
+					resolve();
+
+				} )
+				.pipe( eslint.failAfterError() );
+
+		} );
+
+		promiseArray.push( promise );
 
 	}
 
-	cb();
+	await Promise.all( promiseArray ).then( () => {
+
+		cb();
+
+	} );
 
 }
 
 function buildPackages( cb ) {
 
-	//min build
-	const confMin = require( './webpack/build-min.config' );
+	//develop build
+	const conf = require( './config/webpack/umd.webpack.config' );
+	const confMin = require( './config/webpack/umd-min.webpack.config' );
 
-	webpackStream( confMin, webpack )
-		.pipe( gulp.dest( './build/' ) );
+	webpackStream( conf, webpack )
+		.pipe( gulp.dest( './build/' ) )
+		.unpipe(
+			webpackStream( confMin, webpack )
+				.pipe( gulp.dest( './build/' ) )
+				.on( 'end', cb ) );
 
-	//module build
-	const confModule = require( './webpack/build-module.config' );
+}
 
-	webpackStream( confModule, webpack )
-		.pipe( gulp.dest( './build/' ) );
+function buildTypes( cb ) {
 
-	//eslint
-	gulp.series( esLint );
+	var tsProjectDts = ts.createProject( './config/typescript/types.tsconfig.json' );
+
+	//types
+	gulp.src( './src/**/*.ts' )
+		.pipe( tsProjectDts() ).dts
+		.pipe( gulp.dest( './types' ) )
+		.on( 'end', cb );
+
+}
+
+function buildTypeDoc( cb ) {
 
 	//typedoc
 	gulp.src( './src' )
@@ -79,15 +107,8 @@ function buildPackages( cb ) {
 			mode: "file",
 			name: info.packageName,
 			moduleResolution: "node"
-		} ) );
-
-	var tsProjectDts = ts.createProject( './webpack/tsconfig/build.json' );
-	//types
-	var tsResult = gulp.src( './src/**/*.ts' )
-		.pipe( tsProjectDts() );
-	tsResult.dts.pipe( gulp.dest( './types' ) );
-
-	cb();
+		} ) )
+		.on( 'end', cb );
 
 }
 
@@ -97,7 +118,7 @@ function buildExamples( cb ) {
 
 		if ( err ) throw err;
 
-		const conf = require( './webpack/build-example.config' );
+		const conf = require( './config/webpack/build-example.webpack.config.js' );
 		conf.mode = 'production';
 
 		for ( let i = 0; i < files.length; i ++ ) {
@@ -123,13 +144,12 @@ function buildExamples( cb ) {
 
 		//webpack
 		webpackStream( conf, webpack )
-			.on( 'error', ( e ) => {
+			.on( 'error', function ( e ) {
 
 				this.emit( 'end' );
 
 			} )
 			.pipe( gulp.dest( docsExDir ) )
-
 			.on( 'end', cb );
 
 	} );
@@ -190,7 +210,7 @@ function cleanDevFiles( cb ) {
 
 function webpackDev() {
 
-	const conf = require( './webpack/build-example.config' );
+	const conf = require( './config/webpack/build-example.webpack.config.js' );
 	conf.entry = {};
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.mode = options.P ? 'production' : 'development';
@@ -243,8 +263,8 @@ function watch() {
 
 function setDevLibraryPath( cb ) {
 
-	srcDir = './examples/' + options.dev + '/src';
-	distDir = './examples/' + options.dev + '/public';
+	srcDir = './examples/' + options.ex + '/src';
+	distDir = './examples/' + options.ex + '/public';
 
 	cb();
 
@@ -265,9 +285,8 @@ const develop = gulp.series(
 	gulp.parallel( brSync, watch )
 );
 
-exports.default = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
 exports.lint = gulp.series( esLint );
-exports.docs = gulp.series( setDevDocumentsPath, develop );
-// exports.build = gulp.series( cleanBuildFiles, buildPackages );
-exports.build = gulp.series( cleanBuildFiles, buildPackages, buildExamples, setDevDocumentsPath, develop );
+exports.default = gulp.series( setDevDocumentsPath, develop );
+exports.dev = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
+exports.build = gulp.series( cleanBuildFiles, esLint, buildPackages, buildTypes, buildTypeDoc, buildExamples, setDevDocumentsPath, develop );
 
