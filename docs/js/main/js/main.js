@@ -58252,6 +58252,10 @@ var Animator = /** @class */ (function (_super) {
                     t = variable.easing.func(t, variable.easing.args);
                 }
                 variable.value = variable.lerpFunc(variable.startValue, variable.goalValue, t);
+                this.dispatchEvent({
+                    type: 'update/' + keys[i],
+                    deltaTime: deltaTime
+                });
                 if (variable.time == 1.0) {
                     variable.value = variable.goalValue;
                 }
