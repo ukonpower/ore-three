@@ -52706,12 +52706,18 @@ var AnimatorScene = /** @class */ (function (_super) {
         this.startPosAnimation();
         this.startRotAnimation();
         this.animator.addEventListener('update/rot', function (deltaTime) {
-            console.log('update/rot', _this.animator.get('rot'));
+            if (_this.animator) {
+                console.log('update/rot', _this.animator.get('rot'));
+            }
         });
     };
     AnimatorScene.prototype.startPosAnimation = function () {
         var _this = this;
+        if (this.animator == null)
+            return;
         this.animator.animate('pos', new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(1.0, 0.0, 0.0), 1.0, function () {
+            if (_this.animator == null)
+                return;
             _this.animator.animate('pos', new three__WEBPACK_IMPORTED_MODULE_0__.Vector3(-1.0, 0.0, 0.0), 1.0, function () {
                 _this.startPosAnimation();
             });
@@ -52719,17 +52725,29 @@ var AnimatorScene = /** @class */ (function (_super) {
     };
     AnimatorScene.prototype.startRotAnimation = function () {
         var _this = this;
+        if (this.animator == null)
+            return;
         this.animator.animate('rot', new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(0, 0, -Math.PI)), 1.0, function () {
+            if (_this.animator == null)
+                return;
             _this.animator.animate('rot', new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromEuler(new three__WEBPACK_IMPORTED_MODULE_0__.Euler(0, 0, 0.0)), 1.0, function () {
                 _this.startRotAnimation();
             });
         });
     };
     AnimatorScene.prototype.animate = function (deltaTime) {
-        this.animator.update(deltaTime);
-        this.box.position.copy(this.animator.get('pos'));
-        this.box.quaternion.copy(this.animator.get('rot'));
-        this.renderer.render(this.scene, this.camera);
+        if (this.animator) {
+            this.animator.update(deltaTime);
+            var pos = this.animator.get('pos');
+            var rot = this.animator.get('rot');
+            if (this.box && pos && rot) {
+                this.box.position.copy(pos);
+                this.box.quaternion.copy(rot);
+            }
+        }
+        if (this.renderer) {
+            this.renderer.render(this.scene, this.camera);
+        }
     };
     return AnimatorScene;
 }(_ore_three_ts__WEBPACK_IMPORTED_MODULE_1__.BaseLayer));
@@ -52814,9 +52832,6 @@ var BaseLayer = /** @class */ (function (_super) {
         _this.time = 0;
         _this.info = {
             name: '',
-            canvas: null,
-            wrapperElement: null,
-            wrapperElementRect: null,
             aspect: {
                 mainAspect: 16 / 9,
                 wideAspect: 10 / 1,
@@ -52856,6 +52871,7 @@ var BaseLayer = /** @class */ (function (_super) {
         this.info.wrapperElement = layerInfo.wrapperElement;
         this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
             this.info.aspect = layerInfo.aspect || this.info.aspect;
+        this.info.alpha = layerInfo.alpha;
         this.renderer = new three__WEBPACK_IMPORTED_MODULE_0__.WebGLRenderer(this.info);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.debug.checkShaderErrors = true;
@@ -52872,8 +52888,8 @@ var BaseLayer = /** @class */ (function (_super) {
         var length = object.children.length;
         for (var i = length - 1; i >= 0; i--) {
             this.removeChildrens(object.children[i]);
-            var geo = void 0;
-            var mat = void 0;
+            var geo = undefined;
+            var mat = undefined;
             if (object.children[i].isMesh) {
                 geo = object.children[i].geometry;
                 mat = object.children[i].material;
@@ -52888,6 +52904,8 @@ var BaseLayer = /** @class */ (function (_super) {
         }
     };
     BaseLayer.prototype.onResize = function () {
+        if (this.renderer == null)
+            return;
         var newWindowSize = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(window.innerWidth, window.innerHeight);
         var newCanvasSize = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
         if (this.info.wrapperElement) {
@@ -52904,10 +52922,10 @@ var BaseLayer = /** @class */ (function (_super) {
         this.info.size.windowAspectRatio = newWindowSize.x / newWindowSize.y;
         this.info.size.canvasSize.copy(newCanvasSize);
         this.info.size.canvasPixelSize.copy(newCanvasSize.clone().multiplyScalar(this.renderer.getPixelRatio()));
-        this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y,
-            this.info.aspect.portraitWeight = portraitWeight,
-            this.info.aspect.wideWeight = wideWeight,
-            this.renderer.setSize(this.info.size.canvasSize.x, this.info.size.canvasSize.y);
+        this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y;
+        this.info.aspect.portraitWeight = portraitWeight;
+        this.info.aspect.wideWeight = wideWeight;
+        this.renderer.setSize(this.info.size.canvasSize.x, this.info.size.canvasSize.y);
         this.camera.aspect = this.info.size.canvasAspectRatio;
         this.camera.updateProjectionMatrix();
         if (this.info.wrapperElement) {
@@ -53312,7 +53330,10 @@ var Animator = /** @class */ (function (_super) {
     Animator.prototype.applyToUniforms = function (uniforms) {
         var keys = Object.keys(this.variables);
         for (var i = 0; i < keys.length; i++) {
-            uniforms[keys[i]] = this.getVariableObject(keys[i]);
+            var variable = this.getVariableObject(keys[i]);
+            if (variable) {
+                uniforms[keys[i]] = variable;
+            }
         }
     };
     Animator.prototype.update = function (deltaTime) {
@@ -53322,34 +53343,42 @@ var Animator = /** @class */ (function (_super) {
         var keys = Object.keys(this.variables);
         for (var i = 0; i < keys.length; i++) {
             var variable = this.variables[keys[i]];
-            if (variable.time == 1.0) {
+            var time = variable.time;
+            if (time == 1.0) {
                 this.animatingCount--;
-                variable.time = -1;
+                time = -1;
                 if (variable.onAnimationFinished) {
                     this.dispatchEvents.push(variable.onAnimationFinished);
                 }
             }
-            if (variable.time >= 0.0 && variable.time < 1.0) {
-                variable.time += (deltaTime || 0.016) / variable.duration;
-                if (variable.duration == 0 || variable.time >= 1.0) {
-                    variable.time = 1.0;
+            if (time >= 0.0 && time < 1.0) {
+                var duration = variable.duration;
+                var easing = variable.easing;
+                var lerpFunc = variable.lerpFunc;
+                if (duration) {
+                    time += (deltaTime || 0.016) / duration;
+                    if (duration == 0 || time >= 1.0) {
+                        time = 1.0;
+                    }
                 }
-                var t = variable.time;
-                if (variable.easing) {
-                    t = variable.easing.func(t, variable.easing.args);
+                if (lerpFunc) {
+                    variable.value = lerpFunc(variable.startValue, variable.goalValue, easing.func(time, easing.args));
                 }
-                variable.value = variable.lerpFunc(variable.startValue, variable.goalValue, t);
+                if (time == 1.0) {
+                    variable.value = variable.goalValue;
+                }
+                variable.time = time;
                 this.dispatchEvent({
                     type: 'update/' + keys[i],
                     deltaTime: deltaTime
                 });
-                if (variable.time == 1.0) {
-                    variable.value = variable.goalValue;
-                }
             }
         }
         while (this.dispatchEvents.length != 0) {
-            this.dispatchEvents.pop()();
+            var func = this.dispatchEvents.pop();
+            if (func) {
+                func();
+            }
         }
         if (this._isAnimating) {
             this.dispatchEvent({
@@ -53756,8 +53785,8 @@ var GPUComputationController = /** @class */ (function () {
             stencilBuffer: false,
             depthBuffer: false
         };
-        var initTex;
-        var customParam;
+        var initTex = null;
+        var customParam = null;
         if (initTex_texParam) {
             if (initTex_texParam.isDataTexture) {
                 initTex = initTex_texParam;
@@ -53868,8 +53897,8 @@ var LayoutController = /** @class */ (function () {
         this.baseTransform = {
             position: this.obj.position.clone(),
             rotation: this.obj.quaternion.clone(),
+            scale: this.obj.scale.clone()
         };
-        this.baseScale = this.obj.scale.clone();
         this.transform = transform;
         if (!isAbsolutePosition) {
             this.transform.position && this.transform.position.add(this.obj.position);
@@ -53884,7 +53913,7 @@ var LayoutController = /** @class */ (function () {
             this.obj.quaternion.copy(this.baseTransform.rotation.clone().slerp(this.transform.rotation, weight));
         }
         if (this.transform.scale) {
-            this.obj.scale.copy(this.baseScale.clone().multiplyScalar(this.transform.scale * (weight) + 1.0 - weight));
+            this.obj.scale.copy(this.baseTransform.scale.clone().multiplyScalar(this.transform.scale * (weight) + 1.0 - weight));
         }
     };
     return LayoutController;
@@ -54028,6 +54057,7 @@ var PageScrollerSection = /** @class */ (function () {
         this.timelinePercentage = 0;
         this.name = params.name;
         this.element = params.element;
+        this.rect = this.element.getBoundingClientRect();
         this.stop = params.stop;
         this.events = params.events;
         this.bottom = params.bottom;
@@ -54088,6 +54118,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var PageScroller = /** @class */ (function () {
     function PageScroller(parentElement) {
+        this.isAutoMove = false;
         this.delaySpeed = 0.1;
         this.dragDelaySpeed = 0.4;
         this.isTouching = false;
@@ -54095,16 +54126,19 @@ var PageScroller = /** @class */ (function () {
         this.scrollReady = false;
         this.sumDelta = 0;
         this._scrollPos = 0;
+        this._scrollPosMem = 0;
         this._scrollPercentage = 0;
         this._scrollPosDelay = 0;
         this._scrollPercentageDelay = 0;
         this.dragStop = false;
         this.dragUnlockReady = true;
         this.parentElement = parentElement;
+        this.parentElementHeight = parentElement.getBoundingClientRect().height;
         this.sections = [];
-        this.initAnimator();
-    }
-    PageScroller.prototype.initAnimator = function () {
+        this.caughtSection = null;
+        /*------------------------
+            init Animator
+        ------------------------*/
         this.animator = new _Animator__WEBPACK_IMPORTED_MODULE_1__.Animator();
         this.animator.add({
             name: 'scrollPos',
@@ -54114,7 +54148,7 @@ var PageScroller = /** @class */ (function () {
                 args: 4
             }
         });
-    };
+    }
     Object.defineProperty(PageScroller.prototype, "scrollPos", {
         get: function () {
             return this._scrollPos;
@@ -54165,6 +54199,7 @@ var PageScroller = /** @class */ (function () {
     PageScroller.prototype.add = function (section) {
         this.sections.push(section);
         this.sortSections();
+        return section;
     };
     PageScroller.prototype.sortSections = function () {
         this.sections.sort(function (a, b) {
@@ -54196,7 +54231,10 @@ var PageScroller = /** @class */ (function () {
     PageScroller.prototype.updateAutoMove = function (deltaTime) {
         this.animator.update(deltaTime);
         if (this.isAutoMove) {
-            this.sumDelta = this.animator.get('scrollPos') - this.scrollPos;
+            var pos = this.animator.get('scrollPos');
+            if (pos) {
+                this.sumDelta = pos - this.scrollPos;
+            }
         }
     };
     PageScroller.prototype.addScrollPos = function () {
@@ -54281,17 +54319,18 @@ var PageScroller = /** @class */ (function () {
                 scrollDelta: scrollDelta,
                 scrollPower: Math.abs(scrollDelta),
             };
-            var arrivalEvents = section.events.onArrivals && section.events.onArrivals.length || 0;
-            for (var i = 0; i < arrivalEvents; i++) {
-                var arrivalEvent = section.events.onArrivals[i];
-                var isThrow = this.checkThrowLine(percentage, movedPercentage, arrivalEvent.percentage);
-                if (isThrow != 0) {
-                    arrivalEvent.event.common && arrivalEvent.event.common(args);
-                    if (isThrow < 0) {
-                        arrivalEvent.event.up && arrivalEvent.event.up(args);
-                    }
-                    else {
-                        arrivalEvent.event.down && arrivalEvent.event.down(args);
+            if (section.events.onArrivals) {
+                for (var i = 0; i < section.events.onArrivals.length; i++) {
+                    var arrivalEvent = section.events.onArrivals[i];
+                    var isThrow = this.checkThrowLine(percentage, movedPercentage, arrivalEvent.percentage);
+                    if (isThrow != 0) {
+                        arrivalEvent.event.common && arrivalEvent.event.common(args);
+                        if (isThrow < 0) {
+                            arrivalEvent.event.up && arrivalEvent.event.up(args);
+                        }
+                        else {
+                            arrivalEvent.event.down && arrivalEvent.event.down(args);
+                        }
                     }
                 }
             }
@@ -54361,7 +54400,7 @@ var PageScroller = /** @class */ (function () {
     };
     PageScroller.prototype.autoMove = function (param) {
         var _this = this;
-        var targetPos;
+        var targetPos = 0;
         if (param.target.isPageScrollerSection) {
             var target = param.target;
             var bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
@@ -54369,8 +54408,10 @@ var PageScroller = /** @class */ (function () {
         }
         else if (typeof param.target == 'string') {
             var target = this.get(param.target);
-            var bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
-            targetPos = target.element.offsetTop + bottomOffset;
+            if (target) {
+                var bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
+                targetPos = target.element.offsetTop + bottomOffset;
+            }
         }
         else if (typeof param.target == 'number') {
             targetPos = param.target;
@@ -54399,7 +54440,7 @@ var PageScroller = /** @class */ (function () {
 /*! namespace exports */
 /*! export Pointer [provided] [no usage info] [missing usage info prevents renaming] */
 /*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
+/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.d, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -54408,10 +54449,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Pointer": () => /* binding */ Pointer
 /* harmony export */ });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var lethargy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lethargy */ "./node_modules/lethargy/lethargy.js");
-/* harmony import */ var lethargy__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lethargy__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var to_px__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! to-px */ "./node_modules/to-px/browser.js");
-/* harmony import */ var to_px__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(to_px__WEBPACK_IMPORTED_MODULE_2__);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -54426,15 +54463,15 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
-
-
+var Lethargy = __webpack_require__(/*! lethargy */ "./node_modules/lethargy/lethargy.js").Lethargy;
+var toPx = __webpack_require__(/*! to-px */ "./node_modules/to-px/browser.js");
 var Pointer = /** @class */ (function (_super) {
     __extends(Pointer, _super);
     function Pointer() {
         var _this = _super.call(this) || this;
         _this.trackpadMemDelta = 0;
         _this.trackpadMax = false;
-        _this.lethargy = new lethargy__WEBPACK_IMPORTED_MODULE_1__.Lethargy(7, 0, 0.05);
+        _this.lethargy = new Lethargy(7, 0, 0.05);
         _this.position = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(NaN, NaN);
         _this.delta = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2(NaN, NaN);
         var userAgent = navigator.userAgent;
@@ -54463,9 +54500,8 @@ var Pointer = /** @class */ (function (_super) {
     };
     Pointer.prototype.getRelativePosition = function (elm, normalize) {
         var rect = elm.getClientRects()[0];
-        var pos;
-        var x = pos.x - rect.left;
-        var y = pos.y - rect.top;
+        var x = this.position.x - rect.left;
+        var y = this.position.y - rect.top;
         if (normalize) {
             x /= rect.width;
             y /= rect.height;
@@ -54495,7 +54531,13 @@ var Pointer = /** @class */ (function (_super) {
         }
     };
     Pointer.prototype.onPointer = function (type, e) {
-        if (e.pointerType == 'mouse' && (e.button == -1 || e.button == 0)) {
+        var pointerType = e.pointerType;
+        if (pointerType != null) {
+            if (pointerType == 'mouse' && (e.button == -1 || e.button == 0)) {
+                this.touchEventHandler(e.pageX, e.pageY, type, e);
+            }
+        }
+        else {
             this.touchEventHandler(e.pageX, e.pageY, type, e);
         }
     };
@@ -54545,7 +54587,7 @@ var Pointer = /** @class */ (function (_super) {
         var trackpadDelta = 0;
         switch (e.deltaMode) {
             case e.DOM_DELTA_LINE:
-                delta *= to_px__WEBPACK_IMPORTED_MODULE_2___default()('ex', window) * 2.5;
+                delta *= toPx('ex', window) * 2.5;
                 break;
             case e.DOM_DELTA_PAGE:
                 delta *= window.innerHeight;
@@ -54587,26 +54629,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var PostProcessing = /** @class */ (function () {
-    function PostProcessing(renderer, material) {
+    function PostProcessing(renderer, ppParam) {
         this.renderer = renderer;
         this.scene = new three__WEBPACK_IMPORTED_MODULE_0__.Scene();
         this.camera = new three__WEBPACK_IMPORTED_MODULE_0__.OrthographicCamera(-1.0, 1.0, 1.0, -1.0);
         this.screen = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(new three__WEBPACK_IMPORTED_MODULE_0__.PlaneBufferGeometry(2, 2));
         this.scene.add(this.screen);
-        this.createMaterials(material);
-    }
-    PostProcessing.prototype.createMaterials = function (params) {
-        var param = params;
-        param.vertexShader = param.vertexShader || _shaders_passThrow_vs__WEBPACK_IMPORTED_MODULE_1__.default;
-        param.uniforms = param.uniforms || {};
-        param.uniforms.resolution = {
+        ppParam.vertexShader = ppParam.vertexShader || _shaders_passThrow_vs__WEBPACK_IMPORTED_MODULE_1__.default;
+        ppParam.uniforms = ppParam.uniforms || {};
+        ppParam.uniforms.resolution = {
             value: new three__WEBPACK_IMPORTED_MODULE_0__.Vector2()
         };
         this.effect = {
-            material: new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial(param),
+            material: new three__WEBPACK_IMPORTED_MODULE_0__.ShaderMaterial(ppParam),
         };
-    };
+    }
     PostProcessing.prototype.render = function (inputRenderTargets, renderTarget) {
+        if (renderTarget === void 0) { renderTarget = null; }
         var renderTargetMem = this.renderer.getRenderTarget();
         var effect = this.effect;
         var material = effect.material;
@@ -54711,10 +54750,10 @@ var TimelineAnimator = /** @class */ (function () {
         for (var i = 0; i < keys.length; i++) {
             var valiable = this.variables[keys[i]];
             var kfs = valiable.keyframes;
-            var a = void 0;
-            var b = void 0;
+            var a = null;
+            var b = null;
             var t = Math.max(kfs[0].time, Math.min(kfs[kfs.length - 1].time, this.time));
-            var easing = void 0;
+            var easing = null;
             if (kfs.length == 1) {
                 t = kfs[0].time;
                 a = b = kfs[0];
@@ -54727,7 +54766,9 @@ var TimelineAnimator = /** @class */ (function () {
                     if (a.time <= t && t <= b.time)
                         break;
                 }
-                t = (t - a.time) / (b.time - a.time);
+                if (a != null && b != null) {
+                    t = (t - a.time) / (b.time - a.time);
+                }
             }
             if (easing) {
                 t = easing.func(t, easing.args);
@@ -54739,7 +54780,9 @@ var TimelineAnimator = /** @class */ (function () {
                 t = this.defaultEasing.func(t, this.defaultEasing.args);
             }
             if (valiable.lerpFunc) {
-                valiable.value = valiable.lerpFunc(a.value, b.value, t);
+                if (a != null && b != null) {
+                    valiable.value = valiable.lerpFunc(a.value, b.value, t);
+                }
                 if (valiable.value === false) {
                     console.log('error at ' + '"' + keys[i] + '"');
                 }
@@ -54780,7 +54823,9 @@ var UniformsLib;
         }
         var res = {};
         for (var i = 0; i < uniforms.length; i++) {
-            Object.assign(res, uniforms[i]);
+            if (uniforms[i] != undefined) {
+                Object.assign(res, uniforms[i]);
+            }
         }
         return res;
     }
@@ -54862,7 +54907,7 @@ var UniformsLib;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev8\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
+module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.2\",\"description\":\"\",\"main\":\"build/ore-three-ts.js\",\"author\":\"ukonpower\",\"license\":\"MIT\",\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:ukonpower/ore-three-ts.git\"},\"keywords\":[\"threejs\",\"webgl\"],\"types\":\"types/index.d.ts\",\"files\":[\"build\",\"src\",\"types\"],\"bugs\":{\"url\":\"https://github.com/ukonpower/ore-three-ts/issues\"},\"devDependencies\":{\"@types/node\":\"^14.14.9\",\"@types/offscreencanvas\":\"^2019.6.2\",\"@types/webgl2\":\"0.0.5\",\"@typescript-eslint/eslint-plugin\":\"^4.8.1\",\"@typescript-eslint/parser\":\"^4.8.1\",\"browser-sync\":\"^2.26.13\",\"copy-webpack-plugin\":\"^6.3.2\",\"del\":\"^6.0.0\",\"eslint\":\"^7.14.0\",\"eslint-config-mdcs\":\"^5.0.0\",\"glslify-hex\":\"^2.1.1\",\"glslify-import\":\"^3.1.0\",\"glslify-loader\":\"^2.0.0\",\"gulp\":\"^4.0.2\",\"gulp-autoprefixer\":\"^7.0.1\",\"gulp-cssmin\":\"^0.2.0\",\"gulp-eslint\":\"^6.0.0\",\"gulp-if\":\"^3.0.0\",\"gulp-plumber\":\"^1.2.1\",\"gulp-pug\":\"^4.0.1\",\"gulp-sass\":\"^4.1.0\",\"gulp-typedoc\":\"^2.2.5\",\"gulp-typescript\":\"^6.0.0-alpha.1\",\"raw-loader\":\"^4.0.2\",\"three\":\"^0.123.0\",\"ts-loader\":\"^8.0.11\",\"typedoc\":\"^0.19.2\",\"typescript\":\"^4.1.2\",\"webpack\":\"^5.9.0\",\"webpack-cli\":\"^4.2.0\",\"webpack-dev-server\":\"^3.11.0\",\"webpack-merge\":\"^5.4.0\",\"webpack-stream\":\"^6.1.1\"},\"dependencies\":{\"lethargy\":\"^1.0.9\",\"to-px\":\"^1.1.0\"}}");
 
 /***/ })
 
@@ -54892,18 +54937,6 @@ module.exports = JSON.parse("{\"name\":\"ore-three-ts\",\"version\":\"2.0.0-dev8
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

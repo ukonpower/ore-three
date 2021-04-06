@@ -292,25 +292,24 @@ export class Animator extends THREE.EventDispatcher {
 
 				}
 
-				let t = time;
-				t = easing.func( t, easing.args );
-
 				if ( lerpFunc ) {
 
-					variable.value = lerpFunc( variable.startValue, variable.goalValue, t );
+					variable.value = lerpFunc( variable.startValue, variable.goalValue, easing.func( time, easing.args ) );
 
 				}
-
-				this.dispatchEvent( {
-					type: 'update/' + keys[ i ],
-					deltaTime: deltaTime
-				} );
 
 				if ( time == 1.0 ) {
 
 					variable.value = variable.goalValue;
 
 				}
+
+				variable.time = time;
+
+				this.dispatchEvent( {
+					type: 'update/' + keys[ i ],
+					deltaTime: deltaTime
+				} );
 
 			}
 
