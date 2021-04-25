@@ -123,20 +123,24 @@ function buildExamples( cb ) {
 
 		for ( let i = 0; i < files.length; i ++ ) {
 
+			let exName = files[ i ];
+
+			if ( exName.charAt( 0 ) == '.' ) continue;
+
 			//set webpack entry files
-			conf.entry[ files[ i ] ] = exDir + files[ i ] + '/src/ts/main.ts';
+			conf.entry[ exName ] = exDir + exName + '/src/ts/main.ts';
 
 			//sass
-			gulp.src( exDir + files[ i ] + "/src/scss/style.scss" )
+			gulp.src( exDir + exName + "/src/scss/style.scss" )
 				.pipe( plumber() )
 				.pipe( sass() )
 				.pipe( autoprefixer() )
 				.pipe( cssmin() )
-				.pipe( gulp.dest( docsExDir + files[ i ] + "/css/" ) );
+				.pipe( gulp.dest( docsExDir + exName + "/css/" ) );
 
 			//copy files
-			gulp.src( exDir + files[ i ] + '/src/html/**/*' ).pipe( gulp.dest( docsExDir + files[ i ] + '/' ) );
-			gulp.src( exDir + files[ i ] + '/src/assets/**/*' ).pipe( gulp.dest( docsExDir + files[ i ] + '/assets/' ) );
+			gulp.src( exDir + exName + '/src/html/**/*' ).pipe( gulp.dest( docsExDir + exName + '/' ) );
+			gulp.src( exDir + exName + '/src/assets/**/*' ).pipe( gulp.dest( docsExDir + exName + '/assets/' ) );
 
 		}
 
@@ -214,6 +218,8 @@ function webpackDev() {
 	conf.entry = {};
 	conf.entry.main = srcDir + '/ts/main.ts';
 	conf.mode = options.P ? 'production' : 'development';
+	conf.output = {};
+	conf.output.filename = 'main.js';
 
 	return webpackStream( conf, webpack )
 		.on( 'error', function ( e ) {
@@ -286,7 +292,26 @@ const develop = gulp.series(
 );
 
 exports.lint = gulp.series( esLint );
-exports.default = gulp.series( setDevDocumentsPath, develop );
-exports.dev = gulp.series( setDevLibraryPath, cleanDevFiles, develop );
-exports.build = gulp.series( cleanBuildFiles, esLint, buildPackages, buildTypes, buildTypeDoc, buildExamples, setDevDocumentsPath, develop );
+
+exports.default = gulp.series(
+	setDevDocumentsPath,
+	develop
+);
+
+exports.dev = gulp.series(
+	setDevLibraryPath,
+	cleanDevFiles,
+	develop
+);
+
+exports.build = gulp.series(
+	cleanBuildFiles,
+	esLint,
+	buildPackages,
+	buildTypes,
+	buildTypeDoc,
+	buildExamples,
+	setDevDocumentsPath,
+	develop
+);
 

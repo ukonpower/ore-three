@@ -308,7 +308,8 @@ export class Animator extends THREE.EventDispatcher {
 
 				this.dispatchEvent( {
 					type: 'update/' + keys[ i ],
-					deltaTime: deltaTime
+					deltaTime: deltaTime,
+					value: variable.value
 				} );
 
 			}
@@ -327,10 +328,15 @@ export class Animator extends THREE.EventDispatcher {
 
 		}
 
+		this.dispatchEvent( {
+			type: 'update',
+			deltaTime: deltaTime
+		} );
+
 		if ( this._isAnimating ) {
 
 			this.dispatchEvent( {
-				type: 'update',
+				type: 'animate',
 				deltaTime: deltaTime
 			} );
 
