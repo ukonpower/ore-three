@@ -304,8 +304,6 @@ export class Animator extends THREE.EventDispatcher {
 
 				}
 
-				variable.time = time;
-
 				this.dispatchEvent( {
 					type: 'update/' + keys[ i ],
 					deltaTime: deltaTime,
@@ -313,6 +311,8 @@ export class Animator extends THREE.EventDispatcher {
 				} );
 
 			}
+
+			variable.time = time;
 
 		}
 

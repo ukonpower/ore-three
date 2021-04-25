@@ -44,11 +44,11 @@ export class AnimatorScene extends ORE.BaseLayer {
 		this.startPosAnimation();
 		this.startRotAnimation();
 
-		this.animator.addEventListener( 'update/rot', ( deltaTime ) => {
+		this.animator.addEventListener( 'update/rot', ( e ) => {
 
 			if ( this.animator ) {
 
-				console.log( 'update/rot', this.animator.get( 'rot' ) );
+				console.log( 'update/rot', e.value );
 
 			}
 
