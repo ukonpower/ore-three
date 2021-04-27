@@ -37,11 +37,11 @@ export declare class PageScrollerSection {
     name: string;
     element: HTMLElement;
     rect: PageScrollerSectionRect;
-    stop: boolean;
     startScrollUp: number;
     startScrollDown: number;
-    events: PageScrollerEvents;
-    bottom: boolean;
+    stop?: boolean;
+    events?: PageScrollerEvents;
+    bottom?: boolean;
     timelinePercentage: number;
     constructor(params: PageScrollerSectionParams);
     get isPageScrollerSection(): boolean;

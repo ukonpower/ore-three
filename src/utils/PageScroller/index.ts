@@ -14,7 +14,7 @@ export declare interface PageScrollerAutoMoveParam {
 export class PageScroller {
 
 	protected animator: Animator;
-	protected isAutoMove: boolean;
+	protected isAutoMove: boolean = false;
 
 	protected parentElement: HTMLElement;
 	protected parentElementHeight: number;
@@ -30,27 +30,27 @@ export class PageScroller {
 	protected sumDelta: number = 0;
 
 	protected _scrollPos: number = 0;
-	protected _scrollPosMem: number;
+	protected _scrollPosMem: number = 0;
 	protected _scrollPercentage: number = 0;
 
 	protected _scrollPosDelay: number = 0;
 	protected _scrollPercentageDelay: number = 0;
 
-	protected caughtSection: PageScrollerSection;
+	protected caughtSection: PageScrollerSection | null;
 	protected dragStop: boolean = false;
 	protected dragUnlockReady: boolean = true;
 
 	constructor( parentElement: HTMLElement ) {
 
 		this.parentElement = parentElement;
+		this.parentElementHeight = parentElement.getBoundingClientRect().height;
 
 		this.sections = [];
+		this.caughtSection = null;
 
-		this.initAnimator();
-
-	}
-
-	protected initAnimator() {
+		/*------------------------
+			init Animator
+		------------------------*/
 
 		this.animator = new Animator();
 
@@ -120,6 +120,8 @@ export class PageScroller {
 
 		this.sortSections();
 
+		return section;
+
 	}
 
 	public sortSections() {
@@ -174,13 +176,19 @@ export class PageScroller {
 
 	}
 
-	protected updateAutoMove( deltaTime ) {
+	protected updateAutoMove( deltaTime: number ) {
 
 		this.animator.update( deltaTime );
 
 		if ( this.isAutoMove ) {
 
-			this.sumDelta = this.animator.get<number>( 'scrollPos' ) - this.scrollPos;
+			let pos = this.animator.get<number>( 'scrollPos' );
+
+			if ( pos ) {
+
+				this.sumDelta = pos - this.scrollPos;
+
+			}
 
 		}
 
@@ -324,25 +332,27 @@ export class PageScroller {
 				scrollPower: Math.abs( scrollDelta ),
 			};
 
-			let arrivalEvents = section.events.onArrivals && section.events.onArrivals.length || 0;
+			if ( section.events.onArrivals ) {
 
-			for ( let i = 0; i < arrivalEvents; i ++ ) {
+				for ( let i = 0; i < section.events.onArrivals.length; i ++ ) {
 
-				let arrivalEvent = section.events.onArrivals[ i ];
+					let arrivalEvent = section.events.onArrivals[ i ];
 
-				let isThrow = this.checkThrowLine( percentage, movedPercentage, arrivalEvent.percentage );
+					let isThrow = this.checkThrowLine( percentage, movedPercentage, arrivalEvent.percentage );
 
-				if ( isThrow != 0 ) {
+					if ( isThrow != 0 ) {
 
-					arrivalEvent.event.common && arrivalEvent.event.common( args );
+						arrivalEvent.event.common && arrivalEvent.event.common( args );
 
-					if ( isThrow < 0 ) {
+						if ( isThrow < 0 ) {
 
-						arrivalEvent.event.up && arrivalEvent.event.up( args );
+							arrivalEvent.event.up && arrivalEvent.event.up( args );
 
-					} else {
+						} else {
 
-						arrivalEvent.event.down && arrivalEvent.event.down( args );
+							arrivalEvent.event.down && arrivalEvent.event.down( args );
+
+						}
 
 					}
 
@@ -390,7 +400,7 @@ export class PageScroller {
 
 	}
 
-	protected calcScrollProperties( deltaTime ) {
+	protected calcScrollProperties( deltaTime: number ) {
 
 		this._scrollPosDelay += ( this._scrollPos - this._scrollPosDelay ) * ( this.isTouching && ! this.caughtSection ? this.dragDelaySpeed : this.delaySpeed ) * Math.min( 1.0, deltaTime * 60 );
 
@@ -465,7 +475,7 @@ export class PageScroller {
 
 	public autoMove( param: PageScrollerAutoMoveParam ) {
 
-		let targetPos: number;
+		let targetPos: number = 0;
 
 		if ( ( param.target as PageScrollerSection ).isPageScrollerSection ) {
 
@@ -477,9 +487,14 @@ export class PageScroller {
 		} else if ( typeof param.target == 'string' ) {
 
 			let target = this.get( param.target );
-			let bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
 
-			targetPos = target.element.offsetTop + bottomOffset;
+			if ( target ) {
+
+				let bottomOffset = param.bottom ? target.rect.height - window.innerHeight : 0;
+
+				targetPos = target.element.offsetTop + bottomOffset;
+
+			}
 
 		} else if ( typeof param.target == 'number' ) {
 

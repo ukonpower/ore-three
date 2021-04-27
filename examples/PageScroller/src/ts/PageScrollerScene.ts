@@ -3,7 +3,7 @@ import * as ORE from '@ore-three-ts';
 
 export class PageScrollerScene extends ORE.BaseLayer {
 
-	private scroller: ORE.PageScroller;
+	private scroller?: ORE.PageScroller;
 
 	constructor() {
 
@@ -25,81 +25,100 @@ export class PageScrollerScene extends ORE.BaseLayer {
 
 	private initScroller() {
 
-		this.scroller = new ORE.PageScroller( document.querySelector( '.wrapper' ) );
+		let wrapper = document.querySelector( '.wrapper' ) as HTMLElement;
+		let sec1Elm = document.querySelector( '.section1' ) as HTMLElement;
+		let sec2Elm = document.querySelector( '.section2' ) as HTMLElement;
+		let sec3Elm = document.querySelector( '.section3' ) as HTMLElement;
+		let sec4Elm = document.querySelector( '.section4' ) as HTMLElement;
 
-		this.scroller.add( new ORE.PageScrollerSection( {
-			name: 'sec1',
-			element: document.querySelector( '.section1' ),
-			stop: true,
-			bottom: true,
-		} ) );
+		if ( wrapper && sec1Elm && sec2Elm && sec3Elm && sec4Elm ) {
 
-		this.scroller.add( new ORE.PageScrollerSection( {
-			name: 'sec2',
-			element: document.querySelector( '.section2' ),
-			stop: true,
-			bottom: true,
-			events: {
-				onStartScroll: {
-					down: ( args ) => {
+			this.scroller = new ORE.PageScroller( wrapper );
 
-						this.scroller.autoMove( {
-							target: 'sec3',
-						} );
+			this.scroller.add( new ORE.PageScrollerSection( {
+				name: 'sec1',
+				element: sec1Elm,
+				stop: true,
+				bottom: true,
+			} ) );
 
-					}
-				},
-				onArrivals: [
-					{
-						percentage: 1,
-						event: {
-							common: () => {
+			this.scroller.add( new ORE.PageScrollerSection( {
+				name: 'sec2',
+				element: sec2Elm,
+				stop: true,
+				bottom: true,
+				events: {
+					onStartScroll: {
+						down: ( args ) => {
+
+							if ( this.scroller ) {
+
+								this.scroller.autoMove( {
+									target: 'sec3',
+								} );
+
 							}
+
 						}
-					}
-				]
-			},
-		} ) );
-
-		this.scroller.add( new ORE.PageScrollerSection( {
-			name: 'sec3',
-			element: document.querySelector( '.section3' ),
-			stop: true,
-			bottom: false,
-			events: {
-				onStartScroll: {
-					up: ( args ) => {
-
-						this.scroller.autoMove( {
-							target: 'sec2',
-							bottom: true
-						} );
-
 					},
-				},
-			}
-		} ) );
-
-		this.scroller.add( new ORE.PageScrollerSection( {
-			name: 'sec4',
-			element: document.querySelector( '.section4' ),
-			stop: true,
-			bottom: true,
-			events: {
-				onArrivals: [
-					{
-						percentage: 1.0,
-						event: {
-							common: () => {
-
-								console.log( "arrival sec4" );
-
+					onArrivals: [
+						{
+							percentage: 1,
+							event: {
+								common: () => {
+								}
 							}
 						}
-					}
-				]
-			}
-		} ) );
+					]
+				},
+			} ) );
+
+			this.scroller.add( new ORE.PageScrollerSection( {
+				name: 'sec3',
+				element: sec3Elm,
+				stop: true,
+				bottom: false,
+				events: {
+					onStartScroll: {
+						up: ( args ) => {
+
+							if ( this.scroller ) {
+
+								this.scroller.autoMove( {
+									target: 'sec2',
+									bottom: true
+								} );
+
+							}
+
+						},
+					},
+				}
+			} ) );
+
+			this.scroller.add( new ORE.PageScrollerSection( {
+				name: 'sec4',
+				element: sec4Elm,
+				stop: true,
+				bottom: true,
+				events: {
+					onArrivals: [
+						{
+							percentage: 1.0,
+							event: {
+								common: () => {
+
+									console.log( "arrival sec4" );
+
+								}
+							}
+						}
+					]
+				}
+			} ) );
+
+		}
+
 
 	}
 
@@ -120,37 +139,59 @@ export class PageScrollerScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
+		if ( this.scroller == null ) return;
+
 		this.scroller.update( deltaTime );
 
 		this.camera.position.y = - this.scroller.scrollPercentageDelay * 5.0;
 
-		this.renderer.render( this.scene, this.camera );
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 
 	public onWheel( e: WheelEvent, trackpatDelta: number ) {
 
-		this.scroller.scroll( trackpatDelta );
+		if ( this.scroller ) {
+
+			this.scroller.scroll( trackpatDelta );
+
+		}
 
 	}
 
 	public onTouchStart( args: ORE.TouchEventArgs ) {
 
-		this.scroller.catch();
+		if ( this.scroller ) {
+
+			this.scroller.catch();
+
+		}
 
 	}
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		this.scroller.drag( - args.delta.y * 1.0 );
+		if ( this.scroller ) {
 
-		event.preventDefault();
+			this.scroller.drag( - args.delta.y * 1.0 );
+
+		}
+
+		args.event.preventDefault();
 
 	}
 
 	public onTouchEnd( args: ORE.TouchEventArgs ) {
 
-		this.scroller.release();
+		if ( this.scroller ) {
+
+			this.scroller.release();
+
+		}
 
 	}
 

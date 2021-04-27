@@ -14,38 +14,56 @@ export class DOMMeshScene extends ORE.BaseLayer {
 
 		super();
 
-	}
-
-	public onBind( info: ORE.LayerInfo ) {
-
-		super.onBind( info );
-
 		this.uniforms = {
 			time: {
 				value: 0
 			}
 		};
 
-		this.domMesh.push(
-			new ORE.DOMMesh( document.querySelector( '#meshElement1' ), {
-				fragmentShader: domMeshFrag1,
-				uniforms: this.uniforms,
-			} )
-		);
+	}
 
-		this.domMesh.push(
-			new ORE.DOMMesh( document.querySelector( '#meshElement2' ), {
-				fragmentShader: domMeshFrag2,
-				uniforms: this.uniforms,
-			} )
-		);
+	public onBind( info: ORE.LayerInfo ) {
 
-		this.domMesh.push(
-			new ORE.DOMMesh( document.querySelector( '#meshElement3' ), {
-				fragmentShader: domMeshFrag3,
-				uniforms: this.uniforms,
-			} )
-		);
+		super.onBind( info );
+
+		let dom1 = document.querySelector( '#meshElement1' ) as HTMLElement;
+
+		if ( dom1 ) {
+
+			this.domMesh.push(
+				new ORE.DOMMesh( dom1, {
+					fragmentShader: domMeshFrag1,
+					uniforms: this.uniforms,
+				} )
+			);
+
+		}
+
+		let dom2 = document.querySelector( '#meshElement2' ) as HTMLElement;
+
+		if ( dom2 ) {
+
+			this.domMesh.push(
+				new ORE.DOMMesh( dom2, {
+					fragmentShader: domMeshFrag2,
+					uniforms: this.uniforms,
+				} )
+			);
+
+		}
+
+		let dom3 = document.querySelector( '#meshElement3' ) as HTMLElement;
+
+		if ( dom3 ) {
+
+			this.domMesh.push(
+				new ORE.DOMMesh( dom3, {
+					fragmentShader: domMeshFrag3,
+					uniforms: this.uniforms,
+				} )
+			);
+
+		}
 
 		for ( let i = 0; i < this.domMesh.length; i ++ ) {
 
@@ -65,7 +83,11 @@ export class DOMMeshScene extends ORE.BaseLayer {
 
 		}
 
-		this.renderer.render( this.scene, this.camera );
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 

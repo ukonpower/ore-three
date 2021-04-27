@@ -7,7 +7,7 @@ export declare interface TimelineAnimatorKeyFrame<T> {
 }
 export declare interface TimelineAnimatorVariable<T> {
     keyframes: TimelineAnimatorKeyFrame<T>[];
-    lerpFunc: LerpFunc<T>;
+    lerpFunc?: LerpFunc<T>;
     value: T;
     easing?: EasingSet;
 }
@@ -22,11 +22,11 @@ export declare class TimelineAnimator {
         [name: string]: TimelineAnimatorVariable<any>;
     };
     protected time: number;
-    defaultEasing: EasingSet;
+    defaultEasing?: EasingSet;
     constructor();
-    add<T>(params: TimelineAnimatorAddParams<T>): string;
-    get<T>(name: string): T;
-    getVariableObject<T>(name: string): TimelineAnimatorVariable<T>;
+    add<T>(params: TimelineAnimatorAddParams<T>): string | undefined;
+    get<T>(name: string): T | null;
+    getVariableObject<T>(name: string): TimelineAnimatorVariable<T> | null;
     update(time: number): void;
     protected calc(): void;
 }

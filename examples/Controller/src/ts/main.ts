@@ -5,7 +5,6 @@ import { ControllerScene } from './ControllerScene';
 export class APP {
 
 	private controller: ORE.Controller;
-	private layer: ControllerScene;
 
 	constructor() {
 

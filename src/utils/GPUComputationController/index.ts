@@ -99,8 +99,8 @@ export class GPUComputationController {
     		stencilBuffer: false,
     		depthBuffer: false
     	};
-    	let initTex: THREE.DataTexture;
-    	let customParam: THREE.WebGLRenderTargetOptions;
+    	let initTex: THREE.DataTexture | null = null;
+    	let customParam: THREE.WebGLRenderTargetOptions | null = null;
 
     	if ( initTex_texParam ) {
 

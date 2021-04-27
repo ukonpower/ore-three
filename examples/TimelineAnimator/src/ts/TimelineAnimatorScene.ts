@@ -3,8 +3,8 @@ import * as ORE from '@ore-three-ts';
 
 export class TimelineAnimatorScene extends ORE.BaseLayer {
 
-	private box: THREE.Mesh;
-	private timelineAnimator: ORE.TimelineAnimator;
+	private box?: THREE.Mesh;
+	private timelineAnimator?: ORE.TimelineAnimator;
 
 	constructor() {
 
@@ -120,23 +120,60 @@ export class TimelineAnimatorScene extends ORE.BaseLayer {
 			}
 		} );
 
-		document.querySelector( '#slider' ).addEventListener( 'input', ( e ) => {
+		let sliderElm = document.querySelector( '#slider' );
+		if ( sliderElm ) {
 
-			let value = Number( ( e.target as HTMLInputElement ).value ) / Number( ( e.target as HTMLInputElement ).max );
+			sliderElm.addEventListener( 'input', ( e ) => {
 
-			this.timelineAnimator.update( value );
+				let value = Number( ( e.target as HTMLInputElement ).value ) / Number( ( e.target as HTMLInputElement ).max );
 
-		} );
+				if ( this.timelineAnimator ) {
+
+					this.timelineAnimator.update( value );
+
+				}
+
+			} );
+
+		}
 
 	}
 
 	public animate( deltaTime: number ) {
 
-		this.box.position.copy( this.timelineAnimator.get( 'pos' ) );
-		this.box.quaternion.copy( this.timelineAnimator.get( 'rot' ) );
-		this.box.scale.setScalar( this.timelineAnimator.get( 'size' ) );
+		if ( this.box && this.timelineAnimator ) {
 
-		this.renderer.render( this.scene, this.camera );
+			let pos = this.timelineAnimator.get<THREE.Vector3>( 'pos' );
+
+			if ( pos ) {
+
+				this.box.position.copy( pos );
+
+			}
+
+			let rot = this.timelineAnimator.get<THREE.Quaternion>( 'rot' );
+
+			if ( rot ) {
+
+				this.box.quaternion.copy( rot );
+
+			}
+
+			let size = this.timelineAnimator.get<number>( 'size' );
+
+			if ( size ) {
+
+				this.box.scale.setScalar( size );
+
+			}
+
+		}
+
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 

@@ -6,11 +6,16 @@ export declare interface Transform {
 	scale?: number;
 }
 
+export declare interface BaseTransform {
+	position: THREE.Vector3;
+	rotation: THREE.Quaternion;
+	scale: THREE.Vector3
+}
+
 export class LayoutController {
 
 	protected obj: THREE.Object3D;
-	protected baseTransform: Transform;
-	protected baseScale: THREE.Vector3;
+	protected baseTransform: BaseTransform;
 	protected transform: Transform;
 
 	constructor( object: THREE.Object3D, transform: Transform, isAbsolutePosition?: boolean ) {
@@ -20,8 +25,8 @@ export class LayoutController {
 		this.baseTransform = {
 			position: this.obj.position.clone(),
 			rotation: this.obj.quaternion.clone(),
+			scale: this.obj.scale.clone()
 		};
-		this.baseScale = this.obj.scale.clone();
 
 		this.transform = transform;
 
@@ -50,7 +55,7 @@ export class LayoutController {
 
 		if ( this.transform.scale ) {
 
-			this.obj.scale.copy( this.baseScale.clone().multiplyScalar( this.transform.scale * ( weight ) + 1.0 - weight ) );
+			this.obj.scale.copy( this.baseTransform.scale.clone().multiplyScalar( this.transform.scale * ( weight ) + 1.0 - weight ) );
 
 		}
 

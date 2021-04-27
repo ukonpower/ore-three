@@ -19,7 +19,7 @@ export class PostProcessing {
 		material: THREE.ShaderMaterial,
 	};
 
-	constructor( renderer: THREE.WebGLRenderer, material: PPParam ) {
+	constructor( renderer: THREE.WebGLRenderer, ppParam: PPParam ) {
 
 		this.renderer = renderer;
 		this.scene = new THREE.Scene();
@@ -28,27 +28,19 @@ export class PostProcessing {
 		this.screen = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
 		this.scene.add( this.screen );
 
-		this.createMaterials( material );
-
-	}
-
-	private createMaterials( params: PPParam ) {
-
-		let param = params;
-
-		param.vertexShader = param.vertexShader || passThrowVert;
-		param.uniforms = param.uniforms || {};
-		param.uniforms.resolution = {
+		ppParam.vertexShader = ppParam.vertexShader || passThrowVert;
+		ppParam.uniforms = ppParam.uniforms || {};
+		ppParam.uniforms.resolution = {
 			value: new THREE.Vector2()
 		};
 
 		this.effect = {
-			material: new THREE.ShaderMaterial( param ),
+			material: new THREE.ShaderMaterial( ppParam ),
 		};
 
 	}
 
-	public render( inputRenderTargets: InputRenderTarget, renderTarget: THREE.WebGLRenderTarget ) {
+	public render( inputRenderTargets: InputRenderTarget | null, renderTarget: THREE.WebGLRenderTarget | null = null ) {
 
 		let renderTargetMem = this.renderer.getRenderTarget();
 

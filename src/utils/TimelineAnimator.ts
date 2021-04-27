@@ -10,7 +10,7 @@ export declare interface TimelineAnimatorKeyFrame<T> {
 
 export declare interface TimelineAnimatorVariable<T> {
 	keyframes: TimelineAnimatorKeyFrame<T>[];
-	lerpFunc: LerpFunc<T>;
+	lerpFunc?: LerpFunc<T>;
 	value: T;
 	easing?: EasingSet;
 }
@@ -25,7 +25,7 @@ export class TimelineAnimator {
 
 	protected variables: { [name: string]: TimelineAnimatorVariable<any> } = {};
 	protected time: number;
-	public defaultEasing: EasingSet;
+	public defaultEasing?: EasingSet;
 
 	constructor( ) {
 
@@ -68,7 +68,7 @@ export class TimelineAnimator {
 
 	}
 
-	public get<T>( name: string ): T {
+	public get<T>( name: string ): T | null {
 
 		if ( this.variables[ name ] ) {
 
@@ -84,7 +84,7 @@ export class TimelineAnimator {
 
 	}
 
-	public getVariableObject<T>( name: string ): TimelineAnimatorVariable<T> {
+	public getVariableObject<T>( name: string ): TimelineAnimatorVariable<T> | null {
 
 		if ( this.variables[ name ] ) {
 
@@ -117,12 +117,12 @@ export class TimelineAnimator {
 			let valiable = this.variables[ keys[ i ] ];
 			let kfs = valiable.keyframes;
 
-			let a: TimelineAnimatorKeyFrame<any>;
-			let b: TimelineAnimatorKeyFrame<any>;
+			let a: TimelineAnimatorKeyFrame<any> | null = null;
+			let b: TimelineAnimatorKeyFrame<any> | null = null;
 
 			let t = Math.max( kfs[ 0 ].time, Math.min( kfs[ kfs.length - 1 ].time, this.time ) );
 
-			let easing: EasingSet;
+			let easing: EasingSet | null | undefined = null;
 
 			if ( kfs.length == 1 ) {
 
@@ -143,8 +143,11 @@ export class TimelineAnimator {
 
 				}
 
-				t = ( t - a.time ) / ( b.time - a.time );
+				if ( a != null && b != null ) {
 
+					t = ( t - a.time ) / ( b.time - a.time );
+
+				}
 
 			}
 
@@ -164,7 +167,12 @@ export class TimelineAnimator {
 
 			if ( valiable.lerpFunc ) {
 
-				valiable.value = valiable.lerpFunc( a.value, b.value, t );
+				if ( a != null && b != null ) {
+
+					valiable.value = valiable.lerpFunc( a.value, b.value, t );
+
+				}
+
 
 				if ( valiable.value === false ) {
 

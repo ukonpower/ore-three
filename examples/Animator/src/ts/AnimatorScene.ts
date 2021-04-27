@@ -3,9 +3,8 @@ import * as ORE from '@ore-three-ts';
 
 export class AnimatorScene extends ORE.BaseLayer {
 
-	private animator: ORE.Animator;
-
-	private box: THREE.Mesh;
+	private animator?: ORE.Animator;
+	private box?: THREE.Mesh;
 	private cnt: number = 0;
 
 	constructor() {
@@ -45,9 +44,13 @@ export class AnimatorScene extends ORE.BaseLayer {
 		this.startPosAnimation();
 		this.startRotAnimation();
 
-		this.animator.addEventListener( 'update/rot', ( deltaTime ) => {
+		this.animator.addEventListener( 'update/rot', ( e ) => {
 
-			console.log( 'update/rot', this.animator.get( 'rot' ) );
+			if ( this.animator ) {
+
+				console.log( 'update/rot', e.value );
+
+			}
 
 		} );
 
@@ -55,7 +58,11 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 	private startPosAnimation() {
 
+		if ( this.animator == null ) return;
+
 		this.animator.animate( 'pos', new THREE.Vector3( 1.0, 0.0, 0.0 ), 1.0, () => {
+
+			if ( this.animator == null ) return;
 
 			this.animator.animate( 'pos', new THREE.Vector3( - 1.0, 0.0, 0.0 ), 1.0, () => {
 
@@ -69,7 +76,11 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 	private startRotAnimation() {
 
+		if ( this.animator == null ) return;
+
 		this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, - Math.PI ) ), 1.0, () => {
+
+			if ( this.animator == null ) return;
 
 			this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0.0 ) ), 1.0, () => {
 
@@ -83,12 +94,29 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		this.animator.update( deltaTime );
+		if ( this.animator ) {
 
-		this.box.position.copy( this.animator.get( 'pos' ) );
-		this.box.quaternion.copy( this.animator.get( 'rot' ) );
+			this.animator.update( deltaTime );
 
-		this.renderer.render( this.scene, this.camera );
+			let pos = this.animator.get<THREE.Vector3>( 'pos' );
+			let rot = this.animator.get<THREE.Quaternion>( 'rot' );
+
+			if ( this.box && pos && rot ) {
+
+				this.box.position.copy( pos );
+				this.box.quaternion.copy( rot );
+
+			}
+
+		}
+
+
+
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 

@@ -7,14 +7,31 @@ import pp2Frag from './shaders/pp2.fs';
 export class PostProcessingScene extends ORE.BaseLayer {
 
 	private renderTargets: { [ key: string ]: THREE.WebGLRenderTarget };
-	private pass1: ORE.PostProcessing;
-	private pass2: ORE.PostProcessing;
+	private pass1?: ORE.PostProcessing;
+	private pass2?: ORE.PostProcessing;
 
-	private box: THREE.Mesh;
+	private box?: THREE.Mesh;
 
 	constructor() {
 
 		super();
+
+		this.renderTargets = {
+			rt1: new THREE.WebGLRenderTarget( 0, 0, {
+				stencilBuffer: false,
+				generateMipmaps: false,
+				depthBuffer: true,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter,
+			} ),
+			rt2: new THREE.WebGLRenderTarget( 0, 0, {
+				stencilBuffer: false,
+				generateMipmaps: false,
+				depthBuffer: false,
+				minFilter: THREE.LinearFilter,
+				magFilter: THREE.LinearFilter
+			} ),
+		};
 
 	}
 
@@ -33,22 +50,9 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	private initPostProcessing() {
 
-		this.renderTargets = {
-			rt1: new THREE.WebGLRenderTarget( 0, 0, {
-				stencilBuffer: false,
-				generateMipmaps: false,
-				depthBuffer: true,
-				minFilter: THREE.LinearFilter,
-				magFilter: THREE.LinearFilter,
-			} ),
-			rt2: new THREE.WebGLRenderTarget( 0, 0, {
-				stencilBuffer: false,
-				generateMipmaps: false,
-				depthBuffer: false,
-				minFilter: THREE.LinearFilter,
-				magFilter: THREE.LinearFilter
-			} ),
-		};
+		if ( this.renderer == null ) return;
+
+
 
 		this.pass1 = new ORE.PostProcessing( this.renderer, {
 			fragmentShader: pp1Frag,
@@ -76,18 +80,28 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		this.box.rotateY( deltaTime );
+		if ( this.renderer == null ) return;
+
+		if ( this.box ) {
+
+			this.box.rotateY( deltaTime );
+
+		}
 
 		this.renderer.setRenderTarget( this.renderTargets.rt1 );
 		this.renderer.render( this.scene, this.camera );
 
-		this.pass1.render( {
-			sceneTex: this.renderTargets.rt1.texture
-		}, this.renderTargets.rt2 );
+		if ( this.pass1 && this.pass2 ) {
 
-		this.pass2.render( {
-			backbuffer: this.renderTargets.rt2.texture
-		}, null );
+			this.pass1.render( {
+				sceneTex: this.renderTargets.rt1.texture
+			}, this.renderTargets.rt2 );
+
+			this.pass2.render( {
+				backbuffer: this.renderTargets.rt2.texture
+			}, null );
+
+		}
 
 	}
 

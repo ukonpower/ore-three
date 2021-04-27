@@ -3,5 +3,5 @@ export interface Uniforms {
     [key: string]: THREE.IUniform;
 }
 export declare namespace UniformsLib {
-    function mergeUniforms(...uniforms: Uniforms[]): Uniforms;
+    function mergeUniforms(...uniforms: (Uniforms | undefined)[]): Uniforms;
 }
