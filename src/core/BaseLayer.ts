@@ -140,7 +140,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 			this.removeChildrens( object.children[ i ] );
 
-			let geo: THREE.Geometry | THREE.BufferGeometry | undefined = undefined;
+			let geo: THREE.BufferGeometry | undefined = undefined;
 			let mat: THREE.Material | undefined = undefined;
 
 			if ( ( object.children[ i ] as THREE.Mesh ).isMesh ) {
