@@ -9,6 +9,7 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	aspect?: AspectInfo;
 	wrapperElement?: HTMLElement;
 	wrapperElementRect?: DOMRect;
+	pixelRatio?: number
 }
 
 export declare interface LayerInfo extends LayerBindParam {
@@ -22,6 +23,7 @@ export declare interface LayerSize {
 	windowAspectRatio: number;
 	canvasSize: THREE.Vector2;
 	canvasPixelSize: THREE.Vector2;
+	pixelRatio: number
 }
 
 export declare interface AspectInfo {
@@ -71,7 +73,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 				windowAspectRatio: 1.0,
 				canvasSize: new THREE.Vector2(),
 				canvasPixelSize: new THREE.Vector2(),
-				canvasAspectRatio: 1.0
+				canvasAspectRatio: 1.0,
+				pixelRatio: window.devicePixelRatio
 			}
 		};
 
@@ -110,9 +113,10 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
 		this.info.aspect = layerInfo.aspect || this.info.aspect;
 		this.info.alpha = layerInfo.alpha;
+		this.info.size.pixelRatio = layerInfo.pixelRatio || this.info.size.pixelRatio;
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
-		this.renderer.setPixelRatio( window.devicePixelRatio );
+		this.renderer.setPixelRatio( this.info.size.pixelRatio );
     	this.renderer.debug.checkShaderErrors = true;
 
 		setTimeout( () => {
@@ -199,6 +203,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.aspect.portraitWeight = portraitWeight;
 		this.info.aspect.wideWeight = wideWeight;
 
+		this.renderer.setPixelRatio( this.info.size.pixelRatio );
 		this.renderer.setSize( this.info.size.canvasSize.x, this.info.size.canvasSize.y );
 		this.camera.aspect = this.info.size.canvasAspectRatio;
 		this.camera.updateProjectionMatrix();
