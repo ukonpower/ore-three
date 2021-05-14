@@ -5,7 +5,6 @@ import { PointerEventArgs } from './Controller';
 
 export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	name: string;
-	canvas?: HTMLCanvasElement;
 	aspect?: AspectInfo;
 	wrapperElement?: HTMLElement;
 	wrapperElementRect?: DOMRect;
