@@ -5,7 +5,8 @@ import { PointerEventArgs } from './Controller';
 
 export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	name: string;
-	aspect?: AspectInfo;
+	canvas?: HTMLCanvasElement;
+	aspectSetting?: AspectSetting;
 	wrapperElement?: HTMLElement;
 	wrapperElementRect?: DOMRect;
 	pixelRatio?: number
@@ -13,7 +14,7 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 
 export declare interface LayerInfo extends LayerBindParam {
 	size: LayerSize;
-	aspect: AspectInfo;
+	aspectSetting: AspectSetting;
 }
 
 export declare interface LayerSize {
@@ -23,14 +24,14 @@ export declare interface LayerSize {
 	canvasSize: THREE.Vector2;
 	canvasPixelSize: THREE.Vector2;
 	pixelRatio: number
+	portraitWeight: number;
+	wideWeight: number;
 }
 
-export declare interface AspectInfo {
+export declare interface AspectSetting {
 	mainAspect: number;
 	portraitAspect: number;
 	wideAspect: number;
-	portraitWeight: number;
-	wideWeight: number;
 }
 
 export declare interface TouchEventArgs {
@@ -60,12 +61,10 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.info = {
 			name: '',
-			aspect: {
+			aspectSetting: {
 				mainAspect: 16 / 9,
 				wideAspect: 10 / 1,
 				portraitAspect: 1 / 2,
-				portraitWeight: 0.0,
-				wideWeight: 0.0
 			},
 			size: {
 				windowSize: new THREE.Vector2(),
@@ -73,7 +72,9 @@ export class BaseLayer extends THREE.EventDispatcher {
 				canvasSize: new THREE.Vector2(),
 				canvasPixelSize: new THREE.Vector2(),
 				canvasAspectRatio: 1.0,
-				pixelRatio: window.devicePixelRatio
+				pixelRatio: window.devicePixelRatio,
+				portraitWeight: 0.0,
+				wideWeight: 0.0
 			}
 		};
 
@@ -110,7 +111,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.canvas = layerInfo.canvas;
 		this.info.wrapperElement = layerInfo.wrapperElement;
 		this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
-		this.info.aspect = layerInfo.aspect || this.info.aspect;
+		this.info.aspectSetting = layerInfo.aspectSetting || this.info.aspectSetting;
 		this.info.alpha = layerInfo.alpha;
 		this.info.size.pixelRatio = layerInfo.pixelRatio || this.info.size.pixelRatio;
 
@@ -188,10 +189,10 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		}
 
-		let portraitWeight = 1.0 - ( ( newCanvasSize.x / newCanvasSize.y ) - this.info.aspect.portraitAspect ) / ( this.info.aspect.mainAspect - this.info.aspect.portraitAspect );
+		let portraitWeight = 1.0 - ( ( newCanvasSize.x / newCanvasSize.y ) - this.info.aspectSetting.portraitAspect ) / ( this.info.aspectSetting.mainAspect - this.info.aspectSetting.portraitAspect );
 		portraitWeight = Math.min( 1.0, Math.max( 0.0, portraitWeight ) );
 
-		let wideWeight = 1.0 - ( ( newCanvasSize.x / newCanvasSize.y ) - this.info.aspect.wideAspect ) / ( this.info.aspect.mainAspect - this.info.aspect.wideAspect );
+		let wideWeight = 1.0 - ( ( newCanvasSize.x / newCanvasSize.y ) - this.info.aspectSetting.wideAspect ) / ( this.info.aspectSetting.mainAspect - this.info.aspectSetting.wideAspect );
 		wideWeight = Math.min( 1.0, Math.max( 0.0, wideWeight ) );
 
 		this.info.size.windowSize.copy( newWindowSize );
@@ -199,8 +200,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.size.canvasSize.copy( newCanvasSize );
 		this.info.size.canvasPixelSize.copy( newCanvasSize.clone().multiplyScalar( this.renderer.getPixelRatio() ) );
 		this.info.size.canvasAspectRatio = newCanvasSize.x / newCanvasSize.y;
-		this.info.aspect.portraitWeight = portraitWeight;
-		this.info.aspect.wideWeight = wideWeight;
+		this.info.size.portraitWeight = portraitWeight;
+		this.info.size.wideWeight = wideWeight;
 
 		this.renderer.setPixelRatio( this.info.size.pixelRatio );
 		this.renderer.setSize( this.info.size.canvasSize.x, this.info.size.canvasSize.y );
@@ -218,13 +219,6 @@ export class BaseLayer extends THREE.EventDispatcher {
 	public pointerEvent( e: PointerEventArgs ) {
 
 		const canvasPosition = e.position.clone();
-
-		if ( this.info.wrapperElementRect ) {
-
-			canvasPosition.x -= this.info.wrapperElementRect.x;
-			canvasPosition.y -= this.info.wrapperElementRect.y;
-
-		}
 
 		const normalizedPosition = canvasPosition.clone();
 		normalizedPosition.divide( this.info.size.canvasSize );
