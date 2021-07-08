@@ -144,10 +144,13 @@ export class GPUComputationController {
     	if ( initTex ) {
 
     		let initKernel = this.createKernel( {
-				fragmentShader: passThroughFrag
+				fragmentShader: passThroughFrag,
+				uniforms: {
+					tex: {
+						value: initTex
+					}
+				}
 			} );
-
-    		initKernel.uniforms.tex = { value: initTex };
 
     		this.compute( initKernel, data );
 

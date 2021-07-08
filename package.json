@@ -1,6 +1,6 @@
 {
 	"name": "ore-three-ts",
-	"version": "2.0.4",
+	"version": "2.0.5",
 	"description": "",
 	"main": "build/ore-three-ts.js",
 	"author": "ukonpower",
@@ -47,7 +47,7 @@
 		"gulp-typedoc": "^2.2.5",
 		"gulp-typescript": "^6.0.0-alpha.1",
 		"raw-loader": "^4.0.2",
-		"three": "^0.123.0",
+		"three": "^0.130.1",
 		"ts-loader": "^8.0.11",
 		"typedoc": "^0.19.2",
 		"typescript": "^4.1.2",
@@ -58,6 +58,7 @@
 		"webpack-stream": "^6.1.1"
 	},
 	"dependencies": {
+		"@types/three": "^0.130.0",
 		"lethargy": "^1.0.9",
 		"to-px": "^1.1.0"
 	}

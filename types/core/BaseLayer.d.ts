@@ -4,13 +4,14 @@ import { PointerEventArgs } from './Controller';
 export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
     name: string;
     canvas?: HTMLCanvasElement;
-    aspect?: AspectInfo;
+    aspectSetting?: AspectSetting;
     wrapperElement?: HTMLElement;
     wrapperElementRect?: DOMRect;
+    pixelRatio?: number;
 }
 export declare interface LayerInfo extends LayerBindParam {
     size: LayerSize;
-    aspect: AspectInfo;
+    aspectSetting: AspectSetting;
 }
 export declare interface LayerSize {
     canvasAspectRatio: number;
@@ -18,13 +19,14 @@ export declare interface LayerSize {
     windowAspectRatio: number;
     canvasSize: THREE.Vector2;
     canvasPixelSize: THREE.Vector2;
+    pixelRatio: number;
+    portraitWeight: number;
+    wideWeight: number;
 }
-export declare interface AspectInfo {
+export declare interface AspectSetting {
     mainAspect: number;
     portraitAspect: number;
     wideAspect: number;
-    portraitWeight: number;
-    wideWeight: number;
 }
 export declare interface TouchEventArgs {
     event: PointerEvent;

@@ -23,4 +23,5 @@ export declare class Controller extends THREE.EventDispatcher {
     protected onOrientationDevice(): void;
     protected pointerEvent(e: THREE.Event): void;
     protected onWheel(e: THREE.Event): void;
+    dispose(): void;
 }

@@ -31,12 +31,26 @@ export class Controller extends THREE.EventDispatcher {
 
     	this.clock = new THREE.Clock();
 
-    	this.pointer = new Pointer();
-    	this.pointer.addEventListener( 'update', this.pointerEvent.bind( this ) );
-    	this.pointer.addEventListener( 'wheel', this.onWheel.bind( this ) );
+		let pointerUpdate = this.pointerEvent.bind( this );
+		let pointerWheel = this.onWheel.bind( this );
+		let orientationchange = this.onOrientationDevice.bind( this );
+		let windowResize = this.onWindowResize.bind( this );
 
-    	window.addEventListener( 'orientationchange', this.onOrientationDevice.bind( this ) );
-    	window.addEventListener( 'resize', this.onWindowResize.bind( this ) );
+    	this.pointer = new Pointer();
+    	this.pointer.addEventListener( 'update', pointerUpdate );
+    	this.pointer.addEventListener( 'wheel', pointerWheel );
+
+    	window.addEventListener( 'orientationchange', orientationchange );
+    	window.addEventListener( 'resize', windowResize );
+
+		this.addEventListener( 'dispose', () => {
+
+			this.pointer.removeEventListener( 'update', pointerUpdate );
+			this.pointer.removeEventListener( 'wheel', pointerWheel );
+			window.removeEventListener( 'orientationchange', orientationchange );
+			window.removeEventListener( 'resize', windowResize );
+
+		} );
 
     	this.tick();
 
@@ -44,7 +58,7 @@ export class Controller extends THREE.EventDispatcher {
 
 	protected tick() {
 
-    	let deltaTime = this.clock.getDelta();
+    	const deltaTime = this.clock.getDelta();
 
     	this.pointer.update();
 
@@ -85,9 +99,9 @@ export class Controller extends THREE.EventDispatcher {
 
 	public removeLayer( layerNmae: string ) {
 
-    	for ( let i = this.layers.length; i >= 0; i -- ) {
+    	for ( let i = this.layers.length - 1; i >= 0; i -- ) {
 
-    		let layer = this.layers[ i ];
+    		const layer = this.layers[ i ];
 
     		if ( layer.info.name == layerNmae ) {
 
@@ -132,6 +146,18 @@ export class Controller extends THREE.EventDispatcher {
     		this.layers[ i ].onWheel( e.wheelEvent, e.trackpadDelta );
 
     	}
+
+	}
+
+	public dispose() {
+
+		this.dispatchEvent( { type: 'dispose' } );
+
+		this.tick = () => {
+
+			return;
+
+		};
 
 	}
 
