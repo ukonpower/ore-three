@@ -30,16 +30,19 @@ export class Controller extends THREE.EventDispatcher {
     	}
 
     	this.clock = new THREE.Clock();
+    	this.pointer = new Pointer();
+
+		/*-------------------------------
+			Events
+		-------------------------------*/
 
 		let pointerUpdate = this.pointerEvent.bind( this );
 		let pointerWheel = this.onWheel.bind( this );
 		let orientationchange = this.onOrientationDevice.bind( this );
 		let windowResize = this.onWindowResize.bind( this );
 
-    	this.pointer = new Pointer();
     	this.pointer.addEventListener( 'update', pointerUpdate );
     	this.pointer.addEventListener( 'wheel', pointerWheel );
-
     	window.addEventListener( 'orientationchange', orientationchange );
     	window.addEventListener( 'resize', windowResize );
 
@@ -69,47 +72,6 @@ export class Controller extends THREE.EventDispatcher {
     	}
 
     	requestAnimationFrame( this.tick.bind( this ) );
-
-	}
-
-	public getLayer( layerName: string ) {
-
-    	for ( let i = 0; i < this.layers.length; i ++ ) {
-
-    		if ( this.layers[ i ].info.name == layerName ) return this.layers[ i ];
-
-    	}
-
-    	return null;
-
-	}
-
-	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
-
-    	while ( this.getLayer( layerInfo.name ) ) {
-
-    		layerInfo.name += '_';
-
-    	}
-
-    	layer.onBind( layerInfo );
-    	this.layers.push( layer );
-
-	}
-
-	public removeLayer( layerNmae: string ) {
-
-    	for ( let i = this.layers.length - 1; i >= 0; i -- ) {
-
-    		const layer = this.layers[ i ];
-
-    		if ( layer.info.name == layerNmae ) {
-
-    			this.layers.splice( i, 1 );
-
-    		}
-
-    	}
 
 	}
 
@@ -149,15 +111,64 @@ export class Controller extends THREE.EventDispatcher {
 
 	}
 
+	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
+
+    	while ( this.getLayer( layerInfo.name ) ) {
+
+    		layerInfo.name += '_';
+
+    	}
+
+    	this.layers.push( layer );
+    	layer.onBind( layerInfo );
+
+	}
+
+	public getLayer( layerName: string ) {
+
+    	for ( let i = 0; i < this.layers.length; i ++ ) {
+
+    		if ( this.layers[ i ].info.name == layerName ) return this.layers[ i ];
+
+    	}
+
+    	return null;
+
+	}
+
+	public removeLayer( layerNmae: string ) {
+
+    	for ( let i = this.layers.length - 1; i >= 0; i -- ) {
+
+    		const layer = this.layers[ i ];
+
+    		if ( layer.info.name == layerNmae ) {
+
+				layer.onUnbind();
+
+    			this.layers.splice( i, 1 );
+
+    		}
+
+    	}
+
+	}
+
 	public dispose() {
 
-		this.dispatchEvent( { type: 'dispose' } );
+		this.layers.forEach( item => {
+
+			this.removeLayer( item.info.name );
+
+		} );
 
 		this.tick = () => {
 
 			return;
 
 		};
+
+		this.dispatchEvent( { type: 'dispose' } );
 
 	}
 
