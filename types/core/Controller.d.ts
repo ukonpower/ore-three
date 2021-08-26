@@ -16,12 +16,12 @@ export declare class Controller extends THREE.EventDispatcher {
     protected layers: BaseLayer[];
     constructor(parameter?: ControllerParam);
     protected tick(): void;
-    getLayer(layerName: string): BaseLayer | null;
-    addLayer(layer: BaseLayer, layerInfo: LayerBindParam): void;
-    removeLayer(layerNmae: string): void;
     protected onWindowResize(): void;
     protected onOrientationDevice(): void;
     protected pointerEvent(e: THREE.Event): void;
     protected onWheel(e: THREE.Event): void;
+    addLayer(layer: BaseLayer, layerInfo: LayerBindParam): void;
+    getLayer(layerName: string): BaseLayer | null;
+    removeLayer(layerNmae: string): void;
     dispose(): void;
 }

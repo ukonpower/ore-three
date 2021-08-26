@@ -218,16 +218,25 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public pointerEvent( e: PointerEventArgs ) {
 
-		const canvasPosition = e.position.clone();
+		let canvasPointerPos = new THREE.Vector2();
+		canvasPointerPos.copy( e.position );
 
-		const normalizedPosition = canvasPosition.clone();
+		if ( this.info.canvas ) {
+
+			let canvasRect = this.info.canvas.getBoundingClientRect();
+			canvasPointerPos.sub( new THREE.Vector2( canvasRect.x, canvasRect.y ) );
+
+		}
+
+		const normalizedPosition = canvasPointerPos.clone();
 		normalizedPosition.divide( this.info.size.canvasSize );
 		normalizedPosition.y = 1.0 - normalizedPosition.y;
 		normalizedPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
 
+
 		const args: TouchEventArgs = {
 			event: e.pointerEvent,
-			position: canvasPosition.clone(),
+			position: canvasPointerPos.clone(),
 			delta: e.delta.clone(),
 			normalizedPosition: normalizedPosition.clone(),
 			windowPosition: e.position.clone()
