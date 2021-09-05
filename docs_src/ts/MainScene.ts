@@ -115,6 +115,8 @@ export class MainScene extends ORE.BaseLayer {
 
 		this.scene.add( this.background );
 
+		window.scrollTo( 0, 0 );
+
 	}
 
 	private initScroller() {
@@ -194,7 +196,7 @@ export class MainScene extends ORE.BaseLayer {
 
 	public onWheel( e: WheelEvent, trackPadDelta: number ) {
 
-		this.scrollManager && this.scrollManager.scroller.scroll( trackPadDelta );
+		this.scrollManager && this.scrollManager.scroller.scroll( e.deltaY * 0.7 );
 
 	}
 

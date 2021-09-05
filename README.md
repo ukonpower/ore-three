@@ -1,6 +1,8 @@
 # Ore Three
 [three.js]( https://github.com/mrdoob/three.js ) utils.
 
+![](./screenshot/ore-three.png)
+
 [Documentation](https:ore-three-ts.ukon.dev/documentation)
 [Examples]( https://ore-three-ts.ukon.dev/examples/ )
 
@@ -63,7 +65,7 @@ export class ControllerScene extends ORE.BaseLayer {
 
 		super();
 
-	}t
+	}
 
 	public onBind( info: ORE.LayerInfo ) {
 
