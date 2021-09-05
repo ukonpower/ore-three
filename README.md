@@ -3,7 +3,7 @@
 
 ![](./screenshot/ore-three.png)
 
-[Documentation](https:ore-three-ts.ukon.dev/documentation)
+[Documentation](https://ore-three-ts.ukon.dev/documentation)
 [Examples]( https://ore-three-ts.ukon.dev/examples/ )
 
 
