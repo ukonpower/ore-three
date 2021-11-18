@@ -344,4 +344,20 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
+	public wait( t: number ) {
+
+		let prm = new Promise<void>( ( r ) =>{
+
+			setTimeout( () => {
+
+				r();
+
+			}, ( t * 1000 ) );
+
+		} );
+
+		return prm;
+
+	}
+
 }
