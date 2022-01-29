@@ -103,7 +103,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	}
 
-	public animate( deltaTime: number ) {}
+	public animate( deltaTime: number ) { }
 
 	public onBind( layerInfo: LayerBindParam ) {
 
@@ -117,7 +117,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
 		this.renderer.setPixelRatio( this.info.size.pixelRatio );
-    	this.renderer.debug.checkShaderErrors = true;
+		this.renderer.debug.checkShaderErrors = true;
 
 		setTimeout( () => {
 
@@ -218,12 +218,12 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public pointerEvent( e: PointerEventArgs ) {
 
-		let canvasPointerPos = new THREE.Vector2();
+		const canvasPointerPos = new THREE.Vector2();
 		canvasPointerPos.copy( e.position );
 
 		if ( this.info.canvas ) {
 
-			let canvasRect = this.info.canvas.getBoundingClientRect();
+			const canvasRect = this.info.canvas.getBoundingClientRect();
 			canvasPointerPos.sub( new THREE.Vector2( canvasRect.x, canvasRect.y ) );
 
 		}

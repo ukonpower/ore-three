@@ -110,8 +110,6 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 		}
 
-
-
 		if ( this.renderer ) {
 
 			this.renderer.render( this.scene, this.camera );

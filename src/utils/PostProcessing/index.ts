@@ -19,13 +19,13 @@ export class PostProcessing {
 		material: THREE.ShaderMaterial,
 	};
 
-	constructor( renderer: THREE.WebGLRenderer, ppParam: PPParam ) {
+	constructor( renderer: THREE.WebGLRenderer, ppParam: PPParam, customGeometry?: THREE.BufferGeometry ) {
 
 		this.renderer = renderer;
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.OrthographicCamera( - 1.0, 1.0, 1.0, - 1.0 );
 
-		this.screen = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
+		this.screen = new THREE.Mesh( customGeometry || new THREE.PlaneBufferGeometry( 2, 2 ) );
 		this.scene.add( this.screen );
 
 		ppParam.vertexShader = ppParam.vertexShader || passThrowVert;
