@@ -15,3 +15,4 @@ export * from './utils/LayoutController';
 export * from './utils/TimelineAnimator';
 export * from './utils/Uniforms';
 export * from './utils/Lerps';
+export * from './utils/WaitMan';

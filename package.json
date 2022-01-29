@@ -1,6 +1,6 @@
 {
 	"name": "ore-three-ts",
-	"version": "2.0.6",
+	"version": "2.1.0",
 	"description": "",
 	"main": "build/ore-three-ts.js",
 	"author": "ukonpower",
@@ -21,6 +21,10 @@
 	],
 	"bugs": {
 		"url": "https://github.com/ukonpower/ore-three-ts/issues"
+	},
+	"scripts": {
+		"build": "npx gulp build",
+		"dev": "npx gulp"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.13",
