@@ -96,11 +96,11 @@ export class MainScene extends ORE.BaseLayer {
 
 		}
 
-		this.dispatchEvent({
+		this.dispatchEvent( {
 			type: 'createdRenderer',
 			renderer: this.renderer
-		})
-		
+		} );
+
 	}
 
 	private initScene() {

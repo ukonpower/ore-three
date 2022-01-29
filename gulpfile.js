@@ -44,16 +44,16 @@ function isFixed( file ) {
 
 }
 
-async function esLint( cb ) {
+async function lint( cb ) {
 
-	let paths = [ './src/', './examples/' ];
+	let paths = [ './src', './examples', './docs_src' ];
 	let promiseArray = [];
 
 	for ( let i = 0; i < paths.length; i ++ ) {
 
 		let promise = new Promise( resolve => {
 
-			gulp.src( paths[ i ] + '**/*.ts' )
+			gulp.src( paths[ i ] + '/**/*.ts' )
 				.pipe( eslint( { useEslintrc: true, fix: true } ) )
 				.pipe( eslint.format() )
 				.pipe( gulpIf( isFixed, gulp.dest( paths[ i ] ) ) )
@@ -296,7 +296,7 @@ const develop = gulp.series(
 	gulp.parallel( brSync, watch )
 );
 
-exports.lint = gulp.series( esLint );
+exports.lint = gulp.series( lint );
 
 exports.default = gulp.series(
 	setDevDocumentsPath,
@@ -311,7 +311,7 @@ exports.dev = gulp.series(
 
 exports.build = gulp.series(
 	cleanBuildFiles,
-	esLint,
+	lint,
 	buildPackages,
 	buildTypes,
 	buildTypeDoc,
