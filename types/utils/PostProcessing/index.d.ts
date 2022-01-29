@@ -13,7 +13,7 @@ export declare class PostProcessing {
     effect: {
         material: THREE.ShaderMaterial;
     };
-    constructor(renderer: THREE.WebGLRenderer, ppParam: PPParam);
+    constructor(renderer: THREE.WebGLRenderer, ppParam: PPParam, customGeometry?: THREE.BufferGeometry);
     render(inputRenderTargets: InputRenderTarget | null, renderTarget?: THREE.WebGLRenderTarget | null): void;
 }
 export {};

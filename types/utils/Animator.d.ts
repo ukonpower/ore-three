@@ -44,4 +44,5 @@ export declare class Animator extends THREE.EventDispatcher {
     isAnimatingVariable(name: string, mute?: boolean): boolean | null;
     applyToUniforms(uniforms: Uniforms): void;
     update(deltaTime?: number): void;
+    wait(t: number): Promise<void>;
 }

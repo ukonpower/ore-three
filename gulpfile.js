@@ -110,12 +110,8 @@ function buildTypeDoc( cb ) {
 	//typedoc
 	gulp.src( './src' )
 		.pipe( typedoc( {
-			module: "umd",
-			target: "es6",
 			out: "./docs/documentation",
-			mode: "file",
-			name: info.packageName,
-			moduleResolution: "node"
+			name: info.packageName
 		} ) )
 		.on( 'end', cb );
 
