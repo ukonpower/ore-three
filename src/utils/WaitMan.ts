@@ -1,6 +1,6 @@
-import EventEmitter from 'wolfy87-eventemitter';
+import * as THREE from 'three';
 
-export class WaitMan extends EventEmitter {
+export class WaitMan extends THREE.EventDispatcher {
 
 	constructor() {
 
@@ -10,7 +10,7 @@ export class WaitMan extends EventEmitter {
 
 	public goHome() {
 
-		this.emitEvent( 'gohome' );
+		this.dispatchEvent( { type: 'gohome' } );
 
 	}
 
@@ -22,13 +22,15 @@ export class WaitMan extends EventEmitter {
 
 				reject();
 
+				this.removeEventListener( 'gohome', onGoHome );
+
 			};
 
-			this.addOnceListener( 'gohome', onGoHome );
+			this.addEventListener( 'gohome', onGoHome );
 
 			setTimeout( () => {
 
-				this.removeListener( 'gohome', onGoHome );
+				this.removeEventListener( 'gohome', onGoHome );
 
 				resolve();
 
