@@ -1,26 +1,35 @@
 const info = require( './info' );
+
+// gulp
 const gulp = require( 'gulp' );
 const gulpIf = require( 'gulp-if' );
-const minimist = require( 'minimist' );
+
+// utils
+const fs = require( 'fs' );
+const browserSync = require( 'browser-sync' );
+const plumber = require( 'gulp-plumber' );
+const del = require( 'del' );
+const typedoc = require( 'gulp-typedoc' );
+const eslint = require( 'gulp-eslint' );
+
+// ts
 const webpackStream = require( 'webpack-stream' );
 const webpack = require( 'webpack' );
-const browserSync = require( 'browser-sync' );
 const autoprefixer = require( 'gulp-autoprefixer' );
-const plumber = require( 'gulp-plumber' );
-const sass = require( 'gulp-sass' );
-const cssmin = require( 'gulp-cssmin' );
-const del = require( 'del' );
-const fs = require( 'fs' );
-const eslint = require( 'gulp-eslint' );
-const typedoc = require( 'gulp-typedoc' );
 const ts = require( 'gulp-typescript' );
+
+// sass
+const sass = require( 'gulp-sass' )( require( 'sass' ) );
+const minimist = require( 'minimist' );
+const cssmin = require( 'gulp-cssmin' );
+
+
 const options = minimist( process.argv.slice( 2 ), {
 	default: {
 		ex: 'Controller',
 		P: false,
 	}
 } );
-
 
 /*-------------------
 	Production
