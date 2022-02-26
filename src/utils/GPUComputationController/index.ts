@@ -19,14 +19,14 @@ export class GPUComputationController {
 	public dataSize: THREE.Vector2;
 	protected uniforms: any;
 
-    protected scene: THREE.Scene;
-    protected camera: THREE.Camera;
+	protected scene: THREE.Scene;
+	protected camera: THREE.Camera;
 
-    protected mesh: THREE.Mesh;
-    protected materials: THREE.ShaderMaterial[];
+	protected mesh: THREE.Mesh;
+	protected materials: THREE.ShaderMaterial[];
 
-    protected tempDataLinear: GPUcomputationData;
-    protected tempDataNear: GPUcomputationData;
+	protected tempDataLinear: GPUcomputationData;
+	protected tempDataNear: GPUcomputationData;
 
 	private renderTargets: THREE.WebGLRenderTarget[] = [];
 
