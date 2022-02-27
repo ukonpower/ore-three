@@ -15,6 +15,8 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
 
+		let connector = new ORE.BlenderConnector( 'ws://localhost:3100' );
+
 	}
 
 	public animate( deltaTime: number ) {
