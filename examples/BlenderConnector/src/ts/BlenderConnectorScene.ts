@@ -1,6 +1,11 @@
+import * as THREE from 'three';
 import * as ORE from '@ore-three-ts';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { BlenderConnector } from '@ore-three-ts';
 
 export class BlenderConnectorScene extends ORE.BaseLayer {
+
+	private connector?: BlenderConnector;
 
 	constructor() {
 
@@ -12,10 +17,65 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 		super.onBind( info );
 
-		this.camera.position.set( 0, 1.5, 4 );
-		this.camera.lookAt( 0, 0, 0 );
+		/*-------------------------------
+			Connector
+		-------------------------------*/
 
-		let connector = new ORE.BlenderConnector( 'ws://localhost:3100' );
+		this.connector = new ORE.BlenderConnector( 'ws://localhost:3100' );
+
+		/*-------------------------------
+			gltf
+		-------------------------------*/
+
+		let loader = new GLTFLoader();
+		loader.load( './assets/blender-connector.glb', ( gltf ) => {
+
+			this.scene.add( gltf.scene );
+
+			let camera = this.scene.getObjectByName( 'Camera' );
+
+			if ( camera ) {
+
+				camera.getWorldPosition( this.camera.position );
+
+				let target = this.scene.getObjectByName( 'CameraTarget' );
+
+				if ( target ) {
+
+					this.camera.lookAt( target.getWorldPosition( new THREE.Vector3() ) );
+
+				}
+
+				let cameraData = camera.getObjectByName( 'Camera_Orientation' ) as THREE.PerspectiveCamera;
+
+				if ( cameraData ) {
+
+					this.camera.fov = cameraData.fov;
+					this.camera.updateProjectionMatrix();
+
+				}
+
+			}
+
+			this.scene.traverse( obj => {
+
+				if ( this.connector ) {
+
+					// this.connector.getTransform();
+
+				}
+
+			} );
+
+		} );
+
+		/*-------------------------------
+			Scene
+		-------------------------------*/
+
+		let light = new THREE.DirectionalLight();
+		light.position.set( 1.1, 1, 1 );
+		this.scene.add( light );
 
 	}
 

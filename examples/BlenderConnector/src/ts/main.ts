@@ -1,5 +1,4 @@
 import * as ORE from '@ore-three-ts';
-
 import { BlenderConnectorScene } from './BlenderConnectorScene';
 
 export class APP {
