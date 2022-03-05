@@ -26,4 +26,23 @@ export class AnimationAction extends EventEmitter {
 
 	}
 
+	public getValue( frame: number ) {
+
+		let keys = Object.keys( this.curves );
+
+		let value = {};
+
+		keys.forEach( key => {
+
+			let curve = this.curves[ key ];
+
+			let v = curve.value( frame );
+
+			console.log( v );
+
+
+		} );
+
+	}
+
 }

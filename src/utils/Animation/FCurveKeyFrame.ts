@@ -28,7 +28,7 @@ export class FCurveKeyFrame extends EventEmitter {
 
 	}
 
-	public value( nextFrame: FCurveKeyFrame, t: number ) {
+	public to( nextFrame: FCurveKeyFrame, t: number ) {
 
 	}
 
