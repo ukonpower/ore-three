@@ -36,12 +36,16 @@ export class AnimationAction extends EventEmitter {
 
 			let curve = this.curves[ key ];
 
-			let v = curve.value( frame );
-
-			console.log( v );
+			let v = curve.getValue( frame );
 
 
 		} );
+
+	}
+
+	public getCurve( curveName: string ): FCurve | null {
+
+		return this.curves[ curveName ] || null;
 
 	}
 

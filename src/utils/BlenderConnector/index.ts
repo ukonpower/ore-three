@@ -1,8 +1,9 @@
+import * as THREE from 'three';
+
 import EventEmitter from "wolfy87-eventemitter";
 import { AnimationAction } from "../Animation/AnimationAction";
 import { FCurve } from "../Animation/FCurve";
 import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame";
-import { Uniforms } from "../Uniforms";
 
 export type BCMessage = BCSyncAnimationMessage | BCSyncFrameMessage
 
@@ -13,7 +14,7 @@ export type BCSyncAnimationMessage = {
 
 export type BCAnimationData = {
     actions: BCAnimationActionParam[];
-    objects: any[];
+    objects: BCAnimationObjectData[];
 }
 
 export type BCAnimationActionParam = {
@@ -32,6 +33,11 @@ export type BCAnimationCurveKeyFrameParam = {
     h_r: THREE.Vec2;
     e: string;
     i: FCurveInterpolation;
+}
+
+export type BCAnimationObjectData = {
+	name: string,
+	actions: string[]
 }
 
 export type BCSyncFrameMessage = {
@@ -59,6 +65,7 @@ export class BlenderConnector extends EventEmitter {
 	// animation
 
 	public actions: AnimationAction[] = [];
+	public objects: BCAnimationObjectData[] = [];
 
 	constructor( url: string ) {
 
@@ -77,6 +84,11 @@ export class BlenderConnector extends EventEmitter {
 		this.ws.onopen = this.onOpen.bind( this );
 		this.ws.onmessage = this.onMessage.bind( this );
 		this.ws.onclose = this.onClose.bind( this );
+		this.ws.onerror = ( e ) => {
+
+			console.error( e );
+
+		};
 
 	}
 
@@ -87,6 +99,9 @@ export class BlenderConnector extends EventEmitter {
 	private onSyncAnimation( data: BCAnimationData ) {
 
 		this.actions.length = 0;
+		this.objects.length = 0;
+
+		// actions
 
 		data.actions.forEach( actionData => {
 
@@ -107,6 +122,14 @@ export class BlenderConnector extends EventEmitter {
 			} );
 
 			this.actions.push( action );
+
+		} );
+
+		// objects
+
+		data.objects.forEach( objectData => {
+
+			this.objects.push( objectData );
 
 		} );
 
@@ -156,7 +179,111 @@ export class BlenderConnector extends EventEmitter {
 		API
 	-------------------------------*/
 
+	public getActionNameList( objectName: string ) {
+
+		for ( let i = 0; i < this.objects.length; i ++ ) {
+
+			if ( this.objects[ i ].name == objectName ) {
+
+				return this.objects[ i ].actions;
+
+			}
+
+		}
+
+		return [];
+
+	}
+
+	public getAction( actionName: string ) {
+
+		for ( let i = 0; i < this.actions.length; i ++ ) {
+
+			if ( this.actions[ i ].name == actionName ) {
+
+				return this.actions[ i ];
+
+			}
+
+		}
+
+		return null;
+
+	}
+
 	public getTransform( objectName: string ) {
+
+		let actionNames = this.getActionNameList( objectName );
+
+		let res: {
+			position: THREE.Vector3 | null,
+			rotation: THREE.Euler | null,
+			scale: THREE.Vector3 | null
+		} = {
+			position: null,
+			rotation: null,
+			scale: null
+		};
+
+		for ( let i = 0; i < actionNames.length; i ++ ) {
+
+			let action = this.getAction( actionNames[ i ] );
+
+			if ( action ) {
+
+				// position
+
+				let posXCurve = action.getCurve( 'location_x' );
+				let posYCurve = action.getCurve( 'location_y' );
+				let posZCurve = action.getCurve( 'location_z' );
+
+				if ( posXCurve || posYCurve || posZCurve ) {
+
+					res.position = new THREE.Vector3();
+					res.position.x = posXCurve ? posXCurve.getValue( this.frameCurrent ) : 0;
+					res.position.y = posYCurve ? posYCurve.getValue( this.frameCurrent ) : 0;
+					res.position.z = posZCurve ? posZCurve.getValue( this.frameCurrent ) : 0;
+
+				}
+
+				// rotation
+
+				let rotXCurve = action.getCurve( 'rotation_euler_x' );
+				let rotYCurve = action.getCurve( 'rotation_euler_y' );
+				let rotZCurve = action.getCurve( 'rotation_euler_z' );
+
+				if ( rotXCurve || rotYCurve || rotZCurve ) {
+
+					res.rotation = new THREE.Euler();
+					res.rotation.x = rotXCurve ? rotXCurve.getValue( this.frameCurrent ) : 0;
+					res.rotation.y = rotYCurve ? rotYCurve.getValue( this.frameCurrent ) : 0;
+					res.rotation.z = rotZCurve ? rotZCurve.getValue( this.frameCurrent ) : 0;
+					res.rotation.order = 'YZX';
+
+				}
+
+				// scale
+
+				let scaleXCurve = action.getCurve( 'scale_x' );
+				let scaleYCurve = action.getCurve( 'scale_y' );
+				let scaleZCurve = action.getCurve( 'scale_z' );
+
+				if ( scaleXCurve || scaleYCurve || scaleZCurve ) {
+
+					res.scale = new THREE.Vector3();
+					res.scale.x = scaleXCurve ? scaleXCurve.getValue( this.frameCurrent ) : 0;
+					res.scale.y = scaleYCurve ? scaleYCurve.getValue( this.frameCurrent ) : 0;
+					res.scale.z = scaleZCurve ? scaleZCurve.getValue( this.frameCurrent ) : 0;
+
+				}
+
+				return res;
+
+			}
+
+		}
+
+		return res;
 
 	}
 

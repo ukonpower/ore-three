@@ -5,7 +5,6 @@ export type FCurveInterpolation = "BEZIER" | "LINEAR";
 
 export class FCurveKeyFrame extends EventEmitter {
 
-	public name: string | '' = '';
 	public coordinate: THREE.Vec2 = { x: 0, y: 0 };
 	public handleLeft: THREE.Vec2 | null = null;
 	public handleRight: THREE.Vec2 | null = null;
@@ -29,6 +28,21 @@ export class FCurveKeyFrame extends EventEmitter {
 	}
 
 	public to( nextFrame: FCurveKeyFrame, t: number ) {
+
+		if ( this.interpolation == "BEZIER" ) {
+
+			let d = ( nextFrame.coordinate.y - this.coordinate.y );
+
+			return this.coordinate.y + d * t;
+
+
+		} else {
+
+			let d = ( nextFrame.coordinate.y - this.coordinate.y );
+
+			return this.coordinate.y + d * t;
+
+		}
 
 	}
 

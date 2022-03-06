@@ -43,33 +43,41 @@ export class FCurve extends EventEmitter {
 
 	}
 
-	public value( frame: number ) {
+	public getValue( frame: number ) {
 
 		for ( let i = 0; i < this.frames.length; i ++ ) {
 
-			let keyFrame = this.frames[ i ];
+			let keyframe = this.frames[ i ];
 
-			if ( frame > keyFrame.coordinate.x ) {
+			if ( frame < keyframe.coordinate.x ) {
 
-				let nextKeyframe = this.frames[ i + 1 ];
+				let beforeKeyframe = this.frames[ i - 1 ];
 
-				if ( nextKeyframe ) {
+				if ( beforeKeyframe ) {
 
-					let d = nextKeyframe.coordinate.x - keyFrame.coordinate.x;
-					let t = frame - keyFrame.coordinate.x / d;
+					let d = beforeKeyframe.coordinate.x - keyframe.coordinate.x;
+					let t = ( frame - keyframe.coordinate.x ) / d;
 
-					return keyFrame.to( nextKeyframe, t );
+					return keyframe.to( beforeKeyframe, t );
 
 				} else {
 
-					return keyFrame.coordinate.y;
+					return keyframe.coordinate.y;
 
 				}
-
 
 			}
 
 		}
+
+		if ( this.frames.length > 0 ) {
+
+			return this.frames[ this.frames.length - 1 ].coordinate.y;
+
+		}
+
+		return 0;
+
 
 	}
 

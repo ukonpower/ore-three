@@ -57,16 +57,6 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 			}
 
-			this.scene.traverse( obj => {
-
-				if ( this.connector ) {
-
-					// this.connector.getTransform();
-
-				}
-
-			} );
-
 		} );
 
 		/*-------------------------------
@@ -74,12 +64,41 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 		-------------------------------*/
 
 		let light = new THREE.DirectionalLight();
-		light.position.set( 1.1, 1, 1 );
+		light.position.set( 1, 1, 1 );
 		this.scene.add( light );
 
 	}
 
 	public animate( deltaTime: number ) {
+
+		this.scene.traverse( obj => {
+
+			if ( this.connector ) {
+
+				let transform = this.connector.getTransform( obj.name );
+
+				if ( transform.position ) {
+
+					obj.position.copy( transform.position );
+
+				}
+
+				if ( transform.rotation ) {
+
+					obj.rotation.copy( transform.rotation );
+
+				}
+
+				if ( transform.scale ) {
+
+					obj.scale.copy( transform.scale );
+
+				}
+
+			}
+
+		} );
+
 
 		if ( this.renderer ) {
 
