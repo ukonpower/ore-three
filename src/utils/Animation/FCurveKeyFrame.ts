@@ -1,14 +1,18 @@
 import * as THREE from 'three';
 import EventEmitter from 'wolfy87-eventemitter';
+import { EasingFunc, Easings } from '../Easings';
 
 export type FCurveInterpolation = "BEZIER" | "LINEAR";
 
 export class FCurveKeyFrame extends EventEmitter {
 
 	public coordinate: THREE.Vec2 = { x: 0, y: 0 };
-	public handleLeft: THREE.Vec2 | null = null;
-	public handleRight: THREE.Vec2 | null = null;
+	public handleLeft: THREE.Vec2 = { x: 0, y: 0 };
+	public handleRight: THREE.Vec2 = { x: 0, y: 0 };
 	public interpolation: FCurveInterpolation = 'BEZIER';
+
+	private easing: EasingFunc | null = null;
+	private nextFrame: FCurveKeyFrame | null = null;
 
 	constructor( coordinate: THREE.Vec2, handleLeft?: THREE.Vec2, handleRight?: THREE.Vec2, interpolation?: FCurveInterpolation ) {
 
@@ -18,29 +22,50 @@ export class FCurveKeyFrame extends EventEmitter {
 
 	}
 
-	private set( coordinate: THREE.Vec2, handleLeft?: THREE.Vec2, handleRight?: THREE.Vec2, interpolation?: FCurveInterpolation ) {
+	public set( coordinate: THREE.Vec2, handleLeft?: THREE.Vec2, handleRight?: THREE.Vec2, interpolation?: FCurveInterpolation ) {
 
 		this.coordinate = coordinate;
-		this.handleLeft = handleLeft || null;
-		this.handleRight = handleRight || null;
+		this.handleLeft = handleLeft || coordinate;
+		this.handleRight = handleRight || coordinate;
 		this.interpolation = interpolation || 'BEZIER';
+
+	}
+
+	private getEasing( interpolation: FCurveInterpolation, nextFrame: FCurveKeyFrame ) {
+
+		if ( interpolation == 'BEZIER' ) {
+
+			return Easings.bezier( this.coordinate, this.handleRight, nextFrame.handleLeft, nextFrame.coordinate );
+
+		} else {
+
+			return ( t: number ) => {
+
+				let d = ( nextFrame.coordinate.y - this.coordinate.y );
+				return this.coordinate.y + d * t;
+
+			};
+
+		}
 
 	}
 
 	public to( nextFrame: FCurveKeyFrame, t: number ) {
 
-		if ( this.interpolation == "BEZIER" ) {
+		if ( this.nextFrame == null || this.nextFrame.coordinate.x != nextFrame.coordinate.x || this.nextFrame.coordinate.y != nextFrame.coordinate.y ) {
 
-			let d = ( nextFrame.coordinate.y - this.coordinate.y );
+			this.easing = this.getEasing( this.interpolation, nextFrame );
+			this.nextFrame = nextFrame;
 
-			return this.coordinate.y + d * t;
+		}
 
+		if ( this.easing ) {
+
+			return this.easing( t );
 
 		} else {
 
-			let d = ( nextFrame.coordinate.y - this.coordinate.y );
-
-			return this.coordinate.y + d * t;
+			return 0;
 
 		}
 

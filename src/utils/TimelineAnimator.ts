@@ -1,31 +1,31 @@
 import * as THREE from 'three';
-import { EasingSet } from './Easings';
+import { EasingFunc } from './Easings';
 import { Lerps, LerpFunc } from './Lerps';
 
 export declare interface TimelineAnimatorKeyFrame<T> {
 	time: number;
 	value: T;
-	easing?: EasingSet;
+	easing?: EasingFunc;
 }
 
 export declare interface TimelineAnimatorVariable<T> {
 	keyframes: TimelineAnimatorKeyFrame<T>[];
 	lerpFunc?: LerpFunc<T>;
 	value: T;
-	easing?: EasingSet;
+	easing?: EasingFunc;
 }
 
 export declare interface TimelineAnimatorAddParams<T> {
 	name: string;
 	keyframes: TimelineAnimatorKeyFrame<T>[];
 	customLerp?: LerpFunc<T>,
-	easing?: EasingSet;
+	easing?: EasingFunc;
 }
 export class TimelineAnimator {
 
 	protected variables: { [name: string]: TimelineAnimatorVariable<any> } = {};
 	protected time: number;
-	public defaultEasing?: EasingSet;
+	public defaultEasing?: EasingFunc;
 
 	constructor( ) {
 
@@ -122,7 +122,7 @@ export class TimelineAnimator {
 
 			let t = Math.max( kfs[ 0 ].time, Math.min( kfs[ kfs.length - 1 ].time, this.time ) );
 
-			let easing: EasingSet | null | undefined = null;
+			let easing: EasingFunc | null | undefined = null;
 
 			if ( kfs.length == 1 ) {
 
@@ -153,15 +153,15 @@ export class TimelineAnimator {
 
 			if ( easing ) {
 
-				t = easing.func( t, easing.args );
+				t = easing( t );
 
 			} else if ( valiable.easing ) {
 
-				t = valiable.easing.func( t, valiable.easing.args );
+				t = valiable.easing( t );
 
 			} else if ( this.defaultEasing ) {
 
-				t = this.defaultEasing.func( t, this.defaultEasing.args );
+				t = this.defaultEasing( t );
 
 			}
 

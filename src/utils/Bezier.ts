@@ -1,0 +1,147 @@
+export declare interface EasingSet{
+	func: Function;
+	args?: number | number[];
+}
+
+export namespace Easings {
+
+	export function sigmoid( x: number, ...variables: number[] ): number {
+
+		let weight = 6;
+
+		if ( variables[ 0 ] ) {
+
+			weight = variables[ 0 ];
+
+		}
+
+		var e1 = Math.exp( - weight * ( 2 * x - 1 ) );
+		var e2 = Math.exp( - weight );
+
+		return ( 1 + ( 1 - e1 ) / ( 1 + e1 ) * ( 1 + e2 ) / ( 1 - e2 ) ) / 2;
+
+	}
+
+	export function smoothstep( min: number, max: number, value: number ): number {
+
+		let x = Math.max( 0, Math.min( 1, ( value - min ) / ( max - min ) ) );
+		return x * x * ( 3 - 2 * x );
+
+	}
+
+	export function lerpNumber( a: number, b: number, t: number ): number {
+
+		return ( 1.0 - t ) * a + t * b;
+
+	}
+
+	export function CubicBezier( p0: THREE.Vec2, p1: THREE.Vec2, p2: THREE.Vec2, p3: THREE.Vec2, t: number ): THREE.Vec2 {
+
+		let invt = 1.0 - t;
+		let b0 = invt * invt * invt;
+		let b1 = 3 * invt * invt * t;
+		let b2 = 3 * invt * t * t;
+		let b3 = t * t * t;
+
+		return {
+			x: b0 * p0.x + b1 * p1.x + b2 * p2.x + b3 * p3.x,
+			y: b0 * p0.y + b1 * p1.y + b2 * p2.y + b3 * p3.y,
+		};
+
+	}
+
+	/*
+	@auther https://gist.github.com/gre/1650294
+	*/
+
+	export function linear( t: number ) {
+
+		return t;
+
+	}
+
+	// accelerating from zero velocity
+	export function easeInQuad( t: number ) {
+
+		return t * t;
+
+	}
+
+	// decelerating to zero velocity
+	export function easeOutQuad( t: number ) {
+
+		return t * ( 2 - t );
+
+	}
+
+	// acceleration until halfway, then deceleration
+	export function easeInOutQuad( t: number ) {
+
+		return t < .5 ? 2 * t * t : - 1 + ( 4 - 2 * t ) * t;
+
+	}
+
+	// accelerating from zero velocity
+	export function easeInCubic( t: number ) {
+
+		return t * t * t;
+
+	}
+
+	// decelerating to zero velocity
+	export function easeOutCubic( t: number ) {
+
+		return ( -- t ) * t * t + 1;
+
+	}
+
+	// acceleration until halfway, then deceleration
+	export function easeInOutCubic( t: number ) {
+
+		return t < .5 ? 4 * t * t * t : ( t - 1 ) * ( 2 * t - 2 ) * ( 2 * t - 2 ) + 1;
+
+	}
+
+	// accelerating from zero velocity
+	export function easeInQuart( t: number ) {
+
+		return t * t * t * t;
+
+	}
+
+	// decelerating to zero velocity
+	export function easeOutQuart( t: number ) {
+
+		return 1 - ( -- t ) * t * t * t;
+
+	}
+
+	// acceleration until halfway, then deceleration
+	export function easeInOutQuart( t: number ) {
+
+		return t < .5 ? 8 * t * t * t * t : 1 - 8 * ( -- t ) * t * t * t;
+
+	}
+
+	// accelerating from zero velocity
+	export function easeInQuint( t: number ) {
+
+		return t * t * t * t * t;
+
+	}
+
+	// decelerating to zero velocity
+	export function easeOutQuint( t: number ) {
+
+		return 1 + ( -- t ) * t * t * t * t;
+
+	}
+
+	// acceleration until halfway, then deceleration
+  	export function easeInOutQuint( t: number ) {
+
+  		return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * ( -- t ) * t * t * t * t;
+
+  	}
+
+}

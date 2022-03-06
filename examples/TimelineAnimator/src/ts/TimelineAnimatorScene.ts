@@ -54,10 +54,7 @@ export class TimelineAnimatorScene extends ORE.BaseLayer {
 					value: new THREE.Vector3( 0, 0, 0 )
 				}
 			],
-			easing: {
-				func: ORE.Easings.sigmoid,
-				args: 6
-			}
+			easing: ORE.Easings.sigmoid()
 		} );
 
 		this.timelineAnimator.add<THREE.Quaternion>( {
@@ -84,10 +81,7 @@ export class TimelineAnimatorScene extends ORE.BaseLayer {
 					value: new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0 ) )
 				}
 			],
-			easing: {
-				func: ORE.Easings.sigmoid,
-				args: 3
-			}
+			easing: ORE.Easings.sigmoid( 3 )
 		} );
 
 		this.timelineAnimator.add<number>( {
@@ -114,10 +108,7 @@ export class TimelineAnimatorScene extends ORE.BaseLayer {
 					value: 1.0
 				}
 			],
-			easing: {
-				func: ORE.Easings.sigmoid,
-				args: 3
-			}
+			easing: ORE.Easings.sigmoid()
 		} );
 
 		let sliderElm = document.querySelector( '#slider' );

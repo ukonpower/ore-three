@@ -77,6 +77,8 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				let transform = this.connector.getTransform( obj.name );
 
+				if ( obj.name != 'Cube' ) return;
+
 				if ( transform.position ) {
 
 					obj.position.copy( transform.position );
