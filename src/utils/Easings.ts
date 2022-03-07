@@ -202,6 +202,9 @@ export namespace Easings {
 
 	function getBezierTfromX( p: BezierControlPoints, x: number, cache: number[] ) {
 
+		p.p1 = Math.max( p.p0, Math.min( p.p3, p.p1 ) );
+		p.p2 = Math.max( p.p0, Math.min( p.p3, p.p2 ) );
+
 		let sample = 0;
 
 		for ( let i = 1; i < cache.length; i ++ ) {
@@ -235,12 +238,8 @@ export namespace Easings {
 
 		return ( x: number ) => {
 
-			if ( c2.x == 31 ) {
-
-				// console.log( getBezierTfromX( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, x, cache ) );
-				// console.log( x );
-
-			}
+			if ( x <= c1.x ) return c1.y;
+			if ( c2.x <= x ) return c2.y;
 
 			return calcBezier( { p0: c1.y, p1: h1.y, p2: h2.y, p3: c2.y }, getBezierTfromX( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, x, cache ) );
 
