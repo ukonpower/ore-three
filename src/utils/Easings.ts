@@ -169,6 +169,16 @@ export namespace Easings {
 
 	}
 
+	function subdiv( x:number, p: BezierControlPoints, t: number ) {
+
+		let currentX = 0;
+		let currentT = 0;
+
+		for ( let i = 0; i < SUBDIVISION_MAX_ITERATIONS; i ++ ) {
+		}
+
+	}
+
 	function newton( x:number, p: BezierControlPoints, t: number ) {
 
 		for ( let i = 0; i < NEWTON_ITERATIONS; i ++ ) {
@@ -181,10 +191,13 @@ export namespace Easings {
 
 			}
 
-			let currentX = calcBezier( p, t ) - x;
+			let currentX = ( calcBezier( p, t ) ) - x;
 			t -= currentX / slope;
 
 		}
+
+
+
 
 		return t;
 
@@ -202,16 +215,22 @@ export namespace Easings {
 		}
 
 		const dist = ( x - cache[ sample ] ) / ( cache[ sample + 1 ] - cache[ sample ] );
-		let t = ( sample + dist ) / ( kSplineTableSize - 1 );
+		let t = ( sample + dist ) / ( kSplineTableSize - 1.0 );
+		t = ( p.p3 + p.p0 ) / 2;
 
 		// console.log( "dist", x - cache[ sample ] );
-
 		// console.log( "init t: ", t );
-
 
 		let diff = calcBezierSlope( p, t ) / ( p.p3 - p.p0 );
 
 		// if ( diff >= NEWTON_MIN_SLOPE ) {
+
+		if ( p.p3 == 31 ) {
+
+			// console.log( ( cache[ sample + 1 ] - cache[ sample ] ) );
+			// console.log( ( x - cache[ sample ] ), cache[ sample + 1 ] - cache[ sample ] );
+
+		}
 
 		t = newton( x, p, t );
 
@@ -234,18 +253,18 @@ export namespace Easings {
 
 		for ( var i = 0; i < kSplineTableSize; ++ i ) {
 
-			cache[ i ] = calcBezier( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, i / ( kSplineTableSize - 1.0 ) );
+			cache[ i ] = calcBezier( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, i / ( kSplineTableSize - 1.0 ) * ( c2.x - c1.x ) );
 
 		}
 
 		return ( x: number ) => {
 
-			if ( c2.x == 20 ) {
+			if ( c2.x == 31 ) {
 
-				// console.log( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x } );
 				// console.log( x );
 
 				// console.log( getBezierTfromX( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, x, cache ) );
+				// console.log( x );
 
 			}
 

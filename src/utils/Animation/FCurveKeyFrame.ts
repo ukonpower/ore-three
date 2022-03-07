@@ -42,7 +42,9 @@ export class FCurveKeyFrame extends EventEmitter {
 			return ( t: number ) => {
 
 				let d = ( nextFrame.coordinate.y - this.coordinate.y );
-				return this.coordinate.y + d * t;
+				t /= ( nextFrame.coordinate.x - this.coordinate.x );
+
+				return this.coordinate.y + t * d;
 
 			};
 
