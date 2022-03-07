@@ -196,9 +196,6 @@ export namespace Easings {
 
 		}
 
-
-
-
 		return t;
 
 	}
@@ -216,32 +213,11 @@ export namespace Easings {
 
 		const dist = ( x - cache[ sample ] ) / ( cache[ sample + 1 ] - cache[ sample ] );
 		let t = ( sample + dist ) / ( kSplineTableSize - 1.0 );
-		t = ( p.p3 + p.p0 ) / 2;
-
-		// console.log( "dist", x - cache[ sample ] );
-		// console.log( "init t: ", t );
+		t = 0.5;
 
 		let diff = calcBezierSlope( p, t ) / ( p.p3 - p.p0 );
 
-		// if ( diff >= NEWTON_MIN_SLOPE ) {
-
-		if ( p.p3 == 31 ) {
-
-			// console.log( ( cache[ sample + 1 ] - cache[ sample ] ) );
-			// console.log( ( x - cache[ sample ] ), cache[ sample + 1 ] - cache[ sample ] );
-
-		}
-
 		t = newton( x, p, t );
-
-		// } else if ( diff == 0 ) {
-
-		// 	return t;
-
-		// } else {
-
-		// 	// binary subdivide
-		// }
 
 		return t;
 
@@ -260,8 +236,6 @@ export namespace Easings {
 		return ( x: number ) => {
 
 			if ( c2.x == 31 ) {
-
-				// console.log( x );
 
 				// console.log( getBezierTfromX( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, x, cache ) );
 				// console.log( x );

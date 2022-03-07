@@ -55,9 +55,9 @@ export class FCurve extends EventEmitter {
 
 				if ( beforeKeyFrame ) {
 
-					let t = ( frame - beforeKeyFrame.coordinate.x );
+					// let t = ( frame - beforeKeyFrame.coordinate.x );
 
-					return beforeKeyFrame.to( keyframe, t );
+					return beforeKeyFrame.to( keyframe, frame );
 
 				} else {
 
