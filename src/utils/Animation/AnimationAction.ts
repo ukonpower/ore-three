@@ -43,9 +43,35 @@ export class AnimationAction extends EventEmitter {
 
 	}
 
-	public getCurve( curveName: string ): FCurve | null {
+	public getCurves( curveName: string ): FCurve[] {
 
-		return this.curves[ curveName ] || null;
+
+		if ( this.curves[ curveName ] ) {
+
+			return [ this.curves[ curveName ] ];
+
+		} else {
+
+			let curves = [];
+
+			curves.push( this.curves[ curveName + '_x' ] );
+			curves.push( this.curves[ curveName + '_y' ] );
+			curves.push( this.curves[ curveName + '_z' ] );
+			curves.push( this.curves[ curveName + '_w' ] );
+
+			for ( let i = 0; i < curves.length; i ++ ) {
+
+				if ( curves[ i ] != undefined ) {
+
+					return curves;
+
+				}
+
+			}
+
+		}
+
+		return [];
 
 	}
 

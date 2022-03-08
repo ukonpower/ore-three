@@ -3,13 +3,18 @@ import * as ORE from '@ore-three-ts';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { BlenderConnector } from '@ore-three-ts';
 
+import boxVert from './shaders/box.vs';
+import boxFrag from './shaders/box.fs';
 export class BlenderConnectorScene extends ORE.BaseLayer {
 
+	private commoUniforms: ORE.Uniforms;
 	private connector?: BlenderConnector;
 
 	constructor() {
 
 		super();
+
+		this.commoUniforms = {};
 
 	}
 
@@ -57,7 +62,21 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 			}
 
+			let box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
+			let boxUni = ORE.UniformsLib.mergeUniforms( this.commoUniforms );
+			box.material = new THREE.ShaderMaterial( {
+				vertexShader: boxVert,
+				fragmentShader: boxFrag,
+				uniforms: boxUni
+			} );
+
 		} );
+
+		/*-------------------------------
+			Uniforms
+		-------------------------------*/
+
+		this.commoUniforms.color = this.connector.getUniform( 'Cube', 'nodes["Principled BSDF"].inputs[0].default_value' );
 
 		/*-------------------------------
 			Scene

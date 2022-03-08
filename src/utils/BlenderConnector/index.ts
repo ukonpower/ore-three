@@ -4,6 +4,7 @@ import EventEmitter from "wolfy87-eventemitter";
 import { AnimationAction } from "../Animation/AnimationAction";
 import { FCurve } from "../Animation/FCurve";
 import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame";
+import { Uniforms } from '../Uniforms';
 
 export type BCMessage = BCSyncAnimationMessage | BCSyncFrameMessage
 
@@ -66,6 +67,10 @@ export class BlenderConnector extends EventEmitter {
 
 	public actions: AnimationAction[] = [];
 	public objects: BCAnimationObjectData[] = [];
+
+	// uniforms
+
+	private uniforms: Uniforms = {};
 
 	constructor( url: string ) {
 
@@ -135,6 +140,65 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
+	private updateUniforms( frame: number ) {
+
+		let keys = Object.keys( this.uniforms );
+
+		for ( let i = 0; i < keys.length; i ++ ) {
+
+			let key = keys[ i ];
+			let splitKey = key.split( '/' );
+			let objName = splitKey[ 0 ] || '';
+			let propertyName = splitKey[ 1 ] || '';
+
+			let actions = this.getActionList( objName );
+
+
+			for ( let i = 0; i < actions.length; i ++ ) {
+
+				let action = actions[ i ];
+
+				let curve = action.getCurves( propertyName );
+
+				let uni = this.uniforms[ key ];
+
+				if ( curve.length == 1 ) {
+
+					uni.value = curve[ 0 ].getValue( this.frameCurrent );
+
+				} else if ( curve.length > 1 ) {
+
+					if ( uni.value == null ) {
+
+						uni.value = new THREE.Vector4(
+							curve[ 0 ] ? curve[ 0 ].getValue( this.frameCurrent ) : 0,
+							curve[ 1 ] ? curve[ 1 ].getValue( this.frameCurrent ) : 0,
+							curve[ 2 ] ? curve[ 2 ].getValue( this.frameCurrent ) : 0,
+							curve[ 3 ] ? curve[ 3 ].getValue( this.frameCurrent ) : 0,
+						);
+
+					} else if ( uni.value.isVector4 ) {
+
+						uni.value.set(
+							curve[ 0 ] ? curve[ 0 ].getValue( this.frameCurrent ) : 0,
+							curve[ 1 ] ? curve[ 1 ].getValue( this.frameCurrent ) : 0,
+							curve[ 2 ] ? curve[ 2 ].getValue( this.frameCurrent ) : 0,
+							curve[ 3 ] ? curve[ 3 ].getValue( this.frameCurrent ) : 0,
+						);
+
+					}
+
+
+				}
+
+
+			}
+
+
+		}
+
+	}
+
 	private onSyncFrame( data: BCFrameData ) {
 
 		this.frameCurrent = data.current;
@@ -160,12 +224,16 @@ export class BlenderConnector extends EventEmitter {
 		if ( msg.type == 'sync/animation' ) {
 
 			this.onSyncAnimation( msg.data );
+			console.log( msg );
+
 
 		} else if ( msg.type == "sync/frame" ) {
 
 			this.onSyncFrame( msg.data );
 
 		}
+
+		this.updateUniforms( this.frameCurrent );
 
 	}
 
@@ -211,6 +279,27 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
+	public getActionList( objectName: string ) {
+
+		let actions: AnimationAction[] = [];
+		let actionNameList = this.getActionNameList( objectName );
+
+		actionNameList.forEach( actionName => {
+
+			let action = this.getAction( actionName );
+
+			if ( action ) {
+
+				actions.push( action );
+
+			}
+
+		} );
+
+		return actions;
+
+	}
+
 	public getTransform( objectName: string ) {
 
 		let actionNames = this.getActionNameList( objectName );
@@ -233,47 +322,41 @@ export class BlenderConnector extends EventEmitter {
 
 				// position
 
-				let posXCurve = action.getCurve( 'location_x' );
-				let posYCurve = action.getCurve( 'location_y' );
-				let posZCurve = action.getCurve( 'location_z' );
+				let posCurve = action.getCurves( 'location' );
 
-				if ( posXCurve || posYCurve || posZCurve ) {
+				if ( posCurve.length > 0 ) {
 
 					res.position = new THREE.Vector3();
-					res.position.x = posXCurve ? posXCurve.getValue( this.frameCurrent ) : 0;
-					res.position.y = posYCurve ? posYCurve.getValue( this.frameCurrent ) : 0;
-					res.position.z = posZCurve ? posZCurve.getValue( this.frameCurrent ) : 0;
+					res.position.x = posCurve[ 0 ] ? posCurve[ 0 ].getValue( this.frameCurrent ) : 0;
+					res.position.y = posCurve[ 1 ] ? posCurve[ 1 ].getValue( this.frameCurrent ) : 0;
+					res.position.z = posCurve[ 2 ] ? posCurve[ 2 ].getValue( this.frameCurrent ) : 0;
 
 				}
 
 				// rotation
 
-				let rotXCurve = action.getCurve( 'rotation_euler_x' );
-				let rotYCurve = action.getCurve( 'rotation_euler_y' );
-				let rotZCurve = action.getCurve( 'rotation_euler_z' );
+				let rotCurve = action.getCurves( 'rotation_euler' );
 
-				if ( rotXCurve || rotYCurve || rotZCurve ) {
+				if ( rotCurve.length > 0 ) {
 
 					res.rotation = new THREE.Euler();
-					res.rotation.x = rotXCurve ? rotXCurve.getValue( this.frameCurrent ) : 0;
-					res.rotation.y = rotYCurve ? rotYCurve.getValue( this.frameCurrent ) : 0;
-					res.rotation.z = rotZCurve ? rotZCurve.getValue( this.frameCurrent ) : 0;
+					res.rotation.x = rotCurve[ 0 ] ? rotCurve[ 0 ].getValue( this.frameCurrent ) : 0;
+					res.rotation.y = rotCurve[ 1 ] ? rotCurve[ 1 ].getValue( this.frameCurrent ) : 0;
+					res.rotation.z = rotCurve[ 2 ] ? rotCurve[ 2 ].getValue( this.frameCurrent ) : 0;
 					res.rotation.order = 'YZX';
 
 				}
 
 				// scale
 
-				let scaleXCurve = action.getCurve( 'scale_x' );
-				let scaleYCurve = action.getCurve( 'scale_y' );
-				let scaleZCurve = action.getCurve( 'scale_z' );
+				let scaleCurve = action.getCurves( 'scale' );
 
-				if ( scaleXCurve || scaleYCurve || scaleZCurve ) {
+				if ( scaleCurve.length > 0 ) {
 
 					res.scale = new THREE.Vector3();
-					res.scale.x = scaleXCurve ? scaleXCurve.getValue( this.frameCurrent ) : 0;
-					res.scale.y = scaleYCurve ? scaleYCurve.getValue( this.frameCurrent ) : 0;
-					res.scale.z = scaleZCurve ? scaleZCurve.getValue( this.frameCurrent ) : 0;
+					res.scale.x = scaleCurve[ 0 ] ? scaleCurve[ 0 ].getValue( this.frameCurrent ) : 0;
+					res.scale.y = scaleCurve[ 1 ] ? scaleCurve[ 1 ].getValue( this.frameCurrent ) : 0;
+					res.scale.z = scaleCurve[ 2 ] ? scaleCurve[ 2 ].getValue( this.frameCurrent ) : 0;
 
 				}
 
@@ -287,7 +370,23 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
-	public getUniform( propertyName: string ) {
+	public getUniform( objectName: string, propertyName: string ) {
+
+		let uniName = objectName + '/' + propertyName;
+
+		if ( this.uniforms[ uniName ] ) {
+
+			return this.uniforms[ uniName ];
+
+		}
+
+		this.uniforms[ uniName ] = {
+			value: null
+		};
+
+		this.updateUniforms( this.frameCurrent );
+
+		return this.uniforms[ uniName ];
 
 	}
 
