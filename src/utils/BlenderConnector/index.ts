@@ -69,15 +69,13 @@ export class BlenderConnector extends EventEmitter {
 	public objects: BCAnimationObjectData[] = [];
 
 	// uniforms
-
-	private uniforms: Uniforms = {};
+	private uniformsList:{[actionName:string]: Uniforms} = {};
 
 	constructor( url: string ) {
 
 		super();
 
 		this.url = url;
-
 		this.connect( this.url );
 
 	}
@@ -126,6 +124,22 @@ export class BlenderConnector extends EventEmitter {
 
 			} );
 
+			let actionUniforms = this.uniformsList[ actionData.name ];
+
+			if ( actionUniforms ) {
+
+				let actionUniKeys = Object.keys( actionUniforms );
+
+				for ( let i = 0; i < actionUniKeys.length; i ++ ) {
+
+					let uniName = actionUniKeys[ i ];
+
+					action.assignUniformAsProperty( uniName, actionUniforms[ uniName ] );
+
+				}
+
+			}
+
 			this.actions.push( action );
 
 		} );
@@ -137,65 +151,6 @@ export class BlenderConnector extends EventEmitter {
 			this.objects.push( objectData );
 
 		} );
-
-	}
-
-	private updateUniforms( frame: number ) {
-
-		let keys = Object.keys( this.uniforms );
-
-		for ( let i = 0; i < keys.length; i ++ ) {
-
-			let key = keys[ i ];
-			let splitKey = key.split( '/' );
-			let objName = splitKey[ 0 ] || '';
-			let propertyName = splitKey[ 1 ] || '';
-
-			let actions = this.getActionList( objName );
-
-
-			for ( let i = 0; i < actions.length; i ++ ) {
-
-				let action = actions[ i ];
-
-				let curve = action.getCurves( propertyName );
-
-				let uni = this.uniforms[ key ];
-
-				if ( curve.length == 1 ) {
-
-					uni.value = curve[ 0 ].getValue( this.frameCurrent );
-
-				} else if ( curve.length > 1 ) {
-
-					if ( uni.value == null ) {
-
-						uni.value = new THREE.Vector4(
-							curve[ 0 ] ? curve[ 0 ].getValue( this.frameCurrent ) : 0,
-							curve[ 1 ] ? curve[ 1 ].getValue( this.frameCurrent ) : 0,
-							curve[ 2 ] ? curve[ 2 ].getValue( this.frameCurrent ) : 0,
-							curve[ 3 ] ? curve[ 3 ].getValue( this.frameCurrent ) : 0,
-						);
-
-					} else if ( uni.value.isVector4 ) {
-
-						uni.value.set(
-							curve[ 0 ] ? curve[ 0 ].getValue( this.frameCurrent ) : 0,
-							curve[ 1 ] ? curve[ 1 ].getValue( this.frameCurrent ) : 0,
-							curve[ 2 ] ? curve[ 2 ].getValue( this.frameCurrent ) : 0,
-							curve[ 3 ] ? curve[ 3 ].getValue( this.frameCurrent ) : 0,
-						);
-
-					}
-
-
-				}
-
-
-			}
-
-
-		}
 
 	}
 
@@ -224,8 +179,6 @@ export class BlenderConnector extends EventEmitter {
 		if ( msg.type == 'sync/animation' ) {
 
 			this.onSyncAnimation( msg.data );
-			console.log( msg );
-
 
 		} else if ( msg.type == "sync/frame" ) {
 
@@ -233,7 +186,11 @@ export class BlenderConnector extends EventEmitter {
 
 		}
 
-		this.updateUniforms( this.frameCurrent );
+		for ( let i = 0; i < this.actions.length; i ++ ) {
+
+			this.actions[ i ].updateFrame( this.frameCurrent );
+
+		}
 
 	}
 
@@ -370,23 +327,33 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
-	public getUniform( objectName: string, propertyName: string ) {
+	public getUniform( actionName: string, propertyName: string ) {
 
-		let uniName = objectName + '/' + propertyName;
+		let action = this.getAction( actionName );
 
-		if ( this.uniforms[ uniName ] ) {
+		if ( action ) {
 
-			return this.uniforms[ uniName ];
+			return action.getPropertyAsUniform( 'propertyName' );
 
 		}
 
-		this.uniforms[ uniName ] = {
-			value: null
-		};
+		if ( ! this.uniformsList[ actionName ] ) {
 
-		this.updateUniforms( this.frameCurrent );
+			this.uniformsList[ actionName ] = {};
 
-		return this.uniforms[ uniName ];
+		}
+
+		let uniforms = this.uniformsList[ actionName ];
+
+		if ( ! uniforms[ propertyName ] ) {
+
+			uniforms[ propertyName ] = {
+				value: new THREE.Vector4()
+			};
+
+		}
+
+		return uniforms[ propertyName ];
 
 	}
 
