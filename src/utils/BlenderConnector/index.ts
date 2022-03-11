@@ -179,10 +179,12 @@ export class BlenderConnector extends EventEmitter {
 		if ( msg.type == 'sync/animation' ) {
 
 			this.onSyncAnimation( msg.data );
+			console.log( msg.data );
 
 		} else if ( msg.type == "sync/frame" ) {
 
 			this.onSyncFrame( msg.data );
+
 
 		}
 
@@ -281,6 +283,8 @@ export class BlenderConnector extends EventEmitter {
 
 				let posCurve = action.getCurves( 'location' );
 
+
+
 				if ( posCurve.length > 0 ) {
 
 					res.position = new THREE.Vector3();
@@ -327,7 +331,7 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
-	public getUniform( actionName: string, propertyName: string ) {
+	public getUniform<T>( actionName: string, propertyName: string, initialValue: T ) {
 
 		let action = this.getAction( actionName );
 
@@ -348,7 +352,7 @@ export class BlenderConnector extends EventEmitter {
 		if ( ! uniforms[ propertyName ] ) {
 
 			uniforms[ propertyName ] = {
-				value: new THREE.Vector4()
+				value: initialValue
 			};
 
 		}

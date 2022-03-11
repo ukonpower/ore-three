@@ -76,7 +76,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			Uniforms
 		-------------------------------*/
 
-		this.commoUniforms.color = this.connector.getUniform( 'Shader NodetreeAction.001', 'nodes["Principled BSDF"].inputs[0].default_value' );
+		this.commoUniforms.color = this.connector.getUniform( 'CubeMaterial', 'BaseColor_Color', new THREE.Vector4( 1.0, 1.0, 1.0, 1.0 ) );
 
 		/*-------------------------------
 			Scene

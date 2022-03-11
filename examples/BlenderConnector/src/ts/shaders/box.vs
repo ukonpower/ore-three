@@ -1,4 +1,5 @@
 varying vec2 vUv;
+varying vec3 vNormal;
 
 void main( void ) {
 
@@ -8,5 +9,6 @@ void main( void ) {
 	gl_Position = projectionMatrix * mvPosition;
 
 	vUv = uv;
+	vNormal = normalMatrix * normal;
 
 }
