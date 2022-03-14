@@ -27,6 +27,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 		-------------------------------*/
 
 		this.connector = new ORE.BlenderConnector( 'ws://localhost:3100' );
+		this.connector.syncJsonScene( './assets/three-connector.json' );
 
 		/*-------------------------------
 			gltf
@@ -89,6 +90,12 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 	}
 
 	public animate( deltaTime: number ) {
+
+		if ( this.connector ) {
+
+			this.connector.setFrame( ( this.time % 3 ) * 60.0 );
+
+		}
 
 		this.scene.traverse( obj => {
 

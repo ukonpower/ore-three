@@ -6,16 +6,16 @@ import { FCurve } from "../Animation/FCurve";
 import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame";
 import { Uniforms } from '../Uniforms';
 
-export type BCMessage = BCSyncAnimationMessage | BCSyncFrameMessage
+export type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage
 
-export type BCSyncAnimationMessage = {
-	type: "sync/animation",
-    data: BCAnimationData;
+export type BCSyncSceneMessage = {
+	type: "sync/scene",
+    data: BCSceneData;
 }
 
-export type BCAnimationData = {
+export type BCSceneData = {
     actions: BCAnimationActionParam[];
-    objects: BCAnimationObjectData[];
+    objects: BCSceneObjectData[];
 }
 
 export type BCAnimationActionParam = {
@@ -36,7 +36,7 @@ export type BCAnimationCurveKeyFrameParam = {
     i: FCurveInterpolation;
 }
 
-export type BCAnimationObjectData = {
+export type BCSceneObjectData = {
 	name: string,
 	actions: string[]
 }
@@ -66,7 +66,7 @@ export class BlenderConnector extends EventEmitter {
 	// animation
 
 	public actions: AnimationAction[] = [];
-	public objects: BCAnimationObjectData[] = [];
+	public objects: BCSceneObjectData[] = [];
 
 	// uniforms
 	private uniformsList:{[actionName:string]: Uniforms} = {};
@@ -95,11 +95,34 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
+	public syncJsonScene( jsonPath: string ) {
+
+		let req = new XMLHttpRequest();
+
+		req.onreadystatechange = () => {
+
+			if ( req.readyState == 4 ) {
+
+				if ( req.status == 200 ) {
+
+					this.onSyncScene( JSON.parse( req.response ) );
+
+				}
+
+			}
+
+		};
+
+		req.open( 'GET', jsonPath );
+		req.send( );
+
+	}
+
 	/*-------------------------------
 		Events
 	-------------------------------*/
 
-	private onSyncAnimation( data: BCAnimationData ) {
+	private onSyncScene( data: BCSceneData ) {
 
 		this.actions.length = 0;
 		this.objects.length = 0;
@@ -156,11 +179,7 @@ export class BlenderConnector extends EventEmitter {
 
 	private onSyncFrame( data: BCFrameData ) {
 
-		this.frameCurrent = data.current;
-		this.frameStart = data.start;
-		this.frameEnd = data.end;
-
-		this.emitEvent( 'sync/frame', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
+		this.setFrame( data.current, data.start, data.end );
 
 	}
 
@@ -176,9 +195,9 @@ export class BlenderConnector extends EventEmitter {
 
 		let msg = JSON.parse( e.data ) as BCMessage;
 
-		if ( msg.type == 'sync/animation' ) {
+		if ( msg.type == 'sync/scene' ) {
 
-			this.onSyncAnimation( msg.data );
+			this.onSyncScene( msg.data );
 			console.log( msg.data );
 
 		} else if ( msg.type == "sync/frame" ) {
@@ -360,6 +379,20 @@ export class BlenderConnector extends EventEmitter {
 		return uniforms[ propertyName ];
 
 	}
+
+	public setFrame( current: number, start?:number, end?:number ) {
+
+		this.frameCurrent = current;
+		this.frameStart = start || this.frameStart;
+		this.frameEnd = end || this.frameEnd;
+
+		this.emitEvent( 'sync/frame', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
+
+	}
+
+	/*-------------------------------
+		Dispose
+	-------------------------------*/
 
 	public dispose() {
 
