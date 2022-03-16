@@ -54,8 +54,11 @@ export type BCFrameData = {
 
 export class BlenderConnector extends EventEmitter {
 
-	private ws?: WebSocket;
+	// ws
+
 	private url: string;
+	private ws?: WebSocket;
+	public connected: boolean = false;
 
 	// frame
 
@@ -189,6 +192,8 @@ export class BlenderConnector extends EventEmitter {
 
 	private onOpen( event: Event ) {
 
+		this.connected = true;
+
 	}
 
 	private onMessage( e: MessageEvent ) {
@@ -204,12 +209,6 @@ export class BlenderConnector extends EventEmitter {
 
 			this.onSyncFrame( msg.data );
 
-
-		}
-
-		for ( let i = 0; i < this.actions.length; i ++ ) {
-
-			this.actions[ i ].updateFrame( this.frameCurrent );
 
 		}
 
@@ -302,8 +301,6 @@ export class BlenderConnector extends EventEmitter {
 
 				let posCurve = action.getCurves( 'location' );
 
-
-
 				if ( posCurve.length > 0 ) {
 
 					res.position = new THREE.Vector3();
@@ -386,6 +383,12 @@ export class BlenderConnector extends EventEmitter {
 		this.frameStart = start || this.frameStart;
 		this.frameEnd = end || this.frameEnd;
 
+		for ( let i = 0; i < this.actions.length; i ++ ) {
+
+			this.actions[ i ].updateFrame( this.frameCurrent );
+
+		}
+
 		this.emitEvent( 'sync/frame', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
 
 	}
@@ -408,6 +411,8 @@ export class BlenderConnector extends EventEmitter {
 			this.ws.onmessage = null;
 			this.ws.onclose = null;
 			this.ws.onopen = null;
+
+			this.connected = false;
 
 		}
 

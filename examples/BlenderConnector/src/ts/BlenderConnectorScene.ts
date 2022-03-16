@@ -91,7 +91,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 	public animate( deltaTime: number ) {
 
-		if ( this.connector ) {
+		if ( this.connector && ! this.connector.connected ) {
 
 			this.connector.setFrame( ( this.time % 3 ) * 60.0 );
 
@@ -126,7 +126,6 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			}
 
 		} );
-
 
 		if ( this.renderer ) {
 
