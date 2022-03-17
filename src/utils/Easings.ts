@@ -1,11 +1,6 @@
-export type EasingFunc = ( t: number ) => any
+import { Bezier } from "./Bezier";
 
-export type BezierControlPoints = {
-	p0: number;
-	p1: number;
-	p2: number;
-	p3: number;
-}
+export type EasingFunc = ( t: number ) => any
 
 export namespace Easings {
 
@@ -111,128 +106,13 @@ export namespace Easings {
 
   	}
 
-	/*-------------------------------
-		Bezier
-	-------------------------------*/
-
-	// inspired https://github.com/gre/bezier-easing/blob/master/src/index.js and https://github.com/0b5vr/automaton/blob/872420e798d9054d4a7a06c972cbb4261a67b4bc/src/bezierEasing.ts
-
-	var NEWTON_ITERATIONS = 4;
-	var NEWTON_MIN_SLOPE = 0.001;
-	var SUBDIVISION_PRECISION = 0.0000001;
-	var SUBDIVISION_MAX_ITERATIONS = 10;
-
-	var kSplineTableSize = 11;
-	var kSampleStepSize = 1.0 / ( kSplineTableSize - 1.0 );
-
-	// q0 = ( 1.0 - t ) * ( 1.0 - t ) * ( 1.0 - t ) * p0;
-	// = ( 1.0 - 3t + 3tt - ttt ) * p0
-
-	// q1 = 3 * ( 1.0 - t ) * ( 1.0 - t ) * t * p1;
-	// = ( 3t - 6tt + 3ttt ) * p1
-
-	// q2 = ( 3 * ( 1.0 - t ) * t * t ) * p2;
-	// = ( 3tt - 3ttt ) * p2
-
-	// q3 = t * t * t * p3;
-	// = ttt * p3
-
-	// q0 + q2 + q2 + q3
-	// = ( -p0 + 3p1 - 3p2 + p3) * ttt + ( 3p0 - 6p1 + 3p2 ) * tt + ( -3p0 + 3p1 ) * t + p0
-	// = calcBezierA * ttt + calcBezierB * tt * calcBezierC * t + p0
-
-	function calcBezierA( p: BezierControlPoints ) {
-
-		return - p.p0 + 3.0 * p.p1 - 3.0 * p.p2 + p.p3;
-
-	}
-	function calcBezierB( p: BezierControlPoints ) {
-
-		return 3.0 * p.p0 - 6.0 * p.p1 + 3.0 * p.p2;
-
-	}
-	function calcBezierC( p: BezierControlPoints ) {
-
-		return - 3.0 * p.p0 + 3.0 * p.p1;
-
-	}
-
-	function calcBezierSlope( p: BezierControlPoints, t: number ) {
-
-		return 3.0 * calcBezierA( p ) * t * t + 2.0 * calcBezierB( p ) * t + calcBezierC( p );
-
-	}
-
-	function calcBezier( p: BezierControlPoints, t: number ) {
-
-		return ( ( calcBezierA( p ) * t + calcBezierB( p ) ) * t + calcBezierC( p ) ) * t + p.p0;
-
-	}
-
-	function subdiv( x:number, p: BezierControlPoints, t: number ) {
-
-		let currentX = 0;
-		let currentT = 0;
-
-		for ( let i = 0; i < SUBDIVISION_MAX_ITERATIONS; i ++ ) {
-		}
-
-	}
-
-	function newton( x:number, p: BezierControlPoints, t: number ) {
-
-		for ( let i = 0; i < NEWTON_ITERATIONS; i ++ ) {
-
-			let slope = calcBezierSlope( p, t );
-
-			if ( slope == 0.0 ) {
-
-				return t;
-
-			}
-
-			let currentX = ( calcBezier( p, t ) ) - x;
-			t -= currentX / slope;
-
-		}
-
-		return t;
-
-	}
-
-	function getBezierTfromX( p: BezierControlPoints, x: number, cache: number[] ) {
-
-		p.p1 = Math.max( p.p0, Math.min( p.p3, p.p1 ) );
-		p.p2 = Math.max( p.p0, Math.min( p.p3, p.p2 ) );
-
-		let sample = 0;
-
-		for ( let i = 1; i < cache.length; i ++ ) {
-
-			sample = i - 1;
-			if ( x < cache[ i ] ) break;
-
-		}
-
-		const dist = ( x - cache[ sample ] ) / ( cache[ sample + 1 ] - cache[ sample ] );
-		let t = ( sample + dist ) / ( kSplineTableSize - 1.0 );
-		t = 0.5;
-
-		let diff = calcBezierSlope( p, t ) / ( p.p3 - p.p0 );
-
-		t = newton( x, p, t );
-
-		return t;
-
-	}
-
 	export function bezier( c1: THREE.Vec2, h1: THREE.Vec2, h2: THREE.Vec2, c2: THREE.Vec2 ): EasingFunc {
 
-		var cache = new Array( kSplineTableSize );
+		var cache = new Array( Bezier.BEZIER_EASING_CACHE_SIZE );
 
-		for ( var i = 0; i < kSplineTableSize; ++ i ) {
+		for ( var i = 0; i < Bezier.BEZIER_EASING_CACHE_SIZE; ++ i ) {
 
-			cache[ i ] = calcBezier( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, i / ( kSplineTableSize - 1.0 ) * ( c2.x - c1.x ) );
+			cache[ i ] = Bezier.calcBezier( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, i / ( Bezier.BEZIER_EASING_CACHE_SIZE - 1.0 ) );
 
 		}
 
@@ -241,7 +121,7 @@ export namespace Easings {
 			if ( x <= c1.x ) return c1.y;
 			if ( c2.x <= x ) return c2.y;
 
-			return calcBezier( { p0: c1.y, p1: h1.y, p2: h2.y, p3: c2.y }, getBezierTfromX( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, x, cache ) );
+			return Bezier.calcBezier( { p0: c1.y, p1: h1.y, p2: h2.y, p3: c2.y }, Bezier.getBezierTfromX( { p0: c1.x, p1: h1.x, p2: h2.x, p3: c2.x }, x, cache ) );
 
 		};
 

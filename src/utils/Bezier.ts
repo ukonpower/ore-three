@@ -1,147 +1,150 @@
-export declare interface EasingSet{
-	func: Function;
-	args?: number | number[];
-}
 
-export namespace Easings {
+/*-------------------------------
+		Bezier
+-------------------------------*/
 
-	export function sigmoid( x: number, ...variables: number[] ): number {
+export namespace Bezier {
 
-		let weight = 6;
+	export type BezierControlPoints = {
+		p0: number;
+		p1: number;
+		p2: number;
+		p3: number;
+	}
 
-		if ( variables[ 0 ] ) {
+	// inspired https://github.com/gre/bezier-easing/blob/master/src/index.js and https://github.com/0b5vr/automaton/blob/872420e798d9054d4a7a06c972cbb4261a67b4bc/src/bezierEasing.ts
 
-			weight = variables[ 0 ];
+	export const NEWTON_ITERATIONS = 4;
+	export const NEWTON_MIN_SLOPE = 0.001;
+	export const SUBDIVISION_PRECISION = 0.0000001;
+	export const SUBDIVISION_MAX_ITERATIONS = 10;
+	export const BEZIER_EASING_CACHE_SIZE = 11;
+	export const BEZIER_EASING_SAMPLE_STEP_SIZE = 1.0 / BEZIER_EASING_CACHE_SIZE;
+	// export const kSampleStepSize = 1.0 / ( BEZIER_EASING_CACHE_SIZE - 1.0 );
+
+	// q0 = ( 1.0 - t ) * ( 1.0 - t ) * ( 1.0 - t ) * p0;
+	// = ( 1.0 - 3t + 3tt - ttt ) * p0
+
+	// q1 = 3 * ( 1.0 - t ) * ( 1.0 - t ) * t * p1;
+	// = ( 3t - 6tt + 3ttt ) * p1
+
+	// q2 = ( 3 * ( 1.0 - t ) * t * t ) * p2;
+	// = ( 3tt - 3ttt ) * p2
+
+	// q3 = t * t * t * p3;
+	// = ttt * p3
+
+	// q0 + q2 + q2 + q3
+	// = ( -p0 + 3p1 - 3p2 + p3) * ttt + ( 3p0 - 6p1 + 3p2 ) * tt + ( -3p0 + 3p1 ) * t + p0
+	// = calcBezierA * ttt + calcBezierB * tt * calcBezierC * t + p0
+
+	function calcBezierA( p: BezierControlPoints ) {
+
+		return - p.p0 + 3.0 * p.p1 - 3.0 * p.p2 + p.p3;
+
+	}
+	function calcBezierB( p: BezierControlPoints ) {
+
+		return 3.0 * p.p0 - 6.0 * p.p1 + 3.0 * p.p2;
+
+	}
+	function calcBezierC( p: BezierControlPoints ) {
+
+		return - 3.0 * p.p0 + 3.0 * p.p1;
+
+	}
+
+	export function calcBezierSlope( p: BezierControlPoints, t: number ) {
+
+		return 3.0 * calcBezierA( p ) * t * t + 2.0 * calcBezierB( p ) * t + calcBezierC( p );
+
+	}
+
+	export function calcBezier( p: BezierControlPoints, t: number ) {
+
+		return ( ( calcBezierA( p ) * t + calcBezierB( p ) ) * t + calcBezierC( p ) ) * t + p.p0;
+
+	}
+
+	function subdiv( x: number, startT: number, endT: number, p: BezierControlPoints ) {
+
+		let currentX = 0;
+		let currentT = 0;
+
+		for ( let i = 0; i < SUBDIVISION_MAX_ITERATIONS; i ++ ) {
+
+			currentT = startT + ( endT - startT ) / 2;
+			currentX = calcBezier( p, currentT );
+
+			if ( currentX > x ) {
+
+				endT = currentT;
+
+			} else {
+
+				startT = currentT;
+
+			}
 
 		}
 
-		var e1 = Math.exp( - weight * ( 2 * x - 1 ) );
-		var e2 = Math.exp( - weight );
-
-		return ( 1 + ( 1 - e1 ) / ( 1 + e1 ) * ( 1 + e2 ) / ( 1 - e2 ) ) / 2;
+		return currentT;
 
 	}
 
-	export function smoothstep( min: number, max: number, value: number ): number {
+	function newton( x:number, p: BezierControlPoints, t: number ) {
 
-		let x = Math.max( 0, Math.min( 1, ( value - min ) / ( max - min ) ) );
-		return x * x * ( 3 - 2 * x );
+		for ( let i = 0; i < NEWTON_ITERATIONS; i ++ ) {
 
-	}
+			let slope = calcBezierSlope( p, t );
 
-	export function lerpNumber( a: number, b: number, t: number ): number {
+			if ( slope == 0.0 ) {
 
-		return ( 1.0 - t ) * a + t * b;
+				return t;
 
-	}
+			}
 
-	export function CubicBezier( p0: THREE.Vec2, p1: THREE.Vec2, p2: THREE.Vec2, p3: THREE.Vec2, t: number ): THREE.Vec2 {
+			let currentX = ( calcBezier( p, t ) ) - x;
+			t -= currentX / slope;
 
-		let invt = 1.0 - t;
-		let b0 = invt * invt * invt;
-		let b1 = 3 * invt * invt * t;
-		let b2 = 3 * invt * t * t;
-		let b3 = t * t * t;
-
-		return {
-			x: b0 * p0.x + b1 * p1.x + b2 * p2.x + b3 * p3.x,
-			y: b0 * p0.y + b1 * p1.y + b2 * p2.y + b3 * p3.y,
-		};
-
-	}
-
-	/*
-	@auther https://gist.github.com/gre/1650294
-	*/
-
-	export function linear( t: number ) {
+		}
 
 		return t;
 
 	}
 
-	// accelerating from zero velocity
-	export function easeInQuad( t: number ) {
+	export function getBezierTfromX( p: BezierControlPoints, x: number, cache: number[] ) {
 
-		return t * t;
+		p.p1 = Math.max( p.p0, Math.min( p.p3, p.p1 ) );
+		p.p2 = Math.max( p.p0, Math.min( p.p3, p.p2 ) );
 
-	}
+		let sample = 0;
 
-	// decelerating to zero velocity
-	export function easeOutQuad( t: number ) {
+		for ( let i = 1; i < cache.length; i ++ ) {
 
-		return t * ( 2 - t );
+			sample = i - 1;
+			if ( x < cache[ i ] ) break;
 
-	}
+		}
 
-	// acceleration until halfway, then deceleration
-	export function easeInOutQuad( t: number ) {
+		let t = sample / ( BEZIER_EASING_CACHE_SIZE - 1.0 );
+		let diff = calcBezierSlope( p, t ) / ( p.p3 - p.p0 );
 
-		return t < .5 ? 2 * t * t : - 1 + ( 4 - 2 * t ) * t;
+		if ( diff == 0.0 ) {
 
-	}
+			return t;
 
-	// accelerating from zero velocity
-	export function easeInCubic( t: number ) {
+		} else if ( diff > 0.01 ) {
 
-		return t * t * t;
+			return newton( x, p, t );
 
-	}
+		} else {
 
-	// decelerating to zero velocity
-	export function easeOutCubic( t: number ) {
+			return subdiv( x, t, t + BEZIER_EASING_SAMPLE_STEP_SIZE, p );
 
-		return ( -- t ) * t * t + 1;
+		}
 
-	}
-
-	// acceleration until halfway, then deceleration
-	export function easeInOutCubic( t: number ) {
-
-		return t < .5 ? 4 * t * t * t : ( t - 1 ) * ( 2 * t - 2 ) * ( 2 * t - 2 ) + 1;
 
 	}
-
-	// accelerating from zero velocity
-	export function easeInQuart( t: number ) {
-
-		return t * t * t * t;
-
-	}
-
-	// decelerating to zero velocity
-	export function easeOutQuart( t: number ) {
-
-		return 1 - ( -- t ) * t * t * t;
-
-	}
-
-	// acceleration until halfway, then deceleration
-	export function easeInOutQuart( t: number ) {
-
-		return t < .5 ? 8 * t * t * t * t : 1 - 8 * ( -- t ) * t * t * t;
-
-	}
-
-	// accelerating from zero velocity
-	export function easeInQuint( t: number ) {
-
-		return t * t * t * t * t;
-
-	}
-
-	// decelerating to zero velocity
-	export function easeOutQuint( t: number ) {
-
-		return 1 + ( -- t ) * t * t * t * t;
-
-	}
-
-	// acceleration until halfway, then deceleration
-  	export function easeInOutQuint( t: number ) {
-
-  		return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * ( -- t ) * t * t * t * t;
-
-  	}
 
 }
