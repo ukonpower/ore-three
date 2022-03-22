@@ -42,7 +42,7 @@ export type BCSceneObjectData = {
 }
 
 export type BCSyncFrameMessage = {
-	type: "sync/frame";
+	type: "sync/timeline";
 	data: BCFrameData;
 }
 
@@ -205,7 +205,7 @@ export class BlenderConnector extends EventEmitter {
 			this.onSyncScene( msg.data );
 			console.log( msg.data );
 
-		} else if ( msg.type == "sync/frame" ) {
+		} else if ( msg.type == "sync/timeline" ) {
 
 			this.onSyncFrame( msg.data );
 
@@ -389,7 +389,7 @@ export class BlenderConnector extends EventEmitter {
 
 		}
 
-		this.emitEvent( 'sync/frame', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
+		this.emitEvent( 'sync/timeline', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
 
 	}
 
