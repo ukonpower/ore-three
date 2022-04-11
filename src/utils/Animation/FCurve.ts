@@ -1,21 +1,40 @@
 import EventEmitter from 'wolfy87-eventemitter';
 import { FCurveKeyFrame } from './FCurveKeyFrame';
 
+export type FCurveAxis = 'x' | 'y' | 'z' | 'w' | 'none'
+
 export class FCurve extends EventEmitter {
 
-	public frames: FCurveKeyFrame[] = [];
+	public keyframes: FCurveKeyFrame[] = [];
+	public axis: FCurveAxis = 'none';
 
-	constructor( frames?: FCurveKeyFrame[] ) {
+	constructor( frames?: FCurveKeyFrame[], axis?: FCurveAxis ) {
 
 		super();
 
-		this.set( frames );
+		this.set( frames, axis );
 
 	}
 
-	public set( frames?: FCurveKeyFrame[] ) {
+	public set( frames?: FCurveKeyFrame[], axis?: FCurveAxis ) {
 
-		this.frames = frames || [];
+		if ( frames ) {
+
+			this.keyframes.length = 0;
+
+			frames.forEach( keyframe => {
+
+				this.addKeyFrame( keyframe );
+
+			} );
+
+		}
+
+		if ( axis ) {
+
+			this.axis = axis;
+
+		}
 
 	}
 
@@ -23,9 +42,9 @@ export class FCurve extends EventEmitter {
 
 		let index = 0;
 
-		for ( let i = 0; i < this.frames.length; i ++ ) {
+		for ( let i = 0; i < this.keyframes.length; i ++ ) {
 
-			let frame = this.frames[ i ];
+			let frame = this.keyframes[ i ];
 
 			if ( frame.coordinate.x < keyframe.coordinate.x ) {
 
@@ -39,19 +58,19 @@ export class FCurve extends EventEmitter {
 
 		}
 
-		this.frames.splice( index, 0, keyframe );
+		this.keyframes.splice( index, 0, keyframe );
 
 	}
 
 	public getValue( frame: number ) {
 
-		for ( let i = 0; i < this.frames.length; i ++ ) {
+		for ( let i = 0; i < this.keyframes.length; i ++ ) {
 
-			let keyframe = this.frames[ i ];
+			let keyframe = this.keyframes[ i ];
 
 			if ( frame <= keyframe.coordinate.x ) {
 
-				let beforeKeyFrame = this.frames[ i - 1 ];
+				let beforeKeyFrame = this.keyframes[ i - 1 ];
 
 				if ( beforeKeyFrame ) {
 
@@ -69,9 +88,9 @@ export class FCurve extends EventEmitter {
 
 		}
 
-		if ( this.frames.length > 0 ) {
+		if ( this.keyframes.length > 0 ) {
 
-			return this.frames[ this.frames.length - 1 ].coordinate.y;
+			return this.keyframes[ this.keyframes.length - 1 ].coordinate.y;
 
 		}
 

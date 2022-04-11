@@ -7,6 +7,7 @@ import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame
 import { Uniforms } from '../Uniforms';
 
 export type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage
+export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'none'
 
 export type BCSyncSceneMessage = {
 	type: "sync/scene",
@@ -14,18 +15,20 @@ export type BCSyncSceneMessage = {
 }
 
 export type BCSceneData = {
-    actions: BCAnimationActionParam[];
+    fcurves: BCAnimationCurveParam[];
+	actions: BCAnimationActionParam[];
     objects: BCSceneObjectData[];
 }
 
 export type BCAnimationActionParam = {
     name: string;
-    curves: BCAnimationCurveParam[];
+    fcurves: string[];
 }
 
 export type BCAnimationCurveParam = {
     name: string;
-    frames: BCAnimationCurveKeyFrameParam[];
+    keyframes: BCAnimationCurveKeyFrameParam[];
+	axis: BCAnimationCurveAxis
 }
 
 export type BCAnimationCurveKeyFrameParam = {
@@ -68,11 +71,13 @@ export class BlenderConnector extends EventEmitter {
 
 	// animation
 
-	public actions: AnimationAction[] = [];
 	public objects: BCSceneObjectData[] = [];
+	public actions: AnimationAction[] = [];
+	public fcurves: {[name:string]:FCurve} = {};
 
 	// uniforms
-	private uniformsList:{[actionName:string]: Uniforms} = {};
+
+	private uniforms: Uniforms = {};
 
 	constructor( url: string ) {
 
@@ -130,39 +135,47 @@ export class BlenderConnector extends EventEmitter {
 		this.actions.length = 0;
 		this.objects.length = 0;
 
+		// curves
+
+		data.fcurves.forEach( fcurveData => {
+
+			let curve = new FCurve();
+
+			curve.set( fcurveData.keyframes.map( frame => {
+
+				return new FCurveKeyFrame( frame.c, frame.h_l, frame.h_r, frame.i );
+
+			} ), fcurveData.axis );
+
+			this.fcurves[ fcurveData.name ] = curve;
+
+		} );
+
 		// actions
 
 		data.actions.forEach( actionData => {
 
 			let action = new AnimationAction( actionData.name );
 
-			actionData.curves.forEach( curveData => {
+			actionData.fcurves.forEach( fcurveName => {
 
-				let curve = new FCurve();
+				let curve = this.fcurves[ fcurveName ];
 
-				curveData.frames.forEach( frame => {
+				if ( curve ) {
 
-					curve.addKeyFrame( new FCurveKeyFrame( frame.c, frame.h_l, frame.h_r, frame.i ) );
+					action.addCurve( fcurveName, curve );
 
-				} );
-
-				action.addCurve( curveData.name, curve );
+				}
 
 			} );
 
-			let actionUniforms = this.uniformsList[ actionData.name ];
+			let uniKeys = Object.keys( this.uniforms );
 
-			if ( actionUniforms ) {
+			for ( let i = 0; i < uniKeys.length; i ++ ) {
 
-				let actionUniKeys = Object.keys( actionUniforms );
+				let uniName = uniKeys[ i ];
 
-				for ( let i = 0; i < actionUniKeys.length; i ++ ) {
-
-					let uniName = actionUniKeys[ i ];
-
-					action.assignUniformAsProperty( uniName, actionUniforms[ uniName ] );
-
-				}
+				action.assignUniformAsProperty( uniName, this.uniforms[ uniName ] );
 
 			}
 
@@ -200,10 +213,11 @@ export class BlenderConnector extends EventEmitter {
 
 		let msg = JSON.parse( e.data ) as BCMessage;
 
+		console.log( msg.data );
+
 		if ( msg.type == 'sync/scene' ) {
 
 			this.onSyncScene( msg.data );
-			console.log( msg.data );
 
 		} else if ( msg.type == "sync/timeline" ) {
 
@@ -353,27 +367,19 @@ export class BlenderConnector extends EventEmitter {
 
 		if ( action ) {
 
-			return action.getPropertyAsUniform( 'propertyName' );
+			return action.getPropertyAsUniform( propertyName );
 
 		}
 
-		if ( ! this.uniformsList[ actionName ] ) {
+		if ( ! this.uniforms[ propertyName ] ) {
 
-			this.uniformsList[ actionName ] = {};
-
-		}
-
-		let uniforms = this.uniformsList[ actionName ];
-
-		if ( ! uniforms[ propertyName ] ) {
-
-			uniforms[ propertyName ] = {
+			this.uniforms[ propertyName ] = {
 				value: initialValue
 			};
 
 		}
 
-		return uniforms[ propertyName ];
+		return this.uniforms[ propertyName ];
 
 	}
 
