@@ -1,12 +1,15 @@
 import EventEmitter from 'wolfy87-eventemitter';
 import { FCurveKeyFrame } from './FCurveKeyFrame';
 
-export type FCurveAxis = 'x' | 'y' | 'z' | 'w' | 'none'
+export type FCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scaler'
+export type FCurveGroup = {[key in FCurveAxis]?: FCurve}
 
 export class FCurve extends EventEmitter {
 
 	public keyframes: FCurveKeyFrame[] = [];
-	public axis: FCurveAxis = 'none';
+	public axis: FCurveAxis = 'scaler';
+
+	private cache: { frame: number, value: number } = { frame: NaN, value: NaN };
 
 	constructor( frames?: FCurveKeyFrame[], axis?: FCurveAxis ) {
 
@@ -64,6 +67,14 @@ export class FCurve extends EventEmitter {
 
 	public getValue( frame: number ) {
 
+		if ( frame == this.cache.frame ) {
+
+			return this.cache.value;
+
+		}
+
+		let value: number | null = null;
+
 		for ( let i = 0; i < this.keyframes.length; i ++ ) {
 
 			let keyframe = this.keyframes[ i ];
@@ -74,28 +85,38 @@ export class FCurve extends EventEmitter {
 
 				if ( beforeKeyFrame ) {
 
-					// let t = ( frame - beforeKeyFrame.coordinate.x );
-
-					return beforeKeyFrame.to( keyframe, frame );
+					value = beforeKeyFrame.to( keyframe, frame );
 
 				} else {
 
-					return keyframe.coordinate.y;
+					value = keyframe.coordinate.y;
 
 				}
+
+				break;
 
 			}
 
 		}
 
-		if ( this.keyframes.length > 0 ) {
+		if ( value === null && this.keyframes.length > 0 ) {
 
-			return this.keyframes[ this.keyframes.length - 1 ].coordinate.y;
+			this.keyframes[ this.keyframes.length - 1 ].coordinate.y;
+
+		}
+
+		if ( value !== null ) {
+
+			this.cache = {
+				frame: frame,
+				value: value
+			};
+
+			return value;
 
 		}
 
 		return 0;
-
 
 	}
 

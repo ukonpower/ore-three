@@ -7,14 +7,13 @@ import boxVert from './shaders/box.vs';
 import boxFrag from './shaders/box.fs';
 export class BlenderConnectorScene extends ORE.BaseLayer {
 
-	private commoUniforms: ORE.Uniforms;
 	private connector?: BlenderConnector;
 
 	constructor() {
 
 		super();
 
-		this.commoUniforms = {};
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {} );
 
 	}
 
@@ -64,7 +63,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			}
 
 			let box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
-			let boxUni = ORE.UniformsLib.mergeUniforms( this.commoUniforms );
+			let boxUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms );
 			box.material = new THREE.ShaderMaterial( {
 				vertexShader: boxVert,
 				fragmentShader: boxFrag,
@@ -77,7 +76,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			Uniforms
 		-------------------------------*/
 
-		this.commoUniforms.color = this.connector.getUniform( 'CubeMaterial', 'BaseColor_Color', new THREE.Vector4( 1.0, 1.0, 1.0, 1.0 ) );
+		this.commonUniforms.color = this.connector.getUniform( 'CubeColor', new THREE.Vector4( 1.0, 1.0, 1.0, 1.0 ) );
 
 		/*-------------------------------
 			Scene
@@ -101,27 +100,25 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 			if ( this.connector ) {
 
-				let transform = this.connector.getTransform( obj.name );
+				// let transform = this.connector.getTransform( obj.name );
 
-				if ( obj.name != 'Cube' ) return;
+				// if ( transform.position ) {
 
-				if ( transform.position ) {
+				// 	obj.position.copy( transform.position );
 
-					obj.position.copy( transform.position );
+				// }
 
-				}
+				// if ( transform.rotation ) {
 
-				if ( transform.rotation ) {
+				// 	obj.rotation.copy( transform.rotation );
 
-					obj.rotation.copy( transform.rotation );
+				// }
 
-				}
+				// if ( transform.scale ) {
 
-				if ( transform.scale ) {
+				// 	obj.scale.copy( transform.scale );
 
-					obj.scale.copy( transform.scale );
-
-				}
+				// }
 
 			}
 

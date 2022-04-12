@@ -2,12 +2,12 @@ import * as THREE from 'three';
 
 import EventEmitter from "wolfy87-eventemitter";
 import { AnimationAction } from "../Animation/AnimationAction";
-import { FCurve } from "../Animation/FCurve";
+import { FCurve, FCurveGroup } from "../Animation/FCurve";
 import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame";
 import { Uniforms } from '../Uniforms';
 
 export type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage
-export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'none'
+export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scaler'
 
 export type BCSyncSceneMessage = {
 	type: "sync/scene",
@@ -73,7 +73,7 @@ export class BlenderConnector extends EventEmitter {
 
 	public objects: BCSceneObjectData[] = [];
 	public actions: AnimationAction[] = [];
-	public fcurves: {[name:string]:FCurve} = {};
+	public fcurves: {[name:string]:FCurveGroup} = {};
 
 	// uniforms
 
@@ -147,7 +147,13 @@ export class BlenderConnector extends EventEmitter {
 
 			} ), fcurveData.axis );
 
-			this.fcurves[ fcurveData.name ] = curve;
+			if ( ! this.fcurves[ fcurveData.name ] ) {
+
+				this.fcurves[ fcurveData.name ] = {};
+
+			}
+
+			this.fcurves[ fcurveData.name ][ curve.axis ] = curve;
 
 		} );
 
@@ -157,13 +163,13 @@ export class BlenderConnector extends EventEmitter {
 
 			let action = new AnimationAction( actionData.name );
 
-			actionData.fcurves.forEach( fcurveName => {
+			actionData.fcurves.forEach( fcurveGroupName => {
 
-				let curve = this.fcurves[ fcurveName ];
+				let fcurveGroup = this.fcurves[ fcurveGroupName ];
 
-				if ( curve ) {
+				if ( fcurveGroup ) {
 
-					action.addCurve( fcurveName, curve );
+					action.addFcurveGroup( fcurveGroupName, fcurveGroup );
 
 				}
 
@@ -175,7 +181,7 @@ export class BlenderConnector extends EventEmitter {
 
 				let uniName = uniKeys[ i ];
 
-				action.assignUniformAsProperty( uniName, this.uniforms[ uniName ] );
+				action.assignUniforms( uniName, this.uniforms[ uniName ] );
 
 			}
 
@@ -291,85 +297,77 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
-	public getTransform( objectName: string ) {
+	// public getTransform( objectName: string ) {
 
-		let actionNames = this.getActionNameList( objectName );
+	// 	let actionNames = this.getActionNameList( objectName );
 
-		let res: {
-			position: THREE.Vector3 | null,
-			rotation: THREE.Euler | null,
-			scale: THREE.Vector3 | null
-		} = {
-			position: null,
-			rotation: null,
-			scale: null
-		};
+	// 	let res: {
+	// 		position: THREE.Vector3 | null,
+	// 		rotation: THREE.Euler | null,
+	// 		scale: THREE.Vector3 | null
+	// 	} = {
+	// 		position: null,
+	// 		rotation: null,
+	// 		scale: null
+	// 	};
 
-		for ( let i = 0; i < actionNames.length; i ++ ) {
+	// 	for ( let i = 0; i < actionNames.length; i ++ ) {
 
-			let action = this.getAction( actionNames[ i ] );
+	// 		let action = this.getAction( actionNames[ i ] );
 
-			if ( action ) {
+	// 		if ( action ) {
 
-				// position
+	// 			// position
 
-				let posCurve = action.getCurves( 'location' );
+	// 			let posCurve = action.getFCurveGroup( 'location' );
 
-				if ( posCurve.length > 0 ) {
+	// 			if ( posCurve.length > 0 ) {
 
-					res.position = new THREE.Vector3();
-					res.position.x = posCurve[ 0 ] ? posCurve[ 0 ].getValue( this.frameCurrent ) : 0;
-					res.position.y = posCurve[ 1 ] ? posCurve[ 1 ].getValue( this.frameCurrent ) : 0;
-					res.position.z = posCurve[ 2 ] ? posCurve[ 2 ].getValue( this.frameCurrent ) : 0;
+	// 				res.position = new THREE.Vector3();
+	// 				res.position.x = posCurve[ 0 ] ? posCurve[ 0 ].getValue( this.frameCurrent ) : 0;
+	// 				res.position.y = posCurve[ 1 ] ? posCurve[ 1 ].getValue( this.frameCurrent ) : 0;
+	// 				res.position.z = posCurve[ 2 ] ? posCurve[ 2 ].getValue( this.frameCurrent ) : 0;
 
-				}
+	// 			}
 
-				// rotation
+	// 			// rotation
 
-				let rotCurve = action.getCurves( 'rotation_euler' );
+	// 			let rotCurve = action.getFCurveGroup( 'rotation_euler' );
 
-				if ( rotCurve.length > 0 ) {
+	// 			if ( rotCurve.length > 0 ) {
 
-					res.rotation = new THREE.Euler();
-					res.rotation.x = rotCurve[ 0 ] ? rotCurve[ 0 ].getValue( this.frameCurrent ) : 0;
-					res.rotation.y = rotCurve[ 1 ] ? rotCurve[ 1 ].getValue( this.frameCurrent ) : 0;
-					res.rotation.z = rotCurve[ 2 ] ? rotCurve[ 2 ].getValue( this.frameCurrent ) : 0;
-					res.rotation.order = 'YZX';
+	// 				res.rotation = new THREE.Euler();
+	// 				res.rotation.x = rotCurve[ 0 ] ? rotCurve[ 0 ].getValue( this.frameCurrent ) : 0;
+	// 				res.rotation.y = rotCurve[ 1 ] ? rotCurve[ 1 ].getValue( this.frameCurrent ) : 0;
+	// 				res.rotation.z = rotCurve[ 2 ] ? rotCurve[ 2 ].getValue( this.frameCurrent ) : 0;
+	// 				res.rotation.order = 'YZX';
 
-				}
+	// 			}
 
-				// scale
+	// 			// scale
 
-				let scaleCurve = action.getCurves( 'scale' );
+	// 			let scaleCurve = action.getFCurveGroup( 'scale' );
 
-				if ( scaleCurve.length > 0 ) {
+	// 			if ( scaleCurve.length > 0 ) {
 
-					res.scale = new THREE.Vector3();
-					res.scale.x = scaleCurve[ 0 ] ? scaleCurve[ 0 ].getValue( this.frameCurrent ) : 0;
-					res.scale.y = scaleCurve[ 1 ] ? scaleCurve[ 1 ].getValue( this.frameCurrent ) : 0;
-					res.scale.z = scaleCurve[ 2 ] ? scaleCurve[ 2 ].getValue( this.frameCurrent ) : 0;
+	// 				res.scale = new THREE.Vector3();
+	// 				res.scale.x = scaleCurve[ 0 ] ? scaleCurve[ 0 ].getValue( this.frameCurrent ) : 0;
+	// 				res.scale.y = scaleCurve[ 1 ] ? scaleCurve[ 1 ].getValue( this.frameCurrent ) : 0;
+	// 				res.scale.z = scaleCurve[ 2 ] ? scaleCurve[ 2 ].getValue( this.frameCurrent ) : 0;
 
-				}
+	// 			}
 
-				return res;
+	// 			return res;
 
-			}
+	// 		}
 
-		}
+	// 	}
 
-		return res;
+	// 	return res;
 
-	}
+	// }
 
-	public getUniform<T>( actionName: string, propertyName: string, initialValue: T ) {
-
-		let action = this.getAction( actionName );
-
-		if ( action ) {
-
-			return action.getPropertyAsUniform( propertyName );
-
-		}
+	public getUniform<T>( propertyName: string, initialValue: T ) {
 
 		if ( ! this.uniforms[ propertyName ] ) {
 
