@@ -98,27 +98,31 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 		this.scene.traverse( obj => {
 
-			if ( this.connector ) {
+			if ( obj.name == 'Cube' && this.connector ) {
 
-				// let transform = this.connector.getTransform( obj.name );
+				let pos = this.connector.getValue<THREE.Vector3>( 'CubePosition' );
 
-				// if ( transform.position ) {
+				if ( pos ) {
 
-				// 	obj.position.copy( transform.position );
+					obj.position.copy( pos );
 
-				// }
+				}
 
-				// if ( transform.rotation ) {
+				let rot = this.connector.getValue<THREE.Vector3>( 'CubeRotation' );
 
-				// 	obj.rotation.copy( transform.rotation );
+				if ( rot ) {
 
-				// }
+					obj.position.copy( rot );
 
-				// if ( transform.scale ) {
+				}
 
-				// 	obj.scale.copy( transform.scale );
+				let scale = this.connector.getValue<THREE.Vector3>( 'CubeScale' );
 
-				// }
+				if ( scale ) {
+
+					obj.position.copy( scale );
+
+				}
 
 			}
 

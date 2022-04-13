@@ -2,12 +2,13 @@ import * as THREE from 'three';
 
 import EventEmitter from "wolfy87-eventemitter";
 import { AnimationAction } from "../Animation/AnimationAction";
-import { FCurve, FCurveGroup } from "../Animation/FCurve";
+import { FCurve } from "../Animation/FCurve";
+import { FCurveGroup } from '../Animation/FCurveGroup';
 import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame";
 import { Uniforms } from '../Uniforms';
 
 export type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage
-export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scaler'
+export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w'
 
 export type BCSyncSceneMessage = {
 	type: "sync/scene",
@@ -73,7 +74,7 @@ export class BlenderConnector extends EventEmitter {
 
 	public objects: BCSceneObjectData[] = [];
 	public actions: AnimationAction[] = [];
-	public fcurveGroups: {[name:string]:FCurveGroup} = {};
+	public fcurveGroupList: {[name:string]:FCurveGroup} = {};
 
 	// uniforms
 
@@ -147,13 +148,17 @@ export class BlenderConnector extends EventEmitter {
 
 			} ), fcurveData.axis );
 
-			if ( ! this.fcurveGroups[ fcurveData.name ] ) {
+			let fcurveGroup = this.fcurveGroupList[ fcurveData.name ];
 
-				this.fcurveGroups[ fcurveData.name ] = {};
+			if ( ! fcurveGroup ) {
+
+				fcurveGroup = new FCurveGroup( fcurveData.name );
+
+				this.fcurveGroupList[ fcurveData.name ] = fcurveGroup;
 
 			}
 
-			this.fcurveGroups[ fcurveData.name ][ curve.axis ] = curve;
+			fcurveGroup.setFCurve( curve, fcurveData.axis );
 
 		} );
 
@@ -165,7 +170,7 @@ export class BlenderConnector extends EventEmitter {
 
 			actionData.fcurves.forEach( fcurveGroupName => {
 
-				let fcurveGroup = this.fcurveGroups[ fcurveGroupName ];
+				let fcurveGroup = this.fcurveGroupList[ fcurveGroupName ];
 
 				if ( fcurveGroup ) {
 
@@ -176,6 +181,11 @@ export class BlenderConnector extends EventEmitter {
 					if ( uni ) {
 
 						action.assignUniforms( fcurveGroupName, uni );
+
+					} else {
+
+						this.uniforms[ fcurveGroupName ] = action.getUniforms( fcurveGroupName );
+						this.uniforms[ fcurveGroupName ].value = fcurveGroup.createInitValue();
 
 					}
 
@@ -295,75 +305,31 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
-	// public getTransform( objectName: string ) {
+	public getValue<T>( propertyName: string ): T | null {
 
-	// 	let actionNames = this.getActionNameList( objectName );
+		let uni = this.uniforms[ propertyName ];
 
-	// 	let res: {
-	// 		position: THREE.Vector3 | null,
-	// 		rotation: THREE.Euler | null,
-	// 		scale: THREE.Vector3 | null
-	// 	} = {
-	// 		position: null,
-	// 		rotation: null,
-	// 		scale: null
-	// 	};
+		if ( uni ) {
 
-	// 	for ( let i = 0; i < actionNames.length; i ++ ) {
+			return uni.value;
 
-	// 		let action = this.getAction( actionNames[ i ] );
+		} else {
 
-	// 		if ( action ) {
+			let fcurveGroup = this.fcurveGroupList[ propertyName ];
 
-	// 			// position
+			if ( fcurveGroup ) {
 
-	// 			let posCurve = action.getFCurveGroup( 'location' );
+				let initValue = fcurveGroup.createInitValue();
 
-	// 			if ( posCurve.length > 0 ) {
+				return this.getUniform( propertyName, initValue ).value;
 
-	// 				res.position = new THREE.Vector3();
-	// 				res.position.x = posCurve[ 0 ] ? posCurve[ 0 ].getValue( this.frameCurrent ) : 0;
-	// 				res.position.y = posCurve[ 1 ] ? posCurve[ 1 ].getValue( this.frameCurrent ) : 0;
-	// 				res.position.z = posCurve[ 2 ] ? posCurve[ 2 ].getValue( this.frameCurrent ) : 0;
+			}
 
-	// 			}
+		}
 
-	// 			// rotation
+		return null;
 
-	// 			let rotCurve = action.getFCurveGroup( 'rotation_euler' );
-
-	// 			if ( rotCurve.length > 0 ) {
-
-	// 				res.rotation = new THREE.Euler();
-	// 				res.rotation.x = rotCurve[ 0 ] ? rotCurve[ 0 ].getValue( this.frameCurrent ) : 0;
-	// 				res.rotation.y = rotCurve[ 1 ] ? rotCurve[ 1 ].getValue( this.frameCurrent ) : 0;
-	// 				res.rotation.z = rotCurve[ 2 ] ? rotCurve[ 2 ].getValue( this.frameCurrent ) : 0;
-	// 				res.rotation.order = 'YZX';
-
-	// 			}
-
-	// 			// scale
-
-	// 			let scaleCurve = action.getFCurveGroup( 'scale' );
-
-	// 			if ( scaleCurve.length > 0 ) {
-
-	// 				res.scale = new THREE.Vector3();
-	// 				res.scale.x = scaleCurve[ 0 ] ? scaleCurve[ 0 ].getValue( this.frameCurrent ) : 0;
-	// 				res.scale.y = scaleCurve[ 1 ] ? scaleCurve[ 1 ].getValue( this.frameCurrent ) : 0;
-	// 				res.scale.z = scaleCurve[ 2 ] ? scaleCurve[ 2 ].getValue( this.frameCurrent ) : 0;
-
-	// 			}
-
-	// 			return res;
-
-	// 		}
-
-	// 	}
-
-	// 	return res;
-
-	// }
+	}
 
 	public getUniform<T>( propertyName: string, initialValue: T ) {
 

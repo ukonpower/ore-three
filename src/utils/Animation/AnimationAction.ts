@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import EventEmitter from 'wolfy87-eventemitter';
 import { Uniforms } from '../Uniforms';
-import { FCurveGroup } from './FCurve';
+import { FCurveGroup } from './FCurveGroup';
 
 export class AnimationAction extends EventEmitter {
 
@@ -79,32 +79,32 @@ export class AnimationAction extends EventEmitter {
 
 		for ( let i = 0; i < curveKeys.length; i ++ ) {
 
-			let curve = this.curves[ curveKeys[ i ] ];
+			let fcurveGroup = this.curves[ curveKeys[ i ] ];
 			let uni = this.uniforms[ curveKeys[ i ] ];
 
-			if ( ! curve || ! uni ) continue;
+			if ( ! fcurveGroup || ! uni ) continue;
 
-			if ( curve.x ) {
+			if ( fcurveGroup.curve.x ) {
 
-				uni.value.x = curve.x.getValue( frame );
-
-			}
-
-			if ( curve.y ) {
-
-				uni.value.y = curve.y.getValue( frame );
+				uni.value.x = fcurveGroup.curve.x.getValue( frame );
 
 			}
 
-			if ( curve.z ) {
+			if ( fcurveGroup.curve.y ) {
 
-				uni.value.z = curve.z.getValue( frame );
+				uni.value.y = fcurveGroup.curve.y.getValue( frame );
 
 			}
 
-			if ( curve.w ) {
+			if ( fcurveGroup.curve.z ) {
 
-				uni.value.w = curve.w.getValue( frame );
+				uni.value.z = fcurveGroup.curve.z.getValue( frame );
+
+			}
+
+			if ( fcurveGroup.curve.w ) {
+
+				uni.value.w = fcurveGroup.curve.w.getValue( frame );
 
 			}
 

@@ -1,13 +1,12 @@
 import EventEmitter from 'wolfy87-eventemitter';
 import { FCurveKeyFrame } from './FCurveKeyFrame';
 
-export type FCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scaler'
-export type FCurveGroup = {[key in FCurveAxis]?: FCurve}
+export type FCurveAxis = 'x' | 'y' | 'z' | 'w'
 
 export class FCurve extends EventEmitter {
 
 	public keyframes: FCurveKeyFrame[] = [];
-	public axis: FCurveAxis = 'scaler';
+	// public axis: FCurveAxis = 'scaler';
 
 	private cache: { frame: number, value: number } = { frame: NaN, value: NaN };
 
@@ -35,7 +34,7 @@ export class FCurve extends EventEmitter {
 
 		if ( axis ) {
 
-			this.axis = axis;
+			// this.axis = axis;
 
 		}
 
