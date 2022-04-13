@@ -73,7 +73,7 @@ export class BlenderConnector extends EventEmitter {
 
 	public objects: BCSceneObjectData[] = [];
 	public actions: AnimationAction[] = [];
-	public fcurves: {[name:string]:FCurveGroup} = {};
+	public fcurveGroups: {[name:string]:FCurveGroup} = {};
 
 	// uniforms
 
@@ -147,13 +147,13 @@ export class BlenderConnector extends EventEmitter {
 
 			} ), fcurveData.axis );
 
-			if ( ! this.fcurves[ fcurveData.name ] ) {
+			if ( ! this.fcurveGroups[ fcurveData.name ] ) {
 
-				this.fcurves[ fcurveData.name ] = {};
+				this.fcurveGroups[ fcurveData.name ] = {};
 
 			}
 
-			this.fcurves[ fcurveData.name ][ curve.axis ] = curve;
+			this.fcurveGroups[ fcurveData.name ][ curve.axis ] = curve;
 
 		} );
 
@@ -165,25 +165,23 @@ export class BlenderConnector extends EventEmitter {
 
 			actionData.fcurves.forEach( fcurveGroupName => {
 
-				let fcurveGroup = this.fcurves[ fcurveGroupName ];
+				let fcurveGroup = this.fcurveGroups[ fcurveGroupName ];
 
 				if ( fcurveGroup ) {
 
 					action.addFcurveGroup( fcurveGroupName, fcurveGroup );
 
+					let uni = this.uniforms[ fcurveGroupName ];
+
+					if ( uni ) {
+
+						action.assignUniforms( fcurveGroupName, uni );
+
+					}
+
 				}
 
 			} );
-
-			let uniKeys = Object.keys( this.uniforms );
-
-			for ( let i = 0; i < uniKeys.length; i ++ ) {
-
-				let uniName = uniKeys[ i ];
-
-				action.assignUniforms( uniName, this.uniforms[ uniName ] );
-
-			}
 
 			this.actions.push( action );
 

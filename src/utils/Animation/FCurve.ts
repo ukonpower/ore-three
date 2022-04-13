@@ -101,7 +101,7 @@ export class FCurve extends EventEmitter {
 
 		if ( value === null && this.keyframes.length > 0 ) {
 
-			this.keyframes[ this.keyframes.length - 1 ].coordinate.y;
+			value = this.keyframes[ this.keyframes.length - 1 ].coordinate.y;
 
 		}
 

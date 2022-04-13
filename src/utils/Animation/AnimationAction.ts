@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import EventEmitter from 'wolfy87-eventemitter';
 import { Uniforms } from '../Uniforms';
-import { FCurve, FCurveGroup } from './FCurve';
+import { FCurveGroup } from './FCurve';
 
 export class AnimationAction extends EventEmitter {
 
@@ -76,9 +76,6 @@ export class AnimationAction extends EventEmitter {
 	public updateFrame( frame: number ) {
 
 		let curveKeys = Object.keys( this.curves );
-
-		console.log( this.curves );
-
 
 		for ( let i = 0; i < curveKeys.length; i ++ ) {
 
