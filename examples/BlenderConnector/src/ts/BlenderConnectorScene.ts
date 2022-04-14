@@ -104,7 +104,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				if ( pos ) {
 
-					obj.position.copy( pos );
+					obj.position.set( pos.x, pos.y, pos.z );
 
 				}
 
@@ -112,7 +112,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				if ( rot ) {
 
-					obj.position.copy( rot );
+					obj.rotation.set( rot.x, rot.y, rot.z, "YZX" );
 
 				}
 
@@ -120,7 +120,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				if ( scale ) {
 
-					obj.position.copy( scale );
+					obj.scale.copy( scale );
 
 				}
 
