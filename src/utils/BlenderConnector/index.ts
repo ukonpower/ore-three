@@ -1,3 +1,4 @@
+import { resourceUsage } from 'process';
 import * as THREE from 'three';
 
 import EventEmitter from "wolfy87-eventemitter";
@@ -365,17 +366,27 @@ export class BlenderConnector extends EventEmitter {
 
 		if ( value ) {
 
+			if ( ( value as THREE.Vector3 ).isVector3 ) {
+
+				return value as THREE.Vector3;
+
+			}
+
 			if ( typeof value == 'number' ) {
 
-				return new THREE.Vector3( value, 0.0, 0.0 );
-
-			} else if ( 'isVector3' in value ) {
-
-				return value;
+				return new THREE.Vector3( value, value, value );
 
 			} else {
 
-				return new THREE.Vector3( value.x, value.y, value.z || 0 );
+				let res = new THREE.Vector3( value.x, value.y );
+
+				if ( 'isVector4' in value ) {
+
+					res.z = value.z;
+
+				}
+
+				return res;
 
 			}
 
@@ -393,17 +404,25 @@ export class BlenderConnector extends EventEmitter {
 
 		if ( value ) {
 
+			if ( ( value as THREE.Vector4 ).isVector4 ) {
+
+				return value as THREE.Vector4;
+
+			}
+
 			if ( typeof value == 'number' ) {
 
-				return new THREE.Vector4( value, 0.0, 0.0, 0.0 );
-
-			} else if ( 'isVector4' in value ) {
-
-				return value;
+				return new THREE.Vector4( value, value, value, value );
 
 			} else {
 
-				return new THREE.Vector4( value.x, value.y, value.z, 0.0 );
+				let res = new THREE.Vector4( value.x, value.y );
+
+				if ( 'isVector3' in value ) {
+
+					res.z = value.z;
+
+				}
 
 			}
 
@@ -432,7 +451,12 @@ export class BlenderConnector extends EventEmitter {
 
 				res.x = value.x;
 				res.y = value.y;
-				res.z = value.z;
+
+				if ( 'isVector3' in value || 'isVector4' in value ) {
+
+					res.z = value.z;
+
+				}
 
 			}
 
