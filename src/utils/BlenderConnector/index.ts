@@ -9,7 +9,7 @@ import { FCurveInterpolation, FCurveKeyFrame } from "../Animation/FCurveKeyFrame
 import { Uniforms } from '../Uniforms';
 
 export type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage
-export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w'
+export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scalar'
 
 export type BCSyncSceneMessage = {
 	type: "sync/scene",
@@ -147,7 +147,7 @@ export class BlenderConnector extends EventEmitter {
 
 				return new FCurveKeyFrame( frame.c, frame.h_l, frame.h_r, frame.i );
 
-			} ), fcurveData.axis );
+			} ) );
 
 			let fcurveGroup = this.fcurveGroupList[ fcurveData.name ];
 
@@ -329,6 +329,28 @@ export class BlenderConnector extends EventEmitter {
 		console.warn( 'not fount: ', propertyName );
 
 		return null;
+
+	}
+
+	public getValueAsScalar( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				return value;
+
+			} else {
+
+				return value.x;
+
+			}
+
+		}
+
+		return 0;
 
 	}
 
