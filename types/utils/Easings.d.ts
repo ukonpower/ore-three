@@ -1,11 +1,7 @@
-export declare interface EasingSet {
-    func: Function;
-    args?: number | number[];
-}
+export declare type EasingFunc = (t: number) => any;
 export declare namespace Easings {
-    function sigmoid(x: number, ...variables: number[]): number;
+    function sigmoid(weight?: number): EasingFunc;
     function smoothstep(min: number, max: number, value: number): number;
-    function lerpNumber(a: number, b: number, t: number): number;
     function linear(t: number): number;
     function easeInQuad(t: number): number;
     function easeOutQuad(t: number): number;
@@ -19,4 +15,5 @@ export declare namespace Easings {
     function easeInQuint(t: number): number;
     function easeOutQuint(t: number): number;
     function easeInOutQuint(t: number): number;
+    function bezier(c1: THREE.Vec2, h1: THREE.Vec2, h2: THREE.Vec2, c2: THREE.Vec2): EasingFunc;
 }

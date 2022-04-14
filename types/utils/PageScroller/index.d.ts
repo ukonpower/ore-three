@@ -1,10 +1,10 @@
 import { PageScrollerSection } from './PageScrollerSection';
-import { EasingSet } from '../Easings';
+import { EasingFunc } from '../Easings';
 import { Animator } from '../Animator';
 export declare interface PageScrollerAutoMoveParam {
     target: string | number | PageScrollerSection;
     duration?: number;
-    easing?: EasingSet;
+    easing?: EasingFunc;
     callBack?: Function;
     bottom?: boolean;
 }
