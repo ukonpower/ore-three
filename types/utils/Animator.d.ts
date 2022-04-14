@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EasingSet } from "./Easings";
+import { EasingFunc } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
 export declare interface AnimatorVariable<T> {
@@ -10,12 +10,12 @@ export declare interface AnimatorVariable<T> {
     goalValue: T;
     onAnimationFinished?: Function | null;
     lerpFunc?: LerpFunc<T>;
-    easing: EasingSet;
+    easing: EasingFunc;
 }
 export declare interface AnimatorValiableParams<T> {
     name: string;
     initValue: T;
-    easing?: EasingSet;
+    easing?: EasingFunc;
     customLerpFunc?: LerpFunc<T>;
 }
 export declare class Animator extends THREE.EventDispatcher {
@@ -32,11 +32,11 @@ export declare class Animator extends THREE.EventDispatcher {
         value: T;
         startValue: T;
         goalValue: null;
-        easing: EasingSet;
+        easing: EasingFunc;
         lerpFunc: typeof Lerps.number | typeof Lerps.numberArray | typeof Lerps.THREEVectors | typeof Lerps.THREEQuaternion | typeof Lerps.THREEEuler | LerpFunc<T> | undefined;
     };
-    setEasing(name: string, easing: EasingSet): void;
-    animate<T>(name: string, goalValue: T, duration?: number, callback?: Function, easing?: EasingSet): Promise<unknown>;
+    setEasing(name: string, easing: EasingFunc): void;
+    animate<T>(name: string, goalValue: T, duration?: number, callback?: Function, easing?: EasingFunc): Promise<unknown>;
     cancelAnimate(name: string): void;
     setValue<T>(name: string, value: T): null | undefined;
     get<T>(name: string): T | null;

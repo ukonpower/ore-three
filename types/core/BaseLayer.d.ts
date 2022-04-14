@@ -5,8 +5,8 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
     name: string;
     canvas?: HTMLCanvasElement;
     aspectSetting?: AspectSetting;
-    wrapperElement?: HTMLElement;
-    wrapperElementRect?: DOMRect;
+    wrapperElement?: HTMLElement | null;
+    wrapperElementRect?: DOMRect | null;
     pixelRatio?: number;
 }
 export declare interface LayerInfo extends LayerBindParam {
@@ -49,6 +49,7 @@ export declare class BaseLayer extends THREE.EventDispatcher {
     onBind(layerInfo: LayerBindParam): void;
     onUnbind(): void;
     protected removeChildrens(object: THREE.Object3D): void;
+    setWrapperElement(wrapperElm: HTMLElement | null, dispatchResize?: boolean): void;
     onResize(): void;
     pointerEvent(e: PointerEventArgs): void;
     onTouchStart(args: TouchEventArgs): void;
