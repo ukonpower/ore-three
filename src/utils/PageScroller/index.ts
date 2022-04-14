@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { PageScrollerSection, PageScrollerSectionParams, PageScrollerEventArgs } from './PageScrollerSection';
-import { EasingSet, Easings } from '../Easings';
+import { EasingFunc, Easings } from '../Easings';
 import { Animator } from '../Animator';
 
 export declare interface PageScrollerAutoMoveParam {
 	target: string | number | PageScrollerSection;
 	duration?: number;
-	easing?: EasingSet;
+	easing?: EasingFunc;
 	callBack?: Function;
 	bottom?: boolean;
 }
@@ -57,10 +57,7 @@ export class PageScroller {
 		this.animator.add( {
 			name: 'scrollPos',
 			initValue: 0,
-			easing: {
-				func: Easings.sigmoid,
-				args: 4
-			}
+			easing: Easings.sigmoid()
 		} );
 
 	}

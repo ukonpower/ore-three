@@ -7,7 +7,7 @@ export class ScrollManager {
 	private commonUniforms: ORE.Uniforms;
 	private mainScene: MainScene;
 	public scroller: ORE.PageScroller;
-	public timeline: ORE.TimelineAnimator
+	public timeline: ORE.TimelineAnimator;
 
 	constructor( scene: MainScene, parentUniforms?: ORE.Uniforms ) {
 
@@ -108,10 +108,7 @@ export class ScrollManager {
 						value: new THREE.Vector3( 0, 0, 4 )
 					},
 				],
-				easing: {
-					func: ORE.Easings.sigmoid,
-					args: 4
-				}
+				easing: ORE.Easings.sigmoid( 4 )
 			},
 		);
 
@@ -144,10 +141,7 @@ export class ScrollManager {
 						value: new THREE.Quaternion().setFromEuler( new THREE.Euler( - 0.0, 0, 0 ) )
 					},
 				],
-				easing: {
-					func: ORE.Easings.sigmoid,
-					args: 4
-				}
+				easing: ORE.Easings.sigmoid( 4 )
 			},
 		);
 
@@ -184,10 +178,7 @@ export class ScrollManager {
 						value: 0.2
 					},
 				],
-				easing: {
-					func: ORE.Easings.sigmoid,
-					args: 4
-				}
+				easing: ORE.Easings.sigmoid( 4 )
 			},
 		);
 
@@ -224,10 +215,7 @@ export class ScrollManager {
 						value: 3.0
 					},
 				],
-				easing: {
-					func: ORE.Easings.sigmoid,
-					args: 4
-				}
+				easing: ORE.Easings.sigmoid( 4 )
 			},
 		);
 
@@ -252,10 +240,7 @@ export class ScrollManager {
 						value: 0
 					},
 				],
-				easing: {
-					func: ORE.Easings.sigmoid,
-					args: 4
-				}
+				easing: ORE.Easings.sigmoid( 4 )
 			},
 		);
 

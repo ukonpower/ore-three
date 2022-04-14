@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Easings, EasingSet } from "./Easings";
+import { Easings, EasingFunc } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
 
@@ -11,13 +11,13 @@ export declare interface AnimatorVariable<T>{
 	goalValue: T;
 	onAnimationFinished?: Function | null;
 	lerpFunc?: LerpFunc<T>;
-	easing: EasingSet;
+	easing: EasingFunc;
 }
 
 export declare interface AnimatorValiableParams<T> {
 	name: string;
 	initValue: T;
-	easing?: EasingSet;
+	easing?: EasingFunc;
 	customLerpFunc?: LerpFunc<T>;
 }
 
@@ -51,7 +51,7 @@ export class Animator extends THREE.EventDispatcher {
 			value: params.initValue,
 			startValue: params.initValue,
 			goalValue: null,
-			easing: params.easing || { func: Easings.sigmoid, args: 6 },
+			easing: params.easing || Easings.sigmoid(),
 			lerpFunc: lerpFunc,
 		};
 
@@ -61,7 +61,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public setEasing( name: string, easing: EasingSet ) {
+	public setEasing( name: string, easing: EasingFunc ) {
 
 		let variable = this.variables[ name ];
 
@@ -77,7 +77,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingSet ) {
+	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingFunc ) {
 
 		let variable = this.variables[ name ];
 		let promise = new Promise( resolve => {
@@ -294,7 +294,7 @@ export class Animator extends THREE.EventDispatcher {
 
 				if ( lerpFunc ) {
 
-					variable.value = lerpFunc( variable.startValue, variable.goalValue, easing.func( time, easing.args ) );
+					variable.value = lerpFunc( variable.startValue, variable.goalValue, easing( time ) );
 
 				}
 
