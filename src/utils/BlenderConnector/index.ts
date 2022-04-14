@@ -313,21 +313,132 @@ export class BlenderConnector extends EventEmitter {
 
 			return uni.value;
 
+		}
+
+		let fcurveGroup = this.fcurveGroupList[ propertyName ];
+
+		if ( fcurveGroup ) {
+
+			let initValue = fcurveGroup.createInitValue();
+
+			return this.getUniform( propertyName, initValue ).value;
+
+		}
+
+		console.warn( 'not fount: ', propertyName );
+
+		return null;
+
+	}
+
+	public getValueAsVector2( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				return new THREE.Vector2( value, 0.0 );
+
+			} else if ( 'isVector2' in value ) {
+
+				return value;
+
+			} else {
+
+				return new THREE.Vector2( value.x, value.y );
+
+			}
+
 		} else {
 
-			let fcurveGroup = this.fcurveGroupList[ propertyName ];
+			return new THREE.Vector2();
 
-			if ( fcurveGroup ) {
+		}
 
-				let initValue = fcurveGroup.createInitValue();
+	}
 
-				return this.getUniform( propertyName, initValue ).value;
+	public getValueAsVector3( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				return new THREE.Vector3( value, 0.0, 0.0 );
+
+			} else if ( 'isVector3' in value ) {
+
+				return value;
+
+			} else {
+
+				return new THREE.Vector3( value.x, value.y, value.z || 0 );
+
+			}
+
+		} else {
+
+			return new THREE.Vector3();
+
+		}
+
+	}
+
+	public getValueAsVector4( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				return new THREE.Vector4( value, 0.0, 0.0, 0.0 );
+
+			} else if ( 'isVector4' in value ) {
+
+				return value;
+
+			} else {
+
+				return new THREE.Vector4( value.x, value.y, value.z, 0.0 );
+
+			}
+
+		} else {
+
+			return new THREE.Vector4();
+
+		}
+
+	}
+
+	public getValueAsEuler( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		let res = new THREE.Euler();
+		res.order = 'YXZ';
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				res.x = value;
+
+			} else {
+
+				res.x = value.x;
+				res.y = value.y;
+				res.z = value.z;
 
 			}
 
 		}
 
-		return null;
+		return res;
 
 	}
 
