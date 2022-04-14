@@ -23,6 +23,9 @@ const sass = require( 'gulp-sass' )( require( 'sass' ) );
 const minimist = require( 'minimist' );
 const cssmin = require( 'gulp-cssmin' );
 
+// log
+const fancyLog = require( 'fancy-log' );
+const supportsColor = require( 'supports-color' );
 
 const options = minimist( process.argv.slice( 2 ), {
 	default: {
@@ -217,7 +220,7 @@ function cleanDevFiles( cb ) {
 
 }
 
-function webpackDev() {
+function webpackDev( cb ) {
 
 	const conf = require( './config/webpack/build-example.webpack.config.js' );
 	conf.entry = {};
@@ -225,15 +228,52 @@ function webpackDev() {
 	conf.mode = options.P ? 'production' : 'development';
 	conf.output = {};
 	conf.output.filename = 'main.js';
+	conf.watch = true;
 
-	return webpackStream( conf, webpack )
-		.on( 'error', function ( e ) {
+	webpackStream( conf, webpack, ( err, stats ) => {
+
+		if ( err ) {
+
+			console.log( err );
+			return;
+
+		}
+
+		stats = stats || {};
+
+		var statusLog = stats.toString( {
+			colors: supportsColor.stdout.hasBasic,
+			hash: false,
+			timings: false,
+			chunks: false,
+			chunkModules: false,
+			modules: false,
+			children: true,
+			version: true,
+			cached: false,
+			cachedAssets: false,
+			reasons: false,
+			source: false,
+			errorDetails: false
+		} );
+
+		if ( statusLog ) {
+
+			fancyLog( statusLog );
+
+		}
+
+		browserSync.reload();
+
+	} )
+		.on( 'error', function () {
 
 			this.emit( 'end' );
 
 		} )
-		.pipe( gulp.dest( distDir + "/js/" ) )
-		.on( 'end', browserSync.reload );
+		.pipe( gulp.dest( distDir + '/js/' ) );
+
+	cb();
 
 }
 
@@ -264,8 +304,6 @@ function brSync() {
 
 function watch() {
 
-	gulp.watch( './src/**/*', gulp.series( webpackDev ) );
-	gulp.watch( srcDir + '/ts/**/*', gulp.series( webpackDev ) );
 	gulp.watch( srcDir + '/scss/*.scss', gulp.series( sassDev ) );
 	gulp.watch( srcDir + '/html/**/*', gulp.series( copyDevFiles ) );
 	gulp.watch( srcDir + '/assets/**/*', gulp.series( copyDevFiles ) );

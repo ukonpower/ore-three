@@ -18,7 +18,8 @@
 			"@ore-three-ts": [
 				"./src/"
 			]
-		}
+		},
+		"allowSyntheticDefaultImports": true
 	},
 	"include": [
 		"../../"

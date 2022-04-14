@@ -7,8 +7,8 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	name: string;
 	canvas?: HTMLCanvasElement;
 	aspectSetting?: AspectSetting;
-	wrapperElement?: HTMLElement;
-	wrapperElementRect?: DOMRect;
+	wrapperElement?: HTMLElement | null;
+	wrapperElementRect?: DOMRect | null;
 	pixelRatio?: number
 }
 
@@ -109,8 +109,13 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.info.name = layerInfo.name;
 		this.info.canvas = layerInfo.canvas;
-		this.info.wrapperElement = layerInfo.wrapperElement;
-		this.info.wrapperElementRect = layerInfo.wrapperElement && layerInfo.wrapperElement.getBoundingClientRect(),
+
+		if ( layerInfo.wrapperElement ) {
+
+			this.setWrapperElement( layerInfo.wrapperElement || null, false );
+
+		}
+
 		this.info.aspectSetting = layerInfo.aspectSetting || this.info.aspectSetting;
 		this.info.alpha = layerInfo.alpha;
 		this.info.size.pixelRatio = layerInfo.pixelRatio || this.info.size.pixelRatio;
@@ -167,6 +172,19 @@ export class BaseLayer extends THREE.EventDispatcher {
 				mat.dispose();
 
 			}
+
+		}
+
+	}
+
+	public setWrapperElement( wrapperElm: HTMLElement | null, dispatchResize: boolean = true ) {
+
+		this.info.wrapperElement = wrapperElm;
+		this.info.wrapperElementRect = wrapperElm ? wrapperElm.getBoundingClientRect() : null;
+
+		if ( dispatchResize ) {
+
+			this.onResize();
 
 		}
 
