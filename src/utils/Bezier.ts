@@ -20,23 +20,6 @@ export namespace Bezier {
 	export const SUBDIVISION_MAX_ITERATIONS = 10;
 	export const BEZIER_EASING_CACHE_SIZE = 11;
 	export const BEZIER_EASING_SAMPLE_STEP_SIZE = 1.0 / BEZIER_EASING_CACHE_SIZE;
-	// export const kSampleStepSize = 1.0 / ( BEZIER_EASING_CACHE_SIZE - 1.0 );
-
-	// q0 = ( 1.0 - t ) * ( 1.0 - t ) * ( 1.0 - t ) * p0;
-	// = ( 1.0 - 3t + 3tt - ttt ) * p0
-
-	// q1 = 3 * ( 1.0 - t ) * ( 1.0 - t ) * t * p1;
-	// = ( 3t - 6tt + 3ttt ) * p1
-
-	// q2 = ( 3 * ( 1.0 - t ) * t * t ) * p2;
-	// = ( 3tt - 3ttt ) * p2
-
-	// q3 = t * t * t * p3;
-	// = ttt * p3
-
-	// q0 + q2 + q2 + q3
-	// = ( -p0 + 3p1 - 3p2 + p3) * ttt + ( 3p0 - 6p1 + 3p2 ) * tt + ( -3p0 + 3p1 ) * t + p0
-	// = calcBezierA * ttt + calcBezierB * tt * calcBezierC * t + p0
 
 	function calcBezierA( p: BezierControlPoints ) {
 

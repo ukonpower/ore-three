@@ -126,4 +126,16 @@ export namespace Easings {
 		};
 
 	}
+
+	export function cubicBezier( h1X: number, h1Y: number, h2X: number, h2Y: number ) {
+
+		return bezier(
+			{ x: 0.0, y: 0.0 },
+			{ x: h1X as number, y: h1Y as number },
+			{ x: h2X as number, y: h2Y as number },
+			{ x: 1.0, y: 1.0 },
+		);
+
+	}
+
 }
