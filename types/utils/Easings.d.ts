@@ -16,4 +16,5 @@ export declare namespace Easings {
     function easeOutQuint(t: number): number;
     function easeInOutQuint(t: number): number;
     function bezier(c1: THREE.Vec2, h1: THREE.Vec2, h2: THREE.Vec2, c2: THREE.Vec2): EasingFunc;
+    function cubicBezier(h1X: number, h1Y: number, h2X: number, h2Y: number): EasingFunc;
 }
