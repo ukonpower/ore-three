@@ -1,4 +1,3 @@
-import { resourceUsage } from 'process';
 import * as THREE from 'three';
 
 import EventEmitter from "wolfy87-eventemitter";
@@ -206,6 +205,8 @@ export class BlenderConnector extends EventEmitter {
 
 		} );
 
+		this.setFrame( this.frameCurrent, this.frameStart, this.frameEnd );
+
 	}
 
 	private onSyncFrame( data: BCFrameData ) {
@@ -228,10 +229,10 @@ export class BlenderConnector extends EventEmitter {
 
 		let msg = JSON.parse( e.data ) as BCMessage;
 
-		console.log( msg.data );
 
 		if ( msg.type == 'sync/scene' ) {
 
+			console.log( msg.data );
 			this.onSyncScene( msg.data );
 
 		} else if ( msg.type == "sync/timeline" ) {
@@ -325,8 +326,6 @@ export class BlenderConnector extends EventEmitter {
 			return this.getUniform( propertyName, initValue ).value;
 
 		}
-
-		console.warn( 'not fount: ', propertyName );
 
 		return null;
 
