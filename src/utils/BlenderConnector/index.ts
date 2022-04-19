@@ -1,3 +1,4 @@
+import { resourceUsage } from 'process';
 import * as THREE from 'three';
 
 import EventEmitter from "wolfy87-eventemitter";
@@ -60,7 +61,7 @@ export class BlenderConnector extends EventEmitter {
 
 	// ws
 
-	private url: string;
+	private url?: string;
 	private ws?: WebSocket;
 	public connected: boolean = false;
 
@@ -80,12 +81,16 @@ export class BlenderConnector extends EventEmitter {
 
 	private uniforms: Uniforms = {};
 
-	constructor( url: string ) {
+	constructor( url?: string ) {
 
 		super();
 
-		this.url = url;
-		this.connect( this.url );
+		if ( url ) {
+
+			this.url = url;
+			this.connect( this.url );
+
+		}
 
 	}
 
@@ -205,8 +210,6 @@ export class BlenderConnector extends EventEmitter {
 
 		} );
 
-		this.setFrame( this.frameCurrent, this.frameStart, this.frameEnd );
-
 	}
 
 	private onSyncFrame( data: BCFrameData ) {
@@ -229,10 +232,8 @@ export class BlenderConnector extends EventEmitter {
 
 		let msg = JSON.parse( e.data ) as BCMessage;
 
-
 		if ( msg.type == 'sync/scene' ) {
 
-			console.log( msg.data );
 			this.onSyncScene( msg.data );
 
 		} else if ( msg.type == "sync/timeline" ) {
