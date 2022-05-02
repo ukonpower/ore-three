@@ -44,7 +44,7 @@ export declare type BCFrameData = {
     current: number;
 };
 export declare class BlenderConnector extends EventEmitter {
-    private url;
+    private url?;
     private ws?;
     connected: boolean;
     frameCurrent: number;
@@ -56,7 +56,7 @@ export declare class BlenderConnector extends EventEmitter {
         [name: string]: FCurveGroup;
     };
     private uniforms;
-    constructor(url: string);
+    constructor(url?: string);
     connect(url: string): void;
     syncJsonScene(jsonPath: string): void;
     private onSyncScene;
