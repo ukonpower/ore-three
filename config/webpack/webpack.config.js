@@ -9,7 +9,7 @@ module.exports = merge( baseConfig, {
 	mode: 'development',
 	devtool: 'inline-source-map',
 	output: {
-		path: path.resolve(__dirname, "build"),
+		path: path.resolve(__dirname, "../../build"),
 		filename: info.packageFileName + '.js',
 		library: info.packageBuildName,
 		libraryTarget: 'umd',
