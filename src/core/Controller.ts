@@ -15,7 +15,7 @@ export declare interface ControllerParam {
 
 export class Controller extends THREE.EventDispatcher {
 
-    public pointer: Pointer;
+	public pointer: Pointer;
 	public clock: THREE.Clock;
 	protected layers: BaseLayer[] = [];
 
