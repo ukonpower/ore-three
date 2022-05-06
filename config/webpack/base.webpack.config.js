@@ -11,9 +11,6 @@ module.exports = {
 				test: /\.ts$/,
 				exclude: /node_modules/,
 				loader: 'ts-loader',
-				options: {
-					configFile: 'config/typescript/base.tsconfig.json'
-				}
 			},
 			{
 				test: /\.(vs|fs|glsl)$/,
