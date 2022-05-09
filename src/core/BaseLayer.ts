@@ -35,7 +35,7 @@ export declare interface AspectSetting {
 }
 
 export declare interface TouchEventArgs {
-	event: PointerEvent;
+	event: PointerEvent | TouchEvent;
 	position: THREE.Vector2;
 	delta: THREE.Vector2;
 	normalizedPosition: THREE.Vector2;
@@ -108,7 +108,6 @@ export class BaseLayer extends THREE.EventDispatcher {
 	public onBind( layerInfo: LayerBindParam ) {
 
 		this.info.name = layerInfo.name;
-		this.info.canvas = layerInfo.canvas;
 
 		if ( layerInfo.wrapperElement ) {
 
@@ -123,6 +122,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.renderer = new THREE.WebGLRenderer( this.info );
 		this.renderer.setPixelRatio( this.info.size.pixelRatio );
 		this.renderer.debug.checkShaderErrors = true;
+
+		this.info.canvas = this.renderer.domElement;
 
 		setTimeout( () => {
 
