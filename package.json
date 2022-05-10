@@ -25,9 +25,15 @@
 		"dev": "webpack --config ./config/webpack/webpack.config.js --watch & tsc --declaration --emitDeclarationOnly -preserveWatchOutput -w",
 		"build": "webpack --config ./config/webpack/webpack.config.js & webpack --config ./config/webpack/min.webpack.config.js && tsc --declaration --emitDeclarationOnly"
 	},
+	"dependencies": {
+		"lethargy": "^1.0.9",
+		"to-px": "^1.1.0",
+		"wolfy87-eventemitter": "^5.2.9"
+	},
 	"devDependencies": {
+		"@types/node": "^17.0.31",
 		"@types/offscreencanvas": "^2019.6.4",
-		"@types/three": "^0.139.0",
+		"@types/three": ">=0.130.0",
 		"@types/webgl2": "0.0.6",
 		"@typescript-eslint/eslint-plugin": "^5.19.0",
 		"@typescript-eslint/parser": "^5.19.0",
@@ -40,7 +46,6 @@
 		"glslify-loader": "^2.0.0",
 		"raw-loader": "^4.0.2",
 		"sass": "^1.50.0",
-		"three": "^0.139.2",
 		"ts-loader": "^9.2.8",
 		"typescript": "^4.6.3",
 		"webpack": "^5.72.0",
@@ -48,10 +53,8 @@
 		"webpack-merge": "^5.8.0",
 		"webpack-stream": "^7.0.0"
 	},
-	"dependencies": {
-		"@types/node": "^17.0.31",
-		"lethargy": "^1.0.9",
-		"to-px": "^1.1.0",
-		"wolfy87-eventemitter": "^5.2.9"
+	"peerDependencies": {
+		"@types/three": ">=0.130.0",
+		"three": ">=0.130.0"
 	}
 }

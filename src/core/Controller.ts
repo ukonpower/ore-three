@@ -18,7 +18,7 @@ export class Controller extends THREE.EventDispatcher {
 
 	public pointer: Pointer;
 	public clock: THREE.Clock;
-	
+
 	protected layers: BaseLayer[] = [];
 	protected pointerEventElement?: HTMLElement;
 
@@ -39,7 +39,7 @@ export class Controller extends THREE.EventDispatcher {
 		-------------------------------*/
 
 		this.pointer = new Pointer();
-		this.setPointerEventElement( (parameter && parameter.pointerEventElement ) || document.body );
+		this.setPointerEventElement( ( parameter && parameter.pointerEventElement ) || document.body );
 
 		/*-------------------------------
 			Events
@@ -170,16 +170,16 @@ export class Controller extends THREE.EventDispatcher {
 
 	public setPointerEventElement( elm: HTMLElement ) {
 
-		if( this.pointerEventElement ) {
-			
-			this.pointer.unregisterElement(this.pointerEventElement)
-			
+		if ( this.pointerEventElement ) {
+
+			this.pointer.unregisterElement( this.pointerEventElement );
+
 		}
 
-		this.pointer.registerElement(elm)
+		this.pointer.registerElement( elm );
 
 		this.pointerEventElement = elm;
-		
+
 	}
 
 	public dispose() {

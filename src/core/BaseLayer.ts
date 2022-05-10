@@ -119,11 +119,11 @@ export class BaseLayer extends THREE.EventDispatcher {
 		this.info.aspectSetting = layerInfo.aspectSetting || this.info.aspectSetting;
 		this.info.alpha = layerInfo.alpha;
 		this.info.size.pixelRatio = layerInfo.pixelRatio || this.info.size.pixelRatio;
-		
+
 		this.renderer = new THREE.WebGLRenderer( this.info );
 		this.renderer.setPixelRatio( this.info.size.pixelRatio );
 		this.renderer.debug.checkShaderErrors = true;
-		
+
 		this.info.canvas = this.renderer.domElement;
 
 		setTimeout( () => {
