@@ -26,7 +26,6 @@
 		"build": "webpack --config ./config/webpack/webpack.config.js & webpack --config ./config/webpack/min.webpack.config.js && tsc --declaration --emitDeclarationOnly"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.24",
 		"@types/offscreencanvas": "^2019.6.4",
 		"@types/three": "^0.139.0",
 		"@types/webgl2": "0.0.6",
@@ -50,6 +49,7 @@
 		"webpack-stream": "^7.0.0"
 	},
 	"dependencies": {
+		"@types/node": "^17.0.31",
 		"lethargy": "^1.0.9",
 		"to-px": "^1.1.0",
 		"wolfy87-eventemitter": "^5.2.9"

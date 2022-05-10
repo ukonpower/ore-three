@@ -11,13 +11,16 @@ export declare interface PointerEventArgs {
 
 export declare interface ControllerParam {
 	silent?: boolean;
+	pointerEventElement?: HTMLElement;
 }
 
 export class Controller extends THREE.EventDispatcher {
 
 	public pointer: Pointer;
 	public clock: THREE.Clock;
+	
 	protected layers: BaseLayer[] = [];
+	protected pointerEventElement?: HTMLElement;
 
 	constructor( parameter?: ControllerParam ) {
 
@@ -30,7 +33,13 @@ export class Controller extends THREE.EventDispatcher {
 		}
 
 		this.clock = new THREE.Clock();
+
+		/*-------------------------------
+			Pointer
+		-------------------------------*/
+
 		this.pointer = new Pointer();
+		this.setPointerEventElement( (parameter && parameter.pointerEventElement ) || document.body );
 
 		/*-------------------------------
 			Events
@@ -111,6 +120,10 @@ export class Controller extends THREE.EventDispatcher {
 
 	}
 
+	/*-------------------------------
+		API
+	-------------------------------*/
+
 	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
 
 		while ( this.getLayer( layerInfo.name ) ) {
@@ -122,12 +135,6 @@ export class Controller extends THREE.EventDispatcher {
 		this.layers.push( layer );
 
 		layer.onBind( layerInfo );
-
-		if ( layer.info.canvas ) {
-
-			this.pointer.registerElement( layer.info.canvas );
-
-		}
 
 	}
 
@@ -149,12 +156,6 @@ export class Controller extends THREE.EventDispatcher {
 
 			const layer = this.layers[ i ];
 
-			if ( layer.info.canvas ) {
-
-				this.pointer.unregisterElement( layer.info.canvas );
-
-			}
-
 			if ( layer.info.name == layerNmae ) {
 
 				layer.onUnbind();
@@ -165,6 +166,20 @@ export class Controller extends THREE.EventDispatcher {
 
 		}
 
+	}
+
+	public setPointerEventElement( elm: HTMLElement ) {
+
+		if( this.pointerEventElement ) {
+			
+			this.pointer.unregisterElement(this.pointerEventElement)
+			
+		}
+
+		this.pointer.registerElement(elm)
+
+		this.pointerEventElement = elm;
+		
 	}
 
 	public dispose() {

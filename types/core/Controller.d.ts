@@ -9,11 +9,13 @@ export declare interface PointerEventArgs {
 }
 export declare interface ControllerParam {
     silent?: boolean;
+    pointerEventElement?: HTMLElement;
 }
 export declare class Controller extends THREE.EventDispatcher {
     pointer: Pointer;
     clock: THREE.Clock;
     protected layers: BaseLayer[];
+    protected pointerEventElement?: HTMLElement;
     constructor(parameter?: ControllerParam);
     protected tick(): void;
     protected onWindowResize(): void;
@@ -23,5 +25,6 @@ export declare class Controller extends THREE.EventDispatcher {
     addLayer(layer: BaseLayer, layerInfo: LayerBindParam): void;
     getLayer(layerName: string): BaseLayer | null;
     removeLayer(layerNmae: string): void;
+    setPointerEventElement(elm: HTMLElement): void;
     dispose(): void;
 }
