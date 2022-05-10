@@ -54,6 +54,7 @@
 		"webpack-stream": "^7.0.0"
 	},
 	"peerDependencies": {
+		"@types/three": ">=0.130.0",
 		"three": ">=0.130.0"
 	}
 }
