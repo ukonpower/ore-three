@@ -1,4 +1,3 @@
-import { resourceUsage } from 'process';
 import * as THREE from 'three';
 
 import EventEmitter from "wolfy87-eventemitter";

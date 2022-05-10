@@ -29,7 +29,7 @@ export declare interface AspectSetting {
     wideAspect: number;
 }
 export declare interface TouchEventArgs {
-    event: PointerEvent;
+    event: PointerEvent | TouchEvent;
     position: THREE.Vector2;
     delta: THREE.Vector2;
     normalizedPosition: THREE.Vector2;

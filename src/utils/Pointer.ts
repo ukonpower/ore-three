@@ -21,18 +21,59 @@ export class Pointer extends THREE.EventDispatcher {
 		const userAgent = navigator.userAgent;
 		this.isSP = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || userAgent.indexOf( 'Android' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined );
 
-		window.addEventListener( 'touchstart', this.onTouch.bind( this, "start" ), { passive: false } );
-		window.addEventListener( 'touchmove', this.onTouch.bind( this, "move" ), { passive: false } );
-		window.addEventListener( 'touchend', this.onTouch.bind( this, "end" ), { passive: false } );
-
-		window.addEventListener( 'pointerdown', this.onPointer.bind( this, "start" ) );
-		window.addEventListener( 'pointermove', this.onPointer.bind( this, "move" ) );
-		window.addEventListener( 'pointerup', this.onPointer.bind( this, "end" ) );
-		window.addEventListener( "dragend", this.onPointer.bind( this, "end" ) );
-		window.addEventListener( "wheel", this.wheel.bind( this ), { passive: false } );
-
 		this.position.set( NaN, NaN );
 		this.isTouching = false;
+
+	}
+
+	public registerElement( elm: HTMLElement ) {
+
+		const onTouchStart = this.onTouch.bind( this, "start" );
+		const onTouchMove = this.onTouch.bind( this, "move" );
+		const onToucmEnd = this.onTouch.bind( this, "end" );
+		const onPointerDown = this.onPointer.bind( this, "start" );
+		const onPointerMove = this.onPointer.bind( this, "move" );
+		const onPointerUp = this.onPointer.bind( this, "end" );
+		const onWheel = this.wheel.bind( this );
+
+		elm.addEventListener( 'touchstart', onTouchStart, { passive: false } );
+		elm.addEventListener( 'touchmove', onTouchMove, { passive: false } );
+		elm.addEventListener( 'touchend', onToucmEnd, { passive: false } );
+		elm.addEventListener( 'pointerdown', onPointerDown );
+		elm.addEventListener( 'pointermove', onPointerMove );
+		elm.addEventListener( 'pointerup', onPointerUp );
+		elm.addEventListener( "dragend", onPointerUp );
+		elm.addEventListener( "wheel", onWheel, { passive: false } );
+
+		const onUnRegister = ( e: any ) => {
+
+			if ( elm.isEqualNode( e.elm ) ) {
+
+				elm.removeEventListener( 'touchstart', onTouchStart );
+				elm.removeEventListener( 'touchmove', onTouchMove );
+				elm.removeEventListener( 'touchend', onToucmEnd );
+				elm.removeEventListener( 'pointerdown', onPointerDown );
+				elm.removeEventListener( 'pointermove', onPointerMove );
+				elm.removeEventListener( 'pointerup', onPointerUp );
+				elm.removeEventListener( "dragend", onPointerUp );
+				elm.removeEventListener( "wheel", onWheel );
+
+				this.removeEventListener( 'unregister', onUnRegister );
+
+			}
+
+		};
+
+		this.addEventListener( 'unregister', onUnRegister );
+
+	}
+
+	public unregisterElement( elm: HTMLElement ) {
+
+		this.dispatchEvent( {
+			type: 'unregister',
+			elm: elm,
+		} );
 
 	}
 
@@ -131,7 +172,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	protected touchEventHandler( posX: number, posY: number, type: string, e: Event ) {
+	protected touchEventHandler( posX: number, posY: number, type: string, e: TouchEvent | PointerEvent | DragEvent ) {
 
 		let dispatch = false;
 
@@ -160,7 +201,19 @@ export class Pointer extends THREE.EventDispatcher {
 
 		} else if ( type == "end" ) {
 
-			this.isTouching = false;
+			if ( 'targetTouches' in e ) {
+
+				if ( e.targetTouches.length == 0 ) {
+
+					this.isTouching = false;
+
+				}
+
+			} else {
+
+				this.isTouching = false;
+
+			}
 
 			dispatch = true;
 

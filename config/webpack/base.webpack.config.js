@@ -3,7 +3,7 @@ const path = require( 'path' );
 module.exports = {
 	mode: 'development',
 	entry: {
-		'main': './src/index.ts',
+		'': './src/index.ts',
 	},
 	module: {
 		rules: [
@@ -12,7 +12,7 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: 'ts-loader',
 				options: {
-					configFile: 'config/typescript/base.tsconfig.json'
+					configFile: '../../../tsconfig.json'
 				}
 			},
 			{
@@ -36,5 +36,22 @@ module.exports = {
 	},
 	resolve: {
 		extensions: [ '.ts', '.js' ],
+	},
+	externals: {
+		'three': {
+			commonjs: 'three',
+			commonjs2: 'three',
+			amd: 'three',
+			root: 'THREE'
+		}
+	},
+	cache: {
+		type: 'filesystem',
+		buildDependencies: {
+			config: [ __filename ]
+		}
+	},
+	optimization: {
+		innerGraph: true
 	}
 };
