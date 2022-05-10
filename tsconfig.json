@@ -1,3 +1,21 @@
 {
-	"extends": "./config/typescript/base.tsconfig.json"
+	"compilerOptions": {
+		"strict": true,
+		"sourceMap": true,
+		"target": "es6",
+		"module": "es2015",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"lib": [
+			"es2015",
+			"dom"
+		],
+		"typeRoots": [
+			"node_modules/@types"
+		],
+		"types": ["node"],
+		"rootDir": "./src/",
+    	"outDir": "./types",
+	},
+	"include": ["./src/"]
 }

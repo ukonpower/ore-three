@@ -11,26 +11,35 @@ export declare interface PointerEventArgs {
 
 export declare interface ControllerParam {
 	silent?: boolean;
+	pointerEventElement?: HTMLElement;
 }
 
 export class Controller extends THREE.EventDispatcher {
 
-    public pointer: Pointer;
+	public pointer: Pointer;
 	public clock: THREE.Clock;
+	
 	protected layers: BaseLayer[] = [];
+	protected pointerEventElement?: HTMLElement;
 
 	constructor( parameter?: ControllerParam ) {
 
-    	super();
+		super();
 
-    	if ( ! ( parameter && parameter.silent ) ) {
+		if ( ! ( parameter && parameter.silent ) ) {
 
-    		console.log( "%c- ore-three " + require( "../../package.json" ).version + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
+			console.log( "%c- ore-three -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
 
-    	}
+		}
 
-    	this.clock = new THREE.Clock();
-    	this.pointer = new Pointer();
+		this.clock = new THREE.Clock();
+
+		/*-------------------------------
+			Pointer
+		-------------------------------*/
+
+		this.pointer = new Pointer();
+		this.setPointerEventElement( (parameter && parameter.pointerEventElement ) || document.body );
 
 		/*-------------------------------
 			Events
@@ -41,10 +50,10 @@ export class Controller extends THREE.EventDispatcher {
 		let orientationchange = this.onOrientationDevice.bind( this );
 		let windowResize = this.onWindowResize.bind( this );
 
-    	this.pointer.addEventListener( 'update', pointerUpdate );
-    	this.pointer.addEventListener( 'wheel', pointerWheel );
-    	window.addEventListener( 'orientationchange', orientationchange );
-    	window.addEventListener( 'resize', windowResize );
+		this.pointer.addEventListener( 'update', pointerUpdate );
+		this.pointer.addEventListener( 'wheel', pointerWheel );
+		window.addEventListener( 'orientationchange', orientationchange );
+		window.addEventListener( 'resize', windowResize );
 
 		this.addEventListener( 'dispose', () => {
 
@@ -55,103 +64,122 @@ export class Controller extends THREE.EventDispatcher {
 
 		} );
 
-    	this.tick();
+		this.tick();
 
 	}
 
 	protected tick() {
 
-    	const deltaTime = this.clock.getDelta();
+		const deltaTime = this.clock.getDelta();
 
-    	this.pointer.update();
+		this.pointer.update();
 
-    	for ( let i = 0; i < this.layers.length; i ++ ) {
+		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.layers[ i ].tick( deltaTime );
+			this.layers[ i ].tick( deltaTime );
 
-    	}
+		}
 
-    	requestAnimationFrame( this.tick.bind( this ) );
+		requestAnimationFrame( this.tick.bind( this ) );
 
 	}
 
 	protected onWindowResize() {
 
-    	for ( let i = 0; i < this.layers.length; i ++ ) {
+		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.layers[ i ].onResize();
+			this.layers[ i ].onResize();
 
-    	}
+		}
 
 	}
 
 	protected onOrientationDevice() {
 
-    	this.onWindowResize();
+		this.onWindowResize();
 
 	}
 
 	protected pointerEvent( e: THREE.Event ) {
 
-    	for ( let i = 0; i < this.layers.length; i ++ ) {
+		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.layers[ i ].pointerEvent( e as unknown as PointerEventArgs );
+			this.layers[ i ].pointerEvent( e as unknown as PointerEventArgs );
 
-    	}
+		}
 
 	}
 
 	protected onWheel( e: THREE.Event ) {
 
-    	for ( let i = 0; i < this.layers.length; i ++ ) {
+		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		this.layers[ i ].onWheel( e.wheelEvent, e.trackpadDelta );
+			this.layers[ i ].onWheel( e.wheelEvent, e.trackpadDelta );
 
-    	}
+		}
 
 	}
 
+	/*-------------------------------
+		API
+	-------------------------------*/
+
 	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
 
-    	while ( this.getLayer( layerInfo.name ) ) {
+		while ( this.getLayer( layerInfo.name ) ) {
 
-    		layerInfo.name += '_';
+			layerInfo.name += '_';
 
-    	}
+		}
 
-    	this.layers.push( layer );
-    	layer.onBind( layerInfo );
+		this.layers.push( layer );
+
+		layer.onBind( layerInfo );
 
 	}
 
 	public getLayer( layerName: string ) {
 
-    	for ( let i = 0; i < this.layers.length; i ++ ) {
+		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-    		if ( this.layers[ i ].info.name == layerName ) return this.layers[ i ];
+			if ( this.layers[ i ].info.name == layerName ) return this.layers[ i ];
 
-    	}
+		}
 
-    	return null;
+		return null;
 
 	}
 
 	public removeLayer( layerNmae: string ) {
 
-    	for ( let i = this.layers.length - 1; i >= 0; i -- ) {
+		for ( let i = this.layers.length - 1; i >= 0; i -- ) {
 
-    		const layer = this.layers[ i ];
+			const layer = this.layers[ i ];
 
-    		if ( layer.info.name == layerNmae ) {
+			if ( layer.info.name == layerNmae ) {
 
 				layer.onUnbind();
 
-    			this.layers.splice( i, 1 );
+				this.layers.splice( i, 1 );
 
-    		}
+			}
 
-    	}
+		}
 
+	}
+
+	public setPointerEventElement( elm: HTMLElement ) {
+
+		if( this.pointerEventElement ) {
+			
+			this.pointer.unregisterElement(this.pointerEventElement)
+			
+		}
+
+		this.pointer.registerElement(elm)
+
+		this.pointerEventElement = elm;
+		
 	}
 
 	public dispose() {

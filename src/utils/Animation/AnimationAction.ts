@@ -84,6 +84,12 @@ export class AnimationAction extends EventEmitter {
 
 			if ( ! fcurveGroup || ! uni ) continue;
 
+			if ( fcurveGroup.curve.scalar ) {
+
+				uni.value = fcurveGroup.curve.scalar.getValue( frame );
+
+			}
+
 			if ( fcurveGroup.curve.x ) {
 
 				uni.value.x = fcurveGroup.curve.x.getValue( frame );
