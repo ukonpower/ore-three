@@ -27,9 +27,10 @@ const supportsColor = require( 'supports-color' );
 const options = minimist( process.argv.slice( 2 ), {
 	default: {
 		ex: 'Controller',
-		P: false,
 	}
 } );
+
+let isProduction = "development";
 
 /*-------------------
 	Production
@@ -141,8 +142,7 @@ function buildExamples( cb ) {
 function cleanBuildFiles( cb ) {
 
 	del( [
-		'./docs/examples/',
-		'./docs/documentation/',
+		'./docs/',
 	], {
 
 		force: true,
@@ -194,10 +194,10 @@ function webpackDev( cb ) {
 	const conf = require( './webpack.config.js' );
 	conf.entry = {};
 	conf.entry.main = srcDir + '/ts/main.ts';
-	conf.mode = options.P ? 'production' : 'development';
+	conf.mode = isProduction ? 'production' : 'development';
 	conf.output = {};
 	conf.output.filename = 'main.js';
-	conf.watch = true;
+	conf.watch = !isProduction;
 
 	webpackStream( conf, webpack, ( err, stats ) => {
 
@@ -297,6 +297,22 @@ function setDevDocumentsPath( cb ) {
 
 }
 
+function setProduction( cb ) {
+
+	isProduction = true;
+
+	cb();
+	
+}
+
+function setDevelopment( cb ) {
+
+	isProduction = false;
+
+	cb();
+	
+}
+
 const develop = gulp.series(
 	copyDevFiles,
 	gulp.parallel( webpackDev, sassDev ),
@@ -306,20 +322,26 @@ const develop = gulp.series(
 exports.lint = gulp.series( lint );
 
 exports.default = gulp.series(
+	setDevelopment,
 	setDevDocumentsPath,
 	develop
 );
 
 exports.dev = gulp.series(
+	setDevelopment,
 	setDevLibraryPath,
 	cleanDevFiles,
 	develop
 );
 
 exports.build = gulp.series(
+	setProduction,
 	cleanBuildFiles,
 	lint,
 	buildTypeDoc,
 	buildExamples,
+	setDevDocumentsPath,
+	copyDevFiles,
+	gulp.parallel(webpackDev, sassDev),
 );
 
