@@ -13,7 +13,7 @@
 		"build": "npm run build -w packages/ore-three && npx gulp build",
 		"dev": "npx gulp & npm run dev -w packages/ore-three",
 		"dev-package": "npm run dev -w packages/ore-three",
-		"build-package": "npm run build -w packages/ore-three",
+		"build-package": "cp README.md ./packages/ore-three/ && npm run build -w packages/ore-three",
 		"publish": "npm run build-package && npm publish -w packages/ore-three"
 	},
 	"workspaces": [
