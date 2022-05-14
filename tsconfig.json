@@ -14,8 +14,7 @@
 			"node_modules/@types"
 		],
 		"types": ["node"],
-		"rootDir": "./src/",
-    	"outDir": "./types",
+		"rootDir": "./src",
 	},
-	"include": ["./src/"]
+	"include": ["./src"]
 }
