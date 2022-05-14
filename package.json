@@ -11,7 +11,8 @@
 	},
 	"scripts": {
 		"build": "npx gulp build",
-		"dev": "npx gulp & npm run dev -w packages/ore-three"
+		"dev": "npx gulp & npm run dev -w packages/ore-three",
+		"dev-package": "npm run dev -w packages/ore-three"
 	},
 	"workspaces": [
 		"packages/*"
