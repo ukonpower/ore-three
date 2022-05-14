@@ -3,27 +3,27 @@
 
 ![](./screenshot/ore-three.png)
 
-[Documentation](https://ore-three-ts.ukon.dev/documentation)
-[Examples]( https://ore-three-ts.ukon.dev/examples/ )
+[Documentation](https://ore-three.ukon.dev/documentation)
+[Examples]( https://ore-three.ukon.dev/examples/ )
 
 
 ### install
-You can get the library from [npm]( https://www.npmjs.com/package/ore-three-ts ).
+You can get the library from [npm]( https://www.npmjs.com/package/ore-three ).
 
 ```bash
-$ npm install ore-three-ts
+$ npm install ore-three
 ```
 
 ##### Import
 
-```javascript
-import * as ORE from 'ore-three-ts';
+```typescript
+import * as ORE from 'ore-three';
 ```
 
 ### Create Controller
 
 ```typescript
-import * as ORE from 'ore-three-ts';
+import * as ORE from 'ore-three';
 
 import { ControllerScene } from './ControllerScene';
 
@@ -55,7 +55,7 @@ window.addEventListener( 'load', () => {
 
 ```typescript
 import * as THREE from 'three';
-import * as ORE from 'ore-three-ts';
+import * as ORE from 'ore-three';
 
 export class ControllerScene extends ORE.BaseLayer {
 
