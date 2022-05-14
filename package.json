@@ -10,9 +10,10 @@
 		"url": "git@github.com:ukonpower/ore-three-dev.git"
 	},
 	"scripts": {
-		"build": "npx gulp build",
+		"build": "npm run build -w packages/ore-three && npx gulp build",
 		"dev": "npx gulp & npm run dev -w packages/ore-three",
-		"dev-package": "npm run dev -w packages/ore-three"
+		"dev-package": "npm run dev -w packages/ore-three",
+		"build-package": "npm run build -w packages/ore-three"
 	},
 	"workspaces": [
 		"packages/*"
