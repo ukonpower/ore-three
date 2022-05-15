@@ -281,7 +281,7 @@ function watch() {
 
 function setDevLibraryPath( cb ) {
 
-	srcDir = './src/examples/' + options.ex + '/src';
+	srcDir = './src/examples/' + options.ex;
 	distDir = './docs/examples/' + options.ex + '/public';
 
 	cb();
