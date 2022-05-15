@@ -6,13 +6,15 @@ export type FCurveGroupType = 'scalar' | 'vec2' | 'vec3' | 'vec4'
 
 export class FCurveGroup extends EventEmitter {
 
-	public name: string = '';
+	public name: string;
 	public curve: {[axis in FCurveAxis]: FCurve | null};
 	public type: FCurveGroupType = 'scalar';
 
 	constructor( name?: string, x?: FCurve, y?: FCurve, z?: FCurve, w?: FCurve, scalar?: FCurve ) {
 
 		super();
+
+		this.name = name || '';
 
 		this.curve = {
 			x: x || null,

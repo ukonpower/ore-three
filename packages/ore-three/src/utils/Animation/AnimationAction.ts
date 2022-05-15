@@ -19,60 +19,234 @@ export class AnimationAction extends EventEmitter {
 
 	}
 
-	public addFcurveGroup( curveName: string, fcurveGroup: FCurveGroup ) {
+	public addFcurveGroup( propertyName: string, fcurveGroup: FCurveGroup ) {
 
-		this.curves[ curveName ] = fcurveGroup;
-
-	}
-
-	public removeFCurve( curveName: string ) {
-
-		delete this.curves[ curveName ];
+		this.curves[ propertyName ] = fcurveGroup;
 
 	}
 
-	public getFCurveGroup( curveName: string ): FCurveGroup | null {
+	public removeFCurve( propertyName: string ) {
 
-		return this.curves[ curveName ] || null;
+		delete this.curves[ propertyName ];
+
+	}
+
+	public getFCurveGroup( propertyName: string ): FCurveGroup | null {
+
+		return this.curves[ propertyName ] || null;
 
 	}
 
 	/*-------------------------------
-		Value as Uniform
+		get values
 	-------------------------------*/
 
-	public assignUniforms( curveName: string, uniform: THREE.IUniform ) {
+	public assignUniforms( propertyName: string, uniform: THREE.IUniform ) {
 
-		if ( this.uniforms[ curveName ] !== undefined ) {
+		this.uniforms[ propertyName ] = uniform;
 
-			console.warn( 'AnimationAction: uniform ' + curveName + ' is alraedy exist' );
+	}
+
+	public getUniforms<T>( propertyName: string ): THREE.IUniform<T> | null {
+
+		if ( this.uniforms[ propertyName ] ) {
+			
+			return this.uniforms[ propertyName ];
+			
+		}
+		
+		let curveGroup = this.getFCurveGroup(propertyName)
+
+		if( curveGroup ) {
+			
+			let uni = {
+				value: curveGroup.createInitValue() as unknown as T
+			};
+			
+			this.uniforms[ propertyName ] = uni;
+			
+			return uni;
+
+		}
+
+		return null;
+
+	}
+
+	public getValue<T>( propertyName: string ): T | null {
+
+		let uniform = this.getUniforms<T>(propertyName);
+
+		if( uniform ) {
+
+			return uniform.value
+			
+		}
+
+		return null;
+
+	}
+	
+	public getValueAsScalar( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				return value;
+
+			} else {
+
+				return value.x;
+
+			}
+
+		}
+
+		return 0;
+
+	}
+
+	public getValueAsVector2( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				return new THREE.Vector2( value, 0.0 );
+
+			} else if ( 'isVector2' in value ) {
+
+				return value;
+
+			} else {
+
+				return new THREE.Vector2( value.x, value.y );
+
+			}
 
 		} else {
 
-			this.uniforms[ curveName ] = uniform;
+			return new THREE.Vector2();
 
 		}
 
 	}
 
-	public getUniforms<T>( curveName: string ): THREE.IUniform<T> {
+	public getValueAsVector3( propertyName: string ) {
 
-		let uniName = curveName;
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
 
-		if ( this.uniforms[ uniName ] ) {
+		if ( value ) {
 
-			return this.uniforms[ uniName ];
+			if ( ( value as THREE.Vector3 ).isVector3 ) {
+
+				return value as THREE.Vector3;
+
+			}
+
+			if ( typeof value == 'number' ) {
+
+				return new THREE.Vector3( value, value, value );
+
+			} else {
+
+				let res = new THREE.Vector3( value.x, value.y );
+
+				if ( 'isVector4' in value ) {
+
+					res.z = value.z;
+
+				}
+
+				return res;
+
+			}
+
+		} else {
+
+			return new THREE.Vector3();
 
 		}
 
-		this.uniforms[ uniName ] = {
-			value: null
-		};
+	}
 
-		return this.uniforms[ uniName ];
+	public getValueAsVector4( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		if ( value ) {
+
+			if ( ( value as THREE.Vector4 ).isVector4 ) {
+
+				return value as THREE.Vector4;
+
+			}
+
+			if ( typeof value == 'number' ) {
+
+				return new THREE.Vector4( value, value, value, value );
+
+			} else {
+
+				let res = new THREE.Vector4( value.x, value.y );
+
+				if ( 'isVector3' in value ) {
+
+					res.z = value.z;
+
+				}
+
+			}
+
+		} else {
+
+			return new THREE.Vector4();
+
+		}
 
 	}
 
+	public getValueAsEuler( propertyName: string ) {
+
+		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
+
+		let res = new THREE.Euler();
+		res.order = 'YXZ';
+
+		if ( value ) {
+
+			if ( typeof value == 'number' ) {
+
+				res.x = value;
+
+			} else {
+
+				res.x = value.x;
+				res.y = value.y;
+
+				if ( 'isVector3' in value || 'isVector4' in value ) {
+
+					res.z = value.z;
+
+				}
+
+			}
+
+		}
+
+		return res;
+
+	}
+
+	/*-------------------------------
+		UpdateFrame
+	-------------------------------*/
+	
 	public updateFrame( frame: number ) {
 
 		let curveKeys = Object.keys( this.curves );
@@ -115,6 +289,8 @@ export class AnimationAction extends EventEmitter {
 			}
 
 		}
+
+		this.emitEvent('update', [this] );
 
 	}
 

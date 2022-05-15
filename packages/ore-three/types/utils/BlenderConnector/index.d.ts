@@ -36,9 +36,9 @@ export declare type BCSceneObjectData = {
 };
 export declare type BCSyncFrameMessage = {
     type: "sync/timeline";
-    data: BCFrameData;
+    data: BCTimelineData;
 };
-export declare type BCFrameData = {
+export declare type BCTimelineData = {
     start: number;
     end: number;
     current: number;
@@ -55,26 +55,18 @@ export declare class BlenderConnector extends EventEmitter {
     fcurveGroupList: {
         [name: string]: FCurveGroup;
     };
-    private uniforms;
     constructor(url?: string);
     connect(url: string): void;
     syncJsonScene(jsonPath: string): void;
     private onSyncScene;
-    private onSyncFrame;
+    private onSyncTimeline;
     private onOpen;
     private onMessage;
     private onClose;
     getActionNameList(objectName: string): string[];
     getAction(actionName: string): AnimationAction | null;
     getActionList(objectName: string): AnimationAction[];
-    getValue<T>(propertyName: string): T | null;
-    getValueAsScalar(propertyName: string): number;
-    getValueAsVector2(propertyName: string): THREE.Vector2;
-    getValueAsVector3(propertyName: string): THREE.Vector3;
-    getValueAsVector4(propertyName: string): THREE.Vector4 | undefined;
-    getValueAsEuler(propertyName: string): THREE.Euler;
-    getUniform<T>(propertyName: string, initialValue: T): THREE.IUniform<any>;
-    setFrame(current: number, start?: number, end?: number): void;
+    setTimeline(current: number, start?: number, end?: number): void;
     dispose(): void;
     disposeWS(): void;
 }

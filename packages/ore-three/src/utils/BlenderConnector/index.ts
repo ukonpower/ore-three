@@ -47,10 +47,10 @@ export type BCSceneObjectData = {
 
 export type BCSyncFrameMessage = {
 	type: "sync/timeline";
-	data: BCFrameData;
+	data: BCTimelineData;
 }
 
-export type BCFrameData = {
+export type BCTimelineData = {
 	start: number;
 	end: number;
 	current: number;
@@ -75,10 +75,6 @@ export class BlenderConnector extends EventEmitter {
 	public objects: BCSceneObjectData[] = [];
 	public actions: AnimationAction[] = [];
 	public fcurveGroupList: {[name:string]:FCurveGroup} = {};
-
-	// uniforms
-
-	private uniforms: Uniforms = {};
 
 	constructor( url?: string ) {
 
@@ -180,19 +176,6 @@ export class BlenderConnector extends EventEmitter {
 
 					action.addFcurveGroup( fcurveGroupName, fcurveGroup );
 
-					let uni = this.uniforms[ fcurveGroupName ];
-
-					if ( uni ) {
-
-						action.assignUniforms( fcurveGroupName, uni );
-
-					} else {
-
-						this.uniforms[ fcurveGroupName ] = action.getUniforms( fcurveGroupName );
-						this.uniforms[ fcurveGroupName ].value = fcurveGroup.createInitValue();
-
-					}
-
 				}
 
 			} );
@@ -209,11 +192,17 @@ export class BlenderConnector extends EventEmitter {
 
 		} );
 
+		// dispatch event
+		
+		this.emitEvent('update/scene', [this])
+
+		this.setTimeline(this.frameCurrent);
+
 	}
 
-	private onSyncFrame( data: BCFrameData ) {
+	private onSyncTimeline( data: BCTimelineData ) {
 
-		this.setFrame( data.current, data.start, data.end );
+		this.setTimeline( data.current, data.start, data.end );
 
 	}
 
@@ -237,7 +226,7 @@ export class BlenderConnector extends EventEmitter {
 
 		} else if ( msg.type == "sync/timeline" ) {
 
-			this.onSyncFrame( msg.data );
+			this.onSyncTimeline( msg.data );
 
 
 		}
@@ -307,213 +296,13 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
-	public getValue<T>( propertyName: string ): T | null {
-
-		let uni = this.uniforms[ propertyName ];
-
-		if ( uni ) {
-
-			return uni.value;
-
-		}
-
-		let fcurveGroup = this.fcurveGroupList[ propertyName ];
-
-		if ( fcurveGroup ) {
-
-			let initValue = fcurveGroup.createInitValue();
-
-			return this.getUniform( propertyName, initValue ).value;
-
-		}
-
-		return null;
-
-	}
-
-	public getValueAsScalar( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( typeof value == 'number' ) {
-
-				return value;
-
-			} else {
-
-				return value.x;
-
-			}
-
-		}
-
-		return 0;
-
-	}
-
-	public getValueAsVector2( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( typeof value == 'number' ) {
-
-				return new THREE.Vector2( value, 0.0 );
-
-			} else if ( 'isVector2' in value ) {
-
-				return value;
-
-			} else {
-
-				return new THREE.Vector2( value.x, value.y );
-
-			}
-
-		} else {
-
-			return new THREE.Vector2();
-
-		}
-
-	}
-
-	public getValueAsVector3( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( ( value as THREE.Vector3 ).isVector3 ) {
-
-				return value as THREE.Vector3;
-
-			}
-
-			if ( typeof value == 'number' ) {
-
-				return new THREE.Vector3( value, value, value );
-
-			} else {
-
-				let res = new THREE.Vector3( value.x, value.y );
-
-				if ( 'isVector4' in value ) {
-
-					res.z = value.z;
-
-				}
-
-				return res;
-
-			}
-
-		} else {
-
-			return new THREE.Vector3();
-
-		}
-
-	}
-
-	public getValueAsVector4( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( ( value as THREE.Vector4 ).isVector4 ) {
-
-				return value as THREE.Vector4;
-
-			}
-
-			if ( typeof value == 'number' ) {
-
-				return new THREE.Vector4( value, value, value, value );
-
-			} else {
-
-				let res = new THREE.Vector4( value.x, value.y );
-
-				if ( 'isVector3' in value ) {
-
-					res.z = value.z;
-
-				}
-
-			}
-
-		} else {
-
-			return new THREE.Vector4();
-
-		}
-
-	}
-
-	public getValueAsEuler( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		let res = new THREE.Euler();
-		res.order = 'YXZ';
-
-		if ( value ) {
-
-			if ( typeof value == 'number' ) {
-
-				res.x = value;
-
-			} else {
-
-				res.x = value.x;
-				res.y = value.y;
-
-				if ( 'isVector3' in value || 'isVector4' in value ) {
-
-					res.z = value.z;
-
-				}
-
-			}
-
-		}
-
-		return res;
-
-	}
-
-	public getUniform<T>( propertyName: string, initialValue: T ) {
-
-		if ( ! this.uniforms[ propertyName ] ) {
-
-			this.uniforms[ propertyName ] = {
-				value: initialValue
-			};
-
-		}
-
-		return this.uniforms[ propertyName ];
-
-	}
-
-	public setFrame( current: number, start?:number, end?:number ) {
+	public setTimeline( current: number, start?:number, end?:number ) {
 
 		this.frameCurrent = current;
 		this.frameStart = start || this.frameStart;
 		this.frameEnd = end || this.frameEnd;
 
-		for ( let i = 0; i < this.actions.length; i ++ ) {
-
-			this.actions[ i ].updateFrame( this.frameCurrent );
-
-		}
-
-		this.emitEvent( 'sync/timeline', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
+		this.emitEvent( 'update/timeline', [ this.frameCurrent, this.frameStart, this.frameEnd ] );
 
 	}
 

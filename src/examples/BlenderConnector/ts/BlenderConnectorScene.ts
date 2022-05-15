@@ -8,12 +8,18 @@ import boxFrag from './shaders/box.fs';
 export class BlenderConnectorScene extends ORE.BaseLayer {
 
 	private connector?: BlenderConnector;
+	private cubeAction?: ORE.AnimationAction;
+	private shaderAction?: ORE.AnimationAction;
 
 	constructor() {
 
 		super();
 
-		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {} );
+		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
+			color: {
+				value: new THREE.Vector4()
+			}
+		} );
 
 	}
 
@@ -25,8 +31,53 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			Connector
 		-------------------------------*/
 
-		this.connector = new ORE.BlenderConnector( 'ws://localhost:3100' );
-		this.connector.syncJsonScene( './assets/three-connector.json' );
+		this.connector = new ORE.BlenderConnector();
+
+		this.connector.addListener( 'update/scene', ( connector: ORE.BlenderConnector ) => {
+
+			let cubeAction = connector.getAction( 'CubeAction' );
+
+			if ( cubeAction ) {
+
+				this.cubeAction = cubeAction;
+
+				this.cubeAction.addListener( 'update', ( action: ORE.AnimationAction ) => {
+
+					let box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
+					box.position.copy( action.getValueAsVector3( 'CubePosition' ) );
+					box.rotation.copy( action.getValueAsEuler( 'CubeRotation' ) );
+					box.scale.copy( action.getValueAsVector3( 'CubeScale' ) );
+
+				} );
+
+			}
+
+			let shaderAction = connector.getAction( 'Shader NodetreeAction.001' );
+
+			if ( shaderAction ) {
+
+				this.shaderAction = shaderAction;
+
+				this.shaderAction.addListener( 'update', ( action: ORE.AnimationAction ) => {
+
+					this.commonUniforms.color.value.copy( action.getValueAsVector4( 'CubeColor' ) );
+
+				} );
+
+			}
+
+		} );
+
+		this.connector.addListener( 'update/timeline', ( current: number ) => {
+
+			this.cubeAction?.updateFrame( current );
+			this.shaderAction?.updateFrame( current );
+
+		} );
+
+		this.connector.connect( 'ws://localhost:3100' );
+
+		// this.connector.syncJsonScene( './assets/three-connector.json' );
 
 		/*-------------------------------
 			gltf
@@ -76,7 +127,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			Uniforms
 		-------------------------------*/
 
-		this.commonUniforms.color = this.connector.getUniform( 'CubeColor', new THREE.Vector4( 1.0, 1.0, 1.0, 1.0 ) );
+		// this.commonUniforms.color = this.connector.getUniform( 'CubeColor', new THREE.Vector4( 1.0, 1.0, 1.0, 1.0 ) );
 
 		/*-------------------------------
 			Scene
@@ -92,21 +143,9 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 		if ( this.connector && ! this.connector.connected ) {
 
-			this.connector.setFrame( ( this.time % 3 ) * 60.0 );
+			// this.connector.setTimeline( ( this.time % 3 ) * 60.0 );
 
 		}
-
-		this.scene.traverse( obj => {
-
-			if ( obj.name == 'Cube' && this.connector ) {
-
-				obj.position.copy( this.connector.getValueAsVector3( 'CubePosition' ) );
-				obj.rotation.copy( this.connector.getValueAsEuler( 'CubeRotation' ) );
-				obj.scale.copy( this.connector.getValueAsVector3( 'CubeScale' ) );
-
-			}
-
-		} );
 
 		if ( this.renderer ) {
 
