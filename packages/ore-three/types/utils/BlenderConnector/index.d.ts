@@ -66,6 +66,7 @@ export declare class BlenderConnector extends EventEmitter {
     getActionNameList(objectName: string): string[];
     getAction(actionName: string): AnimationAction | null;
     getActionList(objectName: string): AnimationAction[];
+    getActionContainsAccessor(accessor: string): AnimationAction | null;
     setTimeline(current: number, start?: number, end?: number): void;
     dispose(): void;
     disposeWS(): void;

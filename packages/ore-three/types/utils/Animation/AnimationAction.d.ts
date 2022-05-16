@@ -12,12 +12,8 @@ export declare class AnimationAction extends EventEmitter {
     removeFCurve(propertyName: string): void;
     getFCurveGroup(propertyName: string): FCurveGroup | null;
     assignUniforms(propertyName: string, uniform: THREE.IUniform): void;
-    getUniforms<T>(propertyName: string): THREE.IUniform<T> | null;
-    getValue<T>(propertyName: string): T | null;
-    getValueAsScalar(propertyName: string): number;
-    getValueAsVector2(propertyName: string): THREE.Vector2;
-    getValueAsVector3(propertyName: string): THREE.Vector3;
-    getValueAsVector4(propertyName: string): THREE.Vector4 | undefined;
-    getValueAsEuler(propertyName: string): THREE.Euler;
+    getUniforms<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>(propertyName: string): THREE.IUniform<T> | null;
+    getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number>(propertyName: string): T | null;
+    getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>(propertyName: string, target: T): T;
     updateFrame(frame: number): void;
 }

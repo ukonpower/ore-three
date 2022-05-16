@@ -43,9 +43,9 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 				this.cubeAction.addListener( 'update', ( action: ORE.AnimationAction ) => {
 
 					let box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
-					box.position.copy( action.getValueAsVector3( 'CubePosition' ) );
-					box.rotation.copy( action.getValueAsEuler( 'CubeRotation' ) );
-					box.scale.copy( action.getValueAsVector3( 'CubeScale' ) );
+					action.getValue( 'CubePosition', box.position );
+					action.getValue( 'CubeRotation', box.rotation );
+					action.getValue( 'CubeScale', box.scale );
 
 				} );
 
@@ -59,7 +59,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				this.shaderAction.addListener( 'update', ( action: ORE.AnimationAction ) => {
 
-					this.commonUniforms.color.value.copy( action.getValueAsVector4( 'CubeColor' ) );
+					action.getValue( this.commonUniforms.color.value );
 
 				} );
 

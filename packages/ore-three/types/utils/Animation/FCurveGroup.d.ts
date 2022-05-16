@@ -11,5 +11,5 @@ export declare class FCurveGroup extends EventEmitter {
     constructor(name?: string, x?: FCurve, y?: FCurve, z?: FCurve, w?: FCurve, scalar?: FCurve);
     setFCurve(curve: FCurve, axis: FCurveAxis): void;
     calcType(): void;
-    createInitValue(): THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | 0;
+    createInitValue(): THREE.Vector3 | THREE.Vector2 | 0 | THREE.Vector4;
 }

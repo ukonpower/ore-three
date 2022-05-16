@@ -296,6 +296,18 @@ export class BlenderConnector extends EventEmitter {
 
 	}
 
+	public getActionContainsAccessor( accessor: string ) {
+
+		return this.actions.find(action => {
+
+			let curveKeys = Object.keys( action.curves );
+
+			return curveKeys.some(curveName => curveName==accessor)
+			
+		}) || null
+		
+	}
+
 	public setTimeline( current: number, start?:number, end?:number ) {
 
 		this.frameCurrent = current;

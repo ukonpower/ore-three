@@ -47,7 +47,7 @@ export class AnimationAction extends EventEmitter {
 
 	}
 
-	public getUniforms<T>( propertyName: string ): THREE.IUniform<T> | null {
+	public getUniforms<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName: string ): THREE.IUniform<T> | null {
 
 		if ( this.uniforms[ propertyName ] ) {
 			
@@ -60,7 +60,7 @@ export class AnimationAction extends EventEmitter {
 		if( curveGroup ) {
 			
 			let uni = {
-				value: curveGroup.createInitValue() as unknown as T
+				value: curveGroup.createInitValue() as T
 			};
 			
 			this.uniforms[ propertyName ] = uni;
@@ -73,173 +73,44 @@ export class AnimationAction extends EventEmitter {
 
 	}
 
-	public getValue<T>( propertyName: string ): T | null {
+	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number>( propertyName: string ): T | null;
+	
+	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler >( propertyName: string, target: T ): T;
+	
+	public getValue( propertyName: string, target?: THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler ): THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number | null {
 
-		let uniform = this.getUniforms<T>(propertyName);
+		let uniform = this.getUniforms(propertyName);
 
-		if( uniform ) {
+		if( !uniform ) return target || null;
 
-			return uniform.value
+		let value = uniform.value;
+		
+		if( !target ) return value;
+
+		if( typeof value == 'number' ) {
+
+			target.x = value;
+
+			return target;
+
+		}
+
+		target.x = value.x;
+		target.y = value.y;
+
+		if( 'z' in target && 'z' in value ) {
+
+			target.z = value.z
 			
 		}
 
-		return null;
+		if( 'w' in target && 'w' in value ) {
 
-	}
-	
-	public getValueAsScalar( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( typeof value == 'number' ) {
-
-				return value;
-
-			} else {
-
-				return value.x;
-
-			}
-
+			target.w = value.w
+			
 		}
-
-		return 0;
-
-	}
-
-	public getValueAsVector2( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( typeof value == 'number' ) {
-
-				return new THREE.Vector2( value, 0.0 );
-
-			} else if ( 'isVector2' in value ) {
-
-				return value;
-
-			} else {
-
-				return new THREE.Vector2( value.x, value.y );
-
-			}
-
-		} else {
-
-			return new THREE.Vector2();
-
-		}
-
-	}
-
-	public getValueAsVector3( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( ( value as THREE.Vector3 ).isVector3 ) {
-
-				return value as THREE.Vector3;
-
-			}
-
-			if ( typeof value == 'number' ) {
-
-				return new THREE.Vector3( value, value, value );
-
-			} else {
-
-				let res = new THREE.Vector3( value.x, value.y );
-
-				if ( 'isVector4' in value ) {
-
-					res.z = value.z;
-
-				}
-
-				return res;
-
-			}
-
-		} else {
-
-			return new THREE.Vector3();
-
-		}
-
-	}
-
-	public getValueAsVector4( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		if ( value ) {
-
-			if ( ( value as THREE.Vector4 ).isVector4 ) {
-
-				return value as THREE.Vector4;
-
-			}
-
-			if ( typeof value == 'number' ) {
-
-				return new THREE.Vector4( value, value, value, value );
-
-			} else {
-
-				let res = new THREE.Vector4( value.x, value.y );
-
-				if ( 'isVector3' in value ) {
-
-					res.z = value.z;
-
-				}
-
-			}
-
-		} else {
-
-			return new THREE.Vector4();
-
-		}
-
-	}
-
-	public getValueAsEuler( propertyName: string ) {
-
-		let value = this.getValue<THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName );
-
-		let res = new THREE.Euler();
-		res.order = 'YXZ';
-
-		if ( value ) {
-
-			if ( typeof value == 'number' ) {
-
-				res.x = value;
-
-			} else {
-
-				res.x = value.x;
-				res.y = value.y;
-
-				if ( 'isVector3' in value || 'isVector4' in value ) {
-
-					res.z = value.z;
-
-				}
-
-			}
-
-		}
-
-		return res;
+		
+		return target || null;
 
 	}
 
@@ -254,13 +125,19 @@ export class AnimationAction extends EventEmitter {
 		for ( let i = 0; i < curveKeys.length; i ++ ) {
 
 			let fcurveGroup = this.curves[ curveKeys[ i ] ];
-			let uni = this.uniforms[ curveKeys[ i ] ];
+			let uni = this.getUniforms( curveKeys[ i ] );
 
-			if ( ! fcurveGroup || ! uni ) continue;
+			if( !uni ) return;
 
-			if ( fcurveGroup.curve.scalar ) {
+			if( typeof uni.value == 'number' ) {
 
-				uni.value = fcurveGroup.curve.scalar.getValue( frame );
+				if ( fcurveGroup.curve.scalar  ) {
+					
+					uni.value = fcurveGroup.curve.scalar.getValue( frame );
+					
+				}
+				
+				continue;
 
 			}
 
@@ -276,13 +153,13 @@ export class AnimationAction extends EventEmitter {
 
 			}
 
-			if ( fcurveGroup.curve.z ) {
+			if ( fcurveGroup.curve.z && 'z' in uni.value ) {
 
 				uni.value.z = fcurveGroup.curve.z.getValue( frame );
 
 			}
 
-			if ( fcurveGroup.curve.w ) {
+			if ( fcurveGroup.curve.w  && 'w' in uni.value ) {
 
 				uni.value.w = fcurveGroup.curve.w.getValue( frame );
 
