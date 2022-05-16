@@ -7,7 +7,10 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:ukonpower/ore-three-dev.git"
+		"url": "https://github.com/ukonpower/ore-three"
+	},
+	"bugs": {
+		"url": "https://github.com/ukonpower/ore-three/issues"
 	},
 	"scripts": {
 		"dev": "npx gulp dev --ex $npm_config_ex & npm run dev -w packages/ore-three",

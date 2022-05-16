@@ -4,22 +4,22 @@
 	"description": "",
 	"author": "ukonpower",
 	"license": "MIT",
-	"main": "./build/ore-three.js",
-	"types": "types/index.d.ts",
-	"files": [
-		"build",
-		"types"
-	],
-	"bugs": {
-		"url": "https://github.com/ukonpower/ore-three/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:ukonpower/ore-three.git"
-	},
 	"keywords": [
 		"threejs",
 		"webgl"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ukonpower/ore-three"
+	},
+	"bugs": {
+		"url": "https://github.com/ukonpower/ore-three/issues"
+	},
+	"main": "./build/ore-three.js",
+	"types": "./types/index.d.ts",
+	"files": [
+		"build",
+		"types"
 	],
 	"scripts": {
 		"dev": "webpack --config ./config/webpack/base.webpack.config.js --watch & tsc --declaration --emitDeclarationOnly -preserveWatchOutput -w",
