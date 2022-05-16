@@ -1,13 +1,12 @@
 import * as THREE from 'three';
 import * as ORE from 'ore-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { BlenderConnector } from 'ore-three';
 
 import boxVert from './shaders/box.vs';
 import boxFrag from './shaders/box.fs';
 export class BlenderConnectorScene extends ORE.BaseLayer {
 
-	private connector?: BlenderConnector;
+	private connector?: ORE.BlenderConnector;
 	private cubeAction?: ORE.AnimationAction;
 	private shaderAction?: ORE.AnimationAction;
 
