@@ -3,12 +3,19 @@ import EventEmitter from 'wolfy87-eventemitter';
 import { Uniforms } from '../Uniforms';
 import { FCurveGroup } from './FCurveGroup';
 
+export type AnimationFrameInfo = {
+	start: number
+	end: number
+	duration: number
+}
+
 export class AnimationAction extends EventEmitter {
 
 	public name: string;
 	public curves: {[key:string]:FCurveGroup} = {};
-
 	private uniforms: Uniforms;
+	
+	public frame: AnimationFrameInfo;
 
 	constructor( name?: string ) {
 
@@ -17,17 +24,65 @@ export class AnimationAction extends EventEmitter {
 		this.name = name || '';
 		this.uniforms = {};
 
+		this.frame = {
+			start: 0,
+			end: 0,
+			duration: 0,
+		}
+		
 	}
 
 	public addFcurveGroup( propertyName: string, fcurveGroup: FCurveGroup ) {
 
 		this.curves[ propertyName ] = fcurveGroup;
 
+		this.calcFrame();
+
 	}
 
 	public removeFCurve( propertyName: string ) {
 
 		delete this.curves[ propertyName ];
+
+		this.calcFrame();
+		
+	}
+
+	private calcFrame() {
+
+		let curveKeys = Object.keys( this.curves )
+
+		let minStart = Infinity
+		let maxEnd = -Infinity
+		
+		for ( let i = 0; i < curveKeys.length; i++ ) {
+
+			let curve = (this.curves)[ curveKeys[ i ] ];
+
+			if( curve.frameStart < minStart ) {
+
+				minStart = curve.frameStart;
+				
+			}
+
+			if( curve.frameEnd > maxEnd ) {
+
+				maxEnd = curve.frameEnd;
+				
+			}
+
+		}
+
+		if( minStart == -Infinity || maxEnd == Infinity) {
+
+			minStart = 0;
+			maxEnd = 1
+			
+		}
+
+		this.frame.start = minStart;
+		this.frame.end = maxEnd;
+		this.frame.duration = this.frame.end - this.frame.start;
 
 	}
 

@@ -10,21 +10,51 @@ export class FCurveGroup extends EventEmitter {
 	public curve: {[axis in FCurveAxis]: FCurve | null};
 	public type: FCurveGroupType = 'scalar';
 
+	public frameStart: number;
+	public frameEnd: number;
+	public frameDuration: number;
+
 	constructor( name?: string, x?: FCurve, y?: FCurve, z?: FCurve, w?: FCurve, scalar?: FCurve ) {
 
 		super();
 
 		this.name = name || '';
-
+		
+		this.frameStart = 0;
+		this.frameEnd = 0;
+		this.frameDuration = 0;
+		
 		this.curve = {
-			x: x || null,
-			y: y || null,
-			z: z || null,
-			w: w || null,
-			scalar: scalar || null
+			x: null,
+			y: null,
+			z: null,
+			w: null,
+			scalar: null
 		};
 
-		this.calcType();
+		if( x ) {
+
+			this.setFCurve( x, 'x' )
+
+		}
+		
+		if( y ) {
+
+			this.setFCurve( y, 'y' )
+			
+		}
+		
+		if( z ) {
+
+			this.setFCurve( z, 'z' )
+			
+		}
+
+		if( w ) {
+
+			this.setFCurve( w, 'w' )
+			
+		}
 
 	}
 
@@ -33,6 +63,7 @@ export class FCurveGroup extends EventEmitter {
 		this.curve[ axis ] = curve;
 
 		this.calcType();
+		this.calcFrame();
 
 	}
 
@@ -63,7 +94,47 @@ export class FCurveGroup extends EventEmitter {
 		}
 
 	}
+	
+	private calcFrame() {
+		
+		let curveKeys = Object.keys( this.curve )
 
+		let minStart = Infinity
+		let maxEnd = -Infinity
+		
+		for ( let i = 0; i < curveKeys.length; i++ ) {
+
+			let curve = (this.curve as {[key: string]: FCurve})[ curveKeys[ i ] ];
+
+			if( !curve ) continue;
+
+			if( curve.frameStart < minStart ) {
+
+				minStart = curve.frameStart;
+				
+			}
+
+			if( curve.frameEnd > maxEnd ) {
+
+				maxEnd = curve.frameEnd;
+				
+			}
+
+		}
+
+		if( minStart == -Infinity || maxEnd == Infinity) {
+
+			minStart = 0;
+			maxEnd = 1
+			
+		}
+
+		this.frameStart = minStart;
+		this.frameEnd = maxEnd;
+		this.frameDuration = this.frameEnd - this.frameStart;
+		
+	}
+	
 	public createInitValue() {
 
 		if ( this.type == 'vec2' ) {
