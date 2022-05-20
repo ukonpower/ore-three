@@ -207,8 +207,6 @@ export class BlenderConnector extends EventEmitter {
 
 		if ( msg.type == 'sync/scene' ) {
 
-			console.log( msg.data);
-			
 			this.onSyncScene( msg.data );
 
 		} else if ( msg.type == "sync/timeline" ) {
