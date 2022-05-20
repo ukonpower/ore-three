@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import EventEmitter from "wolfy87-eventemitter";
 import { AnimationAction } from "../Animation/AnimationAction";
-import { FCurveGroup } from '../Animation/FCurveGroup';
 import { FCurveInterpolation } from "../Animation/FCurveKeyFrame";
 export declare type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage;
 export declare type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scalar';
@@ -10,16 +9,16 @@ export declare type BCSyncSceneMessage = {
     data: BCSceneData;
 };
 export declare type BCSceneData = {
-    fcurves: BCAnimationCurveParam[];
     actions: BCAnimationActionParam[];
     objects: BCSceneObjectData[];
 };
 export declare type BCAnimationActionParam = {
     name: string;
-    fcurves: string[];
+    fcurve_groups: {
+        [key: string]: BCAnimationCurveParam[];
+    };
 };
 export declare type BCAnimationCurveParam = {
-    name: string;
     keyframes: BCAnimationCurveKeyFrameParam[];
     axis: BCAnimationCurveAxis;
 };
@@ -52,9 +51,6 @@ export declare class BlenderConnector extends EventEmitter {
     frameEnd: number;
     objects: BCSceneObjectData[];
     actions: AnimationAction[];
-    fcurveGroupList: {
-        [name: string]: FCurveGroup;
-    };
     constructor(url?: string);
     connect(url: string): void;
     syncJsonScene(jsonPath: string): void;

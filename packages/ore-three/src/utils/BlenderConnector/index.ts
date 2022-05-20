@@ -16,18 +16,16 @@ export type BCSyncSceneMessage = {
 }
 
 export type BCSceneData = {
-    fcurves: BCAnimationCurveParam[];
 	actions: BCAnimationActionParam[];
     objects: BCSceneObjectData[];
 }
 
 export type BCAnimationActionParam = {
     name: string;
-    fcurves: string[];
+    fcurve_groups: {[key: string]: BCAnimationCurveParam[]};
 }
 
 export type BCAnimationCurveParam = {
-    name: string;
     keyframes: BCAnimationCurveKeyFrameParam[];
 	axis: BCAnimationCurveAxis
 }
@@ -74,7 +72,6 @@ export class BlenderConnector extends EventEmitter {
 
 	public objects: BCSceneObjectData[] = [];
 	public actions: AnimationAction[] = [];
-	public fcurveGroupList: {[name:string]:FCurveGroup} = {};
 
 	constructor( url?: string ) {
 
@@ -136,49 +133,37 @@ export class BlenderConnector extends EventEmitter {
 		this.actions.length = 0;
 		this.objects.length = 0;
 
-		// curves
-
-		data.fcurves.forEach( fcurveData => {
-
-			let curve = new FCurve();
-
-			curve.set( fcurveData.keyframes.map( frame => {
-
-				return new FCurveKeyFrame( frame.c, frame.h_l, frame.h_r, frame.i );
-
-			} ) );
-
-			let fcurveGroup = this.fcurveGroupList[ fcurveData.name ];
-
-			if ( ! fcurveGroup ) {
-
-				fcurveGroup = new FCurveGroup( fcurveData.name );
-
-				this.fcurveGroupList[ fcurveData.name ] = fcurveGroup;
-
-			}
-
-			fcurveGroup.setFCurve( curve, fcurveData.axis );
-
-		} );
-
 		// actions
 
 		data.actions.forEach( actionData => {
 
 			let action = new AnimationAction( actionData.name );
 
-			actionData.fcurves.forEach( fcurveGroupName => {
+			let fcurveGroupNames = Object.keys(actionData.fcurve_groups)
 
-				let fcurveGroup = this.fcurveGroupList[ fcurveGroupName ];
+			for ( let i = 0; i < fcurveGroupNames.length; i++ ) {
 
-				if ( fcurveGroup ) {
+				let fcurveGroupName = fcurveGroupNames[i];
+				
+				let fcurveGroup = new FCurveGroup( fcurveGroupName );
+				
+				actionData.fcurve_groups[fcurveGroupName].forEach( fcurveData => {
 
-					action.addFcurveGroup( fcurveGroupName, fcurveGroup );
+					let curve = new FCurve();
+					
+					curve.set( fcurveData.keyframes.map( frame => {
+	
+						return new FCurveKeyFrame( frame.c, frame.h_l, frame.h_r, frame.i );
+	
+					} ) );
+					
+					fcurveGroup.setFCurve( curve, fcurveData.axis );
+	
+				} );
 
-				}
-
-			} );
+				action.addFcurveGroup( fcurveGroup.name, fcurveGroup );
+				
+			}
 
 			this.actions.push( action );
 
@@ -222,6 +207,8 @@ export class BlenderConnector extends EventEmitter {
 
 		if ( msg.type == 'sync/scene' ) {
 
+			console.log( msg.data);
+			
 			this.onSyncScene( msg.data );
 
 		} else if ( msg.type == "sync/timeline" ) {

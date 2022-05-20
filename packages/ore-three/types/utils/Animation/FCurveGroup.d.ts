@@ -15,5 +15,5 @@ export declare class FCurveGroup extends EventEmitter {
     setFCurve(curve: FCurve, axis: FCurveAxis): void;
     calcType(): void;
     private calcFrame;
-    createInitValue(): 0 | THREE.Vector2 | THREE.Vector3 | THREE.Vector4;
+    createInitValue(): THREE.Vector3 | THREE.Vector2 | 0 | THREE.Vector4;
 }
