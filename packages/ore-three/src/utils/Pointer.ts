@@ -244,7 +244,8 @@ export class Pointer extends THREE.EventDispatcher {
 				position: this.position.clone(),
 				delta: this.delta.clone()
 			} );
-
+			
+			this.delta.set( 0, 0 )
 		}
 
 	}
