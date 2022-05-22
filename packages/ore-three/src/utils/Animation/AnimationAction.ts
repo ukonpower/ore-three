@@ -169,6 +169,30 @@ export class AnimationAction extends EventEmitter {
 
 	}
 
+	public getValueAt<T extends number>( propertyName: string, frame: number ): T | null;
+	
+	public getValueAt<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler >( propertyName: string, frame: number, target: T ): T;
+	
+	public getValueAt( propertyName: string, frame: number, target?: THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler ): THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number | null {
+
+		let curve = this.getFCurveGroup( propertyName );
+
+		if( target )  {
+
+			if( !curve ) return target;
+			
+			return curve.getValue( frame || 0, target )
+
+		} else {
+
+			if( !curve ) return null;
+				
+			return curve.getValue( frame )
+			
+		}
+		
+	}
+
 	/*-------------------------------
 		UpdateFrame
 	-------------------------------*/
@@ -182,42 +206,16 @@ export class AnimationAction extends EventEmitter {
 			let fcurveGroup = this.curves[ curveKeys[ i ] ];
 			let uni = this.getUniforms( curveKeys[ i ] );
 
-			if( !uni ) return;
+			if( !uni ) continue;
 
 			if( typeof uni.value == 'number' ) {
 
-				if ( fcurveGroup.curve.scalar  ) {
-					
-					uni.value = fcurveGroup.curve.scalar.getValue( frame );
-					
-				}
+				uni.value = fcurveGroup.getValue(frame) || 0
 				
-				continue;
+			} else {
 
-			}
-
-			if ( fcurveGroup.curve.x ) {
-
-				uni.value.x = fcurveGroup.curve.x.getValue( frame );
-
-			}
-
-			if ( fcurveGroup.curve.y ) {
-
-				uni.value.y = fcurveGroup.curve.y.getValue( frame );
-
-			}
-
-			if ( fcurveGroup.curve.z && 'z' in uni.value ) {
-
-				uni.value.z = fcurveGroup.curve.z.getValue( frame );
-
-			}
-
-			if ( fcurveGroup.curve.w  && 'w' in uni.value ) {
-
-				uni.value.w = fcurveGroup.curve.w.getValue( frame );
-
+				fcurveGroup.getValue(frame, uni.value)
+				
 			}
 
 		}

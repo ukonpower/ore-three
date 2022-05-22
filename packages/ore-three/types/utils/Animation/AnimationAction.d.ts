@@ -22,5 +22,7 @@ export declare class AnimationAction extends EventEmitter {
     getUniforms<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>(propertyName: string): THREE.IUniform<T> | null;
     getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number>(propertyName: string): T | null;
     getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>(propertyName: string, target: T): T;
+    getValueAt<T extends number>(propertyName: string, frame: number): T | null;
+    getValueAt<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>(propertyName: string, frame: number, target: T): T;
     updateFrame(frame: number): void;
 }

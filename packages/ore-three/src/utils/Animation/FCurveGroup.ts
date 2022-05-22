@@ -155,4 +155,53 @@ export class FCurveGroup extends EventEmitter {
 
 	}
 
+	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>( frame: number, target: T ): T;
+
+	public getValue( frame: number ): number | null;
+
+	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>( frame: number, target?: T): T | number | null {
+
+		if( target ) {
+
+			if ( this.curve.x ) {
+
+				target.x = this.curve.x.getValue( frame );
+
+			}
+
+			if ( this.curve.y ) {
+
+				target.y = this.curve.y.getValue( frame );
+
+			}
+
+			if ( this.curve.z && 'z' in target ) {
+
+				target.z = this.curve.z.getValue( frame );
+
+			}
+
+			if ( this.curve.w  && 'w' in target ) {
+
+				target.w = this.curve.w.getValue( frame );
+
+			}
+
+			return target;
+			
+		} else {
+
+			if ( this.curve.scalar ) {
+						
+				return  this.curve.scalar.getValue( frame );
+				
+			}
+
+			return null;
+
+		}
+		
+	}
+
+	
 }
