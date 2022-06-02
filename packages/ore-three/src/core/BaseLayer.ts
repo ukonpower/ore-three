@@ -38,7 +38,7 @@ export declare interface TouchEventArgs {
 	event: PointerEvent | TouchEvent;
 	position: THREE.Vector2;
 	delta: THREE.Vector2;
-	normalizedPosition: THREE.Vector2;
+	screenPosition: THREE.Vector2;
 	windowPosition: THREE.Vector2;
 }
 
@@ -248,17 +248,17 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		}
 
-		const normalizedPosition = canvasPointerPos.clone();
-		normalizedPosition.divide( this.info.size.canvasSize );
-		normalizedPosition.y = 1.0 - normalizedPosition.y;
-		normalizedPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
+		const screenPosition = canvasPointerPos.clone();
+		screenPosition.divide( this.info.size.canvasSize );
+		screenPosition.y = 1.0 - screenPosition.y;
+		screenPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
 
 
 		const args: TouchEventArgs = {
 			event: e.pointerEvent,
 			position: canvasPointerPos.clone(),
 			delta: e.delta.clone(),
-			normalizedPosition: normalizedPosition.clone(),
+			screenPosition: screenPosition.clone(),
 			windowPosition: e.position.clone()
 		};
 

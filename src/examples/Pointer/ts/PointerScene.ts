@@ -47,7 +47,7 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = args.normalizedPosition;
+		let cursorPos = args.screenPosition;
 
 		if ( this.box ) {
 
@@ -71,7 +71,7 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onHover( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = args.normalizedPosition;
+		let cursorPos = args.screenPosition;
 
 		if ( cursorPos.x != cursorPos.x ) return;
 

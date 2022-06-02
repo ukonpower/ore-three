@@ -32,7 +32,7 @@ export declare interface TouchEventArgs {
     event: PointerEvent | TouchEvent;
     position: THREE.Vector2;
     delta: THREE.Vector2;
-    normalizedPosition: THREE.Vector2;
+    screenPosition: THREE.Vector2;
     windowPosition: THREE.Vector2;
 }
 export declare class BaseLayer extends THREE.EventDispatcher {
