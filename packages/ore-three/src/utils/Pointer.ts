@@ -77,7 +77,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	public getNormalizePosition( windowSize: THREE.Vector2 ) {
+	public getScreenPosition( windowSize: THREE.Vector2 ) {
 
 		if ( this.position.x != this.position.x ) return new THREE.Vector2( NaN, NaN );
 
@@ -91,14 +91,14 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	public getRelativePosition( elm: HTMLElement, normalize?: boolean ) {
+	public getRelativePosition( elm: HTMLElement, screen?: boolean ) {
 
 		const rect: DOMRect = elm.getClientRects()[ 0 ] as DOMRect;
 
 		let x = this.position.x - rect.left;
 		let y = this.position.y - rect.top;
 
-		if ( normalize ) {
+		if ( screen ) {
 
 			x /= rect.width;
 			y /= rect.height;
