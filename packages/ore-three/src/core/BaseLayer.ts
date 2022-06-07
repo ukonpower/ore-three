@@ -137,6 +137,10 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public onUnbind() {
 
+		this.dispatchEvent( {
+			type: 'dispose'
+		} );
+
 		this.removeChildrens( this.scene );
 
 		this.readyAnimate = false;
