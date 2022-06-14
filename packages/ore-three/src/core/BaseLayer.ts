@@ -200,7 +200,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		if ( this.renderer == null ) return;
 
-		const newWindowSize = new THREE.Vector2( window.innerWidth, window.innerHeight );
+		const newWindowSize = new THREE.Vector2( document.body.clientWidth, window.innerHeight );
 		const newCanvasSize = new THREE.Vector2();
 
 		if ( this.info.wrapperElement ) {
