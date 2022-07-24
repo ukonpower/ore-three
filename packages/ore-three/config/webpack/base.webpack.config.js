@@ -11,5 +11,6 @@ module.exports = merge( baseConfig, {
 		filename: info.packageFileName + '.js',
 		library: info.packageBuildName,
 		libraryTarget: 'umd',
+		globalObject: 'this'
 	}
 } );
