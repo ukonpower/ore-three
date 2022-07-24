@@ -9,10 +9,18 @@ export class FCurve extends EventEmitter {
 
 	private cache: { frame: number, value: number } = { frame: NaN, value: NaN };
 
+	public frameStart: number;
+	public frameEnd: number;
+	public frameDuration: number;
+
 	constructor( frames?: FCurveKeyFrame[] ) {
 
 		super();
-
+		
+		this.frameStart = 0;
+		this.frameEnd = 0;
+		this.frameDuration = 0;
+		
 		this.set( frames );
 
 	}
@@ -54,6 +62,11 @@ export class FCurve extends EventEmitter {
 		}
 
 		this.keyframes.splice( index, 0, keyframe );
+
+		// set frame info
+		
+		this.frameStart = this.keyframes[0].coordinate.x
+		this.frameEnd = this.keyframes[this.keyframes.length - 1].coordinate.x
 
 	}
 
