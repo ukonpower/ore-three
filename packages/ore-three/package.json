@@ -26,8 +26,6 @@
 		"build": "webpack --config ./config/webpack/base.webpack.config.js & webpack --config ./config/webpack/min.webpack.config.js && tsc --declaration --emitDeclarationOnly"
 	},
 	"dependencies": {
-		"lethargy": "^1.0.9",
-		"to-px": "^1.1.0",
 		"wolfy87-eventemitter": "^5.2.9"
 	},
 	"devDependencies": {

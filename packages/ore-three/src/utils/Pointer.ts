@@ -1,8 +1,5 @@
 import * as THREE from "three";
 
-const { Lethargy } = require( 'lethargy' );
-const toPx = require( 'to-px' );
-
 export class Pointer extends THREE.EventDispatcher {
 
 	protected isSP: boolean;
@@ -244,8 +241,9 @@ export class Pointer extends THREE.EventDispatcher {
 				position: this.position.clone(),
 				delta: this.delta.clone()
 			} );
-			
-			this.delta.set( 0, 0 )
+
+			this.delta.set( 0, 0 );
+
 		}
 
 	}
@@ -253,35 +251,11 @@ export class Pointer extends THREE.EventDispatcher {
 	protected trackpadMemDelta = 0;
 	protected trackpadMax = false;
 
-	protected lethargy = new Lethargy( 7, 0, 0.05 );
-
 	protected wheel( e: WheelEvent ) {
-
-		let delta = e.deltaY;
-		let trackpadDelta = 0;
-
-		switch ( e.deltaMode ) {
-
-			case e.DOM_DELTA_LINE:
-				delta *= toPx( 'ex', window ) * 2.5;
-				break;
-
-			case e.DOM_DELTA_PAGE:
-				delta *= window.innerHeight;
-				break;
-
-		}
-
-		if ( this.lethargy.check( e ) ) {
-
-			trackpadDelta = delta;
-
-		}
 
 		this.dispatchEvent( {
 			type: 'wheel',
 			wheelEvent: e,
-			trackpadDelta: trackpadDelta
 		} );
 
 	}

@@ -16,6 +16,5 @@ export declare class Pointer extends THREE.EventDispatcher {
     update(): void;
     protected trackpadMemDelta: number;
     protected trackpadMax: boolean;
-    protected lethargy: any;
     protected wheel(e: WheelEvent): void;
 }
