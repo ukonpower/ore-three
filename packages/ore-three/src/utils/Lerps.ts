@@ -1,3 +1,5 @@
+import { AnimatorVariableType } from "./Animator";
+
 export declare interface LerpFunc<T>{
 	( a: T, b: T, t: number ): T;
 }
@@ -59,25 +61,25 @@ export namespace Lerps {
 
 	}
 
-	export function getLerpFunc( value: any ) {
+	export function getLerpFunc( value: AnimatorVariableType ) {
 
 		if ( typeof ( value ) == 'number' ) {
 
 			return Lerps.number;
 
-		} else if ( value instanceof Array && typeof ( value[ 0 ] ) == 'number' ) {
+		} else if ( value instanceof Array ) {
 
 			return Lerps.numberArray;
 
-		} else if ( value.isVector2 | value.isVector3 | value.isVector4 | value.isColor ) {
+		} else if ( "isVector2" in value || "isVector3" in value || "isVector4" in value || "isColor" in value ) {
 
 			return Lerps.THREEVectors;
 
-		} else if ( value.isQuaternion ) {
+		} else if ( "isQuaternion" in value ) {
 
 			return Lerps.THREEQuaternion;
 
-		} else if ( value.isEuler ) {
+		} else if ( "isEuler" in value ) {
 
 			return Lerps.THREEEuler;
 

@@ -1,3 +1,4 @@
+import { AnimatorVariableType } from './Animator';
 import { EasingFunc } from './Easings';
 import { LerpFunc } from './Lerps';
 export declare interface TimelineAnimatorKeyFrame<T> {
@@ -24,7 +25,7 @@ export declare class TimelineAnimator {
     protected time: number;
     defaultEasing?: EasingFunc;
     constructor();
-    add<T>(params: TimelineAnimatorAddParams<T>): string | undefined;
+    add<T extends AnimatorVariableType>(params: TimelineAnimatorAddParams<T>): string | undefined;
     get<T>(name: string): T | null;
     getVariableObject<T>(name: string): TimelineAnimatorVariable<T> | null;
     update(time: number): void;
