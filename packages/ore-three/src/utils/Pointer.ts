@@ -27,7 +27,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 		const onTouchStart = this.onTouch.bind( this, "start" );
 		const onTouchMove = this.onTouch.bind( this, "move" );
-		const onToucmEnd = this.onTouch.bind( this, "end" );
+		const onToucEnd = this.onTouch.bind( this, "end" );
 		const onPointerDown = this.onPointer.bind( this, "start" );
 		const onPointerMove = this.onPointer.bind( this, "move" );
 		const onPointerUp = this.onPointer.bind( this, "end" );
@@ -35,7 +35,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 		elm.addEventListener( 'touchstart', onTouchStart, { passive: false } );
 		elm.addEventListener( 'touchmove', onTouchMove, { passive: false } );
-		elm.addEventListener( 'touchend', onToucmEnd, { passive: false } );
+		elm.addEventListener( 'touchend', onToucEnd, { passive: false } );
 		elm.addEventListener( 'pointerdown', onPointerDown );
 		elm.addEventListener( 'pointermove', onPointerMove );
 		elm.addEventListener( 'pointerup', onPointerUp );
@@ -48,7 +48,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 				elm.removeEventListener( 'touchstart', onTouchStart );
 				elm.removeEventListener( 'touchmove', onTouchMove );
-				elm.removeEventListener( 'touchend', onToucmEnd );
+				elm.removeEventListener( 'touchend', onToucEnd );
 				elm.removeEventListener( 'pointerdown', onPointerDown );
 				elm.removeEventListener( 'pointermove', onPointerMove );
 				elm.removeEventListener( 'pointerup', onPointerUp );
@@ -165,8 +165,6 @@ export class Pointer extends THREE.EventDispatcher {
 
 		}
 
-
-
 	}
 
 	protected touchEventHandler( posX: number, posY: number, type: string, e: TouchEvent | PointerEvent | DragEvent ) {
@@ -241,8 +239,6 @@ export class Pointer extends THREE.EventDispatcher {
 				position: this.position.clone(),
 				delta: this.delta.clone()
 			} );
-
-			this.delta.set( 0, 0 );
 
 		}
 

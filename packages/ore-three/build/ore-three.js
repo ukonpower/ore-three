@@ -2296,14 +2296,14 @@ class Pointer extends three__WEBPACK_IMPORTED_MODULE_0__.EventDispatcher {
     registerElement(elm) {
         const onTouchStart = this.onTouch.bind(this, "start");
         const onTouchMove = this.onTouch.bind(this, "move");
-        const onToucmEnd = this.onTouch.bind(this, "end");
+        const onToucEnd = this.onTouch.bind(this, "end");
         const onPointerDown = this.onPointer.bind(this, "start");
         const onPointerMove = this.onPointer.bind(this, "move");
         const onPointerUp = this.onPointer.bind(this, "end");
         const onWheel = this.wheel.bind(this);
         elm.addEventListener('touchstart', onTouchStart, { passive: false });
         elm.addEventListener('touchmove', onTouchMove, { passive: false });
-        elm.addEventListener('touchend', onToucmEnd, { passive: false });
+        elm.addEventListener('touchend', onToucEnd, { passive: false });
         elm.addEventListener('pointerdown', onPointerDown);
         elm.addEventListener('pointermove', onPointerMove);
         elm.addEventListener('pointerup', onPointerUp);
@@ -2313,7 +2313,7 @@ class Pointer extends three__WEBPACK_IMPORTED_MODULE_0__.EventDispatcher {
             if (elm.isEqualNode(e.elm)) {
                 elm.removeEventListener('touchstart', onTouchStart);
                 elm.removeEventListener('touchmove', onTouchMove);
-                elm.removeEventListener('touchend', onToucmEnd);
+                elm.removeEventListener('touchend', onToucEnd);
                 elm.removeEventListener('pointerdown', onPointerDown);
                 elm.removeEventListener('pointermove', onPointerMove);
                 elm.removeEventListener('pointerup', onPointerUp);
@@ -2429,7 +2429,6 @@ class Pointer extends three__WEBPACK_IMPORTED_MODULE_0__.EventDispatcher {
                 position: this.position.clone(),
                 delta: this.delta.clone()
             });
-            this.delta.set(0, 0);
         }
     }
     wheel(e) {
