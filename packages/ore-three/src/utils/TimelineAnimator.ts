@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { AnimatorVariableType } from './Animator';
 import { EasingFunc } from './Easings';
 import { Lerps, LerpFunc } from './Lerps';
 
@@ -33,7 +34,7 @@ export class TimelineAnimator {
 
 	}
 
-	public add<T>( params: TimelineAnimatorAddParams<T> ) {
+	public add<T extends AnimatorVariableType>( params: TimelineAnimatorAddParams<T> ) {
 
 		if ( params.keyframes.length == 0 ) {
 
