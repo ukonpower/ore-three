@@ -15,6 +15,7 @@ export declare interface AnimatorVariable<T>{
 	onAnimationFinished?: Function | null;
 	lerpFunc?: LerpFunc<T>;
 	easing: EasingFunc;
+	userData?: any;
 }
 
 export declare interface AnimatorVariableParams<T> {
@@ -22,6 +23,7 @@ export declare interface AnimatorVariableParams<T> {
 	initValue: T;
 	easing?: EasingFunc;
 	customLerpFunc?: LerpFunc<T>;
+	userData?: any;
 }
 
 export class Animator extends THREE.EventDispatcher {
@@ -51,10 +53,17 @@ export class Animator extends THREE.EventDispatcher {
 			goalValue: this.getValueClone( params.initValue ),
 			easing: params.easing || Easings.sigmoid(),
 			lerpFunc: ( params.customLerpFunc || Lerps.getLerpFunc( params.initValue ) ) as LerpFunc<T>,
+			userData: params.userData,
 		};
 
 		this.dataBase[ params.name ] = variable.value;
 		this.variables[ params.name ] = variable as unknown as AnimatorVariable<AnimatorVariableType>;
+
+		this.dispatchEvent({
+			type: 'added',
+			varName: params.name,
+			variable,
+		})
 
 		return variable;
 
