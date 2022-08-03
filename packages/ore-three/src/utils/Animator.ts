@@ -93,11 +93,11 @@ export class Animator extends THREE.EventDispatcher {
 
 		let variable = this.dataBase[ name ] as unknown as AnimatorVariableType;
 
-		if ( variable ) {
+		if ( variable !== undefined ) {
 
 			if ( typeof variable == 'number' ) {
 
-				variable = value;
+				this.dataBase[ name ] = value;
 
 			} else if ( "copy" in variable ) {
 
@@ -452,7 +452,7 @@ export class Animator extends THREE.EventDispatcher {
 			let variable = this.variables[ target ];
 			let databaseValue = this.dataBase[ target ];
 
-			if ( variable && databaseValue ) {
+			if ( variable && databaseValue !== undefined) {
 
 				if ( typeof variable.value == 'number' || ! ( 'copy' in variable.value ) ) {
 
@@ -473,7 +473,7 @@ export class Animator extends THREE.EventDispatcher {
 			let variable = this.variables[ key[ i ] ];
 			let databaseValue = this.dataBase[ key[ i ] ];
 
-			if ( variable && databaseValue ) {
+			if ( variable && databaseValue !== undefined) {
 
 				// Vector系は参照なのでnumberとnumber[]あたりだけ更新
 
