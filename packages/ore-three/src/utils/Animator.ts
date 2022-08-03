@@ -82,21 +82,21 @@ export class Animator extends THREE.EventDispatcher {
 
 	public setValue<T extends AnimatorVariableType>( name: string, value: T ) {
 
-		let variable = this.dataBase[ name ] as unknown as AnimatorVariable<T>;
+		let variable = this.dataBase[ name ] as unknown as AnimatorVariableType;
 
 		if ( variable ) {
 
-			if ( typeof variable.value == 'number' ) {
+			if ( typeof variable == 'number' ) {
 
-				variable.value = value;
+				variable = value;
 
-			} else if ( "copy" in variable.value ) {
+			} else if ( "copy" in variable ) {
 
-				variable.value.copy( value as any );
+				variable.copy( value as any );
 
-			} else if ( variable.value instanceof Array ) {
+			} else if ( variable instanceof Array ) {
 
-				( variable.value as number [] ) = ( value as number[] ).concat();
+				( variable as number [] ) = ( value as number[] ).concat();
 
 			}
 
