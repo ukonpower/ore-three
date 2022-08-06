@@ -15,6 +15,7 @@ export declare interface AnimatorVariable<T>{
 	onAnimationFinished?: Function | null;
 	lerpFunc?: LerpFunc<T>;
 	easing: EasingFunc;
+	userData?: any;
 }
 
 export declare interface AnimatorVariableParams<T> {
@@ -22,6 +23,7 @@ export declare interface AnimatorVariableParams<T> {
 	initValue: T;
 	easing?: EasingFunc;
 	customLerpFunc?: LerpFunc<T>;
+	userData?: any;
 }
 
 export class Animator extends THREE.EventDispatcher {
@@ -51,10 +53,17 @@ export class Animator extends THREE.EventDispatcher {
 			goalValue: this.getValueClone( params.initValue ),
 			easing: params.easing || Easings.sigmoid(),
 			lerpFunc: ( params.customLerpFunc || Lerps.getLerpFunc( params.initValue ) ) as LerpFunc<T>,
+			userData: params.userData,
 		};
 
 		this.dataBase[ params.name ] = variable.value;
 		this.variables[ params.name ] = variable as unknown as AnimatorVariable<AnimatorVariableType>;
+
+		this.dispatchEvent({
+			type: 'added',
+			varName: params.name,
+			variable,
+		})
 
 		return variable;
 
@@ -82,21 +91,21 @@ export class Animator extends THREE.EventDispatcher {
 
 	public setValue<T extends AnimatorVariableType>( name: string, value: T ) {
 
-		let variable = this.dataBase[ name ] as unknown as AnimatorVariable<T>;
+		let variable = this.dataBase[ name ] as unknown as AnimatorVariableType;
 
-		if ( variable ) {
+		if ( variable !== undefined ) {
 
-			if ( typeof variable.value == 'number' ) {
+			if ( typeof variable == 'number' ) {
 
-				variable.value = value;
+				this.dataBase[ name ] = value;
 
-			} else if ( "copy" in variable.value ) {
+			} else if ( "copy" in variable ) {
 
-				variable.value.copy( value as any );
+				variable.copy( value as any );
 
-			} else if ( variable.value instanceof Array ) {
+			} else if ( variable instanceof Array ) {
 
-				( variable.value as number [] ) = ( value as number[] ).concat();
+				( variable as number [] ) = ( value as number[] ).concat();
 
 			}
 
@@ -443,7 +452,7 @@ export class Animator extends THREE.EventDispatcher {
 			let variable = this.variables[ target ];
 			let databaseValue = this.dataBase[ target ];
 
-			if ( variable && databaseValue ) {
+			if ( variable && databaseValue !== undefined) {
 
 				if ( typeof variable.value == 'number' || ! ( 'copy' in variable.value ) ) {
 
@@ -464,7 +473,7 @@ export class Animator extends THREE.EventDispatcher {
 			let variable = this.variables[ key[ i ] ];
 			let databaseValue = this.dataBase[ key[ i ] ];
 
-			if ( variable && databaseValue ) {
+			if ( variable && databaseValue !== undefined) {
 
 				// Vector系は参照なのでnumberとnumber[]あたりだけ更新
 

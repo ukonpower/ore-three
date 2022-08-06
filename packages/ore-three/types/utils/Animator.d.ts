@@ -12,12 +12,14 @@ export declare interface AnimatorVariable<T> {
     onAnimationFinished?: Function | null;
     lerpFunc?: LerpFunc<T>;
     easing: EasingFunc;
+    userData?: any;
 }
 export declare interface AnimatorVariableParams<T> {
     name: string;
     initValue: T;
     easing?: EasingFunc;
     customLerpFunc?: LerpFunc<T>;
+    userData?: any;
 }
 export declare class Animator extends THREE.EventDispatcher {
     dataBase: {
