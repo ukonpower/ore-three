@@ -18,7 +18,8 @@
 		"dev-package": "npm run dev -w packages/ore-three",
 		"build": "npm run build -w packages/ore-three && npx gulp build",
 		"build-package": "cp README.md ./packages/ore-three/ && npm run build -w packages/ore-three",
-		"publish": "npm run build-package && npm publish -w packages/ore-three"
+		"publish": "npm run build-package && npm publish -w packages/ore-three",
+		"commit": "cz"
 	},
 	"workspaces": [
 		"packages/*"
@@ -31,7 +32,9 @@
 		"@typescript-eslint/eslint-plugin": "^5.19.0",
 		"@typescript-eslint/parser": "^5.19.0",
 		"browser-sync": "^2.27.9",
+		"commitizen": "^4.2.5",
 		"copy-webpack-plugin": "^10.2.4",
+		"cz-conventional-changelog": "^3.3.0",
 		"del": "^6.0.0",
 		"eslint": "^8.13.0",
 		"eslint-config-mdcs": "^5.0.0",
@@ -63,5 +66,10 @@
 	},
 	"dependencies": {
 		"wolfy87-eventemitter": "^5.2.9"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
 	}
 }
