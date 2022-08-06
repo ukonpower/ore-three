@@ -1,7 +1,10 @@
 import * as THREE from 'three';
+import { threadId } from 'worker_threads';
 import { Easings, EasingFunc } from "./Easings";
 import { LerpFunc, Lerps } from "./Lerps";
 import { Uniforms } from "./Uniforms";
+
+export type AnimatorVariableType = number | number[] | THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Quaternion | THREE.Euler
 
 export declare interface AnimatorVariable<T>{
 	time: number;
@@ -12,19 +15,23 @@ export declare interface AnimatorVariable<T>{
 	onAnimationFinished?: Function | null;
 	lerpFunc?: LerpFunc<T>;
 	easing: EasingFunc;
+	userData?: any;
 }
 
-export declare interface AnimatorValiableParams<T> {
+export declare interface AnimatorVariableParams<T> {
 	name: string;
 	initValue: T;
 	easing?: EasingFunc;
 	customLerpFunc?: LerpFunc<T>;
+	userData?: any;
 }
 
 export class Animator extends THREE.EventDispatcher {
 
-	protected variables: { [ key: string ]: AnimatorVariable<any> };
-	protected _isAnimating: boolean = false;
+	public dataBase: {[ key: string ]: AnimatorVariableType };
+	public isAnimating: boolean = false;
+
+	protected variables: { [ key: string ]: AnimatorVariable<AnimatorVariableType> };
 	protected animatingCount: number = 0;
 	protected dispatchEvents: Function[] = [];
 
@@ -33,33 +40,38 @@ export class Animator extends THREE.EventDispatcher {
 		super();
 
 		this.variables = {};
+		this.dataBase = {};
 
 	}
 
-	public get isAnimating() {
+	public add<T extends AnimatorVariableType>( params: AnimatorVariableParams<T> ) {
 
-		return this._isAnimating;
-
-	}
-
-	public add<T>( params: AnimatorValiableParams<T> ) {
-
-		let lerpFunc = params.customLerpFunc || Lerps.getLerpFunc( params.initValue );
-
-		let variable = {
+		let variable: AnimatorVariable<T> = {
 			time: - 1,
-			value: params.initValue,
-			startValue: params.initValue,
-			goalValue: null,
+			value: this.getValueClone( params.initValue ),
+			startValue: this.getValueClone( params.initValue ),
+			goalValue: this.getValueClone( params.initValue ),
 			easing: params.easing || Easings.sigmoid(),
-			lerpFunc: lerpFunc,
+			lerpFunc: ( params.customLerpFunc || Lerps.getLerpFunc( params.initValue ) ) as LerpFunc<T>,
+			userData: params.userData,
 		};
 
-		this.variables[ params.name ] = variable;
+		this.dataBase[ params.name ] = variable.value;
+		this.variables[ params.name ] = variable as unknown as AnimatorVariable<AnimatorVariableType>;
+
+		this.dispatchEvent({
+			type: 'added',
+			varName: params.name,
+			variable,
+		})
 
 		return variable;
 
 	}
+
+	/*-------------------------------
+		Set
+	-------------------------------*/
 
 	public setEasing( name: string, easing: EasingFunc ) {
 
@@ -77,7 +89,44 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public animate<T>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingFunc ) {
+	public setValue<T extends AnimatorVariableType>( name: string, value: T ) {
+
+		let variable = this.dataBase[ name ] as unknown as AnimatorVariableType;
+
+		if ( variable !== undefined ) {
+
+			if ( typeof variable == 'number' ) {
+
+				this.dataBase[ name ] = value;
+
+			} else if ( "copy" in variable ) {
+
+				variable.copy( value as any );
+
+			} else if ( variable instanceof Array ) {
+
+				( variable as number [] ) = ( value as number[] ).concat();
+
+			}
+
+			this.updateDataBase( name );
+			this.cancelAnimate( name );
+
+		} else {
+
+			console.warn( '"' + name + '"' + ' is not exist' );
+
+			return null;
+
+		}
+
+	}
+
+	/*-------------------------------
+		Animate
+	-------------------------------*/
+
+	public animate<T extends AnimatorVariableType>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingFunc ) {
 
 		let variable = this.variables[ name ];
 		let promise = new Promise( resolve => {
@@ -102,15 +151,16 @@ export class Animator extends THREE.EventDispatcher {
 
 				if ( variable.time == - 1 ) {
 
-					this._isAnimating = true;
+					this.isAnimating = true;
 					this.animatingCount ++;
 
 				}
 
 				variable.time = 0;
 				variable.duration = duration;
-				variable.startValue = variable.value;
-				variable.goalValue = goalValue;
+				variable.startValue = this.getValueClone( variable.value );
+				variable.goalValue = this.getValueClone( goalValue );
+
 				variable.onAnimationFinished = () => {
 
 					callback && callback();
@@ -153,12 +203,15 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public setValue<T>( name: string, value: T ) {
+	/*-------------------------------
+		Get
+	-------------------------------*/
+
+	public get<T extends AnimatorVariableType>( name: string ): T | null {
 
 		if ( this.variables[ name ] ) {
 
-			this.variables[ name ].value = value;
-			this.cancelAnimate( name );
+			return this.variables[ name ].value as unknown as T;
 
 		} else {
 
@@ -170,27 +223,11 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public get<T>( name: string ): T | null {
+	public getVariableObject<T extends AnimatorVariableType>( name: string, mute: boolean = false ): AnimatorVariable<T> | null {
 
 		if ( this.variables[ name ] ) {
 
-			return this.variables[ name ].value;
-
-		} else {
-
-			console.warn( '"' + name + '"' + ' is not exist' );
-
-			return null;
-
-		}
-
-	}
-
-	public getVariableObject<T>( name: string, mute: boolean = false ): AnimatorVariable<T> | null {
-
-		if ( this.variables[ name ] ) {
-
-			return this.variables[ name ];
+			return this.variables[ name ] as unknown as AnimatorVariable<T>;
 
 		} else {
 
@@ -201,6 +238,28 @@ export class Animator extends THREE.EventDispatcher {
 			}
 
 			return null;
+
+		}
+
+	}
+
+	/*-------------------------------
+		Utils
+	-------------------------------*/
+
+	public applyToUniforms( uniforms: Uniforms ) {
+
+		let keys = Object.keys( this.variables );
+
+		for ( let i = 0; i < keys.length; i ++ ) {
+
+			let variable = this.getVariableObject( keys[ i ] );
+
+			if ( variable ) {
+
+				uniforms[ keys[ i ] ] = variable;
+
+			}
 
 		}
 
@@ -228,29 +287,55 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public applyToUniforms( uniforms: Uniforms ) {
+	/*-------------------------------
+		Utils
+	-------------------------------*/
 
-		let keys = Object.keys( this.variables );
+	private getValueClone<T extends AnimatorVariableType>( value: T ): T {
 
-		for ( let i = 0; i < keys.length; i ++ ) {
+		if ( typeof value == 'number' ) {
 
-			let variable = this.getVariableObject( keys[ i ] );
+			return value;
 
-			if ( variable ) {
+		} else if ( 'clone' in value ) {
 
-				uniforms[ keys[ i ] ] = variable;
+			return value.clone() as T;
 
-			}
+		} else if ( value instanceof Array ) {
+
+			return value.concat() as T;
 
 		}
 
+		return value;
+
 	}
+
+	public wait( t: number ) {
+
+		let prm = new Promise<void>( ( r ) =>{
+
+			setTimeout( () => {
+
+				r();
+
+			}, ( t * 1000 ) );
+
+		} );
+
+		return prm;
+
+	}
+
+	/*-------------------------------
+		Update
+	-------------------------------*/
 
 	public update( deltaTime?: number ) {
 
 		if ( this.animatingCount == 0 ) {
 
-			this._isAnimating = false;
+			this.isAnimating = false;
 
 		}
 
@@ -258,7 +343,8 @@ export class Animator extends THREE.EventDispatcher {
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
-			let variable = this.variables[ keys[ i ] ];
+			let variableName = keys[ i ];
+			let variable = this.variables[ variableName ];
 			let time = variable.time;
 
 			if ( time == 1.0 ) {
@@ -292,17 +378,30 @@ export class Animator extends THREE.EventDispatcher {
 
 				}
 
-				if ( lerpFunc ) {
+				let value: AnimatorVariableType = variable.goalValue;
 
-					variable.value = lerpFunc( variable.startValue, variable.goalValue, easing( time ) );
+				if ( time < 1.0 ) {
+
+					if ( lerpFunc ) {
+
+						value = lerpFunc( variable.startValue, variable.goalValue, easing( time ) );
+
+					}
 
 				}
 
-				if ( time == 1.0 ) {
+				let dataBaseValue = this.dataBase[ variableName ];
 
-					variable.value = variable.goalValue;
+				if ( typeof dataBaseValue == 'number' || ! ( 'copy' in dataBaseValue ) ) {
+
+					this.dataBase[ variableName ] = value;
+
+				} else if ( 'copy' in dataBaseValue ) {
+
+					dataBaseValue.copy( value as any );
 
 				}
+
 
 				this.dispatchEvent( {
 					type: 'update/' + keys[ i ],
@@ -328,12 +427,14 @@ export class Animator extends THREE.EventDispatcher {
 
 		}
 
+		this.updateDataBase();
+
 		this.dispatchEvent( {
 			type: 'update',
 			deltaTime: deltaTime
 		} );
 
-		if ( this._isAnimating ) {
+		if ( this.isAnimating ) {
 
 			this.dispatchEvent( {
 				type: 'animate',
@@ -344,19 +445,49 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public wait( t: number ) {
+	public updateDataBase( target?: string ) {
 
-		let prm = new Promise<void>( ( r ) =>{
+		if ( target ) {
 
-			setTimeout( () => {
+			let variable = this.variables[ target ];
+			let databaseValue = this.dataBase[ target ];
 
-				r();
+			if ( variable && databaseValue !== undefined) {
 
-			}, ( t * 1000 ) );
+				if ( typeof variable.value == 'number' || ! ( 'copy' in variable.value ) ) {
 
-		} );
+					variable.value = databaseValue;
 
-		return prm;
+				}
+
+			}
+
+			return;
+
+		}
+
+		let key = Object.keys( this.dataBase );
+
+		for ( let i = 0; i < key.length; i ++ ) {
+
+			let variable = this.variables[ key[ i ] ];
+			let databaseValue = this.dataBase[ key[ i ] ];
+
+			if ( variable && databaseValue !== undefined) {
+
+				// Vector系は参照なのでnumberとnumber[]あたりだけ更新
+
+				if ( typeof variable.value == 'number' || ! ( 'copy' in variable.value ) ) {
+
+					variable.value = databaseValue;
+
+				}
+
+			}
+
+
+		}
+
 
 	}
 

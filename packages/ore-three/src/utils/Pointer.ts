@@ -1,8 +1,5 @@
 import * as THREE from "three";
 
-const { Lethargy } = require( 'lethargy' );
-const toPx = require( 'to-px' );
-
 export class Pointer extends THREE.EventDispatcher {
 
 	protected isSP: boolean;
@@ -30,7 +27,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 		const onTouchStart = this.onTouch.bind( this, "start" );
 		const onTouchMove = this.onTouch.bind( this, "move" );
-		const onToucmEnd = this.onTouch.bind( this, "end" );
+		const onToucEnd = this.onTouch.bind( this, "end" );
 		const onPointerDown = this.onPointer.bind( this, "start" );
 		const onPointerMove = this.onPointer.bind( this, "move" );
 		const onPointerUp = this.onPointer.bind( this, "end" );
@@ -38,7 +35,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 		elm.addEventListener( 'touchstart', onTouchStart, { passive: false } );
 		elm.addEventListener( 'touchmove', onTouchMove, { passive: false } );
-		elm.addEventListener( 'touchend', onToucmEnd, { passive: false } );
+		elm.addEventListener( 'touchend', onToucEnd, { passive: false } );
 		elm.addEventListener( 'pointerdown', onPointerDown );
 		elm.addEventListener( 'pointermove', onPointerMove );
 		elm.addEventListener( 'pointerup', onPointerUp );
@@ -51,7 +48,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 				elm.removeEventListener( 'touchstart', onTouchStart );
 				elm.removeEventListener( 'touchmove', onTouchMove );
-				elm.removeEventListener( 'touchend', onToucmEnd );
+				elm.removeEventListener( 'touchend', onToucEnd );
 				elm.removeEventListener( 'pointerdown', onPointerDown );
 				elm.removeEventListener( 'pointermove', onPointerMove );
 				elm.removeEventListener( 'pointerup', onPointerUp );
@@ -77,7 +74,7 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	public getNormalizePosition( windowSize: THREE.Vector2 ) {
+	public getScreenPosition( windowSize: THREE.Vector2 ) {
 
 		if ( this.position.x != this.position.x ) return new THREE.Vector2( NaN, NaN );
 
@@ -91,14 +88,14 @@ export class Pointer extends THREE.EventDispatcher {
 
 	}
 
-	public getRelativePosition( elm: HTMLElement, normalize?: boolean ) {
+	public getRelativePosition( elm: HTMLElement, screen?: boolean ) {
 
 		const rect: DOMRect = elm.getClientRects()[ 0 ] as DOMRect;
 
 		let x = this.position.x - rect.left;
 		let y = this.position.y - rect.top;
 
-		if ( normalize ) {
+		if ( screen ) {
 
 			x /= rect.width;
 			y /= rect.height;
@@ -167,8 +164,6 @@ export class Pointer extends THREE.EventDispatcher {
 			this.touchEventHandler( e.pageX, e.pageY, type, e );
 
 		}
-
-
 
 	}
 
@@ -252,35 +247,11 @@ export class Pointer extends THREE.EventDispatcher {
 	protected trackpadMemDelta = 0;
 	protected trackpadMax = false;
 
-	protected lethargy = new Lethargy( 7, 0, 0.05 );
-
 	protected wheel( e: WheelEvent ) {
-
-		let delta = e.deltaY;
-		let trackpadDelta = 0;
-
-		switch ( e.deltaMode ) {
-
-			case e.DOM_DELTA_LINE:
-				delta *= toPx( 'ex', window ) * 2.5;
-				break;
-
-			case e.DOM_DELTA_PAGE:
-				delta *= window.innerHeight;
-				break;
-
-		}
-
-		if ( this.lethargy.check( e ) ) {
-
-			trackpadDelta = delta;
-
-		}
 
 		this.dispatchEvent( {
 			type: 'wheel',
 			wheelEvent: e,
-			trackpadDelta: trackpadDelta
 		} );
 
 	}

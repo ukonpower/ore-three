@@ -7,12 +7,16 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:ukonpower/ore-three-dev.git"
+		"url": "https://github.com/ukonpower/ore-three"
+	},
+	"bugs": {
+		"url": "https://github.com/ukonpower/ore-three/issues"
 	},
 	"scripts": {
-		"build": "npm run build -w packages/ore-three && npx gulp build",
-		"dev": "npx gulp & npm run dev -w packages/ore-three",
+		"dev": "npx gulp dev --ex $npm_config_ex & npm run dev -w packages/ore-three",
+		"dev-docs": "npx gulp & npm run dev -w packages/ore-three",
 		"dev-package": "npm run dev -w packages/ore-three",
+		"build": "npm run build -w packages/ore-three && npx gulp build",
 		"build-package": "cp README.md ./packages/ore-three/ && npm run build -w packages/ore-three",
 		"publish": "npm run build-package && npm publish -w packages/ore-three"
 	},

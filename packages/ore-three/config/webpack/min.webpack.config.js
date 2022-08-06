@@ -9,6 +9,7 @@ module.exports = merge( baseConfig, {
 		path: path.resolve(__dirname, "../../build"),
 		filename: info.packageFileName + '.min.js',
 		library: info.packageBuildName,
-		libraryTarget: 'umd'
+		libraryTarget: 'umd',
+		globalObject: 'this'
 	},
 } );

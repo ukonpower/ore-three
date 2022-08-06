@@ -1,33 +1,31 @@
 {
 	"name": "ore-three",
-	"version": "3.0.0",
+	"version": "3.1.0",
 	"description": "",
 	"author": "ukonpower",
 	"license": "MIT",
-	"main": "./build/ore-three.js",
-	"types": "types/index.d.ts",
-	"files": [
-		"build",
-		"types"
-	],
-	"bugs": {
-		"url": "https://github.com/ukonpower/ore-three/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:ukonpower/ore-three.git"
-	},
 	"keywords": [
 		"threejs",
 		"webgl"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ukonpower/ore-three"
+	},
+	"bugs": {
+		"url": "https://github.com/ukonpower/ore-three/issues"
+	},
+	"main": "./build/ore-three.js",
+	"types": "./types/index.d.ts",
+	"files": [
+		"build",
+		"types"
 	],
 	"scripts": {
 		"dev": "webpack --config ./config/webpack/base.webpack.config.js --watch & tsc --declaration --emitDeclarationOnly -preserveWatchOutput -w",
 		"build": "webpack --config ./config/webpack/base.webpack.config.js & webpack --config ./config/webpack/min.webpack.config.js && tsc --declaration --emitDeclarationOnly"
 	},
 	"dependencies": {
-		"lethargy": "^1.0.9",
-		"to-px": "^1.1.0",
 		"wolfy87-eventemitter": "^5.2.9"
 	},
 	"devDependencies": {
