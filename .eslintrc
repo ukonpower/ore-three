@@ -12,5 +12,9 @@
 		"project": "./tsconfig.json"
 	},
 	"rules": {
+		"prefer-const": ["error", {
+			"destructuring": "any",
+			"ignoreReadBeforeAssign": false
+		}]
 	}
 }

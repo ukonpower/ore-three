@@ -1,22 +1,17 @@
 import * as THREE from 'three';
 import * as ORE from 'ore-three';
 
-import { MainObj } from './MainObj';
-import { ScrollManager } from './ScrollManager';
-import { AssetManager } from './AssetManager';
 import { RenderPipeline } from './RenderPipeline';
 
+import backgroundVert from './shaders/background.vs';
 import backgroundFrag from './shaders/background.fs';
 
 export class MainScene extends ORE.BaseLayer {
 
 	private isExamplePage: boolean = false;
-
-	private scrollManager?: ScrollManager;
-	private assetManager?: AssetManager;
-	private mainObj?: MainObj;
-	private background?: ORE.Background;
 	private spWeight: number = 0.0;
+
+	private box?: THREE.Mesh;
 
 	private renderPipeline?: RenderPipeline;
 
@@ -41,29 +36,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		this.isExamplePage = window.location.href.indexOf( 'examples' ) != - 1;
 
-		if ( ! this.isExamplePage ) {
-
-			this.initScroller();
-
-			this.assetManager = new AssetManager( {
-				onMustAssetLoaded: () => {
-
-					this.initScene();
-
-				}
-			} );
-
-			window.oreDocsAssetManager = this.assetManager;
-
-		} else {
-
-			document.body.setAttribute( 'data-useScroller', 'false' );
-
-			this.initScene();
-
-		}
-
-		let menuButtonElm = document.querySelector( '.ui-menu-button' ) as HTMLElement;
+		const menuButtonElm = document.querySelector( '.ui-menu-button' ) as HTMLElement;
 
 		if ( menuButtonElm ) {
 
@@ -81,14 +54,34 @@ export class MainScene extends ORE.BaseLayer {
 
 		super.onBind( info );
 
-		let aLight = new THREE.AmbientLight();
+		const aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;
 		this.scene.add( aLight );
 
-		let dLight = new THREE.DirectionalLight();
+		const dLight = new THREE.DirectionalLight();
 		dLight.intensity = 0.7;
 		dLight.position.set( 0.1, 10, 2 );
 		this.scene.add( dLight );
+
+		// main obj
+
+		this.box = new THREE.Mesh( new THREE.BoxBufferGeometry(), new THREE.MeshNormalMaterial() );
+		this.scene.add( this.box );
+
+		// background
+
+		const background = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), new THREE.ShaderMaterial( {
+			vertexShader: backgroundVert,
+			fragmentShader: backgroundFrag,
+			uniforms: this.commonUniforms
+		} ) );
+
+		this.scene.add( background );
+
+		// camera
+
+		this.camera.position.set( 0, 1, 5 );
+		this.camera.lookAt( 0, 0, 0 );
 
 		if ( this.renderer ) {
 
@@ -103,72 +96,11 @@ export class MainScene extends ORE.BaseLayer {
 
 	}
 
-	private initScene() {
-
-		if ( ! this.isExamplePage ) {
-
-			this.mainObj = new MainObj( this.commonUniforms );
-			this.scene.add( this.mainObj.obj );
-
-		}
-
-		this.background = new ORE.Background( {
-			fragmentShader: backgroundFrag,
-			uniforms: this.commonUniforms
-		} );
-		this.background.renderOrder = - 100;
-
-		this.scene.add( this.background );
-
-		window.scrollTo( 0, 0 );
-
-	}
-
-	private initScroller() {
-
-		this.scrollManager = new ScrollManager( this );
-
-	}
-
 	public animate( deltaTime: number ) {
 
-		if ( ! this.isExamplePage ) {
+		if ( this.box ) {
 
-			if ( this.assetManager && this.assetManager.isLoaded ) {
-
-				if ( this.scrollManager && this.scrollManager.scroller && this.scrollManager.timeline ) {
-
-					this.scrollManager.scroller.update( deltaTime );
-					this.scrollManager.timeline.update( this.scrollManager.scroller.scrollTimelinePercentage );
-
-					this.commonUniforms.objTransform.value = this.scrollManager.timeline.get<number>( 'objTransform' );
-					this.commonUniforms.objSelector.value = this.scrollManager.timeline.get<number>( 'objSelector' );
-					this.commonUniforms.dark.value = this.scrollManager.timeline.get<number>( 'dark' );
-
-					let pos = this.scrollManager.timeline.get<THREE.Vector3>( 'camPos' );
-					let rot = this.scrollManager.timeline.get<THREE.Quaternion>( 'camRot' );
-
-					if ( pos && rot ) {
-
-						this.camera.position.copy( pos );
-						this.camera.quaternion.copy( rot );
-
-					}
-
-				}
-
-
-				this.camera.position.x *= this.spWeight;
-
-				if ( this.mainObj ) {
-
-					this.mainObj.update( this.time );
-
-				}
-
-			}
-
-
+			this.box.rotation.y = this.time;
 
 		}
 
@@ -189,37 +121,11 @@ export class MainScene extends ORE.BaseLayer {
 
 		this.commonUniforms.spWeight.value = this.spWeight;
 
-		this.background && this.background.resize( this.info.size );
-
 		if ( this.renderPipeline ) {
 
 			this.renderPipeline.resize( this.info.size.canvasPixelSize );
 
 		}
-
-	}
-
-	public onWheel( e: WheelEvent, trackPadDelta: number ) {
-
-		this.scrollManager && this.scrollManager.scroller.scroll( e.deltaY * 0.7 );
-
-	}
-
-	public onTouchStart( args: ORE.TouchEventArgs ) {
-
-		this.scrollManager && this.scrollManager.scroller.catch();
-
-	}
-
-	public onTouchMove( args: ORE.TouchEventArgs ) {
-
-		this.scrollManager && this.scrollManager.scroller.drag( - args.delta.y );
-
-	}
-
-	public onTouchEnd( args: ORE.TouchEventArgs ) {
-
-		this.scrollManager && this.scrollManager.scroller.release();
 
 	}
 
