@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 import { PostProcessingScene } from './PostProcessingScene';
 
@@ -24,6 +24,6 @@ export class APP {
 
 window.addEventListener( 'load', () => {
 
-	let app = new APP();
+	const app = new APP();
 
 } );

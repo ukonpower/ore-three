@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import boxVert from './shaders/box.vs';

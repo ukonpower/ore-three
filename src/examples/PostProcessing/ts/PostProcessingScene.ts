@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 import pp1Frag from './shaders/pp1.fs';
 import pp2Frag from './shaders/pp2.fs';
@@ -115,7 +115,7 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	private resizeRenderTargets() {
 
-		let keys = Object.keys( this.renderTargets );
+		const keys = Object.keys( this.renderTargets );
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 

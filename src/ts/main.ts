@@ -1,13 +1,7 @@
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 import { MainScene } from './MainScene';
-import { AssetManager } from './AssetManager';
 
-declare global {
-	interface Window {
-		oreDocsAssetManager: AssetManager;
-	}
-  }
 
 export class APP {
 

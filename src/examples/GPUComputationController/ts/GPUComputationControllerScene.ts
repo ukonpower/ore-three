@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 import positionFrag from './shaders/position.fs';
 import velocityFrag from './shaders/velocity.fs';

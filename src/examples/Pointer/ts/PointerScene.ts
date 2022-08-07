@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 export class PointerScene extends ORE.BaseLayer {
 

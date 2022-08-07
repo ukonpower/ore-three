@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 //bloom shader
 import bloomBlurFrag from './shaders/bloomBlur.fs';
@@ -106,7 +106,7 @@ export class RenderPipeline {
 			}
 		};
 
-		let loader = new THREE.TextureLoader();
+		const loader = new THREE.TextureLoader();
 		loader.load( './assets/smaa/smaa-area.png', ( tex ) => {
 
 			tex.minFilter = THREE.LinearFilter;
@@ -162,7 +162,7 @@ export class RenderPipeline {
 			SMAA
 		------------------------*/
 
-		let defines = {
+		const defines = {
 			"mad(a, b, c)": "(a * b + c)",
 			"SMAA_THRESHOLD": "0.1",
 			"SMAA_LOCAL_CONTRAST_ADAPTATION_FACTOR": "2.0",
@@ -216,7 +216,7 @@ export class RenderPipeline {
 		/*------------------------
 			Composite
 		------------------------*/
-		let compo = compositeFrag.replace( /RENDER_COUNT/g, this.bloomRenderCount.toString() );
+		const compo = compositeFrag.replace( /RENDER_COUNT/g, this.bloomRenderCount.toString() );
 
 		this.compositePP = new ORE.PostProcessing( this.renderer, {
 			fragmentShader: compo,
@@ -237,7 +237,7 @@ export class RenderPipeline {
 		/*------------------------
 			Scene
 		------------------------*/
-		let renderTargetMem = this.renderer.getRenderTarget();
+		const renderTargetMem = this.renderer.getRenderTarget();
 
 		this.renderer.setRenderTarget( this.renderTargets.rt1 );
 		this.renderer.render( scene, camera );
@@ -253,7 +253,7 @@ export class RenderPipeline {
 		}, this.renderTargets.rt2 );
 
 		let target: THREE.WebGLRenderTarget;
-		let uni = this.bloomBlurPP.effect.material.uniforms;
+		const uni = this.bloomBlurPP.effect.material.uniforms;
 		uni.backbuffer.value = this.renderTargets.rt2.texture;
 
 		for ( let i = 0; i < this.bloomRenderCount; i ++ ) {
@@ -293,7 +293,7 @@ export class RenderPipeline {
 		/*------------------------
 			Composite
 		------------------------*/
-		let compositeInputRenderTargets: {
+		const compositeInputRenderTargets: {
 			sceneTex: THREE.Texture,
 			bloomTexs: THREE.Texture[]
 		} = {
@@ -323,7 +323,7 @@ export class RenderPipeline {
 
 		for ( let i = 0; i < this.bloomRenderCount; i ++ ) {
 
-			let size = pixelWindowSize.clone().multiplyScalar( this.bloomResolutionRatio );
+			const size = pixelWindowSize.clone().multiplyScalar( this.bloomResolutionRatio );
 			size.divideScalar( ( i + 1 ) * 2 );
 
 			this.renderTargets[ 'rtBlur' + i.toString() + '_0' ].setSize( size.x, size.y );

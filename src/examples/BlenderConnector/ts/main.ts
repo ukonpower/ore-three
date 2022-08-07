@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 import { BlenderConnectorScene } from './BlenderConnectorScene';
 
 export class APP {
