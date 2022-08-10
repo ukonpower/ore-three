@@ -15,7 +15,8 @@ export declare class FCurveGroup extends EventEmitter {
     setFCurve(curve: FCurve, axis: FCurveAxis): void;
     calcType(): void;
     private calcFrame;
-    createInitValue(): THREE.Vector3 | THREE.Vector2 | 0 | THREE.Vector4;
+    createInitValue(): 0 | THREE.Vector3 | THREE.Vector2 | THREE.Vector4;
     getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>(frame: number, target: T): T;
     getValue(frame: number): number | null;
 }
+//# sourceMappingURL=FCurveGroup.d.ts.map

@@ -58,3 +58,4 @@ export declare class BaseLayer extends THREE.EventDispatcher {
     onHover(args: TouchEventArgs): void;
     onWheel(event: WheelEvent, trackpadDelta: number): void;
 }
+//# sourceMappingURL=BaseLayer.d.ts.map

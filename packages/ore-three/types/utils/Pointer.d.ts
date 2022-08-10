@@ -18,3 +18,4 @@ export declare class Pointer extends THREE.EventDispatcher {
     protected trackpadMax: boolean;
     protected wheel(e: WheelEvent): void;
 }
+//# sourceMappingURL=Pointer.d.ts.map

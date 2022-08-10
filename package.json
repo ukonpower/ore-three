@@ -16,7 +16,7 @@
 		"dev": "vite",
 		"dev-docs": "npx gulp & npm run dev -w packages/ore-three",
 		"dev-package": "npm run dev -w packages/ore-three",
-		"build": "npm run build -w packages/ore-three && npx gulp build",
+		"build": "npm run build -w packages/ore-three && vite build",
 		"build-package": "cp README.md ./packages/ore-three/ && npm run build -w packages/ore-three",
 		"publish": "npm run build-package && npm publish -w packages/ore-three",
 		"commit": "cz"
@@ -55,5 +55,7 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
+	},
+	"dependencies": {
 	}
 }

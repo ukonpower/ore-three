@@ -28,3 +28,4 @@ export declare class Controller extends THREE.EventDispatcher {
     setPointerEventElement(elm: HTMLElement): void;
     dispose(): void;
 }
+//# sourceMappingURL=Controller.d.ts.map

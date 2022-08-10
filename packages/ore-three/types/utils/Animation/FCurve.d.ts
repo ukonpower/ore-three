@@ -12,3 +12,4 @@ export declare class FCurve extends EventEmitter {
     addKeyFrame(keyframe: FCurveKeyFrame): void;
     getValue(frame: number): number;
 }
+//# sourceMappingURL=FCurve.d.ts.map

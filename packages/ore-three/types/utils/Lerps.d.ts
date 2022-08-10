@@ -10,3 +10,4 @@ export declare namespace Lerps {
     function THREEEuler(a: THREE.Euler, b: THREE.Euler, t: number): import("three").Euler;
     function getLerpFunc(value: AnimatorVariableType): typeof number | typeof numberArray | typeof THREEVectors | typeof THREEQuaternion | typeof THREEEuler | undefined;
 }
+//# sourceMappingURL=Lerps.d.ts.map

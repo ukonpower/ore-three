@@ -1,4 +1,4 @@
-import path, { resolve } from 'path';
+import path from 'path';
 import { defineConfig } from 'vite';
 import glslify from 'rollup-plugin-glslify';
 
@@ -12,14 +12,15 @@ const exList = [
 ];
 
 const input = {
-	examples: resolve( __dirname, 'src/examples/index.html' ),
+	index: path.resolve( __dirname, 'src/index.html' ),
+	examples: path.resolve( __dirname, 'src/examples/index.html' ),
 	...( () => {
 
 		const exEntryList = {};
 
 		exList.map( ( exName ) => {
 
-			exEntryList[ exName ] = resolve( __dirname, '/src/examples/' + exName + '/html/index.html' );
+			exEntryList[ exName ] = path.resolve( __dirname, 'src/examples/' + exName + '/index.html' );
 
 		} );
 
@@ -36,7 +37,9 @@ export default defineConfig( {
 	build: {
 		rollupOptions: {
 			input,
-			outDir: '../dist'
+			output: {
+				dir: './public',
+			}
 		}
 	},
 	resolve: {

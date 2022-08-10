@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
 import { BaseLayer, LayerBindParam } from './BaseLayer';
-import packageInfo from "../../package.json";
 
 export declare interface PointerEventArgs {
 	pointerEvent: PointerEvent;
@@ -29,7 +28,7 @@ export class Controller extends THREE.EventDispatcher {
 
 		if ( ! ( parameter && parameter.silent ) ) {
 
-			console.log( "%c- ore-three " + packageInfo.version + " -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
+			console.log( "%c- ore-three -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
 
 		}
 

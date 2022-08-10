@@ -5,3 +5,4 @@ export interface Uniforms {
 export declare namespace UniformsLib {
     function mergeUniforms(...uniforms: (Uniforms | undefined)[]): Uniforms;
 }
+//# sourceMappingURL=Uniforms.d.ts.map
