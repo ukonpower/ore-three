@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { Uniforms } from '../utils/Uniforms';
 import { PointerEventArgs } from './Controller';
 
-export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
+export declare interface LayerParam extends THREE.WebGLRendererParameters {
 	name: string;
 	canvas?: HTMLCanvasElement;
 	aspectSetting?: AspectSetting;
@@ -12,7 +12,7 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	pixelRatio?: number
 }
 
-export declare interface LayerInfo extends LayerBindParam {
+export declare interface LayerInfo extends LayerParam {
 	size: LayerSize;
 	aspectSetting: AspectSetting;
 }
@@ -105,20 +105,18 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public animate( deltaTime: number ) { }
 
-	public onBind( layerInfo: LayerBindParam ) {
+	public onBind( layerParam: LayerParam ) {
 
-		this.info.name = layerInfo.name;
-		this.info.canvas = layerInfo.canvas;
+		this.info = {
+			...this.info,
+			...layerParam
+		};
 
-		if ( layerInfo.wrapperElement ) {
+		if ( layerParam.wrapperElement ) {
 
-			this.setWrapperElement( layerInfo.wrapperElement || null, false );
+			this.setWrapperElement( layerParam.wrapperElement || null, false );
 
 		}
-
-		this.info.aspectSetting = layerInfo.aspectSetting || this.info.aspectSetting;
-		this.info.alpha = layerInfo.alpha;
-		this.info.size.pixelRatio = layerInfo.pixelRatio || this.info.size.pixelRatio;
 
 		this.renderer = new THREE.WebGLRenderer( this.info );
 		this.renderer.setPixelRatio( this.info.size.pixelRatio );

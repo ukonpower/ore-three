@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
-import { BaseLayer, LayerBindParam } from './BaseLayer';
+import { BaseLayer, LayerParam } from './BaseLayer';
 
 export declare interface PointerEventArgs {
 	pointerEvent: PointerEvent;
@@ -124,17 +124,17 @@ export class Controller extends THREE.EventDispatcher {
 		API
 	-------------------------------*/
 
-	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
+	public addLayer( layer: BaseLayer, layerParam: LayerParam ) {
 
-		while ( this.getLayer( layerInfo.name ) ) {
+		while ( this.getLayer( layerParam.name ) ) {
 
-			layerInfo.name += '_';
+			layerParam.name += '_';
 
 		}
 
 		this.layers.push( layer );
 
-		layer.onBind( layerInfo );
+		layer.onBind( layerParam );
 
 	}
 
