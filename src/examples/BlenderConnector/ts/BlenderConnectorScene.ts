@@ -34,7 +34,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 		this.connector.addListener( 'update/scene', ( connector: ORE.BlenderConnector ) => {
 
-			let cubeAction = connector.getAction( 'CubeAction' );
+			const cubeAction = connector.getAction( 'CubeAction' );
 
 			if ( cubeAction ) {
 
@@ -42,7 +42,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				this.cubeAction.addListener( 'update', ( action: ORE.AnimationAction ) => {
 
-					let box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
+					const box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
 					action.getValue( 'CubePosition', box.position );
 					action.getValue( 'CubeRotation', box.rotation );
 					action.getValue( 'CubeScale', box.scale );
@@ -51,7 +51,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 			}
 
-			let shaderAction = connector.getAction( 'Shader NodetreeAction.001' );
+			const shaderAction = connector.getAction( 'Shader NodetreeAction.001' );
 
 			if ( shaderAction ) {
 
@@ -82,18 +82,18 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			gltf
 		-------------------------------*/
 
-		let loader = new GLTFLoader();
+		const loader = new GLTFLoader();
 		loader.load( './assets/blender-connector.glb', ( gltf ) => {
 
 			this.scene.add( gltf.scene );
 
-			let camera = this.scene.getObjectByName( 'Camera' );
+			const camera = this.scene.getObjectByName( 'Camera' );
 
 			if ( camera ) {
 
 				camera.getWorldPosition( this.camera.position );
 
-				let target = this.scene.getObjectByName( 'CameraTarget' );
+				const target = this.scene.getObjectByName( 'CameraTarget' );
 
 				if ( target ) {
 
@@ -101,7 +101,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 				}
 
-				let cameraData = camera.getObjectByName( 'Camera_Orientation' ) as THREE.PerspectiveCamera;
+				const cameraData = camera.getObjectByName( 'Camera_Orientation' ) as THREE.PerspectiveCamera;
 
 				if ( cameraData ) {
 
@@ -112,8 +112,8 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 			}
 
-			let box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
-			let boxUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms );
+			const box = this.scene.getObjectByName( 'Cube' ) as THREE.Mesh;
+			const boxUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms );
 			box.material = new THREE.ShaderMaterial( {
 				vertexShader: boxVert,
 				fragmentShader: boxFrag,
@@ -132,7 +132,7 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 			Scene
 		-------------------------------*/
 
-		let light = new THREE.DirectionalLight();
+		const light = new THREE.DirectionalLight();
 		light.position.set( 1, 1, 1 );
 		this.scene.add( light );
 

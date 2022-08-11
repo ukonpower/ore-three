@@ -23,7 +23,9 @@
 	],
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc && vite build"
+		"build": "tsc && vite build",
+		"lint": "eslint ./src/**/*.ts --fix"
+
 	},
 	"dependencies": {
 		"wolfy87-eventemitter": "^5.2.9"

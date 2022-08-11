@@ -19,8 +19,8 @@ export class PointerScene extends ORE.BaseLayer {
 
 		this.camera.position.set( 0, 0, 10 );
 
-		let geo = new THREE.BoxBufferGeometry();
-		let mat = new THREE.MeshNormalMaterial();
+		const geo = new THREE.BoxBufferGeometry();
+		const mat = new THREE.MeshNormalMaterial();
 
 		this.box = new THREE.Mesh( geo, mat );
 		this.scene.add( this.box );
@@ -47,7 +47,7 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = args.screenPosition;
+		const cursorPos = args.screenPosition;
 
 		if ( this.box ) {
 
@@ -71,7 +71,7 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onHover( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = args.screenPosition;
+		const cursorPos = args.screenPosition;
 
 		if ( cursorPos.x != cursorPos.x ) return;
 

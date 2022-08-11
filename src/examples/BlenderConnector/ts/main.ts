@@ -20,6 +20,6 @@ export class APP {
 
 window.addEventListener( 'load', () => {
 
-	let app = new APP();
+	const app = new APP();
 
 } );

@@ -51,7 +51,7 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 		this.camera.position.set( 0, 0, 10 );
 		this.camera.lookAt( 0, 0, 0 );
 
-		let size = new THREE.Vector2( 256, 256 );
+		const size = new THREE.Vector2( 256, 256 );
 
 		this.initGPUComputationController( size );
 		this.createPoints( size );
@@ -65,23 +65,23 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 		this.gCon = new ORE.GPUComputationController( this.renderer, size );
 
 		//create computing position kernel
-		let posUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
+		const posUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			dataPos: { value: null },
 			dataVel: { value: null },
 		} );
 
-		let posKernel = this.gCon.createKernel( {
+		const posKernel = this.gCon.createKernel( {
 			fragmentShader: positionFrag,
 			uniforms: posUni
 		} );
 
 		//create computing velocity kernel
-		let velUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
+		const velUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			dataPos: { value: null },
 			dataVel: { value: null },
 		} );
 
-		let velKernel = this.gCon.createKernel( {
+		const velKernel = this.gCon.createKernel( {
 			fragmentShader: velocityFrag,
 			uniforms: velUni
 		} );
@@ -100,10 +100,10 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 	private createPoints( size: THREE.Vector2 ) {
 
-		let geo = new THREE.BufferGeometry();
+		const geo = new THREE.BufferGeometry();
 
-		let uvArray = [];
-		let posArray = [];
+		const uvArray = [];
+		const posArray = [];
 
 		for ( let i = 0; i < size.y; i ++ ) {
 
@@ -131,7 +131,7 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 			},
 		} );
 
-		let mat = new THREE.ShaderMaterial( {
+		const mat = new THREE.ShaderMaterial( {
 			vertexShader: pointVert,
 			fragmentShader: pointFrag,
 			uniforms: this.pointUni
@@ -140,9 +140,9 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 		this.points = new THREE.Points( geo, mat );
 		this.scene.add( this.points );
 
-		let vSize = 2.0;
+		const vSize = 2.0;
 
-		let velViewer = new THREE.Mesh( new THREE.PlaneGeometry( vSize, vSize ), new THREE.ShaderMaterial( {
+		const velViewer = new THREE.Mesh( new THREE.PlaneGeometry( vSize, vSize ), new THREE.ShaderMaterial( {
 			fragmentShader: viewerFrag,
 			vertexShader: viewerVert,
 			uniforms: ORE.UniformsLib.mergeUniforms( this.pointUni, { selector: { value: 0 } } )
@@ -152,7 +152,7 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 		// this.scene.add( velViewer );
 
-		let posViewer = new THREE.Mesh( new THREE.PlaneGeometry( vSize, vSize ), new THREE.ShaderMaterial( {
+		const posViewer = new THREE.Mesh( new THREE.PlaneGeometry( vSize, vSize ), new THREE.ShaderMaterial( {
 			fragmentShader: viewerFrag,
 			vertexShader: viewerVert,
 			uniforms: ORE.UniformsLib.mergeUniforms( this.pointUni, { selector: { value: 1 } } )
