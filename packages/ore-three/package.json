@@ -22,7 +22,7 @@
 		"types"
 	],
 	"scripts": {
-		"dev": "",
+		"dev": "vite",
 		"build": "tsc && vite build"
 	},
 	"dependencies": {
