@@ -16,15 +16,14 @@ describe( 'Controller', () => {
 
 		it( 'can add layer', () => {
 
-			controller.addLayer( new BaseLayer(), {
+			controller.addLayer( new BaseLayer( {
 				name: 'testLayer',
 				context: require('gl')(1, 1)
-			})
+			}))
 
 			let testLayer = controller.getLayer( 'testLayer' )
 
 			expect(testLayer).not.toBeNull()
-			
 
 		} );
 

@@ -10,9 +10,9 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 	private cubeAction?: ORE.AnimationAction;
 	private shaderAction?: ORE.AnimationAction;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			color: {
@@ -22,9 +22,9 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( info: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( info );
+		super.onBind();
 
 		/*-------------------------------
 			Connector

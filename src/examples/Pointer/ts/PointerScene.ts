@@ -5,17 +5,17 @@ export class PointerScene extends ORE.BaseLayer {
 
 	private box?: THREE.Mesh;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 	}
 
 	private weight: number = 5;
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( gProps );
+		super.onBind();
 
 		this.camera.position.set( 0, 0, 10 );
 

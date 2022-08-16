@@ -29,9 +29,9 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 	private datas?: Datas;
 	private points?: THREE.Points;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			time: {
@@ -44,9 +44,9 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( gProps );
+		super.onBind();
 
 		this.camera.position.set( 0, 0, 10 );
 		this.camera.lookAt( 0, 0, 0 );

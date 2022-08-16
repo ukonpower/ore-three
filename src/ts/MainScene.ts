@@ -15,9 +15,9 @@ export class MainScene extends ORE.BaseLayer {
 
 	private renderPipeline?: RenderPipeline;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			objTransform: {
@@ -50,9 +50,9 @@ export class MainScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( info: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( info );
+		super.onBind();
 
 		const aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;

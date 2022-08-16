@@ -9,10 +9,10 @@ export class APP {
 
 		this.controller = new ORE.Controller();
 
-		this.controller.addLayer( new BlenderConnectorScene(), {
+		this.controller.addLayer( new BlenderConnectorScene( {
 			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-		} );
+		} ) );
 
 	}
 

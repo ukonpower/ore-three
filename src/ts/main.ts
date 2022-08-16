@@ -12,12 +12,12 @@ export class APP {
 
 		this.controller = new ORE.Controller();
 
-		this.scene = new MainScene();
-
-		this.controller.addLayer( this.scene, {
+		this.scene = new MainScene( {
 			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
 		} );
+
+		this.controller.addLayer( this.scene );
 
 	}
 

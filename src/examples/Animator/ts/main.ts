@@ -6,15 +6,15 @@ export class AnimatorScene extends ORE.BaseLayer {
 	private box?: THREE.Mesh;
 	private cnt: number = 0;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 	}
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( gProps );
+		super.onBind();
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -123,18 +123,15 @@ export class AnimatorScene extends ORE.BaseLayer {
 export class APP {
 
 	private controller: ORE.Controller;
-	private scene: AnimatorScene;
 
 	constructor() {
 
 		this.controller = new ORE.Controller();
 
-		this.scene = new AnimatorScene();
-
-		this.controller.addLayer( this.scene, {
+		this.controller.addLayer( new AnimatorScene( {
 			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-		} );
+		} ) );
 
 	}
 

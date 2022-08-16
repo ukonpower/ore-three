@@ -12,9 +12,9 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	private box?: THREE.Mesh;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 		this.renderTargets = {
 			rt1: new THREE.WebGLRenderTarget( 0, 0, {
@@ -35,9 +35,9 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	}
 
-	public onBind( info: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( info );
+		super.onBind();
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 		} );
