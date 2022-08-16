@@ -178,9 +178,11 @@ export class Controller extends THREE.EventDispatcher {
 
 	public dispose() {
 
-		this.layers.forEach( item => {
+		const layerNameList = this.layers.map( layer => layer.info.name );
 
-			this.removeLayer( item.info.name );
+		layerNameList.forEach( layerName => {
+
+			this.removeLayer( layerName );
 
 		} );
 
