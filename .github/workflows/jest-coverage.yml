@@ -8,11 +8,10 @@ jobs:
       checks: write
       pull-requests: write
       contents: write
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          working-directory: ./
           coverage-file: ./coverage/report.json
           test-script: npm run test:coverage
