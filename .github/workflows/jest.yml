@@ -6,15 +6,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Setup Node.js
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v3
       with:
-        node-version: '11.12.x'
-    - name: yarn install
-      run: yarn install
+        node-version: 16
+    - name: npm install
+      run: npm install
     - name: Run jest test
-      run: yarn test
+      run: npm test
     - name: Upload test coverage artifact
       uses: actions/upload-artifact@v1
       with:
