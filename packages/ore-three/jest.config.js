@@ -10,7 +10,12 @@ module.exports = {
 	"globals": {
 		"ts-jest": {
 			"tsconfig": "./tsconfig.json"
-		}
+		},
+		"coverageThreshold": {
+			"global": {
+				"lines": 80,
+			},
+		},
 	},
 	"testMatch": [
 		"**/tests/**/*.test.ts"
