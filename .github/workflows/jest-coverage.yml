@@ -1,10 +1,10 @@
-name: jest-coverage
+name: tests
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs:
-  coverage:
+  jest:
     runs-on: windows-latest
     timeout-minutes: 10
 
