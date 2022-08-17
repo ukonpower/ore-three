@@ -26,7 +26,7 @@
 		"build": "tsc && vite build",
 		"lint": "eslint ./src/**/*.ts --fix",
 		"test": "npm run test-unit",
-		"test-unit": "jest"
+		"test-unit": "jest --coverage --silent --ci --testLocationInResults --json --outputFile=\"report.json\""
 	},
 	"dependencies": {
 		"wolfy87-eventemitter": "^5.2.9"

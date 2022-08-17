@@ -2,3 +2,7 @@ node_modules
 .DS_Store
 /docs
 /public
+
+# jest
+coverage
+report.json
