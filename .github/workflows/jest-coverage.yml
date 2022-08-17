@@ -13,5 +13,5 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          working-directory: /
+          working-directory: ./
           test-script: npm run test:coverage
