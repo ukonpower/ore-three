@@ -13,6 +13,8 @@ describe( 'Controller', () => {
 
 	it( 'can add layers', () => {
 
+		expect(false).toBeTruthy()
+
 		controller.addLayer( new BaseLayer( {
 			name: 'testLayer1',
 			context: require('gl')(1, 1)
