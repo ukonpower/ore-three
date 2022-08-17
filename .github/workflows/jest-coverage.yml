@@ -10,11 +10,11 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - run: pwd
       - run: ls
       - run: ls ../
       - run: cat package.json
-      - uses: actions/checkout@v2
       - name: install apt packages for headless-gl
         run: sudo apt-get install libxi-dev xvfb libgl1-mesa-dev
       - uses: ArtiomTr/jest-coverage-report-action@v2
