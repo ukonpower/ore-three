@@ -10,8 +10,5 @@ jobs:
       contents: write
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          working-directory: ./
-          coverage-file: ./coverage/report.json
