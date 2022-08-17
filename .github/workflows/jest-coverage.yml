@@ -16,4 +16,4 @@ jobs:
           working-directory: ./
           github-token: ${{ secrets.GITHUB_TOKEN }}
           coverage-file: ./coverage/report.json
-          test-script: npm run test:coverage
+          test-script: npx jest --coverage --silent --ci --testLocationInResults --json --outputFile=\"coverage/report.json\"
