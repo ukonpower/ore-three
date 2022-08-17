@@ -11,10 +11,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '11.12.x'
-    - name: npm install
-      run: npm install
+    - name: yarn install
+      run: yarn install
     - name: Run jest test
-      run: npm test
+      run: yarn test
     - name: Upload test coverage artifact
       uses: actions/upload-artifact@v1
       with:
