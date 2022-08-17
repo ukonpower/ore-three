@@ -8,17 +8,10 @@ jobs:
       checks: write
       pull-requests: write
       contents: write
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - run: pwd
-      - run: ls
-      - run: ls ../
-      - run: cat package.json
-      - name: install apt packages for headless-gl
-        run: sudo apt-get install libxi-dev xvfb libgl1-mesa-dev
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: ./
           coverage-file: ./coverage/report.json
-          test-script: xvfb-run --auto-servernum npm test
