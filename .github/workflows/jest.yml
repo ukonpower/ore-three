@@ -1,0 +1,22 @@
+name: jest
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '11.12.x'
+    - name: npm install
+      run: npm install
+    - name: Run jest test
+      run: npm test
+    - name: Upload test coverage artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage
+        path: coverage
