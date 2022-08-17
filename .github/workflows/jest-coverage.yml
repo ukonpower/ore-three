@@ -20,4 +20,4 @@ jobs:
         with:
           working-directory: ./
           coverage-file: ./coverage/report.json
-          test-script: npm run test:coverage
+          test-script: pwd
