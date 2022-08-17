@@ -14,5 +14,5 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-file: ./packages/ore-three/coverage/report.json
+          coverage-file: ./coverage/report.json
           test-script: npm run test
