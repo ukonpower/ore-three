@@ -1,14 +1,25 @@
-name: "jest-coverage"
+name: jest-coverage
 on:
   pull_request:
     types: [opened, synchronize]
+
 jobs:
-  coverage:
-    permissions:
-      checks: write
-      pull-requests: write
-      contents: write
+  tests:
     runs-on: macos-latest
+    timeout-minutes: 10
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: ArtiomTr/jest-coverage-report-action@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Unit Test with coverage
+        uses: mattallty/jest-github-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          test-command: "npm run test:coverage"

@@ -20,7 +20,7 @@
 		"lint": "eslint ./src/**/*.ts --fix && npm run lint -w ore-three",
 		"test:unit": "jest",
 		"test": "npm run test:unit",
-		"test:coverage": "npm run test:unit -- --coverage --silent --testLocationInResults --ci --json --outputFile=\"coverage/report.json\"",
+		"test:coverage": "npm run test:unit -- --coverage",
 		"publish": "npm run build-package && npm publish -w ore-three",
 		"commit": "cz"
 	},
