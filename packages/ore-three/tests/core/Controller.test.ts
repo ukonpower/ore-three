@@ -88,6 +88,7 @@ describe( 'Controller', () => {
 		// constructor
 		
 		let controller = new Controller({
+			silent: true,
 			pointerEventElement: elm1
 		})
 
