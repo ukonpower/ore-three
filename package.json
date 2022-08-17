@@ -18,8 +18,9 @@
 		"build-package": "cp README.md ./packages/ore-three/ && npm run build -w ore-three",
 		"build-docs": "npx typedoc ./packages/ore-three/src/ --tsconfig ./packages/ore-three/tsconfig.json --out ./public/docs",
 		"lint": "eslint ./src/**/*.ts --fix && npm run lint -w ore-three",
-		"test": "npm run test-unit",
-		"test-unit": "jest --coverage --silent --ci --testLocationInResults --json --outputFile=\"coverage/report.json\"",
+		"test:unit": "jest",
+		"test": "npm run test:unit",
+		"test:coverage": "npm run test:unit -- --coverage --silent --testLocationInResults --ci --json --outputFile=\"coverage/report.json\"",
 		"publish": "npm run build-package && npm publish -w ore-three",
 		"commit": "cz"
 	},
