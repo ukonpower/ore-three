@@ -8,13 +8,12 @@ jobs:
       checks: write
       pull-requests: write
       contents: write
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      - name: install apt packages for headless-gl
+        run: sudo apt-get install libxi-dev xvfb libgl1-mesa-dev
+      - run: xvfb-run --auto-servernum
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: ./
