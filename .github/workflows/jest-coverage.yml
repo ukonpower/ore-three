@@ -19,5 +19,6 @@ jobs:
         run: sudo apt-get install libxi-dev xvfb libgl1-mesa-dev
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
+          working-directory: ./
           coverage-file: ./coverage/report.json
-          test-script: xvfb-run --auto-servernum npm run test:coverage
+          test-script: xvfb-run --auto-servernum npm test
