@@ -1,4 +1,4 @@
-name: "coverage"
+name: "jest-coverage"
 on:
   pull_request:
     types: [opened, synchronize]
@@ -8,12 +8,10 @@ jobs:
       checks: write
       pull-requests: write
       contents: write
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          working-directory: ./
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-file: ./coverage/report.json
-          test-script: npx jest --coverage --silent --ci --testLocationInResults --json --outputFile=\"coverage/report.json\"
+          working-directory: /
+          test-script: npm run test:coverage
