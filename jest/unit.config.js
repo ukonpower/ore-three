@@ -9,7 +9,7 @@ module.exports = {
 	},
 	"globals": {
 		"ts-jest": {
-			"tsconfig": "./tsconfig.json"
+			"tsconfig": "<rootDir>/tsconfig.json"
 		},
 		"coverageThreshold": {
 			"global": {
@@ -17,7 +17,8 @@ module.exports = {
 			},
 		},
 	},
-	"testMatch": [
-		"**/tests/**/*.test.ts"
-	]
+	testMatch: [
+		"<rootDir>/packages/ore-three/**/tests/**/*.ts",
+	],
+	rootDir: "../"
 }

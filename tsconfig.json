@@ -10,6 +10,6 @@
 		"isolatedModules": true,
 		"allowSyntheticDefaultImports": true,
 		"noEmit": true,
+		"rootDir": "./"
 	},
-	"include": ["src"],
 }
