@@ -1,6 +1,6 @@
 {
 	"name": "ore-three",
-	"version": "4.0.0-beta-1",
+	"version": "4.0.0",
 	"description": "",
 	"author": "ukonpower",
 	"license": "MIT",
@@ -15,7 +15,15 @@
 	"bugs": {
 		"url": "https://github.com/ukonpower/ore-three/issues"
 	},
-	"main": "./build/ore-three.umd.js",
+	"type": "module",
+	"main": "./build/ore-three.umd.cjs",
+	"module": "./build/ore-three.js",
+	"exports": {
+		".": {
+			"import": "./build/ore-three.js",
+			"require": "./build/ore-three.umd.cjs"
+		}
+	},
 	"types": "./types/index.d.ts",
 	"files": [
 		"build",

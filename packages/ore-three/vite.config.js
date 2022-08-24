@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import glslify from 'rollup-plugin-glslify';
+import { peerDependencies, dependencies } from './package.json'
 
 export default defineConfig( {
 	root: 'src',
@@ -8,23 +9,19 @@ export default defineConfig( {
 		lib: {
 			entry: path.resolve(__dirname, 'src/'),
 			name: 'ORE',
-			fileName: (format) => {
-				if( format == 'es' ) return 'ore-three.esm.js';
-				if( format == 'cjs' ) return 'ore-three.cjs.js';
-				if( format == 'umd' ) return 'ore-three.umd.js';
-				if( format == 'iife' ) return 'ore-three.iife.js';
-			},
-			formats: [ 'es', 'cjs', 'umd', 'iife' ]
+			fileName: 'ore-three',
+			formats: [ 'es', 'cjs', 'umd', 'iife' ],
 		},
 		rollupOptions: {
-			external: ['three'],
+			external: [...Object.keys(peerDependencies), ...Object.keys(dependencies)],
 			output: {
 				dir: './build',
 				globals: {
 					three: 'THREE'
 				},
 			},
-		}
+		},
+		sourcemap: true,
 	},
 	plugins: [
 		{
