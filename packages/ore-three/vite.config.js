@@ -1,7 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import glslify from 'rollup-plugin-glslify';
-import { peerDependencies, dependencies } from './package.json'
+import { peerDependencies } from './package.json'
 
 export default defineConfig( {
 	root: 'src',
@@ -13,7 +13,7 @@ export default defineConfig( {
 			formats: [ 'es', 'cjs', 'umd', 'iife' ],
 		},
 		rollupOptions: {
-			external: [...Object.keys(peerDependencies), ...Object.keys(dependencies)],
+			external: [...Object.keys(peerDependencies)],
 			output: {
 				dir: './build',
 				globals: {
