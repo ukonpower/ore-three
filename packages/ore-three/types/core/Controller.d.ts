@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
-import { BaseLayer, LayerBindParam } from './BaseLayer';
+import { BaseLayer } from './BaseLayer';
 export declare interface PointerEventArgs {
     pointerEvent: PointerEvent;
     pointerEventType: string;
@@ -22,7 +22,7 @@ export declare class Controller extends THREE.EventDispatcher {
     protected onOrientationDevice(): void;
     protected pointerEvent(e: THREE.Event): void;
     protected onWheel(e: THREE.Event): void;
-    addLayer(layer: BaseLayer, layerInfo: LayerBindParam): void;
+    addLayer(layer: BaseLayer): void;
     getLayer(layerName: string): BaseLayer | null;
     removeLayer(layerNmae: string): void;
     setPointerEventElement(elm: HTMLElement): void;

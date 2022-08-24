@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Uniforms } from '../utils/Uniforms';
 import { PointerEventArgs } from './Controller';
-export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
+export declare interface LayerParam extends THREE.WebGLRendererParameters {
     name: string;
     canvas?: HTMLCanvasElement;
     aspectSetting?: AspectSetting;
@@ -9,9 +9,10 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
     wrapperElementRect?: DOMRect | null;
     pixelRatio?: number;
 }
-export declare interface LayerInfo extends LayerBindParam {
+export declare interface LayerInfo extends LayerParam {
     size: LayerSize;
     aspectSetting: AspectSetting;
+    canvas: HTMLCanvasElement;
 }
 export declare interface LayerSize {
     canvasAspectRatio: number;
@@ -37,16 +38,16 @@ export declare interface TouchEventArgs {
 }
 export declare class BaseLayer extends THREE.EventDispatcher {
     info: LayerInfo;
-    renderer?: THREE.WebGLRenderer;
+    renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
-    protected readyAnimate: boolean;
     time: number;
     commonUniforms: Uniforms;
-    constructor();
+    protected readyAnimate: boolean;
+    constructor(param: LayerParam);
     tick(deltaTime: number): void;
     animate(deltaTime: number): void;
-    onBind(layerInfo: LayerBindParam): void;
+    onBind(): void;
     onUnbind(): void;
     protected removeChildrens(object: THREE.Object3D): void;
     setWrapperElement(wrapperElm: HTMLElement | null, dispatchResize?: boolean): void;
