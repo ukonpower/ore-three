@@ -9,7 +9,7 @@ export class DOMMesh extends THREE.Mesh {
 
 	constructor( element: HTMLElement, parameter: THREE.ShaderMaterialParameters ) {
 
-		let geo = new THREE.PlaneBufferGeometry( 2, 2 );
+		let geo = new THREE.PlaneGeometry( 2, 2 );
 
 		parameter.vertexShader = vert;
 
