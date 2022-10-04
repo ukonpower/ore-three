@@ -126,7 +126,7 @@ export class PageScrollerScene extends ORE.BaseLayer {
 
 		for ( let i = 0; i < 20; i ++ ) {
 
-			let boxgeo = new THREE.BoxBufferGeometry();
+			let boxgeo = new THREE.BoxGeometry();
 			let mat = new THREE.MeshNormalMaterial();
 
 			let mesh = new THREE.Mesh( boxgeo, mat );
