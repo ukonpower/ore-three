@@ -6,7 +6,7 @@ export namespace UniformsLib {
 
 	export function mergeUniforms( ...uniforms: ( Uniforms|undefined )[] ) : Uniforms {
 
-		let res = {};
+		const res = {};
 
 		for ( let i = 0; i < uniforms.length; i ++ ) {
 

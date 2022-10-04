@@ -5,6 +5,8 @@ export class Pointer extends THREE.EventDispatcher {
 	protected isSP: boolean;
 	protected isTouching: boolean;
 
+	public element: HTMLElement | null = null;
+
 	public position: THREE.Vector2;
 	public delta: THREE.Vector2;
 
@@ -24,6 +26,8 @@ export class Pointer extends THREE.EventDispatcher {
 	}
 
 	public registerElement( elm: HTMLElement ) {
+
+		this.element = elm;
 
 		const onTouchStart = this.onTouch.bind( this, "start" );
 		const onTouchMove = this.onTouch.bind( this, "move" );

@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { Uniforms } from '../utils/Uniforms';
 import { PointerEventArgs } from './Controller';
 
-export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
+export declare interface LayerParam extends THREE.WebGLRendererParameters {
 	name: string;
 	canvas?: HTMLCanvasElement;
 	aspectSetting?: AspectSetting;
@@ -12,9 +12,10 @@ export declare interface LayerBindParam extends THREE.WebGLRendererParameters {
 	pixelRatio?: number
 }
 
-export declare interface LayerInfo extends LayerBindParam {
+export declare interface LayerInfo extends LayerParam {
 	size: LayerSize;
 	aspectSetting: AspectSetting;
+	canvas: HTMLCanvasElement;
 }
 
 export declare interface LayerSize {
@@ -46,21 +47,24 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public info: LayerInfo;
 
-	public renderer?: THREE.WebGLRenderer;
-
+	public renderer: THREE.WebGLRenderer;
 	public scene: THREE.Scene;
 	public camera: THREE.PerspectiveCamera;
 
-	protected readyAnimate = false;
 	public time = 0;
 	public commonUniforms: Uniforms;
+	protected readyAnimate = false;
 
-	constructor() {
+	constructor( param: LayerParam ) {
 
 		super();
 
+		this.renderer = new THREE.WebGLRenderer( param );
+		this.renderer.setPixelRatio( param.pixelRatio || window.devicePixelRatio );
+		this.renderer.debug.checkShaderErrors = true;
+
 		this.info = {
-			name: '',
+			canvas: this.renderer.domElement,
 			aspectSetting: {
 				mainAspect: 16 / 9,
 				wideAspect: 10 / 1,
@@ -72,11 +76,18 @@ export class BaseLayer extends THREE.EventDispatcher {
 				canvasSize: new THREE.Vector2(),
 				canvasPixelSize: new THREE.Vector2(),
 				canvasAspectRatio: 1.0,
-				pixelRatio: window.devicePixelRatio,
+				pixelRatio: this.renderer.getPixelRatio(),
 				portraitWeight: 0.0,
 				wideWeight: 0.0
-			}
+			},
+			...param
 		};
+
+		if ( param.wrapperElement ) {
+
+			this.setWrapperElement( param.wrapperElement || null, false );
+
+		}
 
 		this.commonUniforms = {
 			time: {
@@ -105,26 +116,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public animate( deltaTime: number ) { }
 
-	public onBind( layerInfo: LayerBindParam ) {
-
-		this.info.name = layerInfo.name;
-		this.info.canvas = layerInfo.canvas;
-
-		if ( layerInfo.wrapperElement ) {
-
-			this.setWrapperElement( layerInfo.wrapperElement || null, false );
-
-		}
-
-		this.info.aspectSetting = layerInfo.aspectSetting || this.info.aspectSetting;
-		this.info.alpha = layerInfo.alpha;
-		this.info.size.pixelRatio = layerInfo.pixelRatio || this.info.size.pixelRatio;
-
-		this.renderer = new THREE.WebGLRenderer( this.info );
-		this.renderer.setPixelRatio( this.info.size.pixelRatio );
-		this.renderer.debug.checkShaderErrors = true;
-
-		this.info.canvas = this.renderer.domElement;
+	public onBind() {
 
 		setTimeout( () => {
 

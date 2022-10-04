@@ -1,20 +1,15 @@
 {
 	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"lib": ["ESNext", "DOM"],
+		"moduleResolution": "Node",
 		"strict": true,
 		"sourceMap": true,
-		"target": "es6",
-		"module": "es2015",
-		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
 		"allowSyntheticDefaultImports": true,
-		"lib": [
-			"es2015",
-			"dom"
-		],
-		"typeRoots": [
-			"node_modules/@types"
-		],
-		"types": ["node"],
-		"rootDir": "./src",
+		"noEmit": true,
+		"rootDir": "./"
 	},
-	"include": ["./src"]
 }

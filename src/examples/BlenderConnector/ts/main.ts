@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 import { BlenderConnectorScene } from './BlenderConnectorScene';
 
 export class APP {
@@ -9,10 +9,10 @@ export class APP {
 
 		this.controller = new ORE.Controller();
 
-		this.controller.addLayer( new BlenderConnectorScene(), {
+		this.controller.addLayer( new BlenderConnectorScene( {
 			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-		} );
+		} ) );
 
 	}
 
@@ -20,6 +20,6 @@ export class APP {
 
 window.addEventListener( 'load', () => {
 
-	let app = new APP();
+	const app = new APP();
 
 } );

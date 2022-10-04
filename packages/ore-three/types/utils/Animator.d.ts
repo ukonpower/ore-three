@@ -46,3 +46,4 @@ export declare class Animator extends THREE.EventDispatcher {
     update(deltaTime?: number): void;
     updateDataBase(target?: string): void;
 }
+//# sourceMappingURL=Animator.d.ts.map

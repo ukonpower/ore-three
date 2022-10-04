@@ -15,3 +15,4 @@ export declare namespace Bezier {
     function calcBezier(p: BezierControlPoints, t: number): number;
     function getBezierTfromX(p: BezierControlPoints, x: number, cache: number[]): number;
 }
+//# sourceMappingURL=Bezier.d.ts.map

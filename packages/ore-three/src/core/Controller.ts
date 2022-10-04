@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Pointer } from '../utils/Pointer';
-import { BaseLayer, LayerBindParam } from './BaseLayer';
+import { BaseLayer } from './BaseLayer';
 
 export declare interface PointerEventArgs {
 	pointerEvent: PointerEvent;
@@ -28,7 +28,7 @@ export class Controller extends THREE.EventDispatcher {
 
 		if ( ! ( parameter && parameter.silent ) ) {
 
-			console.log( "%c- ore-three " + require( "../../package.json" ).version + " -" , 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
+			console.log( "%c- ore-three -", 'padding: 5px 10px ;background-color: black; color: white;font-size:11px' );
 
 		}
 
@@ -45,10 +45,10 @@ export class Controller extends THREE.EventDispatcher {
 			Events
 		-------------------------------*/
 
-		let pointerUpdate = this.pointerEvent.bind( this );
-		let pointerWheel = this.onWheel.bind( this );
-		let orientationchange = this.onOrientationDevice.bind( this );
-		let windowResize = this.onWindowResize.bind( this );
+		const pointerUpdate = this.pointerEvent.bind( this );
+		const pointerWheel = this.onWheel.bind( this );
+		const orientationchange = this.onOrientationDevice.bind( this );
+		const windowResize = this.onWindowResize.bind( this );
 
 		this.pointer.addEventListener( 'update', pointerUpdate );
 		this.pointer.addEventListener( 'wheel', pointerWheel );
@@ -124,17 +124,11 @@ export class Controller extends THREE.EventDispatcher {
 		API
 	-------------------------------*/
 
-	public addLayer( layer: BaseLayer, layerInfo: LayerBindParam ) {
-
-		while ( this.getLayer( layerInfo.name ) ) {
-
-			layerInfo.name += '_';
-
-		}
+	public addLayer( layer: BaseLayer ) {
 
 		this.layers.push( layer );
 
-		layer.onBind( layerInfo );
+		layer.onBind();
 
 	}
 
@@ -184,9 +178,11 @@ export class Controller extends THREE.EventDispatcher {
 
 	public dispose() {
 
-		this.layers.forEach( item => {
+		const layerNameList = this.layers.map( layer => layer.info.name );
 
-			this.removeLayer( item.info.name );
+		layerNameList.forEach( layerName => {
+
+			this.removeLayer( layerName );
 
 		} );
 

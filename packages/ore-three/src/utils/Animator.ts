@@ -46,7 +46,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	public add<T extends AnimatorVariableType>( params: AnimatorVariableParams<T> ) {
 
-		let variable: AnimatorVariable<T> = {
+		const variable: AnimatorVariable<T> = {
 			time: - 1,
 			value: this.getValueClone( params.initValue ),
 			startValue: this.getValueClone( params.initValue ),
@@ -59,11 +59,11 @@ export class Animator extends THREE.EventDispatcher {
 		this.dataBase[ params.name ] = variable.value;
 		this.variables[ params.name ] = variable as unknown as AnimatorVariable<AnimatorVariableType>;
 
-		this.dispatchEvent({
+		this.dispatchEvent( {
 			type: 'added',
 			varName: params.name,
 			variable,
-		})
+		} );
 
 		return variable;
 
@@ -75,7 +75,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	public setEasing( name: string, easing: EasingFunc ) {
 
-		let variable = this.variables[ name ];
+		const variable = this.variables[ name ];
 
 		if ( variable ) {
 
@@ -128,8 +128,8 @@ export class Animator extends THREE.EventDispatcher {
 
 	public animate<T extends AnimatorVariableType>( name: string, goalValue: T, duration: number = 1, callback?: Function, easing?: EasingFunc ) {
 
-		let variable = this.variables[ name ];
-		let promise = new Promise( resolve => {
+		const variable = this.variables[ name ];
+		const promise = new Promise( resolve => {
 
 			if ( variable ) {
 
@@ -188,7 +188,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	public cancelAnimate( name: string ) {
 
-		let variable = this.variables[ name ];
+		const variable = this.variables[ name ];
 
 		if ( variable ) {
 
@@ -249,11 +249,11 @@ export class Animator extends THREE.EventDispatcher {
 
 	public applyToUniforms( uniforms: Uniforms ) {
 
-		let keys = Object.keys( this.variables );
+		const keys = Object.keys( this.variables );
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
-			let variable = this.getVariableObject( keys[ i ] );
+			const variable = this.getVariableObject( keys[ i ] );
 
 			if ( variable ) {
 
@@ -269,7 +269,7 @@ export class Animator extends THREE.EventDispatcher {
 
 		if ( this.variables[ name ] ) {
 
-			let time = this.variables[ name ].time;
+			const time = this.variables[ name ].time;
 
 			return time != - 1.0;
 
@@ -313,7 +313,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	public wait( t: number ) {
 
-		let prm = new Promise<void>( ( r ) =>{
+		const prm = new Promise<void>( ( r ) =>{
 
 			setTimeout( () => {
 
@@ -339,12 +339,12 @@ export class Animator extends THREE.EventDispatcher {
 
 		}
 
-		let keys = Object.keys( this.variables );
+		const keys = Object.keys( this.variables );
 
 		for ( let i = 0; i < keys.length; i ++ ) {
 
-			let variableName = keys[ i ];
-			let variable = this.variables[ variableName ];
+			const variableName = keys[ i ];
+			const variable = this.variables[ variableName ];
 			let time = variable.time;
 
 			if ( time == 1.0 ) {
@@ -362,9 +362,9 @@ export class Animator extends THREE.EventDispatcher {
 
 			if ( time >= 0.0 && time < 1.0 ) {
 
-				let duration = variable.duration;
-				let easing = variable.easing;
-				let lerpFunc = variable.lerpFunc;
+				const duration = variable.duration;
+				const easing = variable.easing;
+				const lerpFunc = variable.lerpFunc;
 
 				if ( duration ) {
 
@@ -390,7 +390,7 @@ export class Animator extends THREE.EventDispatcher {
 
 				}
 
-				let dataBaseValue = this.dataBase[ variableName ];
+				const dataBaseValue = this.dataBase[ variableName ];
 
 				if ( typeof dataBaseValue == 'number' || ! ( 'copy' in dataBaseValue ) ) {
 
@@ -417,7 +417,7 @@ export class Animator extends THREE.EventDispatcher {
 
 		while ( this.dispatchEvents.length != 0 ) {
 
-			let func = this.dispatchEvents.pop();
+			const func = this.dispatchEvents.pop();
 
 			if ( func ) {
 
@@ -449,10 +449,10 @@ export class Animator extends THREE.EventDispatcher {
 
 		if ( target ) {
 
-			let variable = this.variables[ target ];
-			let databaseValue = this.dataBase[ target ];
+			const variable = this.variables[ target ];
+			const databaseValue = this.dataBase[ target ];
 
-			if ( variable && databaseValue !== undefined) {
+			if ( variable && databaseValue !== undefined ) {
 
 				if ( typeof variable.value == 'number' || ! ( 'copy' in variable.value ) ) {
 
@@ -466,14 +466,14 @@ export class Animator extends THREE.EventDispatcher {
 
 		}
 
-		let key = Object.keys( this.dataBase );
+		const key = Object.keys( this.dataBase );
 
 		for ( let i = 0; i < key.length; i ++ ) {
 
-			let variable = this.variables[ key[ i ] ];
-			let databaseValue = this.dataBase[ key[ i ] ];
+			const variable = this.variables[ key[ i ] ];
+			const databaseValue = this.dataBase[ key[ i ] ];
 
-			if ( variable && databaseValue !== undefined) {
+			if ( variable && databaseValue !== undefined ) {
 
 				// Vector系は参照なのでnumberとnumber[]あたりだけ更新
 

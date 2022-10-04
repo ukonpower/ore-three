@@ -13,3 +13,4 @@ export declare class FCurveKeyFrame extends EventEmitter {
     private getEasing;
     to(nextFrame: FCurveKeyFrame, t: number): any;
 }
+//# sourceMappingURL=FCurveKeyFrame.d.ts.map

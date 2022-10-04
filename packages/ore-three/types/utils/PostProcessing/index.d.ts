@@ -17,3 +17,4 @@ export declare class PostProcessing {
     render(inputRenderTargets: InputRenderTarget | null, renderTarget?: THREE.WebGLRenderTarget | null): void;
 }
 export {};
+//# sourceMappingURL=index.d.ts.map

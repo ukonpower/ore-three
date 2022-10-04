@@ -1,4 +1,4 @@
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 import { ControllerScene } from './ControllerScene';
 
@@ -10,10 +10,10 @@ export class APP {
 
 		this.controller = new ORE.Controller();
 
-		this.controller.addLayer( new ControllerScene(), {
+		this.controller.addLayer( new ControllerScene( {
 			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
-		} );
+		} ) );
 
 	}
 
@@ -21,6 +21,6 @@ export class APP {
 
 window.addEventListener( 'load', () => {
 
-	let app = new APP();
+	const app = new APP();
 
 } );

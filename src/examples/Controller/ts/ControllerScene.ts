@@ -1,19 +1,19 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 export class ControllerScene extends ORE.BaseLayer {
 
 	private box?: THREE.Mesh;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 	}
 
-	public onBind( info: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( info );
+		super.onBind();
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );

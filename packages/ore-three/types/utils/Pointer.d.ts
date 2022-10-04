@@ -2,6 +2,7 @@ import * as THREE from "three";
 export declare class Pointer extends THREE.EventDispatcher {
     protected isSP: boolean;
     protected isTouching: boolean;
+    element: HTMLElement | null;
     position: THREE.Vector2;
     delta: THREE.Vector2;
     constructor();
@@ -18,3 +19,4 @@ export declare class Pointer extends THREE.EventDispatcher {
     protected trackpadMax: boolean;
     protected wheel(e: WheelEvent): void;
 }
+//# sourceMappingURL=Pointer.d.ts.map

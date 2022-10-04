@@ -4,3 +4,4 @@ export declare class WaitMan extends THREE.EventDispatcher {
     goHome(): void;
     wait(time: number): Promise<void>;
 }
+//# sourceMappingURL=WaitMan.d.ts.map

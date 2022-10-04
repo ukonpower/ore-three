@@ -67,3 +67,4 @@ export declare class BlenderConnector extends EventEmitter {
     dispose(): void;
     disposeWS(): void;
 }
+//# sourceMappingURL=index.d.ts.map

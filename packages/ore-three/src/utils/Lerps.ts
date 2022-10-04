@@ -16,7 +16,7 @@ export namespace Lerps {
 
 		if ( a.length == b.length ) {
 
-			let c = [];
+			const c = [];
 
 			for ( let i = 0; i < a.length; i ++ ) {
 
@@ -50,8 +50,8 @@ export namespace Lerps {
 
 	export function THREEEuler( a: THREE.Euler, b: THREE.Euler, t: number ) {
 
-		let ac = a.clone();
-		let bc = b.clone();
+		const ac = a.clone();
+		const bc = b.clone();
 
 		ac.x = ac.x + ( bc.x - ac.x ) * t;
 		ac.y = ac.y + ( bc.y - ac.y ) * t;

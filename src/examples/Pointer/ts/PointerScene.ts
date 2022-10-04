@@ -1,21 +1,21 @@
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
 export class PointerScene extends ORE.BaseLayer {
 
 	private box?: THREE.Mesh;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
 	}
 
 	private weight: number = 5;
 
-	public onBind( gProps: ORE.LayerInfo ) {
+	public onBind() {
 
-		super.onBind( gProps );
+		super.onBind();
 
 		this.camera.position.set( 0, 0, 10 );
 
@@ -47,7 +47,7 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = args.screenPosition;
+		const cursorPos = args.screenPosition;
 
 		if ( this.box ) {
 
@@ -71,7 +71,7 @@ export class PointerScene extends ORE.BaseLayer {
 
 	public onHover( args: ORE.TouchEventArgs ) {
 
-		let cursorPos = args.screenPosition;
+		const cursorPos = args.screenPosition;
 
 		if ( cursorPos.x != cursorPos.x ) return;
 

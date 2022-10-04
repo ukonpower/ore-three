@@ -26,3 +26,4 @@ export declare class AnimationAction extends EventEmitter {
     getValueAt<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>(propertyName: string, frame: number, target: T): T;
     updateFrame(frame: number): void;
 }
+//# sourceMappingURL=AnimationAction.d.ts.map
