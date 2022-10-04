@@ -58,6 +58,9 @@
 			"path": "./node_modules/cz-conventional-changelog"
 		}
 	},
+	"dependencies": {
+		"wolfy87-eventemitter": "^5.2.9"
+	},
 	"volta": {
 		"node": "16.16.0"
 	}

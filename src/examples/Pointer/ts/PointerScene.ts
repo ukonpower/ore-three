@@ -19,8 +19,8 @@ export class PointerScene extends ORE.BaseLayer {
 
 		this.camera.position.set( 0, 0, 10 );
 
-		const geo = new THREE.BoxGeometry();
-		const mat = new THREE.MeshNormalMaterial();
+		let geo = new THREE.BoxGeometry();
+		let mat = new THREE.MeshNormalMaterial();
 
 		this.box = new THREE.Mesh( geo, mat );
 		this.scene.add( this.box );

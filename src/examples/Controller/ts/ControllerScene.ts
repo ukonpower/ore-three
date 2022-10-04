@@ -21,7 +21,7 @@ export class ControllerScene extends ORE.BaseLayer {
 		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
 
-		const geo = new THREE.PlaneGeometry();
+		let geo = new THREE.PlaneGeometry();
 
 	}
 
