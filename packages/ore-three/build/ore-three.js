@@ -122,7 +122,7 @@ class F extends d.EventDispatcher {
     return t && (n /= i.width, r /= i.height), new d.Vector2(n, r);
   }
   setPos(e, t) {
-    this.position.x !== this.position.x || this.position.y !== this.position.y ? this.delta.set(0, 0) : this.delta.set(e - this.position.x, t - this.position.y), this.position.set(e, t);
+    this.position.x !== this.position.x || this.position.y !== this.position.y || this.delta.set(e - this.position.x, t - this.position.y), this.position.set(e, t);
   }
   onTouch(e, t) {
     const i = t.touches[0];
@@ -144,13 +144,13 @@ class F extends d.EventDispatcher {
     });
   }
   update() {
-    this.isSP || this.dispatchEvent({
+    this.isSP || (this.dispatchEvent({
       type: "update",
       pointerEvent: null,
       pointerEventType: "hover",
       position: this.position.clone(),
       delta: this.delta.clone()
-    });
+    }), this.delta.set(0, 0));
   }
   wheel(e) {
     this.dispatchEvent({
@@ -863,7 +863,7 @@ class U {
     }), this.tempDataNear = this.createData({
       minFilter: d.NearestFilter,
       magFilter: d.NearestFilter
-    }), this.scene = new d.Scene(), this.camera = new d.Camera(), this.materials = [], this.mesh = new d.Mesh(new d.PlaneBufferGeometry(2, 2)), this.scene.add(this.mesh);
+    }), this.scene = new d.Scene(), this.camera = new d.Camera(), this.materials = [], this.mesh = new d.Mesh(new d.PlaneGeometry(2, 2)), this.scene.add(this.mesh);
   }
   get isSupported() {
     return this.renderer.extensions.get("OES_texture_float");
@@ -933,7 +933,7 @@ const D = `#define GLSLIFY 1
 varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,1.0);}`;
 class Q {
   constructor(e, t, i) {
-    this.renderer = e, this.scene = new d.Scene(), this.camera = new d.OrthographicCamera(-1, 1, 1, -1), this.screen = new d.Mesh(i || new d.PlaneBufferGeometry(2, 2)), this.scene.add(this.screen), t.vertexShader = t.vertexShader || D, t.uniforms = t.uniforms || {}, t.uniforms.resolution = {
+    this.renderer = e, this.scene = new d.Scene(), this.camera = new d.OrthographicCamera(-1, 1, 1, -1), this.screen = new d.Mesh(i || new d.PlaneGeometry(2, 2)), this.scene.add(this.screen), t.vertexShader = t.vertexShader || D, t.uniforms = t.uniforms || {}, t.uniforms.resolution = {
       value: new d.Vector2()
     }, this.effect = {
       material: new d.ShaderMaterial(t)

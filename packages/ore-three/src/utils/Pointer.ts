@@ -115,13 +115,8 @@ export class Pointer extends THREE.EventDispatcher {
 	protected setPos( x: number, y: number ) {
 
 		if (
-			this.position.x !== this.position.x ||
-			this.position.y !== this.position.y
+			! ( this.position.x !== this.position.x || this.position.y !== this.position.y )
 		) {
-
-			this.delta.set( 0, 0 );
-
-		} else {
 
 			this.delta.set( x - this.position.x, y - this.position.y );
 
@@ -243,6 +238,8 @@ export class Pointer extends THREE.EventDispatcher {
 				position: this.position.clone(),
 				delta: this.delta.clone()
 			} );
+
+			this.delta.set( 0, 0, );
 
 		}
 

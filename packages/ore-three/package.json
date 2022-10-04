@@ -41,7 +41,7 @@
 		"@types/jest": "^28.1.6",
 		"@types/node": "^17.0.31",
 		"@types/offscreencanvas": "^2019.6.4",
-		"@types/three": ">=0.130.0",
+		"@types/three": ">=0.144.0",
 		"@types/webgl2": "0.0.6",
 		"@typescript-eslint/eslint-plugin": "^5.19.0",
 		"@typescript-eslint/parser": "^5.19.0",
@@ -58,7 +58,7 @@
 		"vite": "^3.0.4"
 	},
 	"peerDependencies": {
-		"@types/three": ">=0.130.0",
-		"three": ">=0.130.0"
+		"@types/three": ">=0.144.0",
+		"three": ">=0.144.0"
 	}
 }
