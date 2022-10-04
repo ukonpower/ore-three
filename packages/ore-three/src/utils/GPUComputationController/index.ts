@@ -61,7 +61,7 @@ export class GPUComputationController {
     	this.camera = new THREE.Camera();
 
     	this.materials = [];
-    	this.mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ) );
+    	this.mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ) );
     	this.scene.add( this.mesh );
 
 	}
