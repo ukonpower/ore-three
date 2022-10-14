@@ -22,6 +22,7 @@ export declare class Controller extends THREE.EventDispatcher {
     protected onOrientationDevice(): void;
     protected pointerEvent(e: THREE.Event): void;
     protected onWheel(e: THREE.Event): void;
+    protected onWheelOptimized(e: THREE.Event): void;
     addLayer(layer: BaseLayer): void;
     getLayer(layerName: string): BaseLayer | null;
     removeLayer(layerNmae: string): void;
