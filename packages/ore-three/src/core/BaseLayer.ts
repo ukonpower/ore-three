@@ -286,6 +286,8 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 	public onHover( args: TouchEventArgs ) { }
 
-	public onWheel( event: WheelEvent, trackpadDelta: number ) { }
+	public onWheel( event: WheelEvent ) { }
+
+	public onWheelOptimized( event: WheelEvent ) { }
 
 }
