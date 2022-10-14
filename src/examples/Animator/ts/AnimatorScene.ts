@@ -4,8 +4,7 @@ import * as ORE from '@ore-three';
 export class AnimatorScene extends ORE.BaseLayer {
 
 	private animator?: ORE.Animator;
-	private box?: THREE.Mesh;
-	private cnt: number = 0;
+	private box: THREE.Mesh;
 
 	constructor( param: ORE.LayerParam ) {
 

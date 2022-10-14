@@ -3,7 +3,7 @@ import * as ORE from '@ore-three';
 
 export class ControllerScene extends ORE.BaseLayer {
 
-	private box?: THREE.Mesh;
+	private box: THREE.Mesh;
 
 	constructor( param: ORE.LayerParam ) {
 
@@ -20,6 +20,7 @@ export class ControllerScene extends ORE.BaseLayer {
 		this.scene.add( this.box );
 
 	}
+
 	public animate( deltaTime: number ) {
 
 		if ( this.box ) {
@@ -35,6 +36,5 @@ export class ControllerScene extends ORE.BaseLayer {
 		}
 
 	}
-
 
 }
