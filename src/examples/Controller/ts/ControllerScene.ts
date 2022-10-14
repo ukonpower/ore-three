@@ -9,11 +9,9 @@ export class ControllerScene extends ORE.BaseLayer {
 
 		super( param );
 
-	}
-
-	public onBind() {
-
-		super.onBind();
+		/*-------------------------------
+			Scene
+		-------------------------------*/
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
@@ -21,10 +19,7 @@ export class ControllerScene extends ORE.BaseLayer {
 		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
 
-		let geo = new THREE.PlaneGeometry();
-
 	}
-
 	public animate( deltaTime: number ) {
 
 		if ( this.box ) {
@@ -38,32 +33,6 @@ export class ControllerScene extends ORE.BaseLayer {
 			this.renderer.render( this.scene, this.camera );
 
 		}
-
-	}
-
-	public onResize() {
-
-		super.onResize();
-
-	}
-
-	public onTouchStart( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onTouchMove( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onTouchEnd( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onHover( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onWheel( event: WheelEvent, trackpadDelta: number ) {
 
 	}
 

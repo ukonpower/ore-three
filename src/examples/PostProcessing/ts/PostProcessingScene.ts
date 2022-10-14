@@ -7,10 +7,10 @@ import pp2Frag from './shaders/pp2.fs';
 export class PostProcessingScene extends ORE.BaseLayer {
 
 	private renderTargets: { [ key: string ]: THREE.WebGLRenderTarget };
-	private pass1?: ORE.PostProcessing;
-	private pass2?: ORE.PostProcessing;
+	private pass1: ORE.PostProcessing;
+	private pass2: ORE.PostProcessing;
 
-	private box?: THREE.Mesh;
+	private box: THREE.Mesh;
 
 	constructor( param: ORE.LayerParam ) {
 
@@ -33,26 +33,23 @@ export class PostProcessingScene extends ORE.BaseLayer {
 			} ),
 		};
 
-	}
-
-	public onBind() {
-
-		super.onBind();
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 		} );
 
-		this.initScene();
+		/*-------------------------------
+			Scene
+		-------------------------------*/
 
-		this.initPostProcessing();
+		this.camera.position.set( 0, 1.5, 4 );
+		this.camera.lookAt( 0, 0, 0 );
 
-	}
+		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
+		this.scene.add( this.box );
 
-	private initPostProcessing() {
-
-		if ( this.renderer == null ) return;
-
-
+		/*-------------------------------
+			PostProcessing
+		-------------------------------*/
 
 		this.pass1 = new ORE.PostProcessing( this.renderer, {
 			fragmentShader: pp1Frag,
@@ -68,25 +65,9 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 	}
 
-	private initScene() {
-
-		this.camera.position.set( 0, 1.5, 4 );
-		this.camera.lookAt( 0, 0, 0 );
-
-		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
-		this.scene.add( this.box );
-
-	}
-
 	public animate( deltaTime: number ) {
 
-		if ( this.renderer == null ) return;
-
-		if ( this.box ) {
-
-			this.box.rotateY( deltaTime );
-
-		}
+		this.box.rotateY( deltaTime );
 
 		this.renderer.setRenderTarget( this.renderTargets.rt1 );
 		this.renderer.render( this.scene, this.camera );
