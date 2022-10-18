@@ -18,7 +18,7 @@ const input = {
 
 		const exEntryList = {};
 
-		exList.map( ( exName ) => {
+		exList.forEach( ( exName ) => {
 
 			exEntryList[ exName ] = path.resolve( __dirname, 'src/examples/' + exName + '/index.html' );
 
