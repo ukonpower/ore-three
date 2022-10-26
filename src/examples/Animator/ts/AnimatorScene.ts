@@ -3,7 +3,7 @@ import * as ORE from '@ore-three';
 
 export class AnimatorScene extends ORE.BaseLayer {
 
-	private animator?: ORE.Animator;
+	private animator: ORE.Animator;
 	private box: THREE.Mesh;
 
 	constructor( param: ORE.LayerParam ) {
@@ -51,37 +51,25 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 	}
 
-	private startPosAnimation() {
+	private async startPosAnimation() {
 
-		if ( this.animator == null ) return;
+		await this.animator.animateAsync( 'pos', new THREE.Vector3( 1.0, 0.0, 0.0 ), 1.0 );
 
-		this.animator.animate( 'pos', new THREE.Vector3( 1.0, 0.0, 0.0 ), 1.0, () => {
+		this.animator.animate( 'pos', new THREE.Vector3( - 1.0, 0.0, 0.0 ), 1.0, () => {
 
-			if ( this.animator == null ) return;
-
-			this.animator.animate( 'pos', new THREE.Vector3( - 1.0, 0.0, 0.0 ), 1.0, () => {
-
-				this.startPosAnimation();
-
-			} );
+			this.startPosAnimation();
 
 		} );
 
 	}
 
-	private startRotAnimation() {
+	private async startRotAnimation() {
 
-		if ( this.animator == null ) return;
+		await this.animator.animateAsync( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, - Math.PI ) ), 1.0 );
 
-		this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, - Math.PI ) ), 1.0, () => {
+		this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0.0 ) ), 1.0, () => {
 
-			if ( this.animator == null ) return;
-
-			this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0.0 ) ), 1.0, () => {
-
-				this.startRotAnimation();
-
-			} );
+			this.startRotAnimation();
 
 		} );
 
@@ -91,14 +79,22 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 		if ( this.animator ) {
 
-			this.animator.update( deltaTime );
+			if ( this.animator.isAnimating() ) {
 
-			const pos = this.animator.get<THREE.Vector3>( 'pos' );
-			const rot = this.animator.get<THREE.Quaternion>( 'rot' );
+				this.animator.update( deltaTime );
 
-			if ( this.box && pos && rot ) {
+			}
 
+			if ( this.animator.isAnimating( 'pos' ) ) {
+
+				const pos = this.animator.get<THREE.Vector3>( 'pos' )!;
 				this.box.position.copy( pos );
+
+			}
+
+			if ( this.animator.isAnimating( 'rot' ) ) {
+
+				const rot = this.animator.get<THREE.Quaternion>( 'rot' )!;
 				this.box.quaternion.copy( rot );
 
 			}
