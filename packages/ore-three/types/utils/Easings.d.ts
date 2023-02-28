@@ -1,4 +1,4 @@
-export declare type EasingFunc = (t: number) => any;
+export type EasingFunc = (t: number) => any;
 export declare namespace Easings {
     function sigmoid(weight?: number): EasingFunc;
     function smoothstep(min: number, max: number, value: number): number;

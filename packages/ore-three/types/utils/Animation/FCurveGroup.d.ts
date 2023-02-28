@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import EventEmitter from 'wolfy87-eventemitter';
 import { FCurve, FCurveAxis } from './FCurve';
-export declare type FCurveGroupType = 'scalar' | 'vec2' | 'vec3' | 'vec4';
+export type FCurveGroupType = 'scalar' | 'vec2' | 'vec3' | 'vec4';
 export declare class FCurveGroup extends EventEmitter {
     name: string;
     curve: {

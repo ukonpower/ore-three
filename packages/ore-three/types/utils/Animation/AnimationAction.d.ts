@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import EventEmitter from 'wolfy87-eventemitter';
 import { FCurveGroup } from './FCurveGroup';
-export declare type AnimationFrameInfo = {
+export type AnimationFrameInfo = {
     start: number;
     end: number;
     duration: number;

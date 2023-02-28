@@ -2,42 +2,42 @@ import * as THREE from 'three';
 import EventEmitter from "wolfy87-eventemitter";
 import { AnimationAction } from "../Animation/AnimationAction";
 import { FCurveInterpolation } from "../Animation/FCurveKeyFrame";
-export declare type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage;
-export declare type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scalar';
-export declare type BCSyncSceneMessage = {
+export type BCMessage = BCSyncSceneMessage | BCSyncFrameMessage;
+export type BCAnimationCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scalar';
+export type BCSyncSceneMessage = {
     type: "sync/scene";
     data: BCSceneData;
 };
-export declare type BCSceneData = {
+export type BCSceneData = {
     actions: BCAnimationActionParam[];
     objects: BCSceneObjectData[];
 };
-export declare type BCAnimationActionParam = {
+export type BCAnimationActionParam = {
     name: string;
     fcurve_groups: {
         [key: string]: BCAnimationCurveParam[];
     };
 };
-export declare type BCAnimationCurveParam = {
+export type BCAnimationCurveParam = {
     keyframes: BCAnimationCurveKeyFrameParam[];
     axis: BCAnimationCurveAxis;
 };
-export declare type BCAnimationCurveKeyFrameParam = {
+export type BCAnimationCurveKeyFrameParam = {
     c: THREE.Vec2;
     h_l: THREE.Vec2;
     h_r: THREE.Vec2;
     e: string;
     i: FCurveInterpolation;
 };
-export declare type BCSceneObjectData = {
+export type BCSceneObjectData = {
     name: string;
     actions: string[];
 };
-export declare type BCSyncFrameMessage = {
+export type BCSyncFrameMessage = {
     type: "sync/timeline";
     data: BCTimelineData;
 };
-export declare type BCTimelineData = {
+export type BCTimelineData = {
     start: number;
     end: number;
     current: number;

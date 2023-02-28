@@ -1,6 +1,6 @@
 import EventEmitter from 'wolfy87-eventemitter';
 import { FCurveKeyFrame } from './FCurveKeyFrame';
-export declare type FCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scalar';
+export type FCurveAxis = 'x' | 'y' | 'z' | 'w' | 'scalar';
 export declare class FCurve extends EventEmitter {
     keyframes: FCurveKeyFrame[];
     private cache;
