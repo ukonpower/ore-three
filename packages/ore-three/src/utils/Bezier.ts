@@ -79,7 +79,7 @@ export namespace Bezier {
 
 		for ( let i = 0; i < NEWTON_ITERATIONS; i ++ ) {
 
-			let slope = calcBezierSlope( p, t );
+			const slope = calcBezierSlope( p, t );
 
 			if ( slope == 0.0 ) {
 
@@ -87,7 +87,7 @@ export namespace Bezier {
 
 			}
 
-			let currentX = ( calcBezier( p, t ) ) - x;
+			const currentX = ( calcBezier( p, t ) ) - x;
 			t -= currentX / slope;
 
 		}
@@ -110,8 +110,8 @@ export namespace Bezier {
 
 		}
 
-		let t = sample / ( BEZIER_EASING_CACHE_SIZE - 1.0 );
-		let diff = calcBezierSlope( p, t ) / ( p.p3 - p.p0 );
+		const t = sample / ( BEZIER_EASING_CACHE_SIZE - 1.0 );
+		const diff = calcBezierSlope( p, t ) / ( p.p3 - p.p0 );
 
 		if ( diff == 0.0 ) {
 

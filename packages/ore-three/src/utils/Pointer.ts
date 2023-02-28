@@ -1,12 +1,25 @@
 import * as THREE from "three";
+import { Lethargy } from 'lethargy';
 
 export class Pointer extends THREE.EventDispatcher {
 
 	protected isSP: boolean;
 	protected isTouching: boolean;
 
+	public element: HTMLElement | null = null;
+
+	// cursor
+
 	public position: THREE.Vector2;
 	public delta: THREE.Vector2;
+
+	// wheel
+
+	protected lethargy: any;
+	protected memDelta: number = 0.0;
+	protected riseDelta: boolean = false;
+	protected trackpadMemDelta = 0;
+	protected trackpadMax = false;
 
 	constructor() {
 
@@ -21,9 +34,17 @@ export class Pointer extends THREE.EventDispatcher {
 		this.position.set( NaN, NaN );
 		this.isTouching = false;
 
+		/*-------------------------------
+			Lethargy
+		-------------------------------*/
+
+		this.lethargy = new Lethargy();
+
 	}
 
 	public registerElement( elm: HTMLElement ) {
+
+		this.element = elm;
 
 		const onTouchStart = this.onTouch.bind( this, "start" );
 		const onTouchMove = this.onTouch.bind( this, "move" );
@@ -111,13 +132,8 @@ export class Pointer extends THREE.EventDispatcher {
 	protected setPos( x: number, y: number ) {
 
 		if (
-			this.position.x !== this.position.x ||
-			this.position.y !== this.position.y
+			! ( this.position.x !== this.position.x || this.position.y !== this.position.y )
 		) {
-
-			this.delta.set( 0, 0 );
-
-		} else {
 
 			this.delta.set( x - this.position.x, y - this.position.y );
 
@@ -240,19 +256,59 @@ export class Pointer extends THREE.EventDispatcher {
 				delta: this.delta.clone()
 			} );
 
+			this.delta.set( 0, 0, );
+
 		}
 
 	}
 
-	protected trackpadMemDelta = 0;
-	protected trackpadMax = false;
+	protected wheelOptimized( event: WheelEvent ) {
 
-	protected wheel( e: WheelEvent ) {
+		this.dispatchEvent( {
+			type: 'wheelOptimized',
+			wheelEvent: event,
+		} );
+
+	}
+
+	public wheel( event: WheelEvent ): void {
 
 		this.dispatchEvent( {
 			type: 'wheel',
-			wheelEvent: e,
+			wheelEvent: event,
 		} );
+
+		if ( this.lethargy.check( event ) !== false ) {
+
+			this.wheelOptimized( event );
+
+		} else {
+
+			const d = event.deltaY - this.memDelta;
+
+			if ( Math.abs( d ) > 50 ) {
+
+				this.memDelta = d;
+				this.wheelOptimized( event );
+				this.riseDelta = true;
+
+			} else if ( d == 0 ) {
+
+				if ( this.riseDelta ) {
+
+					this.wheelOptimized( event );
+
+				}
+
+			} else if ( d < 0 ) {
+
+				this.riseDelta = false;
+
+			}
+
+			this.memDelta = ( event.deltaY );
+
+		}
 
 	}
 

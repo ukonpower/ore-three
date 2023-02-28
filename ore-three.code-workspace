@@ -9,5 +9,6 @@
 			"source.fixAll.eslint": true,
 			"source.addMissingImports": true,
 		},
+		"typescript.tsdk": "node_modules/typescript/lib",
 	}
 }

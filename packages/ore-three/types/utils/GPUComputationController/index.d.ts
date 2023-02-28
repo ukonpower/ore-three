@@ -30,3 +30,4 @@ export declare class GPUComputationController {
     dispose(): void;
     resizeData(dataSize: THREE.Vector2): void;
 }
+//# sourceMappingURL=index.d.ts.map

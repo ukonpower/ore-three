@@ -16,3 +16,4 @@ export declare class LayoutController {
     constructor(object: THREE.Object3D, transform: Transform, isAbsolutePosition?: boolean);
     updateTransform(weight: number): void;
 }
+//# sourceMappingURL=LayoutController.d.ts.map

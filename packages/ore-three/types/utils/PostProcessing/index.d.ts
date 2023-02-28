@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-declare type InputRenderTarget = {
+type InputRenderTarget = {
     [key: string]: THREE.Texture | THREE.Texture[];
 };
 export interface PPParam extends THREE.ShaderMaterialParameters {
@@ -17,3 +17,4 @@ export declare class PostProcessing {
     render(inputRenderTargets: InputRenderTarget | null, renderTarget?: THREE.WebGLRenderTarget | null): void;
 }
 export {};
+//# sourceMappingURL=index.d.ts.map
