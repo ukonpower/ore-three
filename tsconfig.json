@@ -10,6 +10,10 @@
 		"isolatedModules": true,
 		"allowSyntheticDefaultImports": true,
 		"noEmit": true,
-		"rootDir": "./"
+		"rootDir": "./",
+		"baseUrl": ".",
+		"paths": {
+		  "@ore-three" : ["./packages/ore-three/src"]
+		}
 	},
 }

@@ -1,6 +1,6 @@
 {
 	"name": "ore-three",
-	"version": "4.0.0",
+	"version": "4.0.0-beta1",
 	"description": "",
 	"author": "ukonpower",
 	"license": "MIT",
@@ -35,6 +35,7 @@
 		"lint": "eslint ./src/**/*.ts --fix"
 	},
 	"dependencies": {
+		"lethargy": "^1.0.9",
 		"wolfy87-eventemitter": "^5.2.9"
 	},
 	"devDependencies": {

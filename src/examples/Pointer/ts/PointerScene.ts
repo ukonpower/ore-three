@@ -3,24 +3,17 @@ import * as ORE from '@ore-three';
 
 export class PointerScene extends ORE.BaseLayer {
 
-	private box?: THREE.Mesh;
+	private box: THREE.Mesh;
+	private weight: number = 5;
 
 	constructor( param: ORE.LayerParam ) {
 
 		super( param );
 
-	}
-
-	private weight: number = 5;
-
-	public onBind() {
-
-		super.onBind();
-
 		this.camera.position.set( 0, 0, 10 );
 
-		let geo = new THREE.BoxGeometry();
-		let mat = new THREE.MeshNormalMaterial();
+		const geo = new THREE.BoxGeometry();
+		const mat = new THREE.MeshNormalMaterial();
 
 		this.box = new THREE.Mesh( geo, mat );
 		this.scene.add( this.box );

@@ -18,7 +18,7 @@ const input = {
 
 		const exEntryList = {};
 
-		exList.map( ( exName ) => {
+		exList.forEach( ( exName ) => {
 
 			exEntryList[ exName ] = path.resolve( __dirname, 'src/examples/' + exName + '/index.html' );
 
@@ -33,6 +33,7 @@ export default defineConfig( {
 	root: 'src',
 	server: {
 		port: 3000,
+		host: "0.0.0.0",
 	},
 	build: {
 		rollupOptions: {

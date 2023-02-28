@@ -47,11 +47,13 @@ export class Controller extends THREE.EventDispatcher {
 
 		const pointerUpdate = this.pointerEvent.bind( this );
 		const pointerWheel = this.onWheel.bind( this );
+		const pointerWheelOptimized = this.onWheelOptimized.bind( this );
 		const orientationchange = this.onOrientationDevice.bind( this );
 		const windowResize = this.onWindowResize.bind( this );
 
 		this.pointer.addEventListener( 'update', pointerUpdate );
 		this.pointer.addEventListener( 'wheel', pointerWheel );
+		this.pointer.addEventListener( 'wheelOptimized', pointerWheelOptimized );
 		window.addEventListener( 'orientationchange', orientationchange );
 		window.addEventListener( 'resize', windowResize );
 
@@ -59,6 +61,7 @@ export class Controller extends THREE.EventDispatcher {
 
 			this.pointer.removeEventListener( 'update', pointerUpdate );
 			this.pointer.removeEventListener( 'wheel', pointerWheel );
+			this.pointer.removeEventListener( 'wheelOptimized', pointerWheelOptimized );
 			window.removeEventListener( 'orientationchange', orientationchange );
 			window.removeEventListener( 'resize', windowResize );
 
@@ -114,7 +117,17 @@ export class Controller extends THREE.EventDispatcher {
 
 		for ( let i = 0; i < this.layers.length; i ++ ) {
 
-			this.layers[ i ].onWheel( e.wheelEvent, e.trackpadDelta );
+			this.layers[ i ].onWheel( e.wheelEvent );
+
+		}
+
+	}
+
+	protected onWheelOptimized( e: THREE.Event ) {
+
+		for ( let i = 0; i < this.layers.length; i ++ ) {
+
+			this.layers[ i ].onWheelOptimized( e.wheelEvent );
 
 		}
 

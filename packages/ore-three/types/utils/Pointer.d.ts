@@ -5,6 +5,11 @@ export declare class Pointer extends THREE.EventDispatcher {
     element: HTMLElement | null;
     position: THREE.Vector2;
     delta: THREE.Vector2;
+    protected lethargy: any;
+    protected memDelta: number;
+    protected riseDelta: boolean;
+    protected trackpadMemDelta: number;
+    protected trackpadMax: boolean;
     constructor();
     registerElement(elm: HTMLElement): void;
     unregisterElement(elm: HTMLElement): void;
@@ -15,8 +20,7 @@ export declare class Pointer extends THREE.EventDispatcher {
     protected onPointer(type: string, e: PointerEvent | DragEvent): void;
     protected touchEventHandler(posX: number, posY: number, type: string, e: TouchEvent | PointerEvent | DragEvent): void;
     update(): void;
-    protected trackpadMemDelta: number;
-    protected trackpadMax: boolean;
-    protected wheel(e: WheelEvent): void;
+    protected wheelOptimized(event: WheelEvent): void;
+    wheel(event: WheelEvent): void;
 }
 //# sourceMappingURL=Pointer.d.ts.map

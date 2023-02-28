@@ -42,29 +42,18 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 			}
 		} );
 
-	}
-
-	public onBind() {
-
-		super.onBind();
-
 		this.camera.position.set( 0, 0, 10 );
 		this.camera.lookAt( 0, 0, 0 );
 
+		/*-------------------------------
+			gCon
+		-------------------------------*/
+
 		const size = new THREE.Vector2( 256, 256 );
-
-		this.initGPUComputationController( size );
-		this.createPoints( size );
-
-	}
-
-	private initGPUComputationController( size: THREE.Vector2 ) {
-
-		if ( this.renderer == null ) return;
-
 		this.gCon = new ORE.GPUComputationController( this.renderer, size );
 
 		//create computing position kernel
+
 		const posUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			dataPos: { value: null },
 			dataVel: { value: null },
@@ -76,6 +65,7 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 		} );
 
 		//create computing velocity kernel
+
 		const velUni = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			dataPos: { value: null },
 			dataVel: { value: null },
@@ -96,9 +86,9 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 			velocity: this.gCon.createData(),
 		};
 
-	}
-
-	private createPoints( size: THREE.Vector2 ) {
+		/*-------------------------------
+			Points
+		-------------------------------*/
 
 		const geo = new THREE.BufferGeometry();
 
@@ -150,8 +140,6 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 		velViewer.position.x = 1.5;
 
-		// this.scene.add( velViewer );
-
 		const posViewer = new THREE.Mesh( new THREE.PlaneGeometry( vSize, vSize ), new THREE.ShaderMaterial( {
 			fragmentShader: viewerFrag,
 			vertexShader: viewerVert,
@@ -160,16 +148,15 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 
 		posViewer.position.x = - 1.5;
 
-		// this.scene.add( posViewer );
-
 	}
 
 	public animate( deltaTime: number ) {
 
 		this.commonUniforms.time.value = this.time;
 
-		//update velocity
 		if ( this.kernels && this.datas && this.pointUni && this.gCon ) {
+
+			//update velocity
 
 			this.kernels.velocity.uniforms.dataPos.value = this.datas.position.buffer.texture;
 			this.kernels.velocity.uniforms.dataVel.value = this.datas.velocity.buffer.texture;
@@ -177,6 +164,7 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 			this.gCon.compute( this.kernels.velocity, this.datas.velocity );
 
 			//update position
+
 			this.kernels.position.uniforms.dataPos.value = this.datas.position.buffer.texture;
 			this.kernels.position.uniforms.dataVel.value = this.datas.velocity.buffer.texture;
 

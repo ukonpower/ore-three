@@ -25,20 +25,23 @@ import * as ORE from 'ore-three';
 ```typescript
 import * as ORE from 'ore-three';
 
-import { ControllerScene } from './ControllerScene';
+import { MainScene } from './MainScene';
 
 export class APP {
 
 	private controller: ORE.Controller;
+	private scene: MainScene;
 
 	constructor() {
 
 		this.controller = new ORE.Controller();
 
-		this.controller.addLayer( new ControllerScene(), {
+		this.scene = new MainScene( {
 			name: 'Main',
 			canvas: document.querySelector( '#canvas' ) as HTMLCanvasElement,
 		} );
+
+		this.controller.addLayer( this.scene );
 
 	}
 
@@ -55,35 +58,45 @@ window.addEventListener( 'load', () => {
 
 ```typescript
 import * as THREE from 'three';
-import * as ORE from 'ore-three';
+import * as ORE from '@ore-three';
 
-export class ControllerScene extends ORE.BaseLayer {
+export class MainScene extends ORE.BaseLayer {
 
 	private box: THREE.Mesh;
 
-	constructor() {
+	constructor( param: ORE.LayerParam ) {
 
-		super();
+		super( param );
 
-	}
-
-	public onBind( info: ORE.LayerInfo ) {
-
-		super.onBind( info );
+		/*-------------------------------
+			Scene
+		-------------------------------*/
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
 
-		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
+		this.box = new THREE.Mesh( 
+			new THREE.BoxGeometry(),
+			new THREE.MeshNormalMaterial()
+		);
+
 		this.scene.add( this.box );
 
 	}
 
 	public animate( deltaTime: number ) {
 
-		this.box.rotateY( 1.0 * deltaTime );
+		if ( this.box ) {
 
-		this.renderer.render( this.scene, this.camera );
+			this.box.rotateY( 1.0 * deltaTime );
+
+		}
+
+		if ( this.renderer ) {
+
+			this.renderer.render( this.scene, this.camera );
+
+		}
 
 	}
 
@@ -94,25 +107,19 @@ export class ControllerScene extends ORE.BaseLayer {
 	}
 
 	public onTouchStart( args: ORE.TouchEventArgs ) {
-
 	}
 
 	public onTouchMove( args: ORE.TouchEventArgs ) {
-
 	}
 
 	public onTouchEnd( args: ORE.TouchEventArgs ) {
-
 	}
 
 	public onHover( args: ORE.TouchEventArgs ) {
-
 	}
 
 	public onWheel( event: WheelEvent, trackpadDelta: number ) {
-
 	}
-
 
 }
 ```

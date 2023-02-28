@@ -3,25 +3,21 @@ import * as ORE from '@ore-three';
 
 export class ControllerScene extends ORE.BaseLayer {
 
-	private box?: THREE.Mesh;
+	private box: THREE.Mesh;
 
 	constructor( param: ORE.LayerParam ) {
 
 		super( param );
 
-	}
-
-	public onBind() {
-
-		super.onBind();
+		/*-------------------------------
+			Scene
+		-------------------------------*/
 
 		this.camera.position.set( 0, 1.5, 4 );
 		this.camera.lookAt( 0, 0, 0 );
 
 		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
-
-		let geo = new THREE.PlaneGeometry();
 
 	}
 
@@ -40,32 +36,5 @@ export class ControllerScene extends ORE.BaseLayer {
 		}
 
 	}
-
-	public onResize() {
-
-		super.onResize();
-
-	}
-
-	public onTouchStart( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onTouchMove( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onTouchEnd( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onHover( args: ORE.TouchEventArgs ) {
-
-	}
-
-	public onWheel( event: WheelEvent, trackpadDelta: number ) {
-
-	}
-
 
 }

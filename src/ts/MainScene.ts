@@ -8,10 +8,9 @@ import backgroundFrag from './shaders/background.fs';
 
 export class MainScene extends ORE.BaseLayer {
 
-	private isExamplePage: boolean = false;
 	private spWeight: number = 0.0;
 
-	private box?: THREE.Mesh;
+	private box: THREE.Mesh;
 
 	private renderPipeline?: RenderPipeline;
 
@@ -48,11 +47,9 @@ export class MainScene extends ORE.BaseLayer {
 
 		}
 
-	}
-
-	public onBind() {
-
-		super.onBind();
+		/*-------------------------------
+			Scene
+		-------------------------------*/
 
 		const aLight = new THREE.AmbientLight();
 		aLight.intensity = 0.4;
@@ -65,12 +62,12 @@ export class MainScene extends ORE.BaseLayer {
 
 		// main obj
 
-		this.box = new THREE.Mesh( new THREE.BoxBufferGeometry(), new THREE.MeshNormalMaterial() );
+		this.box = new THREE.Mesh( new THREE.BoxGeometry(), new THREE.MeshNormalMaterial() );
 		this.scene.add( this.box );
 
 		// background
 
-		const background = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), new THREE.ShaderMaterial( {
+		const background = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), new THREE.ShaderMaterial( {
 			vertexShader: backgroundVert,
 			fragmentShader: backgroundFrag,
 			uniforms: this.commonUniforms
@@ -109,7 +106,6 @@ export class MainScene extends ORE.BaseLayer {
 			this.renderPipeline.render( this.scene, this.camera );
 
 		}
-
 
 	}
 
