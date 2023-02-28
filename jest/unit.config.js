@@ -21,4 +21,4 @@ module.exports = {
 		"<rootDir>/packages/ore-three/**/tests/**/*.ts",
 	],
 	rootDir: "../"
-}
+};

@@ -318,13 +318,13 @@ export class Animator extends THREE.EventDispatcher {
 
 			return value;
 
-		} else if ( 'clone' in value ) {
-
-			return value.clone() as T;
-
 		} else if ( value instanceof Array ) {
 
 			return value.concat() as T;
+
+		} else if ( 'clone' in ( value as object ) ) {
+
+			return value.clone() as T;
 
 		}
 
