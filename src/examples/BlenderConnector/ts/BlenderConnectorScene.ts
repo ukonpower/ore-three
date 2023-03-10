@@ -176,9 +176,4 @@ export class BlenderConnectorScene extends ORE.BaseLayer {
 
 	}
 
-	public onWheel( event: WheelEvent, trackpadDelta: number ) {
-
-	}
-
-
 }

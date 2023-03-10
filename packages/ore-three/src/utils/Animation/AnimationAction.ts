@@ -14,7 +14,7 @@ export class AnimationAction extends EventEmitter {
 	public name: string;
 	public curves: {[key:string]:FCurveGroup} = {};
 	private uniforms: Uniforms;
-	
+
 	public frame: AnimationFrameInfo;
 
 	constructor( name?: string ) {
@@ -28,8 +28,8 @@ export class AnimationAction extends EventEmitter {
 			start: 0,
 			end: 0,
 			duration: 0,
-		}
-		
+		};
+
 	}
 
 	public addFcurveGroup( propertyName: string, fcurveGroup: FCurveGroup ) {
@@ -45,39 +45,39 @@ export class AnimationAction extends EventEmitter {
 		delete this.curves[ propertyName ];
 
 		this.calcFrame();
-		
+
 	}
 
 	private calcFrame() {
 
-		let curveKeys = Object.keys( this.curves )
+		const curveKeys = Object.keys( this.curves );
 
-		let minStart = Infinity
-		let maxEnd = -Infinity
-		
-		for ( let i = 0; i < curveKeys.length; i++ ) {
+		let minStart = Infinity;
+		let maxEnd = - Infinity;
 
-			let curve = (this.curves)[ curveKeys[ i ] ];
+		for ( let i = 0; i < curveKeys.length; i ++ ) {
 
-			if( curve.frameStart < minStart ) {
+			const curve = ( this.curves )[ curveKeys[ i ] ];
+
+			if ( curve.frameStart < minStart ) {
 
 				minStart = curve.frameStart;
-				
+
 			}
 
-			if( curve.frameEnd > maxEnd ) {
+			if ( curve.frameEnd > maxEnd ) {
 
 				maxEnd = curve.frameEnd;
-				
+
 			}
 
 		}
 
-		if( minStart == -Infinity || maxEnd == Infinity) {
+		if ( minStart == - Infinity || maxEnd == Infinity ) {
 
 			minStart = 0;
-			maxEnd = 1
-			
+			maxEnd = 1;
+
 		}
 
 		this.frame.start = minStart;
@@ -105,21 +105,21 @@ export class AnimationAction extends EventEmitter {
 	public getUniforms<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | number>( propertyName: string ): THREE.IUniform<T> | null {
 
 		if ( this.uniforms[ propertyName ] ) {
-			
-			return this.uniforms[ propertyName ];
-			
-		}
-		
-		let curveGroup = this.getFCurveGroup(propertyName)
 
-		if( curveGroup ) {
-			
-			let uni = {
+			return this.uniforms[ propertyName ];
+
+		}
+
+		const curveGroup = this.getFCurveGroup( propertyName );
+
+		if ( curveGroup ) {
+
+			const uni = {
 				value: curveGroup.createInitValue() as T
 			};
-			
+
 			this.uniforms[ propertyName ] = uni;
-			
+
 			return uni;
 
 		}
@@ -129,20 +129,20 @@ export class AnimationAction extends EventEmitter {
 	}
 
 	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number>( propertyName: string ): T | null;
-	
+
 	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler >( propertyName: string, target: T ): T;
-	
+
 	public getValue( propertyName: string, target?: THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler ): THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number | null {
 
-		let uniform = this.getUniforms(propertyName);
+		const uniform = this.getUniforms( propertyName );
 
-		if( !uniform ) return target || null;
+		if ( ! uniform ) return target || null;
 
-		let value = uniform.value;
-		
-		if( !target ) return value;
+		const value = uniform.value;
 
-		if( typeof value == 'number' ) {
+		if ( ! target ) return value;
+
+		if ( typeof value == 'number' ) {
 
 			target.x = value;
 
@@ -153,74 +153,74 @@ export class AnimationAction extends EventEmitter {
 		target.x = value.x;
 		target.y = value.y;
 
-		if( 'z' in target && 'z' in value ) {
+		if ( 'z' in target && 'z' in value ) {
 
-			target.z = value.z
-			
+			target.z = value.z;
+
 		}
 
-		if( 'w' in target && 'w' in value ) {
+		if ( 'w' in target && 'w' in value ) {
 
-			target.w = value.w
-			
+			target.w = value.w;
+
 		}
-		
+
 		return target || null;
 
 	}
 
 	public getValueAt<T extends number>( propertyName: string, frame: number ): T | null;
-	
+
 	public getValueAt<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler >( propertyName: string, frame: number, target: T ): T;
-	
+
 	public getValueAt( propertyName: string, frame: number, target?: THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler ): THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler | number | null {
 
-		let curve = this.getFCurveGroup( propertyName );
+		const curve = this.getFCurveGroup( propertyName );
 
-		if( target )  {
+		if ( target ) {
 
-			if( !curve ) return target;
-			
-			return curve.getValue( frame || 0, target )
+			if ( ! curve ) return target;
+
+			return curve.getValue( frame || 0, target );
 
 		} else {
 
-			if( !curve ) return null;
-				
-			return curve.getValue( frame )
-			
+			if ( ! curve ) return null;
+
+			return curve.getValue( frame );
+
 		}
-		
+
 	}
 
 	/*-------------------------------
 		UpdateFrame
 	-------------------------------*/
-	
+
 	public updateFrame( frame: number ) {
 
-		let curveKeys = Object.keys( this.curves );
+		const curveKeys = Object.keys( this.curves );
 
 		for ( let i = 0; i < curveKeys.length; i ++ ) {
 
-			let fcurveGroup = this.curves[ curveKeys[ i ] ];
-			let uni = this.getUniforms( curveKeys[ i ] );
+			const fcurveGroup = this.curves[ curveKeys[ i ] ];
+			const uni = this.getUniforms( curveKeys[ i ] );
 
-			if( !uni ) continue;
+			if ( ! uni ) continue;
 
-			if( typeof uni.value == 'number' ) {
+			if ( typeof uni.value == 'number' ) {
 
-				uni.value = fcurveGroup.getValue(frame) || 0
-				
+				uni.value = fcurveGroup.getValue( frame ) || 0;
+
 			} else {
 
-				fcurveGroup.getValue(frame, uni.value)
-				
+				fcurveGroup.getValue( frame, uni.value );
+
 			}
 
 		}
 
-		this.emitEvent('update', [this] );
+		this.emitEvent( 'update', [ this ] );
 
 	}
 

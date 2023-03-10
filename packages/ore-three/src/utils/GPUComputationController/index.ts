@@ -68,8 +68,8 @@ export class GPUComputationController {
 
 	public createInitializeTexture() {
 
-    	let a = new Float32Array( this.uniforms.dataSize.value.x * this.uniforms.dataSize.value.y * 4 );
-    	let texture = new THREE.DataTexture( a, this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, THREE.RGBAFormat, THREE.FloatType );
+    	const a = new Float32Array( this.uniforms.dataSize.value.x * this.uniforms.dataSize.value.y * 4 );
+    	const texture = new THREE.DataTexture( a, this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, THREE.RGBAFormat, THREE.FloatType );
     	texture.needsUpdate = true;
 
     	return texture;
@@ -86,10 +86,10 @@ export class GPUComputationController {
 
 	public createData( initTex_texParam?: any, textureParam? : THREE.WebGLRenderTargetOptions ): GPUcomputationData {
 
-    	let userAgent = navigator.userAgent;
-    	let isiOS = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined );
+    	const userAgent = navigator.userAgent;
+    	const isiOS = userAgent.indexOf( 'iPhone' ) >= 0 || userAgent.indexOf( 'iPad' ) >= 0 || navigator.platform == "iPad" || ( navigator.platform == "MacIntel" && navigator.userAgent.indexOf( "Safari" ) != - 1 && navigator.userAgent.indexOf( "Chrome" ) == - 1 && ( navigator as any ).standalone !== undefined );
 
-    	let param: THREE.WebGLRenderTargetOptions = {
+    	const param: THREE.WebGLRenderTargetOptions = {
     		wrapS: THREE.ClampToEdgeWrapping,
     		wrapT: THREE.ClampToEdgeWrapping,
     		minFilter: THREE.NearestFilter,
@@ -135,15 +135,15 @@ export class GPUComputationController {
 
     	}
 
-    	let buf = new THREE.WebGLRenderTarget( this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, param );
+    	const buf = new THREE.WebGLRenderTarget( this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, param );
 
-		let data = { buffer: buf };
+		const data = { buffer: buf };
 
 		this.renderTargets.push( buf );
 
     	if ( initTex ) {
 
-    		let initKernel = this.createKernel( {
+    		const initKernel = this.createKernel( {
 				fragmentShader: passThroughFrag,
 				uniforms: {
 					tex: {
@@ -162,16 +162,16 @@ export class GPUComputationController {
 
 	public createKernel( param: THREE.ShaderMaterialParameters ): GPUComputationKernel {
 
-    	let uni: Uniforms = UniformsLib.mergeUniforms( param.uniforms, this.uniforms );
+    	const uni: Uniforms = UniformsLib.mergeUniforms( param.uniforms, this.uniforms );
 
 		param.uniforms = uni;
 		param.vertexShader = param.vertexShader || vert;
 
-    	let mat = new THREE.ShaderMaterial( param );
+    	const mat = new THREE.ShaderMaterial( param );
 
     	this.materials.push( mat );
 
-    	let kernel: GPUComputationKernel = {
+    	const kernel: GPUComputationKernel = {
     		material: mat,
     		uniforms: param.uniforms
     	};
@@ -196,7 +196,7 @@ export class GPUComputationController {
 
     	this.mesh.material = kernel.material;
 
-    	let currentRenderTarget = this.renderer.getRenderTarget();
+    	const currentRenderTarget = this.renderer.getRenderTarget();
 
     	this.renderer.setRenderTarget( temp.buffer );
 
@@ -210,7 +210,7 @@ export class GPUComputationController {
 
 	protected swapBuffers( b1: GPUcomputationData, b2: GPUcomputationData ) {
 
-    	let tmp = b1.buffer;
+    	const tmp = b1.buffer;
     	b1.buffer = b2.buffer;
     	b2.buffer = tmp;
 
@@ -218,7 +218,7 @@ export class GPUComputationController {
 
 	public dispose() {
 
-    	let geo = this.mesh.geometry;
+    	const geo = this.mesh.geometry;
     	geo.dispose();
 
     	for ( let i = 0; i < this.materials.length; i ++ ) {
@@ -240,7 +240,7 @@ export class GPUComputationController {
 
 		for ( let i = 0; i < this.renderTargets.length; i ++ ) {
 
-			let target = this.renderTargets[ i ];
+			const target = this.renderTargets[ i ];
 
 			target.setSize( dataSize.x, dataSize.y );
 

@@ -103,7 +103,7 @@ export class BlenderConnector extends EventEmitter {
 
 	public syncJsonScene( jsonPath: string ) {
 
-		let req = new XMLHttpRequest();
+		const req = new XMLHttpRequest();
 
 		req.onreadystatechange = () => {
 
@@ -137,32 +137,32 @@ export class BlenderConnector extends EventEmitter {
 
 		data.actions.forEach( actionData => {
 
-			let action = new AnimationAction( actionData.name );
+			const action = new AnimationAction( actionData.name );
 
-			let fcurveGroupNames = Object.keys(actionData.fcurve_groups)
+			const fcurveGroupNames = Object.keys( actionData.fcurve_groups );
 
-			for ( let i = 0; i < fcurveGroupNames.length; i++ ) {
+			for ( let i = 0; i < fcurveGroupNames.length; i ++ ) {
 
-				let fcurveGroupName = fcurveGroupNames[i];
-				
-				let fcurveGroup = new FCurveGroup( fcurveGroupName );
-				
-				actionData.fcurve_groups[fcurveGroupName].forEach( fcurveData => {
+				const fcurveGroupName = fcurveGroupNames[ i ];
 
-					let curve = new FCurve();
-					
+				const fcurveGroup = new FCurveGroup( fcurveGroupName );
+
+				actionData.fcurve_groups[ fcurveGroupName ].forEach( fcurveData => {
+
+					const curve = new FCurve();
+
 					curve.set( fcurveData.keyframes.map( frame => {
-	
+
 						return new FCurveKeyFrame( frame.c, frame.h_l, frame.h_r, frame.i );
-	
+
 					} ) );
-					
+
 					fcurveGroup.setFCurve( curve, fcurveData.axis );
-	
+
 				} );
 
 				action.addFcurveGroup( fcurveGroup.name, fcurveGroup );
-				
+
 			}
 
 			this.actions.push( action );
@@ -178,10 +178,10 @@ export class BlenderConnector extends EventEmitter {
 		} );
 
 		// dispatch event
-		
-		this.emitEvent('update/scene', [this])
 
-		this.setTimeline(this.frameCurrent);
+		this.emitEvent( 'update/scene', [ this ] );
+
+		this.setTimeline( this.frameCurrent );
 
 	}
 
@@ -203,7 +203,7 @@ export class BlenderConnector extends EventEmitter {
 
 	private onMessage( e: MessageEvent ) {
 
-		let msg = JSON.parse( e.data ) as BCMessage;
+		const msg = JSON.parse( e.data ) as BCMessage;
 
 		if ( msg.type == 'sync/scene' ) {
 
@@ -262,12 +262,12 @@ export class BlenderConnector extends EventEmitter {
 
 	public getActionList( objectName: string ) {
 
-		let actions: AnimationAction[] = [];
-		let actionNameList = this.getActionNameList( objectName );
+		const actions: AnimationAction[] = [];
+		const actionNameList = this.getActionNameList( objectName );
 
 		actionNameList.forEach( actionName => {
 
-			let action = this.getAction( actionName );
+			const action = this.getAction( actionName );
 
 			if ( action ) {
 
@@ -283,14 +283,14 @@ export class BlenderConnector extends EventEmitter {
 
 	public getActionContainsAccessor( accessor: string ) {
 
-		return this.actions.find(action => {
+		return this.actions.find( action => {
 
-			let curveKeys = Object.keys( action.curves );
+			const curveKeys = Object.keys( action.curves );
 
-			return curveKeys.some(curveName => curveName==accessor)
-			
-		}) || null
-		
+			return curveKeys.some( curveName => curveName == accessor );
+
+		} ) || null;
+
 	}
 
 	public setTimeline( current: number, start?:number, end?:number ) {
