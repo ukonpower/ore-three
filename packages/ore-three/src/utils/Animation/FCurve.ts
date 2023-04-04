@@ -16,11 +16,11 @@ export class FCurve extends EventEmitter {
 	constructor( frames?: FCurveKeyFrame[] ) {
 
 		super();
-		
+
 		this.frameStart = 0;
 		this.frameEnd = 0;
 		this.frameDuration = 0;
-		
+
 		this.set( frames );
 
 	}
@@ -47,7 +47,7 @@ export class FCurve extends EventEmitter {
 
 		for ( let i = 0; i < this.keyframes.length; i ++ ) {
 
-			let frame = this.keyframes[ i ];
+			const frame = this.keyframes[ i ];
 
 			if ( frame.coordinate.x < keyframe.coordinate.x ) {
 
@@ -64,9 +64,9 @@ export class FCurve extends EventEmitter {
 		this.keyframes.splice( index, 0, keyframe );
 
 		// set frame info
-		
-		this.frameStart = this.keyframes[0].coordinate.x
-		this.frameEnd = this.keyframes[this.keyframes.length - 1].coordinate.x
+
+		this.frameStart = this.keyframes[ 0 ].coordinate.x;
+		this.frameEnd = this.keyframes[ this.keyframes.length - 1 ].coordinate.x;
 
 	}
 
@@ -82,11 +82,11 @@ export class FCurve extends EventEmitter {
 
 		for ( let i = 0; i < this.keyframes.length; i ++ ) {
 
-			let keyframe = this.keyframes[ i ];
+			const keyframe = this.keyframes[ i ];
 
 			if ( frame <= keyframe.coordinate.x ) {
 
-				let beforeKeyFrame = this.keyframes[ i - 1 ];
+				const beforeKeyFrame = this.keyframes[ i - 1 ];
 
 				if ( beforeKeyFrame ) {
 

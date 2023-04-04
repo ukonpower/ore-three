@@ -19,11 +19,11 @@ export class FCurveGroup extends EventEmitter {
 		super();
 
 		this.name = name || '';
-		
+
 		this.frameStart = 0;
 		this.frameEnd = 0;
 		this.frameDuration = 0;
-		
+
 		this.curve = {
 			x: null,
 			y: null,
@@ -32,28 +32,28 @@ export class FCurveGroup extends EventEmitter {
 			scalar: null
 		};
 
-		if( x ) {
+		if ( x ) {
 
-			this.setFCurve( x, 'x' )
+			this.setFCurve( x, 'x' );
 
 		}
-		
-		if( y ) {
 
-			this.setFCurve( y, 'y' )
-			
-		}
-		
-		if( z ) {
+		if ( y ) {
 
-			this.setFCurve( z, 'z' )
-			
+			this.setFCurve( y, 'y' );
+
 		}
 
-		if( w ) {
+		if ( z ) {
 
-			this.setFCurve( w, 'w' )
-			
+			this.setFCurve( z, 'z' );
+
+		}
+
+		if ( w ) {
+
+			this.setFCurve( w, 'w' );
+
 		}
 
 	}
@@ -94,47 +94,47 @@ export class FCurveGroup extends EventEmitter {
 		}
 
 	}
-	
+
 	private calcFrame() {
-		
-		let curveKeys = Object.keys( this.curve )
 
-		let minStart = Infinity
-		let maxEnd = -Infinity
-		
-		for ( let i = 0; i < curveKeys.length; i++ ) {
+		const curveKeys = Object.keys( this.curve );
 
-			let curve = (this.curve as {[key: string]: FCurve})[ curveKeys[ i ] ];
+		let minStart = Infinity;
+		let maxEnd = - Infinity;
 
-			if( !curve ) continue;
+		for ( let i = 0; i < curveKeys.length; i ++ ) {
 
-			if( curve.frameStart < minStart ) {
+			const curve = ( this.curve as {[key: string]: FCurve} )[ curveKeys[ i ] ];
+
+			if ( ! curve ) continue;
+
+			if ( curve.frameStart < minStart ) {
 
 				minStart = curve.frameStart;
-				
+
 			}
 
-			if( curve.frameEnd > maxEnd ) {
+			if ( curve.frameEnd > maxEnd ) {
 
 				maxEnd = curve.frameEnd;
-				
+
 			}
 
 		}
 
-		if( minStart == -Infinity || maxEnd == Infinity) {
+		if ( minStart == - Infinity || maxEnd == Infinity ) {
 
 			minStart = 0;
-			maxEnd = 1
-			
+			maxEnd = 1;
+
 		}
 
 		this.frameStart = minStart;
 		this.frameEnd = maxEnd;
 		this.frameDuration = this.frameEnd - this.frameStart;
-		
+
 	}
-	
+
 	public createInitValue() {
 
 		if ( this.type == 'vec2' ) {
@@ -159,9 +159,9 @@ export class FCurveGroup extends EventEmitter {
 
 	public getValue( frame: number ): number | null;
 
-	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>( frame: number, target?: T): T | number | null {
+	public getValue<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Euler>( frame: number, target?: T ): T | number | null {
 
-		if( target ) {
+		if ( target ) {
 
 			if ( this.curve.x ) {
 
@@ -181,27 +181,27 @@ export class FCurveGroup extends EventEmitter {
 
 			}
 
-			if ( this.curve.w  && 'w' in target ) {
+			if ( this.curve.w && 'w' in target ) {
 
 				target.w = this.curve.w.getValue( frame );
 
 			}
 
 			return target;
-			
+
 		} else {
 
 			if ( this.curve.scalar ) {
-						
-				return  this.curve.scalar.getValue( frame );
-				
+
+				return this.curve.scalar.getValue( frame );
+
 			}
 
 			return null;
 
 		}
-		
+
 	}
 
-	
+
 }

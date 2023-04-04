@@ -14,6 +14,8 @@ export class MainScene extends ORE.BaseLayer {
 
 	private renderPipeline?: RenderPipeline;
 
+	private isExamplePage: boolean = false;
+
 	constructor( param: ORE.LayerParam ) {
 
 		super( param );

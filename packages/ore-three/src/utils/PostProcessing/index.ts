@@ -42,15 +42,15 @@ export class PostProcessing {
 
 	public render( inputRenderTargets: InputRenderTarget | null, renderTarget: THREE.WebGLRenderTarget | null = null ) {
 
-		let renderTargetMem = this.renderer.getRenderTarget();
+		const renderTargetMem = this.renderer.getRenderTarget();
 
-		let effect = this.effect;
-		let material = effect.material;
-		let uniforms = material.uniforms;
+		const effect = this.effect;
+		const material = effect.material;
+		const uniforms = material.uniforms;
 
 		if ( inputRenderTargets ) {
 
-			let keys = Object.keys( inputRenderTargets );
+			const keys = Object.keys( inputRenderTargets );
 
 			for ( let j = 0; j < keys.length; j ++ ) {
 
