@@ -1,17 +1,17 @@
 var F = Object.defineProperty;
-var N = (f, u, e) => u in f ? F(f, u, { enumerable: !0, configurable: !0, writable: !0, value: e }) : f[u] = e;
-var d = (f, u, e) => (N(f, typeof u != "symbol" ? u + "" : u, e), e);
+var N = (u, c, e) => c in u ? F(u, c, { enumerable: !0, configurable: !0, writable: !0, value: e }) : u[c] = e;
+var f = (u, c, e) => (N(u, typeof c != "symbol" ? c + "" : c, e), e);
 import * as m from "three";
 class Q extends m.EventDispatcher {
   constructor(e) {
     super();
-    d(this, "info");
-    d(this, "renderer");
-    d(this, "scene");
-    d(this, "camera");
-    d(this, "time", 0);
-    d(this, "commonUniforms");
-    d(this, "readyAnimate", !1);
+    f(this, "info");
+    f(this, "renderer");
+    f(this, "scene");
+    f(this, "camera");
+    f(this, "time", 0);
+    f(this, "commonUniforms");
+    f(this, "readyAnimate", !1);
     this.renderer = new m.WebGLRenderer(e), this.renderer.setPixelRatio(e.pixelRatio || window.devicePixelRatio), this.renderer.debug.checkShaderErrors = !0, this.info = {
       canvas: this.renderer.domElement,
       aspectSetting: {
@@ -103,24 +103,24 @@ class Q extends m.EventDispatcher {
   }
 }
 var V = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, C = {};
-(function(f) {
+(function(u) {
   (function() {
-    var u;
-    u = f !== null ? f : this, u.Lethargy = function() {
+    var c;
+    c = u !== null ? u : this, c.Lethargy = function() {
       function e(t, i, n, r) {
         this.stability = t != null ? Math.abs(t) : 8, this.sensitivity = i != null ? 1 + Math.abs(i) : 100, this.tolerance = n != null ? 1 + Math.abs(n) : 1.1, this.delay = r ?? 150, this.lastUpDeltas = function() {
-          var l, o, s;
-          for (s = [], l = 1, o = this.stability * 2; 1 <= o ? l <= o : l >= o; 1 <= o ? l++ : l--)
+          var a, l, s;
+          for (s = [], a = 1, l = this.stability * 2; 1 <= l ? a <= l : a >= l; 1 <= l ? a++ : a--)
             s.push(null);
           return s;
         }.call(this), this.lastDownDeltas = function() {
-          var l, o, s;
-          for (s = [], l = 1, o = this.stability * 2; 1 <= o ? l <= o : l >= o; 1 <= o ? l++ : l--)
+          var a, l, s;
+          for (s = [], a = 1, l = this.stability * 2; 1 <= l ? a <= l : a >= l; 1 <= l ? a++ : a--)
             s.push(null);
           return s;
         }.call(this), this.deltasTimestamp = function() {
-          var l, o, s;
-          for (s = [], l = 1, o = this.stability * 2; 1 <= o ? l <= o : l >= o; 1 <= o ? l++ : l--)
+          var a, l, s;
+          for (s = [], a = 1, l = this.stability * 2; 1 <= l ? a <= l : a >= l; 1 <= l ? a++ : a--)
             s.push(null);
           return s;
         }.call(this);
@@ -129,12 +129,12 @@ var V = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : ty
         var i;
         return t = t.originalEvent || t, t.wheelDelta != null ? i = t.wheelDelta : t.deltaY != null ? i = t.deltaY * -40 : (t.detail != null || t.detail === 0) && (i = t.detail * -40), this.deltasTimestamp.push(Date.now()), this.deltasTimestamp.shift(), i > 0 ? (this.lastUpDeltas.push(i), this.lastUpDeltas.shift(), this.isInertia(1)) : (this.lastDownDeltas.push(i), this.lastDownDeltas.shift(), this.isInertia(-1));
       }, e.prototype.isInertia = function(t) {
-        var i, n, r, l, o, s, a;
-        return i = t === -1 ? this.lastDownDeltas : this.lastUpDeltas, i[0] === null ? t : this.deltasTimestamp[this.stability * 2 - 2] + this.delay > Date.now() && i[0] === i[this.stability * 2 - 1] ? !1 : (r = i.slice(0, this.stability), n = i.slice(this.stability, this.stability * 2), a = r.reduce(function(c, p) {
-          return c + p;
-        }), o = n.reduce(function(c, p) {
-          return c + p;
-        }), s = a / r.length, l = o / n.length, Math.abs(s) < Math.abs(l * this.tolerance) && this.sensitivity < Math.abs(l) ? t : !1);
+        var i, n, r, a, l, s, o;
+        return i = t === -1 ? this.lastDownDeltas : this.lastUpDeltas, i[0] === null ? t : this.deltasTimestamp[this.stability * 2 - 2] + this.delay > Date.now() && i[0] === i[this.stability * 2 - 1] ? !1 : (r = i.slice(0, this.stability), n = i.slice(this.stability, this.stability * 2), o = r.reduce(function(d, p) {
+          return d + p;
+        }), l = n.reduce(function(d, p) {
+          return d + p;
+        }), s = o / r.length, a = l / n.length, Math.abs(s) < Math.abs(a * this.tolerance) && this.sensitivity < Math.abs(a) ? t : !1);
       }, e.prototype.showLastUpDeltas = function() {
         return this.lastUpDeltas;
       }, e.prototype.showLastDownDeltas = function() {
@@ -146,30 +146,36 @@ var V = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : ty
 class _ extends m.EventDispatcher {
   constructor() {
     super();
-    d(this, "isSP");
-    d(this, "isTouching");
-    d(this, "element", null);
+    f(this, "isSP");
+    f(this, "isTouching");
+    f(this, "element", null);
     // cursor
-    d(this, "position");
-    d(this, "delta");
+    f(this, "position");
+    f(this, "delta");
     // wheel
-    d(this, "lethargy");
-    d(this, "memDelta", 0);
-    d(this, "riseDelta", !1);
-    d(this, "trackpadMemDelta", 0);
-    d(this, "trackpadMax", !1);
+    f(this, "lethargy");
+    f(this, "memDelta", 0);
+    f(this, "riseDelta", !1);
+    f(this, "trackpadMemDelta", 0);
+    f(this, "trackpadMax", !1);
     this.position = new m.Vector2(NaN, NaN), this.delta = new m.Vector2(NaN, NaN);
     const e = navigator.userAgent;
-    this.isSP = e.indexOf("iPhone") >= 0 || e.indexOf("iPad") >= 0 || e.indexOf("Android") >= 0 || navigator.platform == "iPad" || navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && navigator.standalone !== void 0, this.position.set(NaN, NaN), this.isTouching = !1, this.lethargy = new C.Lethargy();
+    this.isSP = e.indexOf("iPhone") >= 0 || e.indexOf("iPad") >= 0 || e.indexOf("Android") >= 0 || navigator.platform == "iPad" || navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && navigator.standalone !== void 0, this.position.set(NaN, NaN), this.isTouching = !1;
+    const t = this.onTouch.bind(this, "move"), i = this.onPointer.bind(this, "move"), n = this.onTouch.bind(this, "end"), r = this.onPointer.bind(this, "end");
+    window.addEventListener("touchmove", t, { passive: !1 }), window.addEventListener("pointermove", i), window.addEventListener("touchend", n, { passive: !1 }), window.addEventListener("pointerup", r), window.addEventListener("dragend", r);
+    const a = () => {
+      this.element && this.unregisterElement(this.element), window.removeEventListener("touchmove", t), window.removeEventListener("pointermove", i), window.removeEventListener("touchend", n), window.removeEventListener("pointerup", r), window.removeEventListener("dragend", r), this.removeEventListener("dispose", a);
+    };
+    this.addEventListener("dispose", a), this.lethargy = new C.Lethargy();
   }
   registerElement(e) {
-    this.element = e;
-    const t = this.onTouch.bind(this, "start"), i = this.onTouch.bind(this, "move"), n = this.onTouch.bind(this, "end"), r = this.onPointer.bind(this, "start"), l = this.onPointer.bind(this, "move"), o = this.onPointer.bind(this, "end"), s = this.wheel.bind(this);
-    e.addEventListener("touchstart", t, { passive: !1 }), e.addEventListener("touchmove", i, { passive: !1 }), e.addEventListener("touchend", n, { passive: !1 }), e.addEventListener("pointerdown", r), e.addEventListener("pointermove", l), e.addEventListener("pointerup", o), e.addEventListener("dragend", o), e.addEventListener("wheel", s, { passive: !1 });
-    const a = (c) => {
-      e.isEqualNode(c.elm) && (e.removeEventListener("touchstart", t), e.removeEventListener("touchmove", i), e.removeEventListener("touchend", n), e.removeEventListener("pointerdown", r), e.removeEventListener("pointermove", l), e.removeEventListener("pointerup", o), e.removeEventListener("dragend", o), e.removeEventListener("wheel", s), this.removeEventListener("unregister", a));
+    this.element && this.unregisterElement(this.element), this.element = e;
+    const t = this.onTouch.bind(this, "start"), i = this.onPointer.bind(this, "start"), n = this.wheel.bind(this);
+    e.addEventListener("touchstart", t, { passive: !1 }), e.addEventListener("pointerdown", i), e.addEventListener("wheel", n, { passive: !1 });
+    const r = (a) => {
+      e.isEqualNode(a.elm) && (e.removeEventListener("touchstart", t), e.removeEventListener("pointerdown", i), e.removeEventListener("wheel", n), this.removeEventListener("unregister", r));
     };
-    this.addEventListener("unregister", a);
+    this.addEventListener("unregister", r);
   }
   unregisterElement(e) {
     this.dispatchEvent({
@@ -201,8 +207,8 @@ class _ extends m.EventDispatcher {
   }
   touchEventHandler(e, t, i, n) {
     let r = !1;
-    const l = e - window.pageXOffset, o = t - window.pageYOffset;
-    i == "start" ? (this.isTouching = !0, this.setPos(l, o), this.delta.set(0, 0), r = !0) : i == "move" ? (this.setPos(l, o), this.isTouching && (r = !0)) : i == "end" && ("targetTouches" in n ? n.targetTouches.length == 0 && (this.isTouching = !1) : this.isTouching = !1, r = !0), r && this.dispatchEvent({
+    const a = e - window.pageXOffset, l = t - window.pageYOffset;
+    i == "start" ? (this.isTouching = !0, this.setPos(a, l), this.delta.set(0, 0), r = !0) : i == "move" ? (this.setPos(a, l), this.isTouching && (r = !0)) : i == "end" && ("targetTouches" in n ? n.targetTouches.length == 0 && (this.isTouching = !1) : this.isTouching = !1, r = !0), r && this.dispatchEvent({
       type: "update",
       pointerEvent: n,
       pointerEventType: i,
@@ -236,18 +242,23 @@ class _ extends m.EventDispatcher {
       Math.abs(t) > 50 ? (this.memDelta = t, this.wheelOptimized(e), this.riseDelta = !0) : t == 0 ? this.riseDelta && this.wheelOptimized(e) : t < 0 && (this.riseDelta = !1), this.memDelta = e.deltaY;
     }
   }
+  dispose() {
+    this.dispatchEvent({
+      type: "dispose"
+    });
+  }
 }
 class Z extends m.EventDispatcher {
   constructor(e) {
     super();
-    d(this, "pointer");
-    d(this, "clock");
-    d(this, "layers", []);
-    d(this, "pointerEventElement");
+    f(this, "pointer");
+    f(this, "clock");
+    f(this, "layers", []);
+    f(this, "pointerEventElement");
     e && e.silent || console.log("%c- ore-three -", "padding: 5px 10px ;background-color: black; color: white;font-size:11px"), this.clock = new m.Clock(), this.pointer = new _(), this.setPointerEventElement(e && e.pointerEventElement || document.body);
-    const t = this.pointerEvent.bind(this), i = this.onWheel.bind(this), n = this.onWheelOptimized.bind(this), r = this.onOrientationDevice.bind(this), l = this.onWindowResize.bind(this);
-    this.pointer.addEventListener("update", t), this.pointer.addEventListener("wheel", i), this.pointer.addEventListener("wheelOptimized", n), window.addEventListener("orientationchange", r), window.addEventListener("resize", l), this.addEventListener("dispose", () => {
-      this.pointer.removeEventListener("update", t), this.pointer.removeEventListener("wheel", i), this.pointer.removeEventListener("wheelOptimized", n), window.removeEventListener("orientationchange", r), window.removeEventListener("resize", l);
+    const t = this.pointerEvent.bind(this), i = this.onWheel.bind(this), n = this.onWheelOptimized.bind(this), r = this.onOrientationDevice.bind(this), a = this.onWindowResize.bind(this);
+    this.pointer.addEventListener("update", t), this.pointer.addEventListener("wheel", i), this.pointer.addEventListener("wheelOptimized", n), window.addEventListener("orientationchange", r), window.addEventListener("resize", a), this.addEventListener("dispose", () => {
+      this.pointer.removeEventListener("update", t), this.pointer.removeEventListener("wheel", i), this.pointer.removeEventListener("wheelOptimized", n), window.removeEventListener("orientationchange", r), window.removeEventListener("resize", a);
     }), this.tick();
   }
   tick() {
@@ -305,9 +316,9 @@ class Z extends m.EventDispatcher {
   }
 }
 var S;
-((f) => {
-  f.NEWTON_ITERATIONS = 4, f.NEWTON_MIN_SLOPE = 1e-3, f.SUBDIVISION_PRECISION = 1e-7, f.SUBDIVISION_MAX_ITERATIONS = 10, f.BEZIER_EASING_CACHE_SIZE = 11, f.BEZIER_EASING_SAMPLE_STEP_SIZE = 1 / f.BEZIER_EASING_CACHE_SIZE;
-  function u(s) {
+((u) => {
+  u.NEWTON_ITERATIONS = 4, u.NEWTON_MIN_SLOPE = 1e-3, u.SUBDIVISION_PRECISION = 1e-7, u.SUBDIVISION_MAX_ITERATIONS = 10, u.BEZIER_EASING_CACHE_SIZE = 11, u.BEZIER_EASING_SAMPLE_STEP_SIZE = 1 / u.BEZIER_EASING_CACHE_SIZE;
+  function c(s) {
     return -s.p0 + 3 * s.p1 - 3 * s.p2 + s.p3;
   }
   function e(s) {
@@ -316,112 +327,112 @@ var S;
   function t(s) {
     return -3 * s.p0 + 3 * s.p1;
   }
-  function i(s, a) {
-    return 3 * u(s) * a * a + 2 * e(s) * a + t(s);
+  function i(s, o) {
+    return 3 * c(s) * o * o + 2 * e(s) * o + t(s);
   }
-  f.calcBezierSlope = i;
-  function n(s, a) {
-    return ((u(s) * a + e(s)) * a + t(s)) * a + s.p0;
+  u.calcBezierSlope = i;
+  function n(s, o) {
+    return ((c(s) * o + e(s)) * o + t(s)) * o + s.p0;
   }
-  f.calcBezier = n;
-  function r(s, a, c, p) {
+  u.calcBezier = n;
+  function r(s, o, d, p) {
     let v = 0, g = 0;
-    for (let y = 0; y < f.SUBDIVISION_MAX_ITERATIONS; y++)
-      g = a + (c - a) / 2, v = n(p, g), v > s ? c = g : a = g;
+    for (let y = 0; y < u.SUBDIVISION_MAX_ITERATIONS; y++)
+      g = o + (d - o) / 2, v = n(p, g), v > s ? d = g : o = g;
     return g;
   }
-  function l(s, a, c) {
-    for (let p = 0; p < f.NEWTON_ITERATIONS; p++) {
-      const v = i(a, c);
+  function a(s, o, d) {
+    for (let p = 0; p < u.NEWTON_ITERATIONS; p++) {
+      const v = i(o, d);
       if (v == 0)
-        return c;
-      const g = n(a, c) - s;
-      c -= g / v;
+        return d;
+      const g = n(o, d) - s;
+      d -= g / v;
     }
-    return c;
+    return d;
   }
-  function o(s, a, c) {
+  function l(s, o, d) {
     s.p1 = Math.max(s.p0, Math.min(s.p3, s.p1)), s.p2 = Math.max(s.p0, Math.min(s.p3, s.p2));
     let p = 0;
-    for (let y = 1; y < c.length && (p = y - 1, !(a < c[y])); y++)
+    for (let y = 1; y < d.length && (p = y - 1, !(o < d[y])); y++)
       ;
-    const v = p / (f.BEZIER_EASING_CACHE_SIZE - 1), g = i(s, v) / (s.p3 - s.p0);
-    return g == 0 ? v : g > 0.01 ? l(a, s, v) : r(a, v, v + f.BEZIER_EASING_SAMPLE_STEP_SIZE, s);
+    const v = p / (u.BEZIER_EASING_CACHE_SIZE - 1), g = i(s, v) / (s.p3 - s.p0);
+    return g == 0 ? v : g > 0.01 ? a(o, s, v) : r(o, v, v + u.BEZIER_EASING_SAMPLE_STEP_SIZE, s);
   }
-  f.getBezierTfromX = o;
+  u.getBezierTfromX = l;
 })(S || (S = {}));
 var T;
-((f) => {
-  function u(h = 6) {
+((u) => {
+  function c(h = 6) {
     return (b) => {
       var w = Math.exp(-h * (2 * b - 1)), E = Math.exp(-h);
       return (1 + (1 - w) / (1 + w) * (1 + E) / (1 - E)) / 2;
     };
   }
-  f.sigmoid = u;
+  u.sigmoid = c;
   function e(h, b, w) {
     const E = Math.max(0, Math.min(1, (w - h) / (b - h)));
     return E * E * (3 - 2 * E);
   }
-  f.smoothstep = e;
+  u.smoothstep = e;
   function t(h) {
     return h;
   }
-  f.linear = t;
+  u.linear = t;
   function i(h) {
     return h * h;
   }
-  f.easeInQuad = i;
+  u.easeInQuad = i;
   function n(h) {
     return h * (2 - h);
   }
-  f.easeOutQuad = n;
+  u.easeOutQuad = n;
   function r(h) {
     return h < 0.5 ? 2 * h * h : -1 + (4 - 2 * h) * h;
   }
-  f.easeInOutQuad = r;
-  function l(h) {
+  u.easeInOutQuad = r;
+  function a(h) {
     return h * h * h;
   }
-  f.easeInCubic = l;
-  function o(h) {
+  u.easeInCubic = a;
+  function l(h) {
     return --h * h * h + 1;
   }
-  f.easeOutCubic = o;
+  u.easeOutCubic = l;
   function s(h) {
     return h < 0.5 ? 4 * h * h * h : (h - 1) * (2 * h - 2) * (2 * h - 2) + 1;
   }
-  f.easeInOutCubic = s;
-  function a(h) {
+  u.easeInOutCubic = s;
+  function o(h) {
     return h * h * h * h;
   }
-  f.easeInQuart = a;
-  function c(h) {
+  u.easeInQuart = o;
+  function d(h) {
     return 1 - --h * h * h * h;
   }
-  f.easeOutQuart = c;
+  u.easeOutQuart = d;
   function p(h) {
     return h < 0.5 ? 8 * h * h * h * h : 1 - 8 * --h * h * h * h;
   }
-  f.easeInOutQuart = p;
+  u.easeInOutQuart = p;
   function v(h) {
     return h * h * h * h * h;
   }
-  f.easeInQuint = v;
+  u.easeInQuint = v;
   function g(h) {
     return 1 + --h * h * h * h * h;
   }
-  f.easeOutQuint = g;
+  u.easeOutQuint = g;
   function y(h) {
     return h < 0.5 ? 16 * h * h * h * h * h : 1 + 16 * --h * h * h * h * h;
   }
-  f.easeInOutQuint = y;
+  u.easeInOutQuint = y;
   function A(h, b, w, E) {
     for (var z = new Array(S.BEZIER_EASING_CACHE_SIZE), L = 0; L < S.BEZIER_EASING_CACHE_SIZE; ++L)
       z[L] = S.calcBezier({ p0: h.x, p1: b.x, p2: w.x, p3: E.x }, L / (S.BEZIER_EASING_CACHE_SIZE - 1));
     return (O) => O <= h.x ? h.y : E.x <= O ? E.y : S.calcBezier({ p0: h.y, p1: b.y, p2: w.y, p3: E.y }, S.getBezierTfromX({ p0: h.x, p1: b.x, p2: w.x, p3: E.x }, O, z));
   }
-  f.bezier = A;
+  u.bezier = A;
   function D(h, b, w, E) {
     return A(
       { x: 0, y: 0 },
@@ -430,58 +441,58 @@ var T;
       { x: 1, y: 1 }
     );
   }
-  f.cubicBezier = D;
+  u.cubicBezier = D;
 })(T || (T = {}));
 var I;
-((f) => {
-  function u(l, o, s) {
-    return l + (o - l) * s;
+((u) => {
+  function c(a, l, s) {
+    return a + (l - a) * s;
   }
-  f.number = u;
-  function e(l, o, s) {
-    if (l.length == o.length) {
-      const a = [];
-      for (let c = 0; c < l.length; c++)
-        a.push(l[c] + (o[c] - l[c]) * s);
-      return a;
+  u.number = c;
+  function e(a, l, s) {
+    if (a.length == l.length) {
+      const o = [];
+      for (let d = 0; d < a.length; d++)
+        o.push(a[d] + (l[d] - a[d]) * s);
+      return o;
     } else
       return console.log("Different length Arrays!!!"), !1;
   }
-  f.numberArray = e;
-  function t(l, o, s) {
-    return l.clone().lerp(o, s);
+  u.numberArray = e;
+  function t(a, l, s) {
+    return a.clone().lerp(l, s);
   }
-  f.THREEVectors = t;
-  function i(l, o, s) {
-    return l.clone().slerp(o, s);
+  u.THREEVectors = t;
+  function i(a, l, s) {
+    return a.clone().slerp(l, s);
   }
-  f.THREEQuaternion = i;
-  function n(l, o, s) {
-    const a = l.clone(), c = o.clone();
-    return a.x = a.x + (c.x - a.x) * s, a.y = a.y + (c.y - a.y) * s, a.z = a.z + (c.z - a.z) * s, a;
+  u.THREEQuaternion = i;
+  function n(a, l, s) {
+    const o = a.clone(), d = l.clone();
+    return o.x = o.x + (d.x - o.x) * s, o.y = o.y + (d.y - o.y) * s, o.z = o.z + (d.z - o.z) * s, o;
   }
-  f.THREEEuler = n;
-  function r(l) {
-    if (typeof l == "number")
-      return f.number;
-    if (l instanceof Array)
-      return f.numberArray;
-    if ("isVector2" in l || "isVector3" in l || "isVector4" in l || "isColor" in l)
-      return f.THREEVectors;
-    if ("isQuaternion" in l)
-      return f.THREEQuaternion;
-    if ("isEuler" in l)
-      return f.THREEEuler;
+  u.THREEEuler = n;
+  function r(a) {
+    if (typeof a == "number")
+      return u.number;
+    if (a instanceof Array)
+      return u.numberArray;
+    if ("isVector2" in a || "isVector3" in a || "isVector4" in a || "isColor" in a)
+      return u.THREEVectors;
+    if ("isQuaternion" in a)
+      return u.THREEQuaternion;
+    if ("isEuler" in a)
+      return u.THREEEuler;
   }
-  f.getLerpFunc = r;
+  u.getLerpFunc = r;
 })(I || (I = {}));
 class K extends m.EventDispatcher {
   constructor() {
     super();
-    d(this, "dataBase");
-    d(this, "variables");
-    d(this, "dispatchEvents", []);
-    d(this, "_isAnimating", !1);
+    f(this, "dataBase");
+    f(this, "variables");
+    f(this, "dispatchEvents", []);
+    f(this, "_isAnimating", !1);
     this.variables = {}, this.dataBase = {};
   }
   add(e) {
@@ -527,13 +538,13 @@ class K extends m.EventDispatcher {
     }), this._isAnimating = !0) : console.error('"' + e + '" is not exist');
   }
   animateAsync(e, t, i = 1, n) {
-    return new Promise((r, l) => {
-      const o = this.variables[e];
-      o ? (this.cancelAnimate(e), this.animateVariableInit(o, t, i, () => {
-        o.onAnimationFinished = null, l("animation canceled");
+    return new Promise((r, a) => {
+      const l = this.variables[e];
+      l ? (this.cancelAnimate(e), this.animateVariableInit(l, t, i, () => {
+        l.onAnimationFinished = null, a("animation canceled");
       }, () => {
-        o.onAnimationFinished = null, n && n(), r(null);
-      }), this._isAnimating = !0) : l('"' + e + '" is not exist');
+        l.onAnimationFinished = null, n && n(), r(null);
+      }), this._isAnimating = !0) : a('"' + e + '" is not exist');
     });
   }
   animateVariableInit(e, t, i, n, r) {
@@ -588,17 +599,17 @@ class K extends m.EventDispatcher {
       const n = t[i], r = this.variables[n];
       if (r.isAnimating && r.isAnimatingReseve) {
         this._isAnimating = !0;
-        let l = !1;
-        const o = r.duration, s = r.easing, a = r.lerpFunc;
-        o == 0 ? r.time = 1 : r.time += (e || 0.016) / o, r.time >= 1 && (l = !0, r.time = 1);
-        let c = r.goalValue;
-        a && (c = a(r.startValue, r.goalValue, s(r.time)));
+        let a = !1;
+        const l = r.duration, s = r.easing, o = r.lerpFunc;
+        l == 0 ? r.time = 1 : r.time += (e || 0.016) / l, r.time >= 1 && (a = !0, r.time = 1);
+        let d = r.goalValue;
+        o && (d = o(r.startValue, r.goalValue, s(r.time)));
         const p = this.dataBase[n];
-        typeof p == "number" || !("copy" in p) ? this.dataBase[n] = c : "copy" in p && p.copy(c), this.dispatchEvent({
+        typeof p == "number" || !("copy" in p) ? this.dataBase[n] = d : "copy" in p && p.copy(d), this.dispatchEvent({
           type: "update/" + t[i],
           deltaTime: e,
           value: r.value
-        }), l && (r.onAnimationFinished && this.dispatchEvents.push(r.onAnimationFinished), r.isAnimatingReseve = !1);
+        }), a && (r.onAnimationFinished && this.dispatchEvents.push(r.onAnimationFinished), r.isAnimatingReseve = !1);
       } else
         r.isAnimating = !1, r.time = 0;
     }
@@ -631,8 +642,8 @@ var x = {}, k = {
   get exports() {
     return x;
   },
-  set exports(f) {
-    x = f;
+  set exports(u) {
+    x = u;
   }
 };
 /*!
@@ -641,102 +652,102 @@ var x = {}, k = {
  * Oliver Caldwell - https://oli.me.uk/
  * @preserve
  */
-(function(f) {
-  (function(u) {
+(function(u) {
+  (function(c) {
     function e() {
     }
-    var t = e.prototype, i = u.EventEmitter;
-    function n(o, s) {
-      for (var a = o.length; a--; )
-        if (o[a].listener === s)
-          return a;
+    var t = e.prototype, i = c.EventEmitter;
+    function n(l, s) {
+      for (var o = l.length; o--; )
+        if (l[o].listener === s)
+          return o;
       return -1;
     }
-    function r(o) {
+    function r(l) {
       return function() {
-        return this[o].apply(this, arguments);
+        return this[l].apply(this, arguments);
       };
     }
     t.getListeners = function(s) {
-      var a = this._getEvents(), c, p;
+      var o = this._getEvents(), d, p;
       if (s instanceof RegExp) {
-        c = {};
-        for (p in a)
-          a.hasOwnProperty(p) && s.test(p) && (c[p] = a[p]);
+        d = {};
+        for (p in o)
+          o.hasOwnProperty(p) && s.test(p) && (d[p] = o[p]);
       } else
-        c = a[s] || (a[s] = []);
-      return c;
+        d = o[s] || (o[s] = []);
+      return d;
     }, t.flattenListeners = function(s) {
-      var a = [], c;
-      for (c = 0; c < s.length; c += 1)
-        a.push(s[c].listener);
-      return a;
+      var o = [], d;
+      for (d = 0; d < s.length; d += 1)
+        o.push(s[d].listener);
+      return o;
     }, t.getListenersAsObject = function(s) {
-      var a = this.getListeners(s), c;
-      return a instanceof Array && (c = {}, c[s] = a), c || a;
+      var o = this.getListeners(s), d;
+      return o instanceof Array && (d = {}, d[s] = o), d || o;
     };
-    function l(o) {
-      return typeof o == "function" || o instanceof RegExp ? !0 : o && typeof o == "object" ? l(o.listener) : !1;
+    function a(l) {
+      return typeof l == "function" || l instanceof RegExp ? !0 : l && typeof l == "object" ? a(l.listener) : !1;
     }
-    t.addListener = function(s, a) {
-      if (!l(a))
+    t.addListener = function(s, o) {
+      if (!a(o))
         throw new TypeError("listener must be a function");
-      var c = this.getListenersAsObject(s), p = typeof a == "object", v;
-      for (v in c)
-        c.hasOwnProperty(v) && n(c[v], a) === -1 && c[v].push(p ? a : {
-          listener: a,
+      var d = this.getListenersAsObject(s), p = typeof o == "object", v;
+      for (v in d)
+        d.hasOwnProperty(v) && n(d[v], o) === -1 && d[v].push(p ? o : {
+          listener: o,
           once: !1
         });
       return this;
-    }, t.on = r("addListener"), t.addOnceListener = function(s, a) {
+    }, t.on = r("addListener"), t.addOnceListener = function(s, o) {
       return this.addListener(s, {
-        listener: a,
+        listener: o,
         once: !0
       });
     }, t.once = r("addOnceListener"), t.defineEvent = function(s) {
       return this.getListeners(s), this;
     }, t.defineEvents = function(s) {
-      for (var a = 0; a < s.length; a += 1)
-        this.defineEvent(s[a]);
+      for (var o = 0; o < s.length; o += 1)
+        this.defineEvent(s[o]);
       return this;
-    }, t.removeListener = function(s, a) {
-      var c = this.getListenersAsObject(s), p, v;
-      for (v in c)
-        c.hasOwnProperty(v) && (p = n(c[v], a), p !== -1 && c[v].splice(p, 1));
+    }, t.removeListener = function(s, o) {
+      var d = this.getListenersAsObject(s), p, v;
+      for (v in d)
+        d.hasOwnProperty(v) && (p = n(d[v], o), p !== -1 && d[v].splice(p, 1));
       return this;
-    }, t.off = r("removeListener"), t.addListeners = function(s, a) {
-      return this.manipulateListeners(!1, s, a);
-    }, t.removeListeners = function(s, a) {
-      return this.manipulateListeners(!0, s, a);
-    }, t.manipulateListeners = function(s, a, c) {
+    }, t.off = r("removeListener"), t.addListeners = function(s, o) {
+      return this.manipulateListeners(!1, s, o);
+    }, t.removeListeners = function(s, o) {
+      return this.manipulateListeners(!0, s, o);
+    }, t.manipulateListeners = function(s, o, d) {
       var p, v, g = s ? this.removeListener : this.addListener, y = s ? this.removeListeners : this.addListeners;
-      if (typeof a == "object" && !(a instanceof RegExp))
-        for (p in a)
-          a.hasOwnProperty(p) && (v = a[p]) && (typeof v == "function" ? g.call(this, p, v) : y.call(this, p, v));
+      if (typeof o == "object" && !(o instanceof RegExp))
+        for (p in o)
+          o.hasOwnProperty(p) && (v = o[p]) && (typeof v == "function" ? g.call(this, p, v) : y.call(this, p, v));
       else
-        for (p = c.length; p--; )
-          g.call(this, a, c[p]);
+        for (p = d.length; p--; )
+          g.call(this, o, d[p]);
       return this;
     }, t.removeEvent = function(s) {
-      var a = typeof s, c = this._getEvents(), p;
-      if (a === "string")
-        delete c[s];
+      var o = typeof s, d = this._getEvents(), p;
+      if (o === "string")
+        delete d[s];
       else if (s instanceof RegExp)
-        for (p in c)
-          c.hasOwnProperty(p) && s.test(p) && delete c[p];
+        for (p in d)
+          d.hasOwnProperty(p) && s.test(p) && delete d[p];
       else
         delete this._events;
       return this;
-    }, t.removeAllListeners = r("removeEvent"), t.emitEvent = function(s, a) {
-      var c = this.getListenersAsObject(s), p, v, g, y, A;
-      for (y in c)
-        if (c.hasOwnProperty(y))
-          for (p = c[y].slice(0), g = 0; g < p.length; g++)
-            v = p[g], v.once === !0 && this.removeListener(s, v.listener), A = v.listener.apply(this, a || []), A === this._getOnceReturnValue() && this.removeListener(s, v.listener);
+    }, t.removeAllListeners = r("removeEvent"), t.emitEvent = function(s, o) {
+      var d = this.getListenersAsObject(s), p, v, g, y, A;
+      for (y in d)
+        if (d.hasOwnProperty(y))
+          for (p = d[y].slice(0), g = 0; g < p.length; g++)
+            v = p[g], v.once === !0 && this.removeListener(s, v.listener), A = v.listener.apply(this, o || []), A === this._getOnceReturnValue() && this.removeListener(s, v.listener);
       return this;
     }, t.trigger = r("emitEvent"), t.emit = function(s) {
-      var a = Array.prototype.slice.call(arguments, 1);
-      return this.emitEvent(s, a);
+      var o = Array.prototype.slice.call(arguments, 1);
+      return this.emitEvent(s, o);
     }, t.setOnceReturnValue = function(s) {
       return this._onceReturnValue = s, this;
     }, t._getOnceReturnValue = function() {
@@ -744,17 +755,17 @@ var x = {}, k = {
     }, t._getEvents = function() {
       return this._events || (this._events = {});
     }, e.noConflict = function() {
-      return u.EventEmitter = i, e;
-    }, f.exports ? f.exports = e : u.EventEmitter = e;
+      return c.EventEmitter = i, e;
+    }, u.exports ? u.exports = e : c.EventEmitter = e;
   })(typeof window < "u" ? window : V || {});
 })(k);
 class P extends x {
   constructor(e) {
     super();
-    d(this, "name");
-    d(this, "curves", {});
-    d(this, "uniforms");
-    d(this, "frame");
+    f(this, "name");
+    f(this, "curves", {});
+    f(this, "uniforms");
+    f(this, "frame");
     this.name = e || "", this.uniforms = {}, this.frame = {
       start: 0,
       end: 0,
@@ -768,9 +779,10 @@ class P extends x {
     delete this.curves[e], this.calcFrame();
   }
   calcFrame() {
-    let e = Object.keys(this.curves), t = 1 / 0, i = -1 / 0;
+    const e = Object.keys(this.curves);
+    let t = 1 / 0, i = -1 / 0;
     for (let n = 0; n < e.length; n++) {
-      let r = this.curves[e[n]];
+      const r = this.curves[e[n]];
       r.frameStart < t && (t = r.frameStart), r.frameEnd > i && (i = r.frameEnd);
     }
     (t == -1 / 0 || i == 1 / 0) && (t = 0, i = 1), this.frame.start = t, this.frame.end = i, this.frame.duration = this.frame.end - this.frame.start;
@@ -787,9 +799,9 @@ class P extends x {
   getUniforms(e) {
     if (this.uniforms[e])
       return this.uniforms[e];
-    let t = this.getFCurveGroup(e);
+    const t = this.getFCurveGroup(e);
     if (t) {
-      let i = {
+      const i = {
         value: t.createInitValue()
       };
       return this.uniforms[e] = i, i;
@@ -797,23 +809,23 @@ class P extends x {
     return null;
   }
   getValue(e, t) {
-    let i = this.getUniforms(e);
+    const i = this.getUniforms(e);
     if (!i)
       return t || null;
-    let n = i.value;
+    const n = i.value;
     return t ? typeof n == "number" ? (t.x = n, t) : (t.x = n.x, t.y = n.y, "z" in t && "z" in n && (t.z = n.z), "w" in t && "w" in n && (t.w = n.w), t || null) : n;
   }
   getValueAt(e, t, i) {
-    let n = this.getFCurveGroup(e);
+    const n = this.getFCurveGroup(e);
     return i ? n ? n.getValue(t || 0, i) : i : n ? n.getValue(t) : null;
   }
   /*-------------------------------
   	UpdateFrame
   -------------------------------*/
   updateFrame(e) {
-    let t = Object.keys(this.curves);
+    const t = Object.keys(this.curves);
     for (let i = 0; i < t.length; i++) {
-      let n = this.curves[t[i]], r = this.getUniforms(t[i]);
+      const n = this.curves[t[i]], r = this.getUniforms(t[i]);
       r && (typeof r.value == "number" ? r.value = n.getValue(e) || 0 : n.getValue(e, r.value));
     }
     this.emitEvent("update", [this]);
@@ -822,11 +834,11 @@ class P extends x {
 class B extends x {
   constructor(e) {
     super();
-    d(this, "keyframes", []);
-    d(this, "cache", { frame: NaN, value: NaN });
-    d(this, "frameStart");
-    d(this, "frameEnd");
-    d(this, "frameDuration");
+    f(this, "keyframes", []);
+    f(this, "cache", { frame: NaN, value: NaN });
+    f(this, "frameStart");
+    f(this, "frameEnd");
+    f(this, "frameDuration");
     this.frameStart = 0, this.frameEnd = 0, this.frameDuration = 0, this.set(e);
   }
   set(e) {
@@ -845,9 +857,9 @@ class B extends x {
       return this.cache.value;
     let t = null;
     for (let i = 0; i < this.keyframes.length; i++) {
-      let n = this.keyframes[i];
+      const n = this.keyframes[i];
       if (e <= n.coordinate.x) {
-        let r = this.keyframes[i - 1];
+        const r = this.keyframes[i - 1];
         r ? t = r.to(n, e) : t = n.coordinate.y;
         break;
       }
@@ -859,14 +871,14 @@ class B extends x {
   }
 }
 class M extends x {
-  constructor(e, t, i, n, r, l) {
+  constructor(e, t, i, n, r, a) {
     super();
-    d(this, "name");
-    d(this, "curve");
-    d(this, "type", "scalar");
-    d(this, "frameStart");
-    d(this, "frameEnd");
-    d(this, "frameDuration");
+    f(this, "name");
+    f(this, "curve");
+    f(this, "type", "scalar");
+    f(this, "frameStart");
+    f(this, "frameEnd");
+    f(this, "frameDuration");
     this.name = e || "", this.frameStart = 0, this.frameEnd = 0, this.frameDuration = 0, this.curve = {
       x: null,
       y: null,
@@ -882,9 +894,10 @@ class M extends x {
     this.curve.scalar && (this.type = "scalar"), this.curve.w ? this.type = "vec4" : this.curve.z ? this.type = "vec3" : this.curve.y ? this.type = "vec2" : this.curve.x && (this.type = "scalar");
   }
   calcFrame() {
-    let e = Object.keys(this.curve), t = 1 / 0, i = -1 / 0;
+    const e = Object.keys(this.curve);
+    let t = 1 / 0, i = -1 / 0;
     for (let n = 0; n < e.length; n++) {
-      let r = this.curve[e[n]];
+      const r = this.curve[e[n]];
       r && (r.frameStart < t && (t = r.frameStart), r.frameEnd > i && (i = r.frameEnd));
     }
     (t == -1 / 0 || i == 1 / 0) && (t = 0, i = 1), this.frameStart = t, this.frameEnd = i, this.frameDuration = this.frameEnd - this.frameStart;
@@ -899,12 +912,12 @@ class M extends x {
 class W extends x {
   constructor(e, t, i, n) {
     super();
-    d(this, "coordinate", { x: 0, y: 0 });
-    d(this, "handleLeft", { x: 0, y: 0 });
-    d(this, "handleRight", { x: 0, y: 0 });
-    d(this, "interpolation", "BEZIER");
-    d(this, "easing", null);
-    d(this, "nextFrame", null);
+    f(this, "coordinate", { x: 0, y: 0 });
+    f(this, "handleLeft", { x: 0, y: 0 });
+    f(this, "handleRight", { x: 0, y: 0 });
+    f(this, "interpolation", "BEZIER");
+    f(this, "easing", null);
+    f(this, "nextFrame", null);
     this.set(e, t, i, n);
   }
   set(e, t, i, n) {
@@ -912,7 +925,7 @@ class W extends x {
   }
   getEasing(e, t) {
     return e == "BEZIER" ? T.bezier(this.coordinate, this.handleRight, t.handleLeft, t.coordinate) : (i) => {
-      let n = t.coordinate.y - this.coordinate.y;
+      const n = t.coordinate.y - this.coordinate.y;
       return i = (i - this.coordinate.x) / (t.coordinate.x - this.coordinate.x), this.coordinate.y + i * n;
     };
   }
@@ -924,16 +937,16 @@ class X extends x {
   constructor(e) {
     super();
     // ws
-    d(this, "url");
-    d(this, "ws");
-    d(this, "connected", !1);
+    f(this, "url");
+    f(this, "ws");
+    f(this, "connected", !1);
     // frame
-    d(this, "frameCurrent", 0);
-    d(this, "frameStart", 0);
-    d(this, "frameEnd", 0);
+    f(this, "frameCurrent", 0);
+    f(this, "frameStart", 0);
+    f(this, "frameEnd", 0);
     // animation
-    d(this, "objects", []);
-    d(this, "actions", []);
+    f(this, "objects", []);
+    f(this, "actions", []);
     e && (this.url = e, this.connect(this.url));
   }
   connect(e) {
@@ -942,7 +955,7 @@ class X extends x {
     };
   }
   syncJsonScene(e) {
-    let t = new XMLHttpRequest();
+    const t = new XMLHttpRequest();
     t.onreadystatechange = () => {
       t.readyState == 4 && t.status == 200 && this.onSyncScene(JSON.parse(t.response));
     }, t.open("GET", e), t.send();
@@ -952,13 +965,13 @@ class X extends x {
   -------------------------------*/
   onSyncScene(e) {
     this.actions.length = 0, this.objects.length = 0, e.actions.forEach((t) => {
-      let i = new P(t.name), n = Object.keys(t.fcurve_groups);
+      const i = new P(t.name), n = Object.keys(t.fcurve_groups);
       for (let r = 0; r < n.length; r++) {
-        let l = n[r], o = new M(l);
-        t.fcurve_groups[l].forEach((s) => {
-          let a = new B();
-          a.set(s.keyframes.map((c) => new W(c.c, c.h_l, c.h_r, c.i))), o.setFCurve(a, s.axis);
-        }), i.addFcurveGroup(o.name, o);
+        const a = n[r], l = new M(a);
+        t.fcurve_groups[a].forEach((s) => {
+          const o = new B();
+          o.set(s.keyframes.map((d) => new W(d.c, d.h_l, d.h_r, d.i))), l.setFCurve(o, s.axis);
+        }), i.addFcurveGroup(l.name, l);
       }
       this.actions.push(i);
     }), e.objects.forEach((t) => {
@@ -975,7 +988,7 @@ class X extends x {
     this.connected = !0;
   }
   onMessage(e) {
-    let t = JSON.parse(e.data);
+    const t = JSON.parse(e.data);
     t.type == "sync/scene" ? this.onSyncScene(t.data) : t.type == "sync/timeline" && this.onSyncTimeline(t.data);
   }
   onClose(e) {
@@ -997,9 +1010,9 @@ class X extends x {
     return null;
   }
   getActionList(e) {
-    let t = [];
+    const t = [];
     return this.getActionNameList(e).forEach((n) => {
-      let r = this.getAction(n);
+      const r = this.getAction(n);
       r && t.push(r);
     }), t;
   }
@@ -1023,28 +1036,28 @@ const U = `#define GLSLIFY 1
 varying vec2 vUv;void main(){gl_Position=vec4(position,1.0);vUv=uv;}`, j = `#define GLSLIFY 1
 uniform sampler2D tex;varying vec2 vUv;void main(){gl_FragColor=texture2D(tex,vUv);}`;
 var R;
-((f) => {
-  function u(...e) {
+((u) => {
+  function c(...e) {
     const t = {};
     for (let i = 0; i < e.length; i++)
       e[i] != null && Object.assign(t, e[i]);
     return t;
   }
-  f.mergeUniforms = u;
+  u.mergeUniforms = c;
 })(R || (R = {}));
 class Y {
-  constructor(u, e) {
-    d(this, "renderer");
-    d(this, "dataSize");
-    d(this, "uniforms");
-    d(this, "scene");
-    d(this, "camera");
-    d(this, "mesh");
-    d(this, "materials");
-    d(this, "tempDataLinear");
-    d(this, "tempDataNear");
-    d(this, "renderTargets", []);
-    this.renderer = u, this.dataSize = e.clone(), this.uniforms = {
+  constructor(c, e) {
+    f(this, "renderer");
+    f(this, "dataSize");
+    f(this, "uniforms");
+    f(this, "scene");
+    f(this, "camera");
+    f(this, "mesh");
+    f(this, "materials");
+    f(this, "tempDataLinear");
+    f(this, "tempDataNear");
+    f(this, "renderTargets", []);
+    this.renderer = c, this.dataSize = e.clone(), this.uniforms = {
       dataSize: {
         value: this.dataSize
       }
@@ -1060,11 +1073,11 @@ class Y {
     return this.renderer.extensions.get("OES_texture_float");
   }
   createInitializeTexture() {
-    let u = new Float32Array(this.uniforms.dataSize.value.x * this.uniforms.dataSize.value.y * 4), e = new m.DataTexture(u, this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, m.RGBAFormat, m.FloatType);
+    const c = new Float32Array(this.uniforms.dataSize.value.x * this.uniforms.dataSize.value.y * 4), e = new m.DataTexture(c, this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, m.RGBAFormat, m.FloatType);
     return e.needsUpdate = !0, e;
   }
-  createData(u, e) {
-    let t = navigator.userAgent, i = t.indexOf("iPhone") >= 0 || t.indexOf("iPad") >= 0 || navigator.platform == "iPad" || navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && navigator.standalone !== void 0, n = {
+  createData(c, e) {
+    const t = navigator.userAgent, i = t.indexOf("iPhone") >= 0 || t.indexOf("iPad") >= 0 || navigator.platform == "iPad" || navigator.platform == "MacIntel" && navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") == -1 && navigator.standalone !== void 0, n = {
       wrapS: m.ClampToEdgeWrapping,
       wrapT: m.ClampToEdgeWrapping,
       minFilter: m.NearestFilter,
@@ -1073,11 +1086,12 @@ class Y {
       type: i ? m.HalfFloatType : m.FloatType,
       stencilBuffer: !1,
       depthBuffer: !1
-    }, r = null, l = null;
-    u && (u.isDataTexture ? (r = u, e && (l = e)) : l = u), l && (n.wrapS = l.wrapS || n.wrapS, n.wrapT = l.wrapT || n.wrapT, n.minFilter = l.minFilter || n.minFilter, n.magFilter = l.magFilter || n.magFilter, n.format = l.format || n.format, n.type = l.type || n.type, n.stencilBuffer = l.stencilBuffer || n.stencilBuffer, n.depthBuffer = l.depthBuffer || n.depthBuffer);
-    let o = new m.WebGLRenderTarget(this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, n), s = { buffer: o };
-    if (this.renderTargets.push(o), r) {
-      let a = this.createKernel({
+    };
+    let r = null, a = null;
+    c && (c.isDataTexture ? (r = c, e && (a = e)) : a = c), a && (n.wrapS = a.wrapS || n.wrapS, n.wrapT = a.wrapT || n.wrapT, n.minFilter = a.minFilter || n.minFilter, n.magFilter = a.magFilter || n.magFilter, n.format = a.format || n.format, n.type = a.type || n.type, n.stencilBuffer = a.stencilBuffer || n.stencilBuffer, n.depthBuffer = a.depthBuffer || n.depthBuffer);
+    const l = new m.WebGLRenderTarget(this.uniforms.dataSize.value.x, this.uniforms.dataSize.value.y, n), s = { buffer: l };
+    if (this.renderTargets.push(l), r) {
+      const o = this.createKernel({
         fragmentShader: j,
         uniforms: {
           tex: {
@@ -1085,28 +1099,28 @@ class Y {
           }
         }
       });
-      this.compute(a, s);
+      this.compute(o, s);
     }
     return s;
   }
-  createKernel(u) {
-    let e = R.mergeUniforms(u.uniforms, this.uniforms);
-    u.uniforms = e, u.vertexShader = u.vertexShader || U;
-    let t = new m.ShaderMaterial(u);
+  createKernel(c) {
+    const e = R.mergeUniforms(c.uniforms, this.uniforms);
+    c.uniforms = e, c.vertexShader = c.vertexShader || U;
+    const t = new m.ShaderMaterial(c);
     return this.materials.push(t), {
       material: t,
-      uniforms: u.uniforms
+      uniforms: c.uniforms
     };
   }
-  compute(u, e, t) {
+  compute(c, e, t) {
     let i;
-    e.buffer.texture.magFilter == m.LinearFilter ? i = this.tempDataLinear : i = this.tempDataNear, this.mesh.material = u.material;
-    let n = this.renderer.getRenderTarget();
+    e.buffer.texture.magFilter == m.LinearFilter ? i = this.tempDataLinear : i = this.tempDataNear, this.mesh.material = c.material;
+    const n = this.renderer.getRenderTarget();
     this.renderer.setRenderTarget(i.buffer), this.renderer.render(this.scene, t || this.camera), this.swapBuffers(e, i), this.renderer.setRenderTarget(n);
   }
-  swapBuffers(u, e) {
-    let t = u.buffer;
-    u.buffer = e.buffer, e.buffer = t;
+  swapBuffers(c, e) {
+    const t = c.buffer;
+    c.buffer = e.buffer, e.buffer = t;
   }
   dispose() {
     this.mesh.geometry.dispose();
@@ -1114,50 +1128,50 @@ class Y {
       this.materials[e].dispose();
     this.scene.remove(this.mesh), this.tempDataLinear.buffer.dispose(), this.tempDataNear.buffer.dispose();
   }
-  resizeData(u) {
-    this.dataSize.copy(u);
+  resizeData(c) {
+    this.dataSize.copy(c);
     for (let e = 0; e < this.renderTargets.length; e++)
-      this.renderTargets[e].setSize(u.x, u.y);
+      this.renderTargets[e].setSize(c.x, c.y);
   }
 }
 const G = `#define GLSLIFY 1
 varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,1.0);}`;
 class q {
-  constructor(u, e, t) {
-    d(this, "renderer");
-    d(this, "scene");
-    d(this, "camera");
-    d(this, "screen");
-    d(this, "effect");
-    this.renderer = u, this.scene = new m.Scene(), this.camera = new m.OrthographicCamera(-1, 1, 1, -1), this.screen = new m.Mesh(t || new m.PlaneGeometry(2, 2)), this.scene.add(this.screen), e.vertexShader = e.vertexShader || G, e.uniforms = e.uniforms || {}, e.uniforms.resolution = {
+  constructor(c, e, t) {
+    f(this, "renderer");
+    f(this, "scene");
+    f(this, "camera");
+    f(this, "screen");
+    f(this, "effect");
+    this.renderer = c, this.scene = new m.Scene(), this.camera = new m.OrthographicCamera(-1, 1, 1, -1), this.screen = new m.Mesh(t || new m.PlaneGeometry(2, 2)), this.scene.add(this.screen), e.vertexShader = e.vertexShader || G, e.uniforms = e.uniforms || {}, e.uniforms.resolution = {
       value: new m.Vector2()
     }, this.effect = {
       material: new m.ShaderMaterial(e)
     };
   }
-  render(u, e = null) {
-    let t = this.renderer.getRenderTarget(), i = this.effect, n = i.material, r = n.uniforms;
-    if (u) {
-      let l = Object.keys(u);
-      for (let o = 0; o < l.length; o++)
-        r[l[o]] ? r[l[o]].value = u[l[o]] : (r[l[o]] = { value: u[l[o]] }, i.material.needsUpdate = !0, i.material.uniforms = r);
+  render(c, e = null) {
+    const t = this.renderer.getRenderTarget(), i = this.effect, n = i.material, r = n.uniforms;
+    if (c) {
+      const a = Object.keys(c);
+      for (let l = 0; l < a.length; l++)
+        r[a[l]] ? r[a[l]].value = c[a[l]] : (r[a[l]] = { value: c[a[l]] }, i.material.needsUpdate = !0, i.material.uniforms = r);
     }
     e ? r.resolution.value.set(e.width, e.height) : this.renderer.getSize(r.resolution.value), this.screen.material = n, this.renderer.setRenderTarget(e), this.renderer.render(this.scene, this.camera), this.renderer.setRenderTarget(t);
   }
 }
 class J {
-  constructor(u, e, t) {
-    d(this, "obj");
-    d(this, "baseTransform");
-    d(this, "transform");
-    this.obj = u, this.baseTransform = {
+  constructor(c, e, t) {
+    f(this, "obj");
+    f(this, "baseTransform");
+    f(this, "transform");
+    this.obj = c, this.baseTransform = {
       position: this.obj.position.clone(),
       rotation: this.obj.quaternion.clone(),
       scale: this.obj.scale.clone()
     }, this.transform = e, t || (this.transform.position && this.transform.position.add(this.obj.position), this.transform.rotation && this.transform.rotation.multiply(this.obj.quaternion));
   }
-  updateTransform(u) {
-    this.transform.position && this.obj.position.copy(this.baseTransform.position.clone().lerp(this.transform.position, u)), this.transform.rotation && this.obj.quaternion.copy(this.baseTransform.rotation.clone().slerp(this.transform.rotation, u)), this.transform.scale && this.obj.scale.copy(this.baseTransform.scale.clone().multiplyScalar(this.transform.scale * u + 1 - u));
+  updateTransform(c) {
+    this.transform.position && this.obj.position.copy(this.baseTransform.position.clone().lerp(this.transform.position, c)), this.transform.rotation && this.obj.quaternion.copy(this.baseTransform.rotation.clone().slerp(this.transform.rotation, c)), this.transform.scale && this.obj.scale.copy(this.baseTransform.scale.clone().multiplyScalar(this.transform.scale * c + 1 - c));
   }
 }
 class $ extends m.EventDispatcher {
@@ -1167,14 +1181,14 @@ class $ extends m.EventDispatcher {
   goHome() {
     this.dispatchEvent({ type: "gohome" });
   }
-  wait(u) {
+  wait(c) {
     return new Promise((e, t) => {
       const i = () => {
         t(), this.removeEventListener("gohome", i);
       };
       this.addEventListener("gohome", i), setTimeout(() => {
         this.removeEventListener("gohome", i), e();
-      }, u * 1e3);
+      }, c * 1e3);
     });
   }
 }
