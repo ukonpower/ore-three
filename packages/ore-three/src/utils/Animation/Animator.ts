@@ -1,8 +1,7 @@
-import { get } from 'http';
 import * as THREE from 'three';
 import { Easings, EasingFunc } from "./Easings";
-import { LerpFunc, Lerps } from "./Lerps";
-import { Uniforms } from "./Uniforms";
+import { LerpFunc, Lerps } from '../Lerps';
+import { Uniforms } from '../Uniforms';
 
 export type AnimatorVariableType = number | number[] | THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Quaternion | THREE.Euler
 

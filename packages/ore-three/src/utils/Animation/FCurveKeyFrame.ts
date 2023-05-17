@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import EventEmitter from 'wolfy87-eventemitter';
-import { EasingFunc, Easings } from '../Easings';
+import { EasingFunc, Easings } from './Easings';
 
 export type FCurveInterpolation = "BEZIER" | "LINEAR";
 

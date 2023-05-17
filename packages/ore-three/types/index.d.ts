@@ -7,7 +7,7 @@ export * from './utils/Animation/FCurveGroup';
 export * from './utils/Animation/FCurveKeyFrame';
 export * from './utils/BlenderConnector';
 export * from './utils/Pointer';
-export * from './utils/Easings';
+export * from './utils/Animation/Easings';
 export * from './utils/GPUComputationController';
 export * from './utils/PostProcessing';
 export * from './utils/LayoutController';

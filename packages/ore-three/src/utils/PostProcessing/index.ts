@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import passThrowVert from './shaders/passThrow.vs';
+import passThrowVert from './shaders/passThrough.vs';
 
 type InputRenderTarget = { [key:string]: THREE.Texture | THREE.Texture[] };
 

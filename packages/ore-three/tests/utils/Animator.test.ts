@@ -2,8 +2,8 @@
 /* eslint no-undef: 0 */
 
 import * as THREE from 'three';
-import { Animator } from '../../src/utils/Animator';
-import { Easings } from '../../src/utils/Easings';
+import { Animator } from '../../src/utils/Animation/Animator';
+import { Easings } from '../../src/utils/Animation/Easings';
 
 describe( 'Controller', () => {
 

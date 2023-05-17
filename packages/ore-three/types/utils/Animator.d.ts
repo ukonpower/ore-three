@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EasingFunc } from "./Easings";
+import { EasingFunc } from "./Animation/Easings";
 import { LerpFunc } from "./Lerps";
 import { Uniforms } from "./Uniforms";
 export type AnimatorVariableType = number | number[] | THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Quaternion | THREE.Euler;

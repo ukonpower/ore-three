@@ -237,18 +237,13 @@ export class BaseLayer extends THREE.EventDispatcher {
 		const canvasPointerPos = new THREE.Vector2();
 		canvasPointerPos.copy( e.position );
 
-		if ( this.info.canvas ) {
-
-			const canvasRect = this.info.canvas.getBoundingClientRect();
-			canvasPointerPos.sub( new THREE.Vector2( canvasRect.x, canvasRect.y ) );
-
-		}
+		const canvasRect = this.info.canvas.getBoundingClientRect();
+		canvasPointerPos.sub( new THREE.Vector2( canvasRect.x, canvasRect.y ) );
 
 		const screenPosition = canvasPointerPos.clone();
 		screenPosition.divide( this.info.size.canvasSize );
 		screenPosition.y = 1.0 - screenPosition.y;
 		screenPosition.multiplyScalar( 2.0 ).subScalar( 1.0 );
-
 
 		const args: TouchEventArgs = {
 			event: e.pointerEvent,
