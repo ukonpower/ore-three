@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
 import quadVert from './shaders/quad.vs';
+import { UniformsLib } from '../Uniforms';
 
 export interface PostProcessPassParam extends THREE.ShaderMaterialParameters {
-	input?: ( THREE.Texture | null )[],
-	renderTarget: THREE.WebGLRenderTarget | null,
+	renderTarget?: THREE.WebGLRenderTarget | null,
 	clearColor?: THREE.Color;
 	clearDepth?: number;
 	resolutionRatio?: number;
@@ -13,7 +13,6 @@ export interface PostProcessPassParam extends THREE.ShaderMaterialParameters {
 
 export class PostProcessPass extends THREE.ShaderMaterial {
 
-	public input: ( THREE.Texture | null )[];
 	public renderTarget: THREE.WebGLRenderTarget | null;
 
 	public clearColor: THREE.Color | null;
@@ -27,22 +26,29 @@ export class PostProcessPass extends THREE.ShaderMaterial {
 
 	constructor( param: PostProcessPassParam ) {
 
-		const { input, renderTarget, resolutionRatio, passThrough, ...materialParam } = param;
+		const { renderTarget, resolutionRatio, passThrough, ...materialParam } = param;
 
-		const uniforms = {
+		const uniforms = UniformsLib.mergeUniforms( materialParam.uniforms, {
 			uResolution: {
 				value: new THREE.Vector2()
 			},
 			uResolutionInv: {
 				value: new THREE.Vector2()
 			},
-		};
+		} );
 
 		super( { ...materialParam, vertexShader: param.vertexShader || quadVert, glslVersion: THREE.GLSL3, uniforms } );
 
-		this.renderTarget = param.renderTarget !== undefined ? renderTarget : new THREE.WebGLRenderTarget( 1, 1 );
-		this.input = input || [];
-		this.uniforms = this.uniforms || {};
+		if ( renderTarget === undefined ) {
+
+			this.renderTarget = new THREE.WebGLRenderTarget( 1, 1 );
+
+		} else {
+
+			this.renderTarget = renderTarget;
+
+		}
+
 		this.clearColor = param.clearColor ?? null;
 		this.clearDepth = param.clearDepth ?? null;
 		this.passThrough = passThrough || false;
@@ -57,7 +63,8 @@ export class PostProcessPass extends THREE.ShaderMaterial {
 
 	public resize( resolution: THREE.Vector2 ) {
 
-		this.resolution.copy( resolution ).multiplyScalar( this.resolutionRatio );
+		this.resolution.copy( resolution ).multiplyScalar( this.resolutionRatio ).floor();
+		this.resolutionInv.set( 1.0, 1.0 ).divide( this.resolution );
 
 		if ( this.renderTarget ) {
 

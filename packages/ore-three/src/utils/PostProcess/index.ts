@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { PostProcessPass } from '../PostProcessPass';
-import { PostProcessRenderOpt } from '../..';
 
 export interface PostProcessParam {
 	renderer: THREE.WebGLRenderer;
@@ -42,7 +41,7 @@ export class PostProcess {
 
 	}
 
-	public render( opt?: PostProcessRenderOpt ) {
+	public render( input?: THREE.Texture, opt?: PostProcessRenderOpt ) {
 
 		const rt = this.renderer.getRenderTarget();
 		const autoClear = this.renderer.autoClear;
@@ -57,35 +56,17 @@ export class PostProcess {
 
 		}
 
+		let backbuffer: THREE.Texture | null = input || null;
+
 		for ( let i = 0; i < this.passes.length; i ++ ) {
 
 			const pass = this.passes[ i ];
 
 			this.quad.material = pass;
 
-			let changed = false;
-
-			for ( let j = 0; j < pass.input.length; j ++ ) {
-
-				const samplerName = "sampler" + j;
-
-				const uniInput = pass.uniforms[ samplerName ];
-
-				if ( uniInput ) {
-
-					uniInput.value = pass.input[ j ];
-
-				} else {
-
-					changed = true;
-
-					pass.uniforms[ samplerName ] = {
-						value: pass.input[ j ]
-					};
-
-				}
-
-			}
+			pass.uniforms.uBackBuffer = {
+				value: backbuffer
+			};
 
 			if ( opt && opt.camera ) {
 
@@ -107,10 +88,14 @@ export class PostProcess {
 
 			}
 
-			if ( changed ) pass.needsUpdate = true;
-
 			this.renderer.setRenderTarget( pass.renderTarget );
 			this.renderer.render( this.scene, this.camera );
+
+			if ( ! pass.passThrough && pass.renderTarget ) {
+
+				backbuffer = pass.renderTarget.texture;
+
+			}
 
 		}
 
