@@ -119,4 +119,16 @@ export class PostProcess {
 
 	}
 
+	public resize( resolution: THREE.Vector2 ) {
+
+		for ( let i = 0; i < this.passes.length; i ++ ) {
+
+			const pass = this.passes[ i ];
+
+			pass.resize( resolution );
+
+		}
+
+	}
+
 }
