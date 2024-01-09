@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
 import quadVert from './shaders/quad.vs';
+import outFrag from './shaders/out.fs';
+
 import { UniformsLib } from '../Uniforms';
 
 export interface PostProcessPassParam extends THREE.ShaderMaterialParameters {
@@ -24,7 +26,9 @@ export class PostProcessPass extends THREE.ShaderMaterial {
 	public resolutionInv: THREE.Vector2;
 	public resolutionRatio: number;
 
-	constructor( param: PostProcessPassParam ) {
+	constructor( param?: PostProcessPassParam ) {
+
+		param = param || {};
 
 		const { renderTarget, resolutionRatio, passThrough, ...materialParam } = param;
 
@@ -37,7 +41,12 @@ export class PostProcessPass extends THREE.ShaderMaterial {
 			},
 		} );
 
-		super( { ...materialParam, vertexShader: param.vertexShader || quadVert, glslVersion: THREE.GLSL3, uniforms } );
+		super( {
+			...materialParam,
+			vertexShader: param.vertexShader ?? quadVert,
+			fragmentShader: param.fragmentShader ?? outFrag,
+			uniforms
+		} );
 
 		if ( renderTarget === undefined ) {
 

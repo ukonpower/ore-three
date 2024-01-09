@@ -1,12 +1,12 @@
 varying vec2 vUv;
-uniform sampler2D backbuffer;
+uniform sampler2D uBackBuffer;
 
 uniform float time;
 
 
 void main(void){
 	vec2 uv = vUv * 2.0 - 1.0;
-	vec3 c = texture2D(backbuffer,vUv).xyz;
+	vec3 c = texture2D(uBackBuffer,vUv).xyz;
 
 	float d = length( vec2( uv ) ) * 4.0;
 	c.x += sin( d - time * 2.0 + 0.0 ) * 0.4;

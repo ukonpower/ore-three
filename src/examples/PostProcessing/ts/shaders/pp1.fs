@@ -1,5 +1,5 @@
 varying vec2 vUv;
-uniform sampler2D sceneTex;
+uniform sampler2D uBackBuffer;
 
 uniform float time;
 
@@ -8,7 +8,7 @@ float random (vec2 st) {
 }
 
 void main(void){
-	vec3 c = texture2D(sceneTex,vUv).xyz;
+	vec3 c = texture2D(uBackBuffer,vUv).xyz;
 	c += random(vUv + sin( time ) * 0.1) * 0.3;
 	gl_FragColor = vec4(c,1.0);
 }
