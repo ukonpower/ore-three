@@ -7,8 +7,8 @@ import pp2Frag from './shaders/pp2.fs';
 export class PostProcessingScene extends ORE.BaseLayer {
 
 	private renderTargets: { [ key: string ]: THREE.WebGLRenderTarget };
-	private pass1: ORE.PostProcessing;
-	private pass2: ORE.PostProcessing;
+
+	private postProcess: ORE.PostProcess;
 
 	private box: THREE.Mesh;
 
@@ -17,22 +17,14 @@ export class PostProcessingScene extends ORE.BaseLayer {
 		super( param );
 
 		this.renderTargets = {
-			rt1: new THREE.WebGLRenderTarget( 0, 0, {
+			rt1: new THREE.WebGLRenderTarget( 1, 1, {
 				stencilBuffer: false,
 				generateMipmaps: false,
 				depthBuffer: true,
 				minFilter: THREE.LinearFilter,
 				magFilter: THREE.LinearFilter,
 			} ),
-			rt2: new THREE.WebGLRenderTarget( 0, 0, {
-				stencilBuffer: false,
-				generateMipmaps: false,
-				depthBuffer: false,
-				minFilter: THREE.LinearFilter,
-				magFilter: THREE.LinearFilter
-			} ),
 		};
-
 
 		this.commonUniforms = ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 		} );
@@ -51,16 +43,27 @@ export class PostProcessingScene extends ORE.BaseLayer {
 			PostProcessing
 		-------------------------------*/
 
-		this.pass1 = new ORE.PostProcessing( this.renderer, {
+		const pass1 = new ORE.PostProcessPass( {
 			fragmentShader: pp1Frag,
 			uniforms: ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
 			} )
 		} );
 
-		this.pass2 = new ORE.PostProcessing( this.renderer, {
+		const pass2 = new ORE.PostProcessPass( {
 			fragmentShader: pp2Frag,
 			uniforms: ORE.UniformsLib.mergeUniforms( this.commonUniforms, {
-			} )
+			} ),
+		} );
+
+		const outPass = new ORE.PostProcessPass( { renderTarget: null } );
+
+		this.postProcess = new ORE.PostProcess( {
+			renderer: this.renderer,
+			passes: [
+				pass1,
+				pass2,
+				outPass
+			],
 		} );
 
 	}
@@ -72,17 +75,8 @@ export class PostProcessingScene extends ORE.BaseLayer {
 		this.renderer.setRenderTarget( this.renderTargets.rt1 );
 		this.renderer.render( this.scene, this.camera );
 
-		if ( this.pass1 && this.pass2 ) {
+		this.postProcess.render( this.renderTargets.rt1.texture );
 
-			this.pass1.render( {
-				sceneTex: this.renderTargets.rt1.texture
-			}, this.renderTargets.rt2 );
-
-			this.pass2.render( {
-				backbuffer: this.renderTargets.rt2.texture
-			}, null );
-
-		}
 
 	}
 
@@ -90,20 +84,11 @@ export class PostProcessingScene extends ORE.BaseLayer {
 
 		super.onResize();
 
-		this.resizeRenderTargets();
+		this.renderTargets.rt1.setSize( this.info.size.canvasPixelSize.x, this.info.size.canvasPixelSize.y );
+
+		this.postProcess.resize( this.info.size.canvasPixelSize );
 
 	}
 
-	private resizeRenderTargets() {
-
-		const keys = Object.keys( this.renderTargets );
-
-		for ( let i = 0; i < keys.length; i ++ ) {
-
-			this.renderTargets[ keys[ i ] ].setSize( this.info.size.canvasPixelSize.x, this.info.size.canvasPixelSize.y );
-
-		}
-
-	}
 
 }

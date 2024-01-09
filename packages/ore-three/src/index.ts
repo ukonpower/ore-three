@@ -7,7 +7,6 @@ export * from './utils/Animation/FCurveKeyFrame';
 export * from './utils/Pointer';
 export * from './utils/Animation/Easings';
 export * from './utils/GPUComputationController';
-export * from './utils/PostProcessing';
 export * from './utils/PostProcess';
 export * from './utils/PostProcessPass';
 export * from './utils/LayoutController';

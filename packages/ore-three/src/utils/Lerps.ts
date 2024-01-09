@@ -1,4 +1,4 @@
-import { AnimatorVariableType } from "./Animator";
+import { AnimatorVariableType } from "./Animation/Animator";
 
 export declare interface LerpFunc<T>{
 	( a: T, b: T, t: number ): T;
