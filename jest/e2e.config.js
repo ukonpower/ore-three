@@ -6,7 +6,7 @@ module.exports = {
 	},
 	"globals": {
 		"ts-jest": {
-			"tsconfig": "./tsconfig.json"
+			"tsconfig": "./tsconfig.test.json"
 		},
 	},
 	setupFilesAfterEnv: [ './tests/jest-setup.ts' ],
