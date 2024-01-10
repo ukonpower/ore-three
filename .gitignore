@@ -6,3 +6,5 @@ node_modules
 # jest
 coverage
 report.json
+
+__diff_output__

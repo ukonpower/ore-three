@@ -4,7 +4,6 @@ import glslify from 'rollup-plugin-glslify';
 
 const exList = [
 	"Animator",
-	"BlenderConnector",
 	"Controller",
 	"GPUComputationController",
 	"Pointer",

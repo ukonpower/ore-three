@@ -1,58 +1,47 @@
-varying vec2 vUv;
-uniform sampler2D backbuffer;
-uniform vec2 resolution;
+uniform sampler2D uBackBuffer;
+// uniform sampler2D sampler1; // depth
+uniform sampler2D uBloomTexture[4];
+uniform float cameraNear;
+uniform float cameraFar;
 
-uniform sampler2D sceneTex;
-uniform sampler2D lensTex;
-uniform sampler2D bloomTexs[RENDER_COUNT];
-uniform sampler2D noiseTex;
-uniform float brightness;
-uniform float time;
+in vec2 vUv;
 
-#pragma glslify: random = require( './random.glsl' );
+layout (location = 0) out vec4 outColor;
 
-void main(){
+vec2 lens_distortion(vec2 r, float alpha) {
+    return r * (1.0 - alpha * dot(r, r));
+}
 
-	vec3 c = vec3( 0.0 );
+// https://github.com/dmnsgn/glsl-tone-map/blob/main/filmic.glsl
 
+vec3 filmic(vec3 x) {
+  vec3 X = max(vec3(0.0), x - 0.004);
+  vec3 result = (X * (6.2 * X + 0.5)) / (X * (6.2 * X + 1.7) + 0.06);
+  return pow(result, vec3(2.2));
+}
+
+void main( void ) {
+
+
+	vec3 col = vec3( 0.0, 0.0, 0.0 );
 	vec2 uv = vUv;
-	vec2 cuv = vUv * 2.0 - 1.0;
-	float w = max( .0, length( cuv ) ) * 0.02;
+	vec2 cuv = uv - 0.5;
+	float len = length(cuv);
 
-	float slide;
-	vec2 rUV;
-	vec2 gUV;
-	vec2 bUV;
+	col = texture( uBackBuffer, vUv ).xyz;
 
 	#pragma unroll_loop_start
-	for ( int i = 0; i < 3; i ++ ) {
-		
-		slide = float( UNROLLED_LOOP_INDEX ) / 5.0;
+	for ( int i = 0; i < 4; i ++ ) {
 
-		rUV = uv + vec2( 0.0, 0.0 ) * slide;
-		gUV = uv + vec2( 0.0025, 0.0 ) * slide;
-		bUV = uv + vec2( 0.005, 0.0 ) * slide;
-
-		c.x += texture2D(sceneTex, rUV ).x;
-		c.y += texture2D(sceneTex, gUV ).y;
-		c.z += texture2D(sceneTex, bUV ).z;
-
-	}
-	#pragma unroll_loop_end
-	c /= float( 3 );
-	
-	#pragma unroll_loop_start
-	for ( int i = 0; i < RENDER_COUNT; i ++ ) {
-		
-		c += texture2D( bloomTexs[ UNROLLED_LOOP_INDEX ], vUv ).xyz * pow( 2.0, float( UNROLLED_LOOP_INDEX ) ) * brightness;
+		col += texture( uBloomTexture[ UNROLLED_LOOP_INDEX ], uv ).xyz * ( 0.5 + float(UNROLLED_LOOP_INDEX) * 0.5 ) * 0.2;
 
 	}
 	#pragma unroll_loop_end
 
-	c += random( uv ) * 0.1 * c;
+	col *= smoothstep( 1.5, 0.3, len );
 
-	c *= smoothstep( -1.5, 0.5, 1.0 - length( cuv ) );
+	// col = texture( sampler1, vUv ).xyz;
 
-	gl_FragColor = vec4( c, 1.0 );
+	outColor = vec4( col, 1.0 );
 
 }
