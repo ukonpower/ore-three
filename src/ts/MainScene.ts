@@ -84,7 +84,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		if ( this.renderer ) {
 
-			this.renderPipeline = new RenderPipeline( this.renderer );
+			this.renderPipeline = new RenderPipeline( this.renderer, this.commonUniforms );
 
 		}
 
@@ -121,7 +121,7 @@ export class MainScene extends ORE.BaseLayer {
 
 		if ( this.renderPipeline ) {
 
-			this.renderPipeline.resize( this.info.size.canvasPixelSize );
+			this.renderPipeline.resize( this.info );
 
 		}
 
