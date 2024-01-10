@@ -2,12 +2,11 @@ module.exports = {
 	preset: 'jest-puppeteer',
 	moduleFileExtensions: [ 'js', 'ts' ],
 	transform: {
-		'^.+\\.ts$': 'ts-jest',
+		'^.+\\.ts$': [ 'ts-jest', {
+			"tsconfig": "./tsconfig.test.json"
+		} ],
 	},
 	"globals": {
-		"ts-jest": {
-			"tsconfig": "./tsconfig.test.json"
-		},
 	},
 	setupFilesAfterEnv: [ './tests/jest-setup.ts' ],
 	modulePathIgnorePatterns: [ 'jest-setup.ts' ],

@@ -36,9 +36,9 @@ export namespace Lerps {
 
 	}
 
-	export function THREEVectors( a: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, b: THREE.Vector2 & THREE.Vector3 & THREE.Vector4 & THREE.Color, t: number ) {
+	export function THREEVectors<T extends THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Color >( a: T, b: T, t: number ) {
 
-		return a.clone().lerp( b, t );
+		return a.clone().lerp( b as any, t );
 
 	}
 
