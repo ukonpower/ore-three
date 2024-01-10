@@ -22,5 +22,6 @@ export declare class Pointer extends THREE.EventDispatcher {
     update(): void;
     protected wheelOptimized(event: WheelEvent): void;
     wheel(event: WheelEvent): void;
+    dispose(): void;
 }
 //# sourceMappingURL=Pointer.d.ts.map
