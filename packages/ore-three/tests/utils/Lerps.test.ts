@@ -50,7 +50,13 @@ describe( 'Lerps', () => {
 		const b = new THREE.Quaternion().setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), Math.PI );
 		const t = 0.5;
 		const result = Lerps.THREEQuaternion( a, b, t );
-		expect( result ).toContainEqual( new THREE.Quaternion().setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), Math.PI / 2 ) );
+
+		const answerRot = new THREE.Quaternion().setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), Math.PI / 2 );
+
+		expect( result.x ).toBeCloseTo( answerRot.x );
+		expect( result.y ).toBeCloseTo( answerRot.y );
+		expect( result.z ).toBeCloseTo( answerRot.z );
+		expect( result.w ).toBeCloseTo( answerRot.w );
 
 	} );
 

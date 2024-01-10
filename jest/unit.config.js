@@ -5,12 +5,11 @@ module.exports = {
 	],
 	"testEnvironment": "jsdom",
 	"transform": {
-		"^.+\\.ts$": "ts-jest"
+		"^.+\\.ts$": [ "ts-jest", {
+			"tsconfig": "<rootDir>/tsconfig.json"
+		} ]
 	},
 	"globals": {
-		"ts-jest": {
-			"tsconfig": "<rootDir>/tsconfig.json"
-		},
 		"coverageThreshold": {
 			"global": {
 				"lines": 80,
