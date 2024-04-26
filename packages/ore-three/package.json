@@ -1,6 +1,6 @@
 {
 	"name": "ore-three",
-	"version": "4.0.0",
+	"version": "5.0.0-beta2",
 	"description": "",
 	"author": "ukonpower",
 	"license": "MIT",
@@ -20,6 +20,7 @@
 	"module": "./build/ore-three.js",
 	"exports": {
 		".": {
+			"types": "./types/index.d.ts",
 			"import": "./build/ore-three.js",
 			"require": "./build/ore-three.umd.cjs"
 		}
