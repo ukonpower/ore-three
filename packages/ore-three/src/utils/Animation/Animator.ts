@@ -210,6 +210,7 @@ export class Animator extends THREE.EventDispatcher {
 		if ( variable ) {
 
 			variable.time = - 1.0;
+			variable.isAnimating = false;
 			variable.onAnimationFinished = null;
 			variable.onAnimationCanceled && variable.onAnimationCanceled();
 

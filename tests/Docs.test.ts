@@ -18,7 +18,8 @@ const wait = ( sec: number ) => {
 };
 
 const waitList: {[key:string]: number} = {
-	"GPUComputationController": 2
+	"GPUComputationController": 2,
+	"index": 1,
 };
 
 const pageList: {[key:string]: string} = {

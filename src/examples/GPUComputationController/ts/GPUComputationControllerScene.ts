@@ -38,7 +38,7 @@ export class GPUComputationControllerScene extends ORE.BaseLayer {
 				value: 0
 			},
 			seed: {
-				value: Math.random() * 1000.0
+				value: 1
 			}
 		} );
 
