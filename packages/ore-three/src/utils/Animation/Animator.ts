@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { Easings, EasingFunc } from "./Easings";
 import { LerpFunc, Lerps } from '../Lerps';
-import { Uniforms } from '../Uniforms';
 
 export type AnimatorVariableType = number | number[] | THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Quaternion | THREE.Euler
 
@@ -28,6 +27,26 @@ export declare interface AnimatorVariableParams<T> {
 	userData?: any;
 }
 
+const cloneValue = <T extends AnimatorVariableType>( value: T ): T => {
+
+	if ( typeof value == 'number' ) {
+
+		return value;
+
+	} else if ( value instanceof Array ) {
+
+		return value.concat() as T;
+
+	} else if ( 'clone' in ( value as object ) ) {
+
+		return value.clone() as T;
+
+	}
+
+	return value;
+
+};
+
 export class Animator extends THREE.EventDispatcher {
 
 	public dataBase: {[ key: string ]: AnimatorVariableType };
@@ -50,9 +69,9 @@ export class Animator extends THREE.EventDispatcher {
 		const variable: AnimatorVariable<T> = {
 			time: 0,
 			duration: 0,
-			value: this.getValueClone( params.initValue ),
-			startValue: this.getValueClone( params.initValue ),
-			goalValue: this.getValueClone( params.initValue ),
+			value: cloneValue( params.initValue ),
+			startValue: cloneValue( params.initValue ),
+			goalValue: cloneValue( params.initValue ),
 			easing: params.easing || Easings.sigmoid(),
 			lerpFunc: ( params.customLerpFunc || Lerps.getLerpFunc( params.initValue ) ) as LerpFunc<T>,
 			userData: params.userData,
@@ -62,12 +81,6 @@ export class Animator extends THREE.EventDispatcher {
 
 		this.dataBase[ params.name ] = variable.value;
 		this.variables[ params.name ] = variable as unknown as AnimatorVariable<AnimatorVariableType>;
-
-		this.dispatchEvent( {
-			type: 'added',
-			varName: params.name,
-			variable,
-		} );
 
 		return variable;
 
@@ -93,7 +106,7 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public setValue<T extends AnimatorVariableType>( name: string, value: T ) {
+	public setValue<T extends AnimatorVariableType>( name: string, value: T, easing?: EasingFunc ) {
 
 		let variable = this.dataBase[ name ] as unknown as AnimatorVariableType;
 
@@ -110,6 +123,12 @@ export class Animator extends THREE.EventDispatcher {
 			} else if ( variable instanceof Array ) {
 
 				( variable as number [] ) = ( value as number[] ).concat();
+
+			}
+
+			if ( easing ) {
+
+				this.setEasing( name, easing );
 
 			}
 
@@ -130,32 +149,7 @@ export class Animator extends THREE.EventDispatcher {
 		Animate
 	-------------------------------*/
 
-	public animate<T extends AnimatorVariableType>( name: string, goalValue: T, duration: number = 1, callback?: Function ) {
-
-		const variable = this.variables[ name ];
-
-		if ( variable ) {
-
-			this.cancelAnimate( name );
-
-			this.animateVariableInit( variable, goalValue, duration, null, () => {
-
-				variable.onAnimationFinished = null;
-				callback && callback();
-
-			} );
-
-			this._isAnimating = true;
-
-		} else {
-
-			console.error( '"' + name + '"' + ' is not exist' );
-
-		}
-
-	}
-
-	public animateAsync<T extends AnimatorVariableType>( name: string, goalValue: T, duration: number = 1, callback?: Function ) {
+	public animate<T extends AnimatorVariableType>( name: string, goalValue: T, duration: number = 1 ) {
 
 		return new Promise( ( resolve, reject ) => {
 
@@ -165,18 +159,27 @@ export class Animator extends THREE.EventDispatcher {
 
 				this.cancelAnimate( name );
 
-				this.animateVariableInit( variable, goalValue, duration, () => {
+				variable.time = 0;
+				variable.isAnimating = true;
+				variable.isAnimatingReseve = true;
+				variable.duration = duration;
+
+				variable.startValue = cloneValue( variable.value );
+				variable.goalValue = cloneValue( goalValue );
+
+				variable.onAnimationCanceled = () => {
 
 					variable.onAnimationFinished = null;
 					reject( 'animation canceled' );
 
-				}, () => {
+				};
+
+				variable.onAnimationFinished = () => {
 
 					variable.onAnimationFinished = null;
-					callback && callback();
 					resolve( null );
 
-				} );
+				};
 
 				this._isAnimating = true;
 
@@ -190,29 +193,16 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	protected animateVariableInit<T extends AnimatorVariableType>( variable: AnimatorVariable<T>, goalValue: T, duration: number, onAnimationCanceled: ( () => void ) | null, onAnimationFinished: ( () => void )| null ) {
-
-		variable.time = 0;
-		variable.isAnimating = true;
-		variable.isAnimatingReseve = true;
-		variable.duration = duration;
-		variable.startValue = this.getValueClone( variable.value );
-		variable.goalValue = this.getValueClone( goalValue );
-		variable.onAnimationCanceled = onAnimationCanceled;
-		variable.onAnimationFinished = onAnimationFinished;
-
-	}
-
 	public cancelAnimate( name: string ) {
 
 		const variable = this.variables[ name ];
 
 		if ( variable ) {
 
-			variable.time = - 1.0;
 			variable.isAnimating = false;
 			variable.onAnimationFinished = null;
 			variable.onAnimationCanceled && variable.onAnimationCanceled();
+			variable.onAnimationCanceled = null;
 
 		} else {
 
@@ -262,32 +252,6 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	/*-------------------------------
-		Utils
-	-------------------------------*/
-
-	public applyToUniforms( uniforms: Uniforms ) {
-
-		const keys = Object.keys( this.variables );
-
-		for ( let i = 0; i < keys.length; i ++ ) {
-
-			const variable = this.getVariableObject( keys[ i ] );
-
-			if ( variable ) {
-
-				uniforms[ keys[ i ] ] = variable;
-
-			}
-
-		}
-
-	}
-
-	public isAnimating(): boolean
-
-	public isAnimating( variableName: string ): boolean
-
 	public isAnimating( variableName?: string ): boolean {
 
 		if ( variableName !== undefined ) {
@@ -305,30 +269,6 @@ export class Animator extends THREE.EventDispatcher {
 			return this._isAnimating;
 
 		}
-
-	}
-
-	/*-------------------------------
-		Utils
-	-------------------------------*/
-
-	private getValueClone<T extends AnimatorVariableType>( value: T ): T {
-
-		if ( typeof value == 'number' ) {
-
-			return value;
-
-		} else if ( value instanceof Array ) {
-
-			return value.concat() as T;
-
-		} else if ( 'clone' in ( value as object ) ) {
-
-			return value.clone() as T;
-
-		}
-
-		return value;
 
 	}
 
@@ -467,12 +407,12 @@ export class Animator extends THREE.EventDispatcher {
 
 	}
 
-	public updateDataBase( target?: string ) {
+	public updateDataBase( name?: string ) {
 
-		if ( target ) {
+		const updateValue = ( name: string ) => {
 
-			const variable = this.variables[ target ];
-			const databaseValue = this.dataBase[ target ];
+			const variable = this.variables[ name ];
+			const databaseValue = this.dataBase[ name ];
 
 			if ( variable && databaseValue !== undefined ) {
 
@@ -483,6 +423,12 @@ export class Animator extends THREE.EventDispatcher {
 				}
 
 			}
+
+		};
+
+		if ( name ) {
+
+			updateValue( name );
 
 			return;
 
@@ -492,21 +438,7 @@ export class Animator extends THREE.EventDispatcher {
 
 		for ( let i = 0; i < key.length; i ++ ) {
 
-			const variable = this.variables[ key[ i ] ];
-			const databaseValue = this.dataBase[ key[ i ] ];
-
-			if ( variable && databaseValue !== undefined ) {
-
-				// Vector系は参照なのでnumberとnumber[]あたりだけ更新
-
-				if ( typeof variable.value == 'number' || ! ( 'copy' in variable.value ) ) {
-
-					variable.value = databaseValue;
-
-				}
-
-			}
-
+			updateValue( key[ i ] );
 
 		}
 

@@ -28,7 +28,7 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 		this.animator.add( {
 			name: 'pos',
-			initValue: new THREE.Vector3( 0, 0, 0 )
+			initValue: new THREE.Vector3( 0, 0, 0 ),
 		} );
 
 		this.animator.add( {
@@ -53,25 +53,21 @@ export class AnimatorScene extends ORE.BaseLayer {
 
 	private async startPosAnimation() {
 
-		await this.animator.animateAsync( 'pos', new THREE.Vector3( 1.0, 0.0, 0.0 ), 1.0 );
+		await this.animator.animate( 'pos', new THREE.Vector3( 1.0, 0.0, 0.0 ), 1.0 );
 
-		this.animator.animate( 'pos', new THREE.Vector3( - 1.0, 0.0, 0.0 ), 1.0, () => {
+		await this.animator.animate( 'pos', new THREE.Vector3( - 1.0, 0.0, 0.0 ), 1.0 );
 
-			this.startPosAnimation();
-
-		} );
+		this.startPosAnimation();
 
 	}
 
 	private async startRotAnimation() {
 
-		await this.animator.animateAsync( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, - Math.PI ) ), 1.0 );
+		await this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, - Math.PI ) ), 1.0 );
 
-		this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0.0 ) ), 1.0, () => {
+		await this.animator.animate( 'rot', new THREE.Quaternion().setFromEuler( new THREE.Euler( 0, 0, 0.0 ) ), 1.0 );
 
-			this.startRotAnimation();
-
-		} );
+		this.startRotAnimation();
 
 	}
 
