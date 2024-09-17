@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { EasingFunc } from "./Easings";
 import { LerpFunc } from '../Lerps';
-import { Uniforms } from '../Uniforms';
 export type AnimatorVariableType = number | number[] | THREE.Vector2 | THREE.Vector3 | THREE.Vector4 | THREE.Quaternion | THREE.Euler;
 export declare interface AnimatorVariable<T> {
     isAnimating: boolean;
@@ -36,19 +35,14 @@ export declare class Animator extends THREE.EventDispatcher {
     constructor();
     add<T extends AnimatorVariableType>(params: AnimatorVariableParams<T>): AnimatorVariable<T>;
     setEasing(name: string, easing: EasingFunc): void;
-    setValue<T extends AnimatorVariableType>(name: string, value: T): null | undefined;
-    animate<T extends AnimatorVariableType>(name: string, goalValue: T, duration?: number, callback?: Function): void;
-    animateAsync<T extends AnimatorVariableType>(name: string, goalValue: T, duration?: number, callback?: Function): Promise<unknown>;
-    protected animateVariableInit<T extends AnimatorVariableType>(variable: AnimatorVariable<T>, goalValue: T, duration: number, onAnimationCanceled: (() => void) | null, onAnimationFinished: (() => void) | null): void;
+    setValue<T extends AnimatorVariableType>(name: string, value: T, easing?: EasingFunc): null | undefined;
+    animate<T extends AnimatorVariableType>(name: string, goalValue: T, duration?: number): Promise<unknown>;
     cancelAnimate(name: string): void;
     get<T extends AnimatorVariableType>(name: string): T | null;
     getVariableObject<T extends AnimatorVariableType>(name: string, mute?: boolean): AnimatorVariable<T> | null;
-    applyToUniforms(uniforms: Uniforms): void;
-    isAnimating(): boolean;
-    isAnimating(variableName: string): boolean;
-    private getValueClone;
+    isAnimating(variableName?: string): boolean;
     wait(t: number): Promise<void>;
     update(deltaTime?: number): void;
-    updateDataBase(target?: string): void;
+    updateDataBase(name?: string): void;
 }
 //# sourceMappingURL=Animator.d.ts.map
