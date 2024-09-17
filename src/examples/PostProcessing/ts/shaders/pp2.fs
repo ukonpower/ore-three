@@ -1,7 +1,7 @@
 varying vec2 vUv;
 uniform sampler2D uBackBuffer;
 
-uniform float time;
+uniform float uTime;
 
 
 void main(void){
@@ -9,8 +9,8 @@ void main(void){
 	vec3 c = texture2D(uBackBuffer,vUv).xyz;
 
 	float d = length( vec2( uv ) ) * 4.0;
-	c.x += sin( d - time * 2.0 + 0.0 ) * 0.4;
-	c.y += sin( d - time * 2.0 + 0.4 ) * 0.4;
-	c.z += sin( d - time * 2.0 + 0.8 ) * 0.4;
+	c.x += sin( d - uTime * 2.0 + 0.0 ) * 0.4;
+	c.y += sin( d - uTime * 2.0 + 0.4 ) * 0.4;
+	c.z += sin( d - uTime * 2.0 + 0.8 ) * 0.4;
 	gl_FragColor = vec4(c,1.0);
 }

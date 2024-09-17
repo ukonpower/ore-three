@@ -90,7 +90,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 		}
 
 		this.commonUniforms = {
-			time: {
+			uTime: {
 				value: 0
 			}
 		};
@@ -104,7 +104,7 @@ export class BaseLayer extends THREE.EventDispatcher {
 
 		this.time += deltaTime;
 
-		this.commonUniforms.time.value = this.time;
+		this.commonUniforms.uTime.value = this.time;
 
 		if ( this.readyAnimate ) {
 

@@ -2,7 +2,7 @@ uniform vec2 dataSize;
 uniform sampler2D dataPos;
 uniform sampler2D dataVel;
 
-uniform float time;
+uniform float uTime;
 uniform float seed;
 
 varying vec2 vUv;
@@ -15,9 +15,9 @@ varying vec2 vUv;
 
 vec3 snoise3D( vec3 p ){
 	return vec3(
-      snoise( vec4( NOISE_SCALE * p, 7.225 * seed + TIME_SCALE * time ) ),
-      snoise( vec4( NOISE_SCALE * p, 3.553 * seed + TIME_SCALE * time ) ),
-      snoise( vec4( NOISE_SCALE * p, 1.259 * seed + TIME_SCALE * time ) )
+      snoise( vec4( NOISE_SCALE * p, 7.225 * seed + TIME_SCALE * uTime ) ),
+      snoise( vec4( NOISE_SCALE * p, 3.553 * seed + TIME_SCALE * uTime ) ),
+      snoise( vec4( NOISE_SCALE * p, 1.259 * seed + TIME_SCALE * uTime ) )
     ) * 0.6;
 }
 
@@ -34,7 +34,7 @@ void main( void ){
 
 	if( pTime < 0.0 ){
 
-		lifeTime = snoise( vec4( vUv.xy * 1.0, time, time ) ) * 1.0 + 1.0;
+		lifeTime = snoise( vec4( vUv.xy * 1.0, uTime, uTime ) ) * 1.0 + 1.0;
 
 		vel = vec3( 
 			random( vUv + vec2( 0.0, 0.0 ) ) - 0.5,

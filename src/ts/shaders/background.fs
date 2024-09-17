@@ -1,11 +1,11 @@
 varying vec2 vUv;
-uniform float time;
+uniform float uTime;
 
 #pragma glslify: snoise = require('./noise3D.glsl' )
 
 void main(){
     vec3 c = vec3(0.3,0.3,1.0);
-    float t = time;
+    float t = uTime;
     vec2 uv = vUv;
 
     t *= 0.1;
